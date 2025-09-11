@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Free Earnings App</title>
+  <style>
+    body { font-family: Arial; margin:0; background:#0d0d0d; color:#fff; }
+    header { background:#0ff; color:#000; padding:15px; text-align:center; font-size:24px; font-weight:bold; text-shadow:0 0 5px #0ff; }
+    nav { display:flex; flex-wrap:wrap; justify-content:space-around; background:#111; padding:10px 0; }
+    nav button { background:#0ff; border:none; padding:10px 15px; margin:5px; color:#000; font-weight:bold; border-radius:8px; cursor:pointer; transition:.3s; }
+    nav button:hover { box-shadow:0 0 10px #0ff; }
+    section { display:none; padding:20px; }
+    section.active { display:block; }
+    .taskBox, .linkBox, .withdrawBox { background:#111; margin:10px 0; padding:15px; border-radius:10px; box-shadow:0 0 10px #0ff; }
+    input, select { padding:10px; margin:5px 0; border-radius:8px; border:none; width:100%; box-sizing:border-box; }
+    button.submitBtn { background:#0ff; color:#000; border:none; padding:10px 20px; border-radius:8px; cursor:pointer; font-weight:bold; transition:.3s; }
+    button.submitBtn:hover { box-shadow:0 0 10px #0ff; }
+    #authSection { max-width:400px; margin:auto; padding-top:50px; }
+  </style>
+</head>
+<body>
+
+<header>User Panel + Wallet</header>
+
+<!-- Sign Up / Login -->
+<section id="authSection">
+  <h2>Sign Up / Login</h2>
+  <input type="text" id="signupName" placeholder="Name"><br>
+  <input type="email" id="signupEmail" placeholder="Email"><br>
+  <input type="password" id="signupPassword" placeholder="Password"><br>
+  <button id="signupBtn" class="submitBtn">Sign Up</button>
+  <hr style="border-color:#0ff;">
+  <input type="email" id="loginEmail" placeholder="Email"><br>
+  <input type="password" id="loginPassword" placeholder="Password"><br>
+  <button id="loginBtn" class="submitBtn">Login</button>
+</section>
+
+<!-- Navigation -->
+<nav style="display:none;">
+  <button data-section="dashboard">Dashboard</button>
+  <button data-section="tasks">Tasks</button>
+  <button data-section="referrals">Referral Earnings</button>
+  <button data-section="links">Links Open Earnings</button>
+  <button data-section="withdrawals">Withdrawal</button>
+  <button data-section="profile">Profile</button>
+  <button id="logoutBtn">Logout</button>
+</nav>
+
+<!-- User Panel Sections -->
+<section id="dashboard">
+  <h2>Dashboard</h2>
+  <p>Total Users: <span id="totalUsers">0</span></p>
+  <p>Total Active Tasks: <span id="totalTasks">0</span></p>
+  <p>Total Withdrawals: <span id="totalWithdrawals">0</span></p>
+  <p>Total Earnings: <span id="totalEarnings">0</span></p>
+  <p>Wallet Balance: ₹<span id="walletBalance">0</span></p>
+</section>
+
+<section id="tasks">
+  <h2>Tasks</h2>
+  <div id="tasksContainer"></div>
+</section>
+
+<section id="referrals">
+  <h2>Referral Earnings</h2>
+  <p>Your Referral Link:</p>
+  <input type="text" id="refLink" readonly>
+  <h3>Referral Users:</h3>
+  <div id="refUsers"></div>
+</section>
+
+<section id="links">
+  <h2>Links Open Earnings</h2>
+  <div id="linksContainer"></div>
+</section>
+
+<section id="withdrawals">
+  <h2>Withdrawals</h2>
+  <form id="withdrawForm">
+    <select id="withdrawMethod">
+      <option value="Easypaisa">Easypaisa</option>
+      <option value="JazzCash">JazzCash</option>
+      <option value="Bank">Pakistan Bank</option>
+      <option value="Bitget">Bitget</option>
+    </select><br>
+    <input type="text" id="withdrawAccount" placeholder="Enter Account Number" required><br>
+    <input type="number" id="withdrawAmount" placeholder="minimum withdrawal 1200" required><br>
+    <button type="submit" class="submitBtn">Request Withdrawal</button>
+  </form>
+  <div id="withdrawList"></div>
+</section>
+
+<section id="profile">
+  <h2>Profile</h2>
+  <p>Name: <span id="userName"></span></p>
+  <p>Email: <span id="userEmail"></span></p>
+  <p>Referral Code: <span id="userRef"></span></p>
+</section>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+import { getFirestore, collection, doc, onSnapshot, setDoc, addDoc, getDoc } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+
+// Firebase config
+const firebaseConfig = {
+    apiKey: "AIzaSyDNYv9SNUjMAHlaPzfovyYefoBNDgx4Gd4",
+    authDomain: "traffic-exchange-62a58.firebaseapp.com",
+    projectId: "traffic-exchange-62a58",
+    storageBucket: "traffic-exchange-62a58.appspot.com",
+    messagingSenderId: "474999317287",
+    appId: "1:474999317287:web:8e28a2f5f1a959d8ce3f02",
+    measurementId: "G-HJQ46RQNZS"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const auth = getAuth();
+
+// ---------- Auth ----------
+document.getElementById("signupBtn").addEventListener("click", async ()=>{
+  const name = document.getElementById("signupName").value;
+  const email = document.getElementById("signupEmail").value;
+  const password = document.getElementById("signupPassword").value;
+  if(!name||!email||!password){ alert("Fill all fields"); return; }
+
+  createUserWithEmailAndPassword(auth,email,password)
+  .then(async userCred=>{
+    await setDoc(doc(db,"users",userCred.user.uid),{
+      name:name,
+      email:email,
+      wallet:0,
+      referralCode:userCred.user.uid,
+      referredBy: new URLSearchParams(window.location.search).get("ref")||null
+    });
+    alert("Sign Up Successful");
+    location.reload();
+  })
+  .catch(err=>alert(err.message));
+});
+
+document.getElementById("loginBtn").addEventListener("click", ()=>{
+  const email = document.getElementById("loginEmail").value;
+  const password = document.getElementById("loginPassword").value;
+  signInWithEmailAndPassword(auth,email,password)
+  .then(()=>{ location.reload(); })
+  .catch(err=>alert(err.message));
+});
+
+document.getElementById("logoutBtn").addEventListener("click", ()=>{
+  signOut(auth).then(()=>{ location.reload(); });
+});
+
+// ---------- Navigation ----------
+document.querySelectorAll('nav button[data-section]').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));
+    document.getElementById(btn.dataset.section).classList.add('active');
+  });
+});
+
+function showSection(id){
+  document.querySelectorAll('section').forEach(sec=>sec.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+showSection('authSection'); // default
+
+// ---------- User Panel ----------
+onAuthStateChanged(auth, user=>{
+  const nav = document.querySelector("nav");
+  if(user){
+    document.getElementById("authSection").style.display="none";
+    nav.style.display="flex";
+    showSection('dashboard');
+
+    const usersCol = collection(db,"users");
+    const userRef = doc(db,"users",user.uid);
+    const tasksCol = collection(db,"tasks");
+    const linksCol = collection(db,"links");
+    const withdrawalsCol = collection(db,"withdrawals");
+
+    // Profile & Wallet
+    onSnapshot(userRef, snap=>{
+      if(snap.exists()){
+        const data = snap.data();
+        document.getElementById("userName").innerText = data.name || "N/A";
+        document.getElementById("userEmail").innerText = data.email || user.email;
+        document.getElementById("userRef").innerText = data.referralCode || user.uid;
+        document.getElementById("refLink").value = window.location.href+"?ref="+(data.referralCode||user.uid);
+        document.getElementById("walletBalance").innerText = data.wallet || 0;
+      }
+    });
+
+    // Tasks + Wallet earning
+    onSnapshot(tasksCol, snap=>{
+      const container = document.getElementById("tasksContainer");
+      container.innerHTML="";
+      snap.forEach(doc=>{
+        const t = doc.data();
+        const taskDiv = document.createElement("div");
+        taskDiv.classList.add("taskBox");
+        taskDiv.innerHTML = `<p>${t.description}</p><button>Open & Earn ₹3</button>`;
+        taskDiv.querySelector("button").addEventListener("click", async ()=>{
+          window.open(t.url, "_blank");
+          const userSnap = await getDoc(userRef);
+          const currentWallet = userSnap.exists() && userSnap.data().wallet ? userSnap.data().wallet : 0;
+          await setDoc(userRef,{ wallet: currentWallet + 3 }, { merge:true });
+          alert("You earned ₹3! Wallet updated.");
+        });
+        container.appendChild(taskDiv);
+      });
+    });
+
+    // Links
+    onSnapshot(linksCol, snap=>{
+      const container = document.getElementById("linksContainer");
+      container.innerHTML="";
+      snap.forEach(doc=>{
+        const l = doc.data();
+        container.innerHTML+=`<div class="linkBox"><p>${l.description}</p><a href="${l.url}" target="_blank">Open</a></div>`;
+      });
+    });
+
+    // Referral Users
+    onSnapshot(usersCol, snap=>{
+      const refContainer = document.getElementById("refUsers");
+      refContainer.innerHTML="";
+      snap.forEach(doc=>{
+        const u = doc.data();
+        if(u.referredBy === user.uid){
+          refContainer.innerHTML+=`<p>${u.name} (${u.email})</p>`;
+        }
+      });
+    });
+
+    // Withdrawals
+    document.getElementById("withdrawForm").addEventListener("submit", async e=>{
+      e.preventDefault();
+      const method = document.getElementById("withdrawMethod").value;
+      const amount = document.getElementById("withdrawAmount").value;
+      const account = document.getElementById("withdrawAccount").value;
+
+      if(!account){ alert("Enter account number"); return; }
+
+      await addDoc(withdrawalsCol,{
+        userId:user.uid,
+        method:method,
+        accountNumber:account,
+        amount:parseFloat(amount),
+        status:"Pending",
+        timestamp:Date.now()
+      });
+      alert("Withdrawal request sent!");
+      e.target.reset();
+    });
+
+    onSnapshot(withdrawalsCol, snap=>{
+      const container = document.getElementById("withdrawList");
+      container.innerHTML="";
+      snap.forEach(doc=>{
+        const w = doc.data();
+        if(w.userId===user.uid){
+          container.innerHTML+=`<div class="withdrawBox">
+            <p>Method: ${w.method}</p>
+            <p>Account: ${w.accountNumber}</p>
+            <p>Amount: ${w.amount}</p>
+            <p>Status: ${w.status}</p>
+          </div>`;
+        }
+      });
+    });
+
+    // Dashboard Stats
+    onSnapshot(usersCol, snap=>{ document.getElementById("totalUsers").innerText = snap.size; });
+    onSnapshot(tasksCol, snap=>{ document.getElementById("totalTasks").innerText = snap.size; });
+    onSnapshot(withdrawalsCol, snap=>{
+      document.getElementById("totalWithdrawals").innerText = snap.size;
+      let total=0; snap.forEach(doc=>{ total += parseFloat(doc.data().amount||0); });
+      document.getElementById("totalEarnings").innerText = total.toFixed(2);
+    });
+
+  } else {
+    document.getElementById("authSection").style.display="block";
+    nav.style.display="none";
+    showSection('authSection');
+  }
+});
+</script>
+
+</body>
+</html>
