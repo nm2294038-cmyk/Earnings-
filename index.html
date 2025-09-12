@@ -10,18 +10,216 @@
     nav button:hover { box-shadow:0 0 10px #0ff; }
     section { display:none; padding:20px; }
     section.active { display:block; }
-    .taskBox, .linkBox, .withdrawBox { background:#111; margin:10px 0; padding:15px; border-radius:10px; box-shadow:0 0 10px #0ff; }
-    input, select { padding:10px; margin:5px 0; border-radius:8px; border:none; width:100%; box-sizing:border-box; }
+
+    /* Input and Buttons */
+    input, select, textarea { padding:10px; margin:5px 0; border-radius:8px; border:none; width:100%; box-sizing:border-box; background-color: #222; color: #fff; }
     button.submitBtn { background:#0ff; color:#000; border:none; padding:10px 20px; border-radius:8px; cursor:pointer; font-weight:bold; transition:.3s; }
-    button.submitBtn:hover { box-shadow:0 0 10px #0ff; }
+    button.submitBtn:hover { box-shadow:0 0 10px #0ff; background: #fff; color: #000; }
     #authSection { max-width:400px; margin:auto; padding-top:50px; }
+
+    /* --- STYLES for Dashboard, Task, Withdraw Boxes --- */
+    .dashboard-container, #tasksContainer, #withdrawList, #linksContainer {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 15px;
+        margin-top: 20px;
+    }
+
+    .dashboard-box, .taskBox, .withdrawBox {
+        background: #111;
+        padding: 15px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px #0ff;
+        min-width: 200px; /* Set a minimum width */
+        text-align: center;
+        flex-grow: 1;
+        max-width: 250px; /* Set a maximum width for consistency */
+    }
+
+    .linkBox {
+      background:#111;
+      margin:10px 0;
+      padding:15px;
+      border-radius:10px;
+      box-shadow:0 0 10px #0ff;
+      display: flex; /* Use flexbox for alignment */
+      justify-content: space-between; /* Space out description and button */
+      align-items: center; /* Vertically align items */
+      min-width: 200px;
+      flex-grow: 1;
+      max-width: 250px;
+    }
+
+    /* --- UPDATED FOOTER STYLE --- */
+    footer {
+        background:#111;
+        padding: 10px 0;
+        text-align:center;
+        margin-top:30px;
+        border-top:2px solid #0ff;
+        width: 100%;
+        height: 70px; /* Fixed height as requested */
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        justify-content: center; /* Vertically center content */
+        align-items: center; /* Horizontally center content */
+    }
+    .footer-links { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-bottom: 5px; }
+    .footer-links a { color: #0ff; text-decoration: none; font-weight: bold; cursor: pointer; white-space: nowrap; /* Prevent breaking of link text */ }
+    .footer-links a:hover { text-decoration: underline; }
+    footer .copyright { font-size:12px; color:#888; margin:0; }
+
+
+    /* Modal Styles */
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0,0,0,0.7);
+    }
+    .modal-content {
+        background-color: #111;
+        color: #fff;
+        margin: 10% auto;
+        padding: 30px;
+        border: 1px solid #0ff;
+        border-radius: 10px;
+        width: 80%;
+        max-width: 700px;
+        box-shadow: 0 0 20px #0ff;
+        position: relative;
+    }
+    .modal-close-btn {
+        color: #fff;
+        position: absolute;
+        top: 15px;
+        right: 25px;
+        font-size: 30px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+    .modal-close-btn:hover { color: #0ff; }
+    .modal-content h2 { color: #0ff; }
+    .modal-content p { line-height: 1.6; text-align: left; }
+    .modal-content ul { text-align: left; list-style-position: inside; }
+
+    #tasks { width: 100%; box-sizing: border-box; }
+
+    /* --- NEW STYLES FOR PROFILE SECTION --- */
+    .profile-card {
+        background: #111;
+        padding: 25px;
+        border-radius: 10px;
+        box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+        max-width: 450px;
+        width: 90%;
+        margin: 30px auto;
+        text-align: center;
+    }
+
+    .profile-header {
+        margin-bottom: 20px;
+    }
+
+    .profile-pic {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 3px solid #0ff;
+        box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+        background-color: #333; /* Fallback background for initials */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 40px;
+        font-weight: bold;
+        color: white;
+    }
+
+    .profile-info h2 {
+        margin: 10px 0 5px 0;
+        color: #0ff;
+        font-size: 28px;
+    }
+
+    .profile-info p {
+        margin: 5px 0;
+        color: #ccc;
+        font-size: 16px;
+    }
+
+    .profile-info p.referral-code {
+        font-weight: bold;
+        color: #fff;
+        background: #222;
+        padding: 5px 10px;
+        border-radius: 5px;
+        display: inline-block;
+        margin-top: 10px;
+    }
+
+    .profile-stats {
+        margin: 25px 0;
+        padding: 15px 0;
+        border-top: 1px solid #333;
+        border-bottom: 1px solid #333;
+        display: flex;
+        justify-content: space-around;
+    }
+
+    .stat-item p {
+        margin: 0;
+        color: #aaa;
+        font-size: 14px;
+    }
+
+    .stat-item h3 {
+        margin: 5px 0 0 0;
+        color: #fff;
+        font-size: 20px;
+    }
+
+    .profile-actions {
+        margin-top: 20px;
+    }
+
+    .profile-actions button {
+        background: #0ff;
+        color: #000;
+        border: none;
+        padding: 12px 25px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: .3s;
+        font-size: 16px;
+    }
+
+    .profile-actions button:hover {
+        box-shadow: 0 0 10px #0ff;
+        background: #fff;
+        color: #000;
+    }
+
+    /* Withdrawal status specific styles */
+    .status-pending { color: #ffc107; font-weight: bold; }
+    .status-approved { color: #28a745; font-weight: bold; }
+    .status-rejected { color: #dc3545; font-weight: bold; }
   </style>
 </head>
 <body>
 
-<header>User Panel + Wallet</header>
+<header>Free Earnings App</header>
 
-<!-- Sign Up / Login -->
+<!-- Auth and Nav sections remain the same -->
 <section id="authSection">
   <h2>Sign Up / Login</h2>
   <input type="text" id="signupName" placeholder="Name"><br>
@@ -34,7 +232,6 @@
   <button id="loginBtn" class="submitBtn">Login</button>
 </section>
 
-<!-- Navigation -->
 <nav style="display:none;">
   <button data-section="dashboard">Dashboard</button>
   <button data-section="tasks">Tasks</button>
@@ -45,14 +242,32 @@
   <button id="logoutBtn">Logout</button>
 </nav>
 
-<!-- User Panel Sections -->
+<!-- --- DASHBOARD HTML STRUCTURE --- -->
 <section id="dashboard">
   <h2>Dashboard</h2>
-  <p>Total Users: <span id="totalUsers">0</span></p>
-  <p>Total Active Tasks: <span id="totalTasks">0</span></p>
-  <p>Total Withdrawals: <span id="totalWithdrawals">0</span></p>
-  <p>Total Earnings: <span id="totalEarnings">0</span></p>
-  <p>Wallet Balance: ₹<span id="walletBalance">0</span></p>
+  <h3>Any Problem Contact Owner </h3>
+  <div class="dashboard-container">
+    <div class="dashboard-box">
+      <p>Total Users</p>
+      <h3 id="totalUsers">0</h3>
+    </div>
+    <div class="dashboard-box">
+      <p>Active Tasks</p>
+      <h3 id="totalTasks">0</h3>
+    </div>
+    <div class="dashboard-box">
+      <p>Total Withdrawals</p>
+      <h3 id="totalWithdrawals">0</h3>
+    </div>
+    <div class="dashboard-box">
+      <p>Total Earnings</p>
+      <h3 id="totalEarnings">0</h3>
+    </div>
+    <div class="dashboard-box">
+      <p>Wallet Balance</p>
+      <h3>₹<span id="walletBalance">0</span></h3>
+    </div>
+  </div>
 </section>
 
 <section id="tasks">
@@ -79,8 +294,8 @@
     <select id="withdrawMethod">
       <option value="Easypaisa">Easypaisa</option>
       <option value="JazzCash">JazzCash</option>
-      <option value="Bank">Pakistan Bank</option>
-      <option value="Bitget">Bitget</option>
+      <option value="Bank">Allid Bank</option>
+      <option value="Bitget">Bitget USDT 12$ </option>
     </select><br>
     <input type="text" id="withdrawAccount" placeholder="Enter Account Number" required><br>
     <input type="number" id="withdrawAmount" placeholder="minimum withdrawal 1200" required><br>
@@ -90,18 +305,63 @@
 </section>
 
 <section id="profile">
-  <h2>Profile</h2>
-  <p>Name: <span id="userName"></span></p>
-  <p>Email: <span id="userEmail"></span></p>
-  <p>Referral Code: <span id="userRef"></span></p>
+  <h2>My Profile</h2>
+  <div class="profile-card">
+    <div class="profile-header">
+      <!-- Profile Picture or Initials -->
+      <div id="userProfilePic" class="profile-pic"></div>
+      <div class="profile-info">
+        <h2 id="userName"></h2>
+        <p id="userEmail"></p>
+        <p>Referral Code: <span id="userRef" class="referral-code"></span></p>
+      </div>
+    </div>
+    <div class="profile-stats">
+      <div class="stat-item">
+        <p>Account Balance</p>
+        <h3>₹<span id="walletBalanceProfile">0</span></h3>
+      </div>
+      <div class="stat-item">
+        <p>Total Referrals</p>
+        <h3 id="totalReferralsCount">0</h3>
+      </div>
+    </div>
+    <div class="profile-actions">
+      <button id="editProfileBtn">Edit Profile</button>
+    </div>
+  </div>
 </section>
+
+<!-- The Modal (remains the same) -->
+<div id="detailsModal" class="modal">
+  <div class="modal-content">
+    <span class="modal-close-btn">&times;</span>
+    <h2 id="modalTitle"></h2>
+    <div id="modalText"></div>
+  </div>
+</div>
+
+<!-- --- UPDATED FOOTER HTML STRUCTURE --- -->
+<footer>
+  <div class="footer-links">
+    <a id="privacyBtn">Privacy Policy</a>
+    <a id="termsBtn">Terms of Service</a>
+    <a id="aboutBtn">About Us</a>
+    <a id="taskDetailsBtn">Task Details</a>
+    <a id="withdrawalProfileBtn">Withdrawal Profile</a>
+    <!-- Contact Links -->
+    <a id="contactEmailLink">Contact via Email</a>
+    <a id="contactWhatsappLink">Contact via WhatsApp</a>
+  </div>
+  <p class="copyright">&copy; 2023 Free Earnings App. All Rights Reserved.</p>
+</footer>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-import { getFirestore, collection, doc, onSnapshot, setDoc, addDoc, getDoc } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+import { getFirestore, collection, doc, onSnapshot, setDoc, addDoc, getDoc, getCountFromServer, Timestamp, query, where } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
 
-// Firebase config
+// Firebase config (remains the same)
 const firebaseConfig = {
     apiKey: "AIzaSyDNYv9SNUjMAHlaPzfovyYefoBNDgx4Gd4",
     authDomain: "traffic-exchange-62a58.firebaseapp.com",
@@ -116,94 +376,142 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth();
 
-// ---------- Auth ----------
-document.getElementById("signupBtn").addEventListener("click", async ()=>{
+// --- Configuration ---
+const adminEmail = "mn1691316@gmail.com"; // <<< Your provided email
+const whatsappNumber = "+923495144924";   // <<< Your provided WhatsApp number (with country code)
+
+// Auth (Existing Code)
+document.getElementById("signupBtn").addEventListener("click", async () => {
   const name = document.getElementById("signupName").value;
   const email = document.getElementById("signupEmail").value;
   const password = document.getElementById("signupPassword").value;
-  if(!name||!email||!password){ alert("Fill all fields"); return; }
+  if (!name || !email || !password) { alert("Fill all fields"); return; }
 
-  createUserWithEmailAndPassword(auth,email,password)
-  .then(async userCred=>{
-    await setDoc(doc(db,"users",userCred.user.uid),{
-      name:name,
-      email:email,
-      wallet:0,
-      referralCode:userCred.user.uid,
-      referredBy: new URLSearchParams(window.location.search).get("ref")||null
+  if (!name || name.trim().length === 0) {
+    alert("Please enter your name.");
+    return;
+  }
+
+  try {
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    const user = userCredential.user;
+    await setDoc(doc(db, "users", user.uid), {
+      name: name,
+      email: email,
+      wallet: 0,
+      referralCode: user.uid, // Use UID as referral code
+      referredBy: new URLSearchParams(window.location.search).get("ref") || null,
+      profilePicUrl: null,
+      createdAt: Timestamp.now()
     });
-    alert("Sign Up Successful");
-    location.reload();
-  })
-  .catch(err=>alert(err.message));
+    alert("Sign Up Successful! Please log in.");
+    location.reload(); // Reload to show login form
+  } catch (error) {
+    alert(error.message);
+  }
 });
 
-document.getElementById("loginBtn").addEventListener("click", ()=>{
+document.getElementById("loginBtn").addEventListener("click", () => {
   const email = document.getElementById("loginEmail").value;
   const password = document.getElementById("loginPassword").value;
-  signInWithEmailAndPassword(auth,email,password)
-  .then(()=>{ location.reload(); })
-  .catch(err=>alert(err.message));
+  signInWithEmailAndPassword(auth, email, password)
+    .then(() => { location.reload(); })
+    .catch(err => alert(err.message));
 });
 
-document.getElementById("logoutBtn").addEventListener("click", ()=>{
-  signOut(auth).then(()=>{ location.reload(); });
+document.getElementById("logoutBtn").addEventListener("click", () => {
+  signOut(auth).then(() => { location.reload(); });
 });
 
-// ---------- Navigation ----------
-document.querySelectorAll('nav button[data-section]').forEach(btn=>{
-  btn.addEventListener('click', ()=>{
-    document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));
+// Navigation (Existing Code)
+document.querySelectorAll('nav button[data-section]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
     document.getElementById(btn.dataset.section).classList.add('active');
   });
 });
 
-function showSection(id){
-  document.querySelectorAll('section').forEach(sec=>sec.classList.remove('active'));
+function showSection(id) {
+  document.querySelectorAll('section').forEach(sec => sec.classList.remove('active'));
   document.getElementById(id).classList.add('active');
 }
 showSection('authSection'); // default
 
-// ---------- User Panel ----------
-onAuthStateChanged(auth, user=>{
+onAuthStateChanged(auth, async user => {
   const nav = document.querySelector("nav");
-  if(user){
-    document.getElementById("authSection").style.display="none";
-    nav.style.display="flex";
-    showSection('dashboard');
+  if (user) {
+    document.getElementById("authSection").style.display = "none";
+    nav.style.display = "flex";
+    showSection('dashboard'); // Show dashboard by default after login
 
-    const usersCol = collection(db,"users");
-    const userRef = doc(db,"users",user.uid);
-    const tasksCol = collection(db,"tasks");
-    const linksCol = collection(db,"links");
-    const withdrawalsCol = collection(db,"withdrawals");
+    const usersCol = collection(db, "users");
+    const userRef = doc(db, "users", user.uid);
+    const tasksCol = collection(db, "tasks");
+    const linksCol = collection(db, "links");
+    const withdrawalsCol = collection(db, "withdrawals");
 
-    // Profile & Wallet
-    onSnapshot(userRef, snap=>{
-      if(snap.exists()){
+    // Profile & Wallet Data (including referral count and profile picture logic)
+    onSnapshot(userRef, async snap => {
+      if (snap.exists()) {
         const data = snap.data();
-        document.getElementById("userName").innerText = data.name || "N/A";
-        document.getElementById("userEmail").innerText = data.email || user.email;
-        document.getElementById("userRef").innerText = data.referralCode || user.uid;
-        document.getElementById("refLink").value = window.location.href+"?ref="+(data.referralCode||user.uid);
-        document.getElementById("walletBalance").innerText = data.wallet || 0;
+        const userNameElement = document.getElementById("userName");
+        const userEmailElement = document.getElementById("userEmail");
+        const userRefElement = document.getElementById("userRef");
+        const walletBalanceElement = document.getElementById("walletBalance");
+        const walletBalanceProfileElement = document.getElementById("walletBalanceProfile");
+        const userProfilePicElement = document.getElementById("userProfilePic");
+        const totalReferralsCountElement = document.getElementById("totalReferralsCount");
+        const refLinkInput = document.getElementById("refLink");
+
+        userNameElement.innerText = data.name || "N/A";
+        userEmailElement.innerText = data.email || user.email;
+        userRefElement.innerText = data.referralCode || user.uid;
+        refLinkInput.value = window.location.origin + window.location.pathname + "?ref=" + (data.referralCode || user.uid);
+        walletBalanceElement.innerText = data.wallet || 0;
+        walletBalanceProfileElement.innerText = data.wallet || 0;
+
+        // Profile Picture or Initials Logic
+        if (data.profilePicUrl && data.profilePicUrl !== "placeholder-profile.png") {
+          userProfilePicElement.innerHTML = ''; // Clear any previous initials
+          userProfilePicElement.style.backgroundImage = `url(${data.profilePicUrl})`;
+          userProfilePicElement.style.backgroundColor = '#333';
+          userProfilePicElement.style.color = 'white';
+        } else if (data.name) {
+          const initials = data.name.trim().split(' ').map(word => word[0]).join('').toUpperCase();
+          userProfilePicElement.innerText = initials;
+          userProfilePicElement.style.backgroundImage = 'none';
+          const colors = ['#1abc9c', '#3498db', '#9b59b6', '#f1c40f', '#e67e22', '#e74c3c'];
+          const colorIndex = initials.charCodeAt(0) % colors.length;
+          userProfilePicElement.style.backgroundColor = colors[colorIndex];
+          userProfilePicElement.style.color = 'white';
+        } else {
+          userProfilePicElement.innerText = '?';
+          userProfilePicElement.style.backgroundColor = '#555';
+          userProfilePicElement.style.color = 'white';
+        }
+
+        // Count referrals
+        const referralQuery = query(usersCol, where("referredBy", "==", user.uid));
+        const referralSnapshot = await getCountFromServer(referralQuery);
+        totalReferralsCountElement.innerText = referralSnapshot.data().count;
       }
     });
 
     // Tasks + Wallet earning
-    onSnapshot(tasksCol, snap=>{
+    onSnapshot(tasksCol, snap => {
       const container = document.getElementById("tasksContainer");
-      container.innerHTML="";
-      snap.forEach(doc=>{
+      container.innerHTML = "";
+      snap.forEach(doc => {
         const t = doc.data();
         const taskDiv = document.createElement("div");
         taskDiv.classList.add("taskBox");
-        taskDiv.innerHTML = `<p>${t.description}</p><button>Open & Earn ₹3</button>`;
-        taskDiv.querySelector("button").addEventListener("click", async ()=>{
+        taskDiv.innerHTML = `<p>${t.description}</p><button class="submitBtn">Open & Earn ₹3</button>`;
+        taskDiv.querySelector("button").addEventListener("click", async () => {
           window.open(t.url, "_blank");
+          // Fetch current balance, add 3, update Firestore, and alert
           const userSnap = await getDoc(userRef);
           const currentWallet = userSnap.exists() && userSnap.data().wallet ? userSnap.data().wallet : 0;
-          await setDoc(userRef,{ wallet: currentWallet + 3 }, { merge:true });
+          await setDoc(userRef, { wallet: currentWallet + 3 }, { merge: true });
           alert("You earned ₹3! Wallet updated.");
         });
         container.appendChild(taskDiv);
@@ -211,79 +519,279 @@ onAuthStateChanged(auth, user=>{
     });
 
     // Links
-    onSnapshot(linksCol, snap=>{
+    onSnapshot(linksCol, snap => {
       const container = document.getElementById("linksContainer");
-      container.innerHTML="";
-      snap.forEach(doc=>{
+      container.innerHTML = "";
+      snap.forEach(doc => {
         const l = doc.data();
-        container.innerHTML+=`<div class="linkBox"><p>${l.description}</p><a href="${l.url}" target="_blank">Open</a></div>`;
+        const linkDiv = document.createElement("div");
+        linkDiv.classList.add("linkBox");
+        linkDiv.innerHTML = `<p>${l.description}</p><button class="submitBtn">Open & Earn ₹3</button>`;
+
+        linkDiv.querySelector("button").addEventListener("click", async () => {
+          window.open(l.url, "_blank");
+          // Fetch current balance, add 3, update Firestore, and alert
+          const userSnap = await getDoc(userRef);
+          const currentWallet = userSnap.exists() && userSnap.data().wallet ? userSnap.data().wallet : 0;
+          await setDoc(userRef, { wallet: currentWallet + 3 }, { merge: true });
+          alert("You earned ₹3! Wallet updated.");
+        });
+        container.appendChild(linkDiv);
       });
     });
 
     // Referral Users
-    onSnapshot(usersCol, snap=>{
+    onSnapshot(usersCol, snap => {
       const refContainer = document.getElementById("refUsers");
-      refContainer.innerHTML="";
-      snap.forEach(doc=>{
+      refContainer.innerHTML = "";
+      snap.forEach(doc => {
         const u = doc.data();
-        if(u.referredBy === user.uid){
-          refContainer.innerHTML+=`<p>${u.name} (${u.email})</p>`;
+        if (u.referredBy === user.uid) {
+          refContainer.innerHTML += `<p>${u.name} (${u.email})</p>`;
         }
       });
     });
 
     // Withdrawals
-    document.getElementById("withdrawForm").addEventListener("submit", async e=>{
+    document.getElementById("withdrawForm").addEventListener("submit", async e => {
       e.preventDefault();
       const method = document.getElementById("withdrawMethod").value;
-      const amount = document.getElementById("withdrawAmount").value;
+      const amount = parseFloat(document.getElementById("withdrawAmount").value); // Parse as float
       const account = document.getElementById("withdrawAccount").value;
 
-      if(!account){ alert("Enter account number"); return; }
+      if (!account) { alert("Enter account number"); return; }
 
-      await addDoc(withdrawalsCol,{
-        userId:user.uid,
-        method:method,
-        accountNumber:account,
-        amount:parseFloat(amount),
-        status:"Pending",
-        timestamp:Date.now()
+      // Fetch current user data to check balance and update it
+      const userSnap = await getDoc(userRef);
+      if (!userSnap.exists()) {
+        alert("User data not found. Cannot process withdrawal.");
+        return;
+      }
+      const currentUserWallet = userSnap.data().wallet || 0;
+
+      if (currentUserWallet < amount) {
+        alert("Insufficient balance.");
+        return;
+      }
+
+      // Subtract the withdrawal amount from the user's wallet BEFORE adding withdrawal record
+      const newWalletBalance = currentUserWallet - amount;
+      await setDoc(userRef, { wallet: newWalletBalance }, { merge: true });
+
+      // Add withdrawal request to Firestore
+      await addDoc(withdrawalsCol, {
+        userId: user.uid,
+        method: method,
+        accountNumber: account,
+        amount: amount, // Use the parsed float amount
+        status: "Pending",
+        timestamp: Timestamp.now()
       });
+
       alert("Withdrawal request sent!");
-      e.target.reset();
+      e.target.reset(); // Clear the form
     });
 
-    onSnapshot(withdrawalsCol, snap=>{
+    onSnapshot(withdrawalsCol, snap => {
       const container = document.getElementById("withdrawList");
-      container.innerHTML="";
-      snap.forEach(doc=>{
+      container.innerHTML = "";
+      snap.forEach(doc => {
         const w = doc.data();
-        if(w.userId===user.uid){
-          container.innerHTML+=`<div class="withdrawBox">
-            <p>Method: ${w.method}</p>
-            <p>Account: ${w.accountNumber}</p>
-            <p>Amount: ${w.amount}</p>
-            <p>Status: ${w.status}</p>
-          </div>`;
+        if (w.userId === user.uid) {
+          const withdrawDiv = document.createElement("div");
+          withdrawDiv.classList.add("withdrawBox");
+
+          let statusClass = '';
+          switch (w.status.toLowerCase()) {
+            case 'pending': statusClass = 'status-pending'; break;
+            case 'approved': statusClass = 'status-approved'; break;
+            case 'rejected': statusClass = 'status-rejected'; break;
+          }
+
+          withdrawDiv.innerHTML = `
+            <p><strong>Method:</strong> ${w.method}</p>
+            <p><strong>Account:</strong> ${w.accountNumber}</p>
+            <p><strong>Amount:</strong> ₹${w.amount.toFixed(2)}</p> <!-- Format to 2 decimal places -->
+            <p><strong>Status:</strong> <span class="${statusClass}">${w.status}</span></p>
+          `;
+          container.appendChild(withdrawDiv);
         }
       });
     });
 
-    // Dashboard Stats
-    onSnapshot(usersCol, snap=>{ document.getElementById("totalUsers").innerText = snap.size; });
-    onSnapshot(tasksCol, snap=>{ document.getElementById("totalTasks").innerText = snap.size; });
-    onSnapshot(withdrawalsCol, snap=>{
+    // Dashboard Stats (Totals)
+    onSnapshot(usersCol, snap => { document.getElementById("totalUsers").innerText = snap.size; });
+    onSnapshot(tasksCol, snap => { document.getElementById("totalTasks").innerText = snap.size; });
+    onSnapshot(withdrawalsCol, snap => {
       document.getElementById("totalWithdrawals").innerText = snap.size;
-      let total=0; snap.forEach(doc=>{ total += parseFloat(doc.data().amount||0); });
-      document.getElementById("totalEarnings").innerText = total.toFixed(2);
+      let total = 0; snap.forEach(doc => { total += parseFloat(doc.data().amount || 0); });
+      document.getElementById("totalEarnings").innerText = "₹" + total.toFixed(2);
     });
 
   } else {
-    document.getElementById("authSection").style.display="block";
-    nav.style.display="none";
+    document.getElementById("authSection").style.display = "block";
+    nav.style.display = "none";
     showSection('authSection');
   }
 });
+
+// Modal Script
+const modal = document.getElementById("detailsModal");
+const modalTitle = document.getElementById("modalTitle");
+const modalText = document.getElementById("modalText");
+const closeBtn = document.getElementsByClassName("modal-close-btn")[0];
+
+const modalContent = {
+  privacy: {
+    title: "Privacy Policy",
+    text: `<p>This Privacy Policy describes how Free Earnings App (the "App", "we", "us", or "our") collects, uses, and discloses your information. Your privacy is of utmost importance to us.</p>
+           <p><strong>1. Information We Collect</strong></p>
+           <p>We collect information you provide directly to us when you create an account, such as your name, email address, and password. We also collect information related to your activity on the App, including tasks completed, earnings, withdrawal history, and referral information. We do not collect sensitive personal information.</p>
+           <p><strong>2. How We Use Your Information</strong></p>
+           <p>The information we collect is used to: </p>
+           <ul>
+            <li>Operate and maintain your account.</li>
+            <li>Process transactions, including withdrawal requests.</li>
+            <li>Verify your identity to prevent fraud.</li>
+            <li>Communicate with you about your account, updates, and promotional offers.</li>
+            <li>Monitor and analyze usage and trends to improve your experience.</li>
+           </ul>
+           <p><strong>3. Information Sharing and Disclosure</strong></p>
+           <p>We are committed to not sharing your personal information with third parties without your consent, except in the following circumstances: </p>
+           <ul>
+            <li>To comply with a legal obligation, such as a court order or government request.</li>
+            <li>To enforce our Terms of Service and protect the security and integrity of our App.</li>
+            <li>In connection with a merger, acquisition, or sale of assets.</li>
+           </ul>
+           <p><strong>4. Data Security</strong></p>
+           <p>We implement reasonable security measures to protect your information from unauthorized access, alteration, and disclosure. We use Firebase, a secure platform by Google, for our backend services. However, please be aware that no security system is impenetrable, and we cannot guarantee the absolute security of your information.</p>
+           <p><strong>5. Your Choices</strong></p>
+           <p>You can review and update your account information at any time through the Profile section. You may also request the deletion of your account by contacting our support team. Please note that some information may be retained in our records for legal or administrative purposes after your account is deleted.</p>`
+  },
+  terms: {
+    title: "Terms of Service",
+    text: `<p>Welcome to Free Earnings App. By creating an account and using our services, you agree to be bound by the following terms and conditions.</p>
+           <p><strong>1. User Eligibility and Account</strong></p>
+           <p>You must be at least 18 years old to use this App. You are responsible for maintaining the confidentiality of your account password and for all activities that occur under your account. You agree to create only one account per person. Creating multiple accounts is a violation of our policy and will result in the termination of all associated accounts without any payment.</p>
+           <p><strong>2. Earning and Tasks</strong></p>
+           <p>The App provides tasks for you to complete in exchange for monetary rewards. The reward amount for each task is specified. You agree to perform tasks as instructed. It is mandatory to click the specified number of times as mentioned in the task description. Failure to follow instructions accurately will lead to the non-payment for that task and may result in the rejection of your withdrawal request.</p>
+           <p><strong>3. Prohibited Activities</strong></p>
+           <p>You are strictly prohibited from:</p>
+           <ul>
+            <li>Using any automated software, bots, or scripts to complete tasks.</li>
+            <li>Creating fake or multiple accounts.</li>
+            <li>Providing false or misleading information during registration or withdrawal requests.</li>
+            <li>Exploiting any bugs or loopholes in the system for personal gain.</li>
+            <li>Engaging in any activity that disrupts or interferes with our services.</li>
+           </ul>
+           <p>Violation of these rules will lead to the immediate and permanent suspension of your account and forfeiture of all your earnings.</p>
+           <p><strong>4. Withdrawal Policy</strong></p>
+           <p>Our withdrawal policy is strict to ensure fairness. The minimum withdrawal amount is ₹1200. All withdrawal requests are reviewed manually and processed within 24 to 72 hours. We reserve the right to reject any withdrawal request if we suspect fraudulent activity or violation of our terms. You must provide accurate payment details; we are not responsible for payments sent to an incorrect account number provided by you.</p>
+           <p><strong>5. Limitation of Liability</strong></p>
+           <p>Free Earnings App is provided on an "as-is" basis. We do not guarantee uninterrupted or error-free service. We are not liable for any direct, indirect, or consequential damages arising from your use of the App.</p>`
+  },
+  about: {
+    title: "About Us",
+    text: `<p>Welcome to Free Earnings App, your trusted platform for simple and reliable online earnings in Pakistan.</p>
+           <p><strong>Our Mission</strong></p>
+           <p>Our mission is to provide a straightforward and accessible opportunity for individuals to earn a supplementary income from the comfort of their homes. We understand that in today's fast-paced digital world, every extra bit of earning counts. We aim to bridge the gap between businesses that need online engagement and users who are willing to provide it by completing simple digital tasks.</p>
+           <p><strong>How It Works</strong></p>
+           <p>We partner with various clients who require increased traffic and engagement for their websites and digital content. We break down these requirements into simple, manageable tasks for our users. When you complete a task, such as visiting a webpage or clicking a link, you are directly contributing to our clients' goals. In return for your valuable time and effort, we share a portion of our revenue with you. This creates a win-win ecosystem where both our clients and our users benefit.</p>
+           <p><strong>Our Commitment to You</strong></p>
+           <p>We are committed to transparency, fairness, and reliability. We believe in building a strong, long-lasting relationship with our user community based on trust. Our platform is designed to be user-friendly, and our policies, especially regarding withdrawals, are strict to ensure that all legitimate earnings are paid out promptly. Our dedicated support team is always available to assist you with any questions or issues you may encounter. Thank you for choosing Free Earnings App. We look forward to helping you achieve your earning goals.</p>`
+  },
+  taskDetails: {
+    title: "Task Details & Earnings Guide",
+    text: `<p>Understanding how tasks work and how you earn is crucial for maximizing your income on Free Earnings App. Here's a detailed guide:</p>
+           <p><strong>1. Types of Tasks:</strong></p>
+           <ul>
+            <li><strong>Website Visits/Clicks:</strong> Most tasks involve visiting a specified website and performing certain actions, such as clicking on internal links, viewing pages for a minimum duration, or interacting with ads.</li>
+            <li><strong>App Downloads/Installs:</strong> Occasionally, tasks might involve downloading and briefly using a specific mobile application.</li>
+            <li><strong>Content Engagement:</strong> This could include watching short videos, liking posts, or leaving simple comments on designated platforms.</li>
+           </ul>
+           <p><strong>2. Task Instructions - READ CAREFULLY:</strong></p>
+           <p>Each task comes with a clear set of instructions. It is absolutely essential to read and follow these instructions precisely. For example, if a task says "Click 3 times on internal links," you must perform exactly 3 clicks. Doing more or fewer clicks, or clicking on external ads if not specified, will invalidate your task completion.</p>
+           <p><strong>3. Earning Per Task:</strong></p>
+           <p>The earning for each task will be clearly displayed (e.g., "Earn ₹3"). Once you complete a task according to all instructions, the corresponding amount will be credited to your in-app wallet.</p>
+           <p><strong>4. Verification Process:</strong></p>
+           <p>Our system automatically tracks your actions to verify task completion. We also conduct manual reviews to ensure authenticity. Tasks that are deemed incomplete, fake, or performed using automated tools will not be credited. Repeated attempts to submit fraudulent tasks may lead to account suspension.</p>
+           <p><strong>5. Availability of Tasks:</strong></p>
+           <p>Tasks are updated regularly. The number and type of tasks available may vary based on our clients' demands. We recommend checking the "Tasks" section frequently for new opportunities.</p>
+           <p><strong>6. Tips for Successful Task Completion:</strong></p>
+           <ul>
+            <li>Always ensure a stable internet connection.</li>
+            <li>Do not use VPNs or proxy services unless explicitly instructed.</li>
+            <li>Perform tasks manually; avoid any form of automation.</li>
+            <li>Take your time; rushing through tasks might lead to errors in completion.</li>
+           </ul>
+           <p>By understanding and adhering to these task details, you can ensure a smooth earning experience and avoid issues with credit and withdrawals.</p>`
+  },
+  withdrawalProfile: {
+    title: "Withdrawal Profile Management",
+    text: `<p>Managing your withdrawal profile correctly is vital for receiving your earnings securely and on time. This section provides detailed information on how to set up and manage your withdrawal preferences.</p>
+           <p><strong>1. Available Withdrawal Methods:</strong></p>
+           <p>Free Earnings App offers several convenient withdrawal options for our users in Pakistan:</p>
+           <ul>
+            <li><strong>Easypaisa:</strong> A popular mobile wallet service for quick transfers.</li>
+            <li><strong>JazzCash:</strong> Another widely used mobile account service for easy access to funds.</li>
+            <li><strong>Pakistan Bank Transfer:</strong> Direct bank transfers to any major bank account in Allied bank .</li>
+            <li><strong>Bitget (Cryptocurrency):</strong> For users who prefer crypto withdrawals, we support transfers to your Bitget account.</li>
+           </ul>
+           <p><strong>2. Setting Up Your Withdrawal Account:</strong></p>
+           <p>When you initiate your first withdrawal request, you will be prompted to select your preferred method and provide the necessary account details. Ensure accuracy in providing your:</p>
+           <ul>
+            <li><strong>Easypaisa/JazzCash:</strong> Registered Mobile Number (and account title, if requested).</li>
+            <li><strong>Bank Transfer:</strong> Bank Name, Account Number, and Account Title.</li>
+            <li><strong>Bitget:</strong> Your Bitget User ID or registered email/phone number.</li>
+           </ul>
+           <p>Double-check all details before submission, as incorrect information can lead to delays or loss of funds, for which Free Earnings App will not be responsible.</p>
+           <p><strong>3. Minimum Withdrawal Amount:</strong></p>
+           <p>A minimum balance of <b>₹1200 Bitget 12 Usd</b> is required in your wallet to process any withdrawal request. Requests below this threshold will be automatically rejected.</p>
+           <p><strong>4. Withdrawal Processing Time:</strong></p>
+           <p>All withdrawal requests are manually reviewed for security and compliance. We aim to process all legitimate requests within <b>24 to 72 hours</b>. During peak times or due to public holidays, processing may take slightly longer, but we strive to keep delays minimal.</p>
+           <p><strong>5. Withdrawal Status & History:</strong></p>
+           <p>You can track the status of your withdrawal requests in the "Withdrawals" section of your user panel. Statuses typically include "Pending," "Processing," and "Completed." Your withdrawal history will also be available for review.</p>
+           <p><strong>6. Strict Verification Policy:</strong></p>
+           <p>To prevent fraud and maintain the integrity of our platform, we maintain a strict withdrawal policy. Any request suspected of being linked to fraudulent activities, fake accounts, or incomplete tasks will be rejected. In severe cases, this may lead to account suspension. Ensure all your earnings are legitimate and tasks are completed as per instructions.</p>
+           <p>By adhering to these guidelines, you can ensure a smooth and successful withdrawal experience with Free Earnings App.</p>`
+  }
+};
+
+function openModal(type) {
+  modalTitle.innerText = modalContent[type].title;
+  modalText.innerHTML = modalContent[type].text;
+  modal.style.display = "block";
+}
+
+// Footer Link Event Listeners
+document.getElementById("privacyBtn").onclick = () => openModal('privacy');
+document.getElementById("termsBtn").onclick = () => openModal('terms');
+document.getElementById("aboutBtn").onclick = () => openModal('about');
+document.getElementById("taskDetailsBtn").onclick = () => openModal('taskDetails');
+document.getElementById("withdrawalProfileBtn").onclick = () => openModal('withdrawalProfile');
+
+// Contact Links
+document.getElementById("contactEmailLink").addEventListener("click", () => {
+  const subject = "Inquiry from Free Earnings App User";
+  const body = `Hello,\n\nI am contacting you regarding the Free Earnings App.\n\nMy Name: ${auth.currentUser ? document.getElementById("userName").innerText : ''}\nMy Email: ${auth.currentUser ? document.getElementById("userEmail").innerText : ''}\n\nMy Inquiry:\n\n`;
+  window.location.href = `mailto:${adminEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+});
+
+document.getElementById("contactWhatsappLink").addEventListener("click", () => {
+  const prefillText = `Hello, I'm contacting you from the Free Earnings App. My Name: ${auth.currentUser ? document.getElementById("userName").innerText : ''}. My Email: ${auth.currentUser ? document.getElementById("userEmail").innerText : ''}. My Inquiry: `;
+  window.open(`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(prefillText)}`, "_blank");
+});
+
+
+closeBtn.onclick = () => {
+  modal.style.display = "none";
+};
+
+window.onclick = (event) => {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+};
 </script>
 
 </body>
