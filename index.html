@@ -15,6 +15,7 @@
     input, select, textarea { padding:10px; margin:5px 0; border-radius:8px; border:none; width:100%; box-sizing:border-box; background-color: #222; color: #fff; }
     button.submitBtn { background:#0ff; color:#000; border:none; padding:10px 20px; border-radius:8px; cursor:pointer; font-weight:bold; transition:.3s; }
     button.submitBtn:hover { box-shadow:0 0 10px #0ff; background: #fff; color: #000; }
+    button.submitBtn:disabled { background: #555; color: #aaa; cursor: not-allowed; box-shadow: none; }
     #authSection { max-width:400px; margin:auto; padding-top:50px; }
 
     /* --- STYLES for Dashboard, Task, Withdraw Boxes --- */
@@ -272,6 +273,7 @@
 
 <section id="tasks">
   <h2>Tasks</h2>
+<p> Ab 5 minutes k bad open house gi</p>
   <div id="tasksContainer"></div>
 </section>
 
@@ -290,6 +292,20 @@
 
 <section id="withdrawals">
   <h2>Withdrawals</h2>
+ <li> How to get the date of your payment
+Payment dates are 19-22 and 28-31 of each month, from 9.00 am till 6.00 pm GMT.</li>
+ <li> If these dates fall on weekends or holidays the payments will be processed on nearest business day.
+Once you reach the minimum payout amount, the money is put on a two-week hold.
+You will get the payout during the first payment period available after your hold period ends.</li>
+
+ <li> For example:</li>
+ <li> You reach the minimum payout amount on June 19. The two-week hold period ends on July 31. The next available payment period is July 19-22.</li>
+ <li> You reach the minimum payout amount on June 26. The two-week hold period ends on July 14. The next available payment period is July 28-31.</li>
+
+<li> In the Help Center, you can find a list of all the payment methods we offer. Please keep in mind that the availability of these payment methods may vary depending on your account.</li>
+              
+           <li>  This policy outlines the terms for withdrawing funds from your FreeEarnings App wallet and the specific rules governing the use and withdrawal fund</li>
+            
   <form id="withdrawForm">
     <select id="withdrawMethod">
       <option value="Easypaisa">Easypaisa</option>
@@ -353,7 +369,7 @@
     <a id="contactEmailLink">Contact via Email</a>
     <a id="contactWhatsappLink">Contact via WhatsApp</a>
   </div>
-  <p class="copyright">&copy; 2023 Free Earnings App. All Rights Reserved.</p>
+  <p class="copyright">&copy; 2025 Free Earnings App. All Rights Reserved.</p>
 </footer>
 
 <script type="module">
@@ -437,6 +453,57 @@ function showSection(id) {
 }
 showSection('authSection'); // default
 
+// --- NEW FUNCTIONALITY: Link/Task Open Tracking and Timer ---
+const OPEN_COOLDOWN_MINUTES = 5;
+const COOLDOWN_DURATION_MS = OPEN_COOLDOWN_MINUTES * 60 * 1000;
+
+// Function to update button state with a countdown
+function updateButtonState(button, itemId, prefix) {
+  const lastOpened = localStorage.getItem(`${prefix}_${itemId}`);
+  if (!lastOpened) {
+    button.disabled = false;
+    button.innerText = "Open & Earn Rs.0.25";
+    return;
+  }
+
+  const timeElapsed = new Date().getTime() - parseInt(lastOpened);
+
+  if (timeElapsed < COOLDOWN_DURATION_MS) {
+    button.disabled = true;
+
+    // Start a countdown interval
+    const countdownInterval = setInterval(() => {
+      const newTimeElapsed = new Date().getTime() - parseInt(lastOpened);
+      if (newTimeElapsed >= COOLDOWN_DURATION_MS) {
+        clearInterval(countdownInterval);
+        button.disabled = false;
+        button.innerText = "Open & Earn Rs.025";
+        localStorage.removeItem(`${prefix}_${itemId}`); // Clean up storage
+      } else {
+        const timeLeftMs = COOLDOWN_DURATION_MS - newTimeElapsed;
+        const minutes = Math.floor(timeLeftMs / 60000);
+        const seconds = Math.floor((timeLeftMs % 60000) / 1000).toString().padStart(2, '0');
+        button.innerText = `Wait ${minutes}:${seconds}`;
+      }
+    }, 1000);
+    // Store interval ID to prevent multiple intervals on the same button
+    button.dataset.intervalId = countdownInterval;
+  } else {
+    // If cooldown has already expired
+    button.disabled = false;
+    button.innerText = "Open & Earn ₹0.50";
+    localStorage.removeItem(`${prefix}_${itemId}`);
+  }
+}
+
+// Function to clear all countdown intervals when logging out or changing sections
+function clearAllCountdowns() {
+    document.querySelectorAll('[data-interval-id]').forEach(btn => {
+        clearInterval(parseInt(btn.dataset.intervalId));
+    });
+}
+
+
 onAuthStateChanged(auth, async user => {
   const nav = document.querySelector("nav");
   if (user) {
@@ -454,168 +521,142 @@ onAuthStateChanged(auth, async user => {
     onSnapshot(userRef, async snap => {
       if (snap.exists()) {
         const data = snap.data();
-        const userNameElement = document.getElementById("userName");
-        const userEmailElement = document.getElementById("userEmail");
-        const userRefElement = document.getElementById("userRef");
-        const walletBalanceElement = document.getElementById("walletBalance");
-        const walletBalanceProfileElement = document.getElementById("walletBalanceProfile");
+        document.getElementById("userName").innerText = data.name || "N/A";
+        document.getElementById("userEmail").innerText = data.email || user.email;
+        document.getElementById("userRef").innerText = data.referralCode || user.uid;
+        document.getElementById("refLink").value = window.location.origin + window.location.pathname + "?ref=" + (data.referralCode || user.uid);
+        document.getElementById("walletBalance").innerText = data.wallet || 0;
+        document.getElementById("walletBalanceProfile").innerText = data.wallet || 0;
+
         const userProfilePicElement = document.getElementById("userProfilePic");
-        const totalReferralsCountElement = document.getElementById("totalReferralsCount");
-        const refLinkInput = document.getElementById("refLink");
-
-        userNameElement.innerText = data.name || "N/A";
-        userEmailElement.innerText = data.email || user.email;
-        userRefElement.innerText = data.referralCode || user.uid;
-        refLinkInput.value = window.location.origin + window.location.pathname + "?ref=" + (data.referralCode || user.uid);
-        walletBalanceElement.innerText = data.wallet || 0;
-        walletBalanceProfileElement.innerText = data.wallet || 0;
-
-        // Profile Picture or Initials Logic
-        if (data.profilePicUrl && data.profilePicUrl !== "placeholder-profile.png") {
-          userProfilePicElement.innerHTML = ''; // Clear any previous initials
+        if (data.profilePicUrl) {
+          userProfilePicElement.innerHTML = '';
           userProfilePicElement.style.backgroundImage = `url(${data.profilePicUrl})`;
-          userProfilePicElement.style.backgroundColor = '#333';
-          userProfilePicElement.style.color = 'white';
         } else if (data.name) {
           const initials = data.name.trim().split(' ').map(word => word[0]).join('').toUpperCase();
           userProfilePicElement.innerText = initials;
           userProfilePicElement.style.backgroundImage = 'none';
           const colors = ['#1abc9c', '#3498db', '#9b59b6', '#f1c40f', '#e67e22', '#e74c3c'];
-          const colorIndex = initials.charCodeAt(0) % colors.length;
-          userProfilePicElement.style.backgroundColor = colors[colorIndex];
-          userProfilePicElement.style.color = 'white';
+          userProfilePicElement.style.backgroundColor = colors[initials.charCodeAt(0) % colors.length];
         } else {
           userProfilePicElement.innerText = '?';
-          userProfilePicElement.style.backgroundColor = '#555';
-          userProfilePicElement.style.color = 'white';
         }
 
-        // Count referrals
         const referralQuery = query(usersCol, where("referredBy", "==", user.uid));
         const referralSnapshot = await getCountFromServer(referralQuery);
-        totalReferralsCountElement.innerText = referralSnapshot.data().count;
+        document.getElementById("totalReferralsCount").innerText = referralSnapshot.data().count;
       }
     });
 
-    // Tasks + Wallet earning
+    // MODIFIED Tasks section with cooldown logic
     onSnapshot(tasksCol, snap => {
       const container = document.getElementById("tasksContainer");
       container.innerHTML = "";
-      snap.forEach(doc => {
-        const t = doc.data();
+      clearAllCountdowns();
+      snap.forEach(docSnap => {
+        const t = docSnap.data();
+        const taskId = docSnap.id;
         const taskDiv = document.createElement("div");
         taskDiv.classList.add("taskBox");
-        taskDiv.innerHTML = `<p>${t.description}</p><button class="submitBtn">Open & Earn ₹3</button>`;
-        taskDiv.querySelector("button").addEventListener("click", async () => {
+        taskDiv.innerHTML = `<p>${t.description}</p><button class="submitBtn">Open & Earn Rs.0.25</button>`;
+        const button = taskDiv.querySelector("button");
+
+        updateButtonState(button, taskId, 'task'); // Check and set initial state
+
+        button.addEventListener("click", async () => {
           window.open(t.url, "_blank");
-          // Fetch current balance, add 3, update Firestore, and alert
+          localStorage.setItem(`task_${taskId}`, new Date().getTime().toString());
+          updateButtonState(button, taskId, 'task'); // Update state immediately after click
+
           const userSnap = await getDoc(userRef);
-          const currentWallet = userSnap.exists() && userSnap.data().wallet ? userSnap.data().wallet : 0;
-          await setDoc(userRef, { wallet: currentWallet + 3 }, { merge: true });
-          alert("You earned ₹3! Wallet updated.");
+          const currentWallet = userSnap.data().wallet || 0;
+          await setDoc(userRef, { wallet: currentWallet + 0.25 }, { merge: true });
+          alert("You earned Rs.0.25! Wallet updated.");
         });
         container.appendChild(taskDiv);
       });
     });
 
-    // Links
+    // MODIFIED Links section with cooldown logic
     onSnapshot(linksCol, snap => {
       const container = document.getElementById("linksContainer");
       container.innerHTML = "";
-      snap.forEach(doc => {
-        const l = doc.data();
+      clearAllCountdowns();
+      snap.forEach(docSnap => {
+        const l = docSnap.data();
+        const linkId = docSnap.id;
         const linkDiv = document.createElement("div");
         linkDiv.classList.add("linkBox");
-        linkDiv.innerHTML = `<p>${l.description}</p><button class="submitBtn">Open & Earn ₹3</button>`;
+        linkDiv.innerHTML = `<p>${l.description}</p><button class="submitBtn">Open & Earn RS.0.25</button>`;
+        const button = linkDiv.querySelector("button");
 
-        linkDiv.querySelector("button").addEventListener("click", async () => {
+        updateButtonState(button, linkId, 'link'); // Check and set initial state
+
+        button.addEventListener("click", async () => {
           window.open(l.url, "_blank");
-          // Fetch current balance, add 3, update Firestore, and alert
+          localStorage.setItem(`link_${linkId}`, new Date().getTime().toString());
+          updateButtonState(button, linkId, 'link'); // Update state immediately after click
+
           const userSnap = await getDoc(userRef);
-          const currentWallet = userSnap.exists() && userSnap.data().wallet ? userSnap.data().wallet : 0;
-          await setDoc(userRef, { wallet: currentWallet + 3 }, { merge: true });
-          alert("You earned ₹3! Wallet updated.");
+          const currentWallet = userSnap.data().wallet || 0;
+          await setDoc(userRef, { wallet: currentWallet + 0.25 }, { merge: true });
+          alert("You earned Rs.0.25! Wallet updated.");
         });
         container.appendChild(linkDiv);
       });
     });
 
+
     // Referral Users
-    onSnapshot(usersCol, snap => {
-      const refContainer = document.getElementById("refUsers");
-      refContainer.innerHTML = "";
-      snap.forEach(doc => {
-        const u = doc.data();
-        if (u.referredBy === user.uid) {
-          refContainer.innerHTML += `<p>${u.name} (${u.email})</p>`;
-        }
-      });
+    onSnapshot(query(usersCol, where("referredBy", "==", user.uid)), snap => {
+        const refContainer = document.getElementById("refUsers");
+        refContainer.innerHTML = "";
+        snap.forEach(doc => {
+            const u = doc.data();
+            refContainer.innerHTML += `<p>${u.name} (${u.email})</p>`;
+        });
     });
 
     // Withdrawals
     document.getElementById("withdrawForm").addEventListener("submit", async e => {
       e.preventDefault();
       const method = document.getElementById("withdrawMethod").value;
-      const amount = parseFloat(document.getElementById("withdrawAmount").value); // Parse as float
+      const amount = parseFloat(document.getElementById("withdrawAmount").value);
       const account = document.getElementById("withdrawAccount").value;
 
       if (!account) { alert("Enter account number"); return; }
-
-      // Fetch current user data to check balance and update it
       const userSnap = await getDoc(userRef);
-      if (!userSnap.exists()) {
-        alert("User data not found. Cannot process withdrawal.");
-        return;
-      }
-      const currentUserWallet = userSnap.data().wallet || 0;
+      const currentWallet = userSnap.data().wallet || 0;
+      if (currentWallet < amount) { alert("Insufficient balance."); return; }
 
-      if (currentUserWallet < amount) {
-        alert("Insufficient balance.");
-        return;
-      }
-
-      // Subtract the withdrawal amount from the user's wallet BEFORE adding withdrawal record
-      const newWalletBalance = currentUserWallet - amount;
-      await setDoc(userRef, { wallet: newWalletBalance }, { merge: true });
-
-      // Add withdrawal request to Firestore
+      await setDoc(userRef, { wallet: currentWallet - amount }, { merge: true });
       await addDoc(withdrawalsCol, {
         userId: user.uid,
         method: method,
         accountNumber: account,
-        amount: amount, // Use the parsed float amount
+        amount: amount,
         status: "Pending",
         timestamp: Timestamp.now()
       });
-
       alert("Withdrawal request sent!");
-      e.target.reset(); // Clear the form
+      e.target.reset();
     });
 
-    onSnapshot(withdrawalsCol, snap => {
+    onSnapshot(query(withdrawalsCol, where("userId", "==", user.uid)), snap => {
       const container = document.getElementById("withdrawList");
       container.innerHTML = "";
       snap.forEach(doc => {
         const w = doc.data();
-        if (w.userId === user.uid) {
-          const withdrawDiv = document.createElement("div");
-          withdrawDiv.classList.add("withdrawBox");
-
-          let statusClass = '';
-          switch (w.status.toLowerCase()) {
-            case 'pending': statusClass = 'status-pending'; break;
-            case 'approved': statusClass = 'status-approved'; break;
-            case 'rejected': statusClass = 'status-rejected'; break;
-          }
-
-          withdrawDiv.innerHTML = `
-            <p><strong>Method:</strong> ${w.method}</p>
-            <p><strong>Account:</strong> ${w.accountNumber}</p>
-            <p><strong>Amount:</strong> ₹${w.amount.toFixed(2)}</p> <!-- Format to 2 decimal places -->
-            <p><strong>Status:</strong> <span class="${statusClass}">${w.status}</span></p>
-          `;
-          container.appendChild(withdrawDiv);
-        }
+        const withdrawDiv = document.createElement("div");
+        withdrawDiv.classList.add("withdrawBox");
+        let statusClass = 'status-' + w.status.toLowerCase();
+        withdrawDiv.innerHTML = `
+          <p><strong>Method:</strong> ${w.method}</p>
+          <p><strong>Account:</strong> ${w.accountNumber}</p>
+          <p><strong>Amount:</strong> ₹${w.amount.toFixed(2)}</p>
+          <p><strong>Status:</strong> <span class="${statusClass}">${w.status}</span></p>
+        `;
+        container.appendChild(withdrawDiv);
       });
     });
 
@@ -632,6 +673,7 @@ onAuthStateChanged(auth, async user => {
     document.getElementById("authSection").style.display = "block";
     nav.style.display = "none";
     showSection('authSection');
+    clearAllCountdowns();
   }
 });
 
@@ -662,98 +704,73 @@ const modalContent = {
             <li>To comply with a legal obligation, such as a court order or government request.</li>
             <li>To enforce our Terms of Service and protect the security and integrity of our App.</li>
             <li>In connection with a merger, acquisition, or sale of assets.</li>
-           </ul>
-           <p><strong>4. Data Security</strong></p>
-           <p>We implement reasonable security measures to protect your information from unauthorized access, alteration, and disclosure. We use Firebase, a secure platform by Google, for our backend services. However, please be aware that no security system is impenetrable, and we cannot guarantee the absolute security of your information.</p>
-           <p><strong>5. Your Choices</strong></p>
-           <p>You can review and update your account information at any time through the Profile section. You may also request the deletion of your account by contacting our support team. Please note that some information may be retained in our records for legal or administrative purposes after your account is deleted.</p>`
+           </ul>`
   },
   terms: {
     title: "Terms of Service",
     text: `<p>Welcome to Free Earnings App. By creating an account and using our services, you agree to be bound by the following terms and conditions.</p>
            <p><strong>1. User Eligibility and Account</strong></p>
            <p>You must be at least 18 years old to use this App. You are responsible for maintaining the confidentiality of your account password and for all activities that occur under your account. You agree to create only one account per person. Creating multiple accounts is a violation of our policy and will result in the termination of all associated accounts without any payment.</p>
-           <p><strong>2. Earning and Tasks</strong></p>
-           <p>The App provides tasks for you to complete in exchange for monetary rewards. The reward amount for each task is specified. You agree to perform tasks as instructed. It is mandatory to click the specified number of times as mentioned in the task description. Failure to follow instructions accurately will lead to the non-payment for that task and may result in the rejection of your withdrawal request.</p>
-           <p><strong>3. Prohibited Activities</strong></p>
-           <p>You are strictly prohibited from:</p>
+           <p><strong>2. Prohibited Activities</strong></p>
            <ul>
             <li>Using any automated software, bots, or scripts to complete tasks.</li>
             <li>Creating fake or multiple accounts.</li>
-            <li>Providing false or misleading information during registration or withdrawal requests.</li>
-            <li>Exploiting any bugs or loopholes in the system for personal gain.</li>
             <li>Engaging in any activity that disrupts or interferes with our services.</li>
            </ul>
-           <p>Violation of these rules will lead to the immediate and permanent suspension of your account and forfeiture of all your earnings.</p>
-           <p><strong>4. Withdrawal Policy</strong></p>
-           <p>Our withdrawal policy is strict to ensure fairness. The minimum withdrawal amount is ₹1200. All withdrawal requests are reviewed manually and processed within 24 to 72 hours. We reserve the right to reject any withdrawal request if we suspect fraudulent activity or violation of our terms. You must provide accurate payment details; we are not responsible for payments sent to an incorrect account number provided by you.</p>
-           <p><strong>5. Limitation of Liability</strong></p>
-           <p>Free Earnings App is provided on an "as-is" basis. We do not guarantee uninterrupted or error-free service. We are not liable for any direct, indirect, or consequential damages arising from your use of the App.</p>`
+           <p><strong>3. Withdrawal Policy</strong></p>
+           <p>The minimum withdrawal amount is ₹1200. All withdrawal requests are reviewed manually. We reserve the right to reject any withdrawal request if we suspect fraudulent activity or violation of our terms.</p>`
   },
   about: {
     title: "About Us",
-    text: `<p>Welcome to Free Earnings App, your trusted platform for simple and reliable online earnings in Pakistan.</p>
+    text: `<p>Welcome to Free Earnings App, your trusted platform for simple and reliable online earnings.</p>
            <p><strong>Our Mission</strong></p>
-           <p>Our mission is to provide a straightforward and accessible opportunity for individuals to earn a supplementary income from the comfort of their homes. We understand that in today's fast-paced digital world, every extra bit of earning counts. We aim to bridge the gap between businesses that need online engagement and users who are willing to provide it by completing simple digital tasks.</p>
-           <p><strong>How It Works</strong></p>
-           <p>We partner with various clients who require increased traffic and engagement for their websites and digital content. We break down these requirements into simple, manageable tasks for our users. When you complete a task, such as visiting a webpage or clicking a link, you are directly contributing to our clients' goals. In return for your valuable time and effort, we share a portion of our revenue with you. This creates a win-win ecosystem where both our clients and our users benefit.</p>
+           <p>Our mission is to provide a straightforward and accessible opportunity for individuals to earn a supplementary income from the comfort of their homes. We aim to bridge the gap between businesses that need online engagement and users who are willing to provide it.</p>
            <p><strong>Our Commitment to You</strong></p>
-           <p>We are committed to transparency, fairness, and reliability. We believe in building a strong, long-lasting relationship with our user community based on trust. Our platform is designed to be user-friendly, and our policies, especially regarding withdrawals, are strict to ensure that all legitimate earnings are paid out promptly. Our dedicated support team is always available to assist you with any questions or issues you may encounter. Thank you for choosing Free Earnings App. We look forward to helping you achieve your earning goals.</p>`
+           <p>We are committed to transparency, fairness, and reliability. We believe in building a strong, long-lasting relationship with our user community based on trust. Our dedicated support team is always available to assist you with any questions or issues.</p>`
   },
   taskDetails: {
     title: "Task Details & Earnings Guide",
-    text: `<p>Understanding how tasks work and how you earn is crucial for maximizing your income on Free Earnings App. Here's a detailed guide:</p>
+    text: `<p>Understanding how tasks work is crucial for maximizing your income.</p>
            <p><strong>1. Types of Tasks:</strong></p>
            <ul>
-            <li><strong>Website Visits/Clicks:</strong> Most tasks involve visiting a specified website and performing certain actions, such as clicking on internal links, viewing pages for a minimum duration, or interacting with ads.</li>
-            <li><strong>App Downloads/Installs:</strong> Occasionally, tasks might involve downloading and briefly using a specific mobile application.</li>
-            <li><strong>Content Engagement:</strong> This could include watching short videos, liking posts, or leaving simple comments on designated platforms.</li>
+            <li><strong>Website Visits/Clicks:</strong> Most tasks involve visiting a specified website and performing certain actions.</li>
+            <li><strong>Content Engagement:</strong> This could include watching short videos or liking posts.</li>
            </ul>
-           <p><strong>2. Task Instructions - READ CAREFULLY:</strong></p>
-           <p>Each task comes with a clear set of instructions. It is absolutely essential to read and follow these instructions precisely. For example, if a task says "Click 3 times on internal links," you must perform exactly 3 clicks. Doing more or fewer clicks, or clicking on external ads if not specified, will invalidate your task completion.</p>
-           <p><strong>3. Earning Per Task:</strong></p>
-           <p>The earning for each task will be clearly displayed (e.g., "Earn ₹3"). Once you complete a task according to all instructions, the corresponding amount will be credited to your in-app wallet.</p>
-           <p><strong>4. Verification Process:</strong></p>
-           <p>Our system automatically tracks your actions to verify task completion. We also conduct manual reviews to ensure authenticity. Tasks that are deemed incomplete, fake, or performed using automated tools will not be credited. Repeated attempts to submit fraudulent tasks may lead to account suspension.</p>
-           <p><strong>5. Availability of Tasks:</strong></p>
-           <p>Tasks are updated regularly. The number and type of tasks available may vary based on our clients' demands. We recommend checking the "Tasks" section frequently for new opportunities.</p>
-           <p><strong>6. Tips for Successful Task Completion:</strong></p>
-           <ul>
-            <li>Always ensure a stable internet connection.</li>
-            <li>Do not use VPNs or proxy services unless explicitly instructed.</li>
-            <li>Perform tasks manually; avoid any form of automation.</li>
-            <li>Take your time; rushing through tasks might lead to errors in completion.</li>
-           </ul>
-           <p>By understanding and adhering to these task details, you can ensure a smooth earning experience and avoid issues with credit and withdrawals.</p>`
+            <p><strong>2. READ INSTRUCTIONS CAREFULLY:</strong></p>
+            <p>Each task comes with a clear set of instructions. It is absolutely essential to read and follow these instructions precisely to get paid.</p>
+           <p><strong>3. Verification Process:</strong></p>
+           <p>Our system tracks your actions to verify task completion. Tasks that are deemed incomplete or fraudulent will not be credited.</p>`
   },
   withdrawalProfile: {
     title: "Withdrawal Profile Management",
-    text: `<p>Managing your withdrawal profile correctly is vital for receiving your earnings securely and on time. This section provides detailed information on how to set up and manage your withdrawal preferences.</p>
+    text: `<p>Managing your withdrawal profile correctly is vital for receiving your earnings securely and on time.</p>
            <p><strong>1. Available Withdrawal Methods:</strong></p>
-           <p>Free Earnings App offers several convenient withdrawal options for our users in Pakistan:</p>
            <ul>
-            <li><strong>Easypaisa:</strong> A popular mobile wallet service for quick transfers.</li>
-            <li><strong>JazzCash:</strong> Another widely used mobile account service for easy access to funds.</li>
-            <li><strong>Pakistan Bank Transfer:</strong> Direct bank transfers to any major bank account in Allied bank .</li>
-            <li><strong>Bitget (Cryptocurrency):</strong> For users who prefer crypto withdrawals, we support transfers to your Bitget account.</li>
+            <li>Easypaisa</li>
+            <li>JazzCash</li>
+            <li>Pakistan Bank Transfer (Allied Bank)</li>
+            <li>Bitget (Cryptocurrency)</li>
+ <li> How to get the date of your payment
+Payment dates are 19-22 and 28-31 of each month, from 9.00 am till 6.00 pm GMT.</li>
+ <li> If these dates fall on weekends or holidays the payments will be processed on nearest business day.
+Once you reach the minimum payout amount, the money is put on a two-week hold.
+You will get the payout during the first payment period available after your hold period ends.</li>
+
+ <li> For example:</li>
+ <li> You reach the minimum payout amount on June 19. The two-week hold period ends on July 31. The next available payment period is July 19-22.</li>
+ <li> You reach the minimum payout amount on June 26. The two-week hold period ends on July 14. The next available payment period is July 28-31.</li>
+
+<li> In the Help Center, you can find a list of all the payment methods we offer. Please keep in mind that the availability of these payment methods may vary depending on your account.</li>
+              
+           <li>  This policy outlines the terms for withdrawing funds from your E-commerce Store wallet and the specific rules governing the use and withdrawal of bonus funds.</li>
+           
            </ul>
-           <p><strong>2. Setting Up Your Withdrawal Account:</strong></p>
-           <p>When you initiate your first withdrawal request, you will be prompted to select your preferred method and provide the necessary account details. Ensure accuracy in providing your:</p>
-           <ul>
-            <li><strong>Easypaisa/JazzCash:</strong> Registered Mobile Number (and account title, if requested).</li>
-            <li><strong>Bank Transfer:</strong> Bank Name, Account Number, and Account Title.</li>
-            <li><strong>Bitget:</strong> Your Bitget User ID or registered email/phone number.</li>
-           </ul>
-           <p>Double-check all details before submission, as incorrect information can lead to delays or loss of funds, for which Free Earnings App will not be responsible.</p>
+           <p><strong>2. Setting Up Your Account:</strong></p>
+           <p>Ensure you provide accurate account details. Incorrect information can lead to delays or loss of funds, for which we are not responsible.</p>
            <p><strong>3. Minimum Withdrawal Amount:</strong></p>
-           <p>A minimum balance of <b>₹1200 Bitget 12 Usd</b> is required in your wallet to process any withdrawal request. Requests below this threshold will be automatically rejected.</p>
-           <p><strong>4. Withdrawal Processing Time:</strong></p>
-           <p>All withdrawal requests are manually reviewed for security and compliance. We aim to process all legitimate requests within <b>24 to 72 hours</b>. During peak times or due to public holidays, processing may take slightly longer, but we strive to keep delays minimal.</p>
-           <p><strong>5. Withdrawal Status & History:</strong></p>
-           <p>You can track the status of your withdrawal requests in the "Withdrawals" section of your user panel. Statuses typically include "Pending," "Processing," and "Completed." Your withdrawal history will also be available for review.</p>
-           <p><strong>6. Strict Verification Policy:</strong></p>
-           <p>To prevent fraud and maintain the integrity of our platform, we maintain a strict withdrawal policy. Any request suspected of being linked to fraudulent activities, fake accounts, or incomplete tasks will be rejected. In severe cases, this may lead to account suspension. Ensure all your earnings are legitimate and tasks are completed as per instructions.</p>
-           <p>By adhering to these guidelines, you can ensure a smooth and successful withdrawal experience with Free Earnings App.</p>`
+           <p>A minimum balance of <b>₹1200 or 12 USDT (for Bitget)</b> is required.</p>
+           <p><strong>4. Processing Time:</strong></p>
+           <p>All requests are manually reviewed and processed within <b>1 weak to 2 weak hours</b>.</p>`
   }
 };
 
@@ -773,15 +790,14 @@ document.getElementById("withdrawalProfileBtn").onclick = () => openModal('withd
 // Contact Links
 document.getElementById("contactEmailLink").addEventListener("click", () => {
   const subject = "Inquiry from Free Earnings App User";
-  const body = `Hello,\n\nI am contacting you regarding the Free Earnings App.\n\nMy Name: ${auth.currentUser ? document.getElementById("userName").innerText : ''}\nMy Email: ${auth.currentUser ? document.getElementById("userEmail").innerText : ''}\n\nMy Inquiry:\n\n`;
+  const body = `Hello,\nMy Email: ${auth.currentUser ? auth.currentUser.email : 'N/A'}\n\nMy Inquiry:\n`;
   window.location.href = `mailto:${adminEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 });
 
 document.getElementById("contactWhatsappLink").addEventListener("click", () => {
-  const prefillText = `Hello, I'm contacting you from the Free Earnings App. My Name: ${auth.currentUser ? document.getElementById("userName").innerText : ''}. My Email: ${auth.currentUser ? document.getElementById("userEmail").innerText : ''}. My Inquiry: `;
+  const prefillText = `Hello, I'm contacting you from the Free Earnings App. My Email: ${auth.currentUser ? auth.currentUser.email : 'N/A'}.`;
   window.open(`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(prefillText)}`, "_blank");
 });
-
 
 closeBtn.onclick = () => {
   modal.style.display = "none";
