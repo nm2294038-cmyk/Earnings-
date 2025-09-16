@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -60,7 +59,7 @@
     #authSection button.submitBtn { width: 100%; }
 
     /* --- Containers for Boxes --- */
-    .dashboard-container, #tasksContainer, #withdrawList, #adminTasksContainer, #adminLinksContainer, #depositList, #userLinksContainer { /* Added userLinksContainer */
+    .dashboard-container, #tasksContainer, #forYouTasksContainer, #withdrawList, #adminTasksContainer, #adminLinksContainer, #depositList, #userLinksContainer { /* Added forYouTasksContainer */
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
@@ -320,7 +319,7 @@
     /* --- Responsive Adjustments --- */
     @media (max-width: 768px) {
         nav button { padding: 8px 12px; font-size: 13px; }
-        .dashboard-container, #tasksContainer, #withdrawList, #adminTasksContainer, #adminLinksContainer, #depositList, #userLinksContainer {
+        .dashboard-container, #tasksContainer, #forYouTasksContainer, #withdrawList, #adminTasksContainer, #adminLinksContainer, #depositList, #userLinksContainer {
             gap: 15px;
         }
         .dashboard-box, .taskBox, .withdrawBox, .linkBox, .depositBox, .userLinkBox {
@@ -372,6 +371,7 @@
 <nav style="display:none;">
   <button data-section="dashboard">Dashboard</button>
   <button data-section="tasks">Tasks</button>
+  <button data-section="forYouPage">For You</button> <!-- New button for For You page -->
   <button data-section="referrals">Referral Earnings</button>
   <button data-section="withdrawals">Withdrawal</button>
   <button data-section="deposit">Deposit</button>
@@ -444,6 +444,13 @@ Understanding how tasks work is crucial for maximizing your income.<br><br>
   <div id="tasksContainer"></div>
 </section>
 
+<!-- For You Page Section -->
+<section id="forYouPage">
+  <h2>For You</h2>
+  <p>Here are some recommended tasks and links For You .</p>
+  <div id="forYouTasksContainer" class="dashboard-container"></div>
+</section>
+
 <!-- Referrals Section -->
 <section id="referrals">
   <h2>Referral Earnings</h2>
@@ -466,10 +473,12 @@ Understanding how tasks work is crucial for maximizing your income.<br><br>
 <p>3. Transaction ID send karein.</p>
 <p>4. Apna naam bhejein.</p>
 <p>5. Apna WhatsApp number bhejein.</p>
+  
 <p>6. Jo link add karwana chahte hain wo bhi <b>mn1691316@gmail.com</b> par email karein.</p>
 <p>7. Aap maximum 10 links add karwa sakte hain.</p>
 <p>8. Aur baki sab kuch bhi <b>mn1691316@gmail.com</b> par email karein.</p>
 <p>8. Aur baki sab kuch bhi (agar koi additional information ya details hain) <b>mn1691316@gmail.com</b> par email karna hai.</p>
+  <p>For You Page Add Links price 800 PKR</p>
   <p>Add your own links here and earn rewards when others visit them. Each link costs ₹200 from your wallet and has a limit of 10 links per user. This Is Working </p>
   
   <form id="addUserLinkForm"> <!-- NOTE: changed id to addUserLinkForm -->
@@ -674,7 +683,7 @@ const auth = getAuth();
 const adminEmail = "mn1691316@gmail.com"; // Your admin email
 const whatsappNumber = "+923495144924";   // Your WhatsApp number (with country code)
 const MIN_WITHDRAWAL_AMOUNT = 1200;
-const TASK_EARNING_AMOUNT = 0.025; // Default earning for tasks/links if admin doesn't set
+const TASK_EARNING_AMOUNT = 0.020; // Default earning for tasks/links if admin doesn't set
 const TASK_LINK_COOLDOWN_MS = 1 * 60 * 1000; // 5 minutes
 const LINK_COST = 200; // Cost for adding a user-generated link
 const MAX_USER_LINKS = 10; // Max links a user can add
@@ -734,6 +743,10 @@ const userLinkUrlInput = document.getElementById("userLinkUrl");
 const userLinkDescriptionInput = document.getElementById("userLinkDescription");
 const userLinksContainer = document.getElementById("userLinksContainer");
 
+// New For You Page elements
+const forYouTasksContainer = document.getElementById("forYouTasksContainer");
+
+
 // --- Helper Functions ---
 
 // YouTube Video Embed Logic
@@ -772,7 +785,7 @@ function updateButtonState(button, itemId, itemType) {
 
   if (!lastOpenedTimestamp) {
     button.disabled = false;
-    button.innerText = `Open & Earn ₹${TASK_EARNING_AMOUNT.toFixed(2)}`;
+    button.innerText = `Open & Earn ₹${TASK_EARNING_AMOUNT.toFixed(2)}`; 
     return;
   }
 
@@ -786,7 +799,7 @@ function updateButtonState(button, itemId, itemType) {
       if (newTimeElapsed >= TASK_LINK_COOLDOWN_MS) {
         clearInterval(countdownInterval);
         button.disabled = false;
-        button.innerText = `Open & Earn ₹${TASK_EARNING_AMOUNT.toFixed(2)}`;
+        button.innerText = `Open & Earn ₹${TASK_EARNING_AMOUNT.toFixed(2)}`; 
         localStorage.removeItem(lastOpenedKey);
         button.dataset.intervalId = '';
       } else {
@@ -799,7 +812,7 @@ function updateButtonState(button, itemId, itemType) {
     button.dataset.intervalId = countdownInterval;
   } else {
     button.disabled = false;
-    button.innerText = `Open & Earn ₹${TASK_EARNING_AMOUNT.toFixed(2)}`;
+    button.innerText = `Open & Earn ₹${TASK_EARNING_AMOUNT.toFixed(2)}`; 
     localStorage.removeItem(lastOpenedKey);
   }
 }
@@ -890,6 +903,7 @@ onAuthStateChanged(auth, async user => {
     loadUserData(user);
     loadUserDepositHistory(user.uid);
     loadUserAddedLinks(user.uid); // Load user's added links
+    loadForYouContent(user.uid); // Load content for the "For You" page
     
     // Listen for user's withdrawal history
     const withdrawalsCol = collection(db, "withdrawals");
@@ -935,6 +949,7 @@ onAuthStateChanged(auth, async user => {
     document.getElementById("withdrawList").innerHTML = "";
     depositListContainer.innerHTML = "";
     userLinksContainer.innerHTML = ""; // Clear user added links
+    forYouTasksContainer.innerHTML = ""; // Clear for you tasks
   }
 });
 
@@ -1245,6 +1260,101 @@ async function deleteUserLink(linkId) {
         showToast("Failed to delete link. Please try again.");
     }
 }
+
+// --- "For You" Page Logic ---
+async function loadForYouContent(userId) {
+    forYouTasksContainer.innerHTML = ""; // Clear existing content
+    const userRef = doc(db, "users", userId);
+    
+    // Keywords specifically for filtering "For You" content as requested.
+    const keywords = ["nazim", "umar", "cpm"]; 
+
+    const tasksCol = collection(db, "tasks");
+    const linksCol = collection(db, "links");
+
+    let itemsToDisplay = [];
+
+    // Fetch tasks
+    const tasksSnapshot = await getDocs(tasksCol);
+    tasksSnapshot.forEach(doc => {
+        const item = doc.data();
+        // Check if the description contains any of the specified keywords.
+        if (item.description && keywords.some(keyword => item.description.toLowerCase().includes(keyword))) {
+            itemsToDisplay.push({ ...item, id: doc.id, type: 'task' });
+        }
+    });
+
+    // Fetch links
+    const linksSnapshot = await getDocs(linksCol);
+    linksSnapshot.forEach(doc => {
+        const item = doc.data();
+        // Check if the description contains any of the specified keywords.
+        if (item.description && keywords.some(keyword => item.description.toLowerCase().includes(keyword))) {
+            itemsToDisplay.push({ ...item, id: doc.id, type: 'link' });
+        }
+    });
+
+    if (itemsToDisplay.length === 0) {
+        forYouTasksContainer.innerHTML = "<p>No specific tasks or links matching your criteria are available right now.</p>";
+        return;
+    }
+
+    itemsToDisplay.forEach(item => {
+        const itemDiv = document.createElement("div");
+        itemDiv.classList.add("taskBox"); // Reusing taskBox style for consistency
+        
+        // --- MODIFICATION START: "For You" page - No Earnings, No Cooldown, Specific Keywords ---
+        // Changed button text to simply "Visit" and removed earning amount display.
+        itemDiv.innerHTML = `<p>${item.description}</p><button class="submitBtn">Visit</button>`; 
+        
+        const button = itemDiv.querySelector("button");
+        
+        // Removed the call to updateButtonState, disabling cooldown for "For You" items.
+        // updateButtonState(button, item.id, item.type); 
+
+        button.addEventListener("click", async () => {
+            // Removed the cooldown check and localStorage manipulation for "For You" items.
+            // const lastOpenedKey = `${item.type}_${item.id}`;
+            // const lastOpenedTimestamp = localStorage.getItem(lastOpenedKey);
+            // const lastOpened = lastOpenedTimestamp ? parseInt(lastOpenedTimestamp) : 0;
+            // const timeElapsed = new Date().getTime() - lastOpened;
+
+            // if (timeElapsed < TASK_LINK_COOLDOWN_MS) {
+            //     showToast("Please wait for the cooldown period to finish.");
+            //     return;
+            // }
+
+            const urlToOpen = (item.type === 'task' && item.url) ? item.url : 
+                              (item.type === 'link' && item.urls && item.urls.length > 0) ? item.urls[0] : null;
+
+            if (!urlToOpen) {
+                showToast("Invalid URL for this item.");
+                return;
+            }
+
+            const opened = openLinkSafely(urlToOpen);
+            
+            if (opened) {
+                // Removed the code that sets localStorage and updates the wallet, as there's no earning.
+                // localStorage.setItem(lastOpenedKey, new Date().getTime().toString());
+                // updateButtonState(button, item.id, item.type); // Also removed this line
+
+                // Removed the wallet update logic as there are no earnings on the "For You" page.
+                // const userDocSnap = await getDoc(userRef);
+                // if (userDocSnap.exists()) {
+                //     // No reward added here
+                //     showToast("Link opened successfully."); 
+                // } else {
+                //     showToast("Error: User document not found for logging action.");
+                // }
+            }
+        });
+        // --- MODIFICATION END ---
+        
+        forYouTasksContainer.appendChild(itemDiv);
+    });
+}
+
 
 // --- Event Listeners for Forms and Buttons ---
 
@@ -1615,6 +1725,10 @@ document.querySelectorAll("nav button[data-section]").forEach(button => {
         const sectionId = button.dataset.section;
         if (sectionId) {
             showSection(sectionId);
+            // If the "For You" page is being shown, refresh its content
+            if (sectionId === 'forYouPage' && auth.currentUser) {
+                loadForYouContent(auth.currentUser.uid);
+            }
         }
     });
 });
