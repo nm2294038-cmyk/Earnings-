@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -890,7 +891,7 @@ onAuthStateChanged(auth, async user => {
     loadUserDepositHistory(user.uid);
     loadUserAddedLinks(user.uid); // Load user's added links
     
-    const userRef = doc(db, "users", user.uid);
+    // Listen for user's withdrawal history
     const withdrawalsCol = collection(db, "withdrawals");
     onSnapshot(query(withdrawalsCol, where("userId", "==", user.uid), orderBy("timestamp", "desc")), snap => {
         const container = document.getElementById("withdrawList");
@@ -1110,9 +1111,14 @@ function loadUserData(user) {
                     localStorage.setItem(lastOpenedKey, new Date().getTime().toString());
                     updateButtonState(button, taskId, 'task');
 
+                    // Update wallet in Firestore
                     const userSnap = await getDoc(userRef);
-                    await setDoc(userRef, { wallet: (userSnap.data().wallet || 0) + reward }, { merge: true });
-                    showToast(`You earned ₹${reward.toFixed(2)}! Wallet updated.`);
+                    if (userSnap.exists()) {
+                        await setDoc(userRef, { wallet: (userSnap.data().wallet || 0) + reward }, { merge: true });
+                        showToast(`You earned ₹${reward.toFixed(2)}! Wallet updated.`);
+                    } else {
+                        showToast("Error: User document not found for wallet update.");
+                    }
                 }
             });
             container.appendChild(taskDiv);
@@ -1262,7 +1268,19 @@ addUserLinkForm.addEventListener("submit", async (e) => {
 
     // Check current user's added links count
     const userRef = doc(db, "users", user.uid);
-    const userDocSnap = await getDoc(userRef);
+    let userDocSnap;
+    try {
+        userDocSnap = await getDoc(userRef);
+    } catch (error) {
+        console.error("Error fetching user document for adding link:", error);
+        showToast("Failed to retrieve your account data. Please try again.");
+        return;
+    }
+
+    if (!userDocSnap.exists()) {
+        showToast("User profile not found. Please contact support.");
+        return;
+    }
     const userData = userDocSnap.data();
     
     const currentUserLinkCount = userData.userLinkCount || 0; 
@@ -1327,14 +1345,52 @@ document.getElementById("withdrawForm").addEventListener("submit", async (e) => 
         return;
     }
 
+    const userRef = doc(db, "users", user.uid);
+    let userDocSnap;
     try {
-        await addDoc(collection(db, "withdrawals"), {
-            userId: user.uid, method: method, accountNumber: accountNumber, amount: amount, status: "Pending", timestamp: Timestamp.now()
-        });
-        showToast("Withdrawal request submitted successfully. It will be processed soon.");
-        e.target.reset();
+        userDocSnap = await getDoc(userRef); // Get the latest user data
     } catch (error) {
-        console.error("Error submitting withdrawal request:", error); showToast("Failed to submit withdrawal request. Please try again.");
+        console.error("Error fetching user document for withdrawal:", error);
+        showToast("Failed to retrieve your account balance. Please try again.");
+        return;
+    }
+
+    if (!userDocSnap.exists()) {
+        showToast("User profile not found. Please contact support.");
+        return;
+    }
+
+    const userData = userDocSnap.data();
+    const currentWalletBalance = userData.wallet || 0;
+
+    if (currentWalletBalance < amount) {
+        showToast("Insufficient wallet balance for this withdrawal.");
+        return;
+    }
+
+    try {
+        const batch = writeBatch(db); // Create a new batch
+
+        // Deduct amount from user's wallet
+        batch.update(userRef, { wallet: currentWalletBalance - amount });
+
+        // Add the withdrawal request to the withdrawals collection
+        const withdrawalRef = doc(collection(db, "withdrawals")); // Get a new document reference with an auto-generated ID
+        batch.set(withdrawalRef, {
+            userId: user.uid,
+            method: method,
+            accountNumber: accountNumber,
+            amount: amount,
+            status: "Pending", // Initial status for withdrawal requests
+            timestamp: Timestamp.now()
+        });
+
+        await batch.commit(); // Commit the batch operations
+        showToast("Withdrawal request submitted successfully and wallet balance deducted. It will be processed soon.");
+        e.target.reset(); // Clear the form
+    } catch (error) {
+        console.error("Error submitting withdrawal request or deducting balance:", error);
+        showToast("Failed to submit withdrawal request or deduct balance. Please try again.");
     }
 });
 
