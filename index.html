@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Free Earnings App</title>
+  <title>Free Earnings </title>
   <style>
     /* --- Base Styles --- */
     body { font-family: Arial, sans-serif; margin:0; background:#0d0d0d; color:#fff; line-height: 1.6; }
@@ -315,6 +315,35 @@
         opacity: 0.9;
         transform: translateY(-1px);
     }
+    
+    /* --- Category Filter Buttons --- */
+    .category-filter-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 15px;
+        margin-bottom: 25px;
+    }
+    .category-filter-buttons button {
+        background: #333;
+        color: #fff;
+        border: none;
+        padding: 8px 15px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 13px;
+        transition: all 0.3s ease;
+    }
+    .category-filter-buttons button:hover {
+        background: #555;
+        transform: translateY(-1px);
+    }
+    .category-filter-buttons button.active {
+        background: #0ff;
+        color: #000;
+        font-weight: bold;
+    }
 
     /* --- Responsive Adjustments --- */
     @media (max-width: 768px) {
@@ -349,7 +378,7 @@
 </head>
 <body>
 
-<header>Free Earnings App</header>
+<header>Free Earnings And All SoicMedia promotion Available </header>
 
 <!-- Auth Section -->
 <section id="authSection" class="active">
@@ -418,7 +447,7 @@ Tasks ko samajhna aapki income barhane ke liye bohot zaroori hai.<br><br>
   <li><strong>Content Engagement:</strong> Isme short videos dekhna ya posts like karna shamil ho sakta hai.</li>
 </ul>
 
-<strong>2. Instructions Dhyan Se Padhen:</strong> Har task ke sath clear instructions hoti hain. Inko accurately follow karna bohot zaroori hai taake aapko payment mile.<br><br>
+<strong>2. Instructions Dhyan Se Padhen:</strong> Har task ke sath clear instructions hoti hai. Inko accurately follow karna bohot zaroori hai taake aapko payment mile.<br><br>
 
 <strong>3. Verification Process:</strong> Hamara system aapke actions track karta hai taake task completion verify ho sake. Jo tasks incomplete ya fraudulent samjhe jayenge unko credit nahi kiya jayega.
 </p>
@@ -441,13 +470,21 @@ Understanding how tasks work is crucial for maximizing your income.<br><br>
 <section id="tasks">
   <h2>Tasks to Complete</h2>
   <p>Complete tasks to earn rewards. Cooldown: 5 minutes between completions.</p>
+  <div class="category-filter-buttons" id="taskCategoryFilters">
+      <button data-filter="all">All Categories</button>
+      <button data-filter="YouTube">YouTube</button>
+      <button data-filter="TikTok">TikTok</button>
+      <button data-filter="Instagram">Instagram</button>
+      <button data-filter="Facebook">Facebook</button>
+      <button data-filter="Web">Web</button>
+  </div>
   <div id="tasksContainer"></div>
 </section>
 
 <!-- For You Page Section -->
 <section id="forYouPage">
   <h2>For You</h2>
-  <p>Here are some recommended tasks and links For You .</p>
+  <p>Here are some recommended tasks and links For You.</p>
   <div id="forYouTasksContainer" class="dashboard-container"></div>
 </section>
 
@@ -473,15 +510,13 @@ Understanding how tasks work is crucial for maximizing your income.<br><br>
 <p>3. Transaction ID send karein.</p>
 <p>4. Apna naam bhejein.</p>
 <p>5. Apna WhatsApp number bhejein.</p>
-  
 <p>6. Jo link add karwana chahte hain wo bhi <b>mn1691316@gmail.com</b> par email karein.</p>
 <p>7. Aap maximum 10 links add karwa sakte hain.</p>
 <p>8. Aur baki sab kuch bhi <b>mn1691316@gmail.com</b> par email karein.</p>
 <p>8. Aur baki sab kuch bhi (agar koi additional information ya details hain) <b>mn1691316@gmail.com</b> par email karna hai.</p>
-  <p>For You Page Add Links price 800 PKR</p>
   <p>Add your own links here and earn rewards when others visit them. Each link costs ₹200 from your wallet and has a limit of 10 links per user. This Is Working </p>
   
-  <form id="addUserLinkForm"> <!-- NOTE: changed id to addUserLinkForm -->
+  <form id="addUserLinkForm">
     <label for="userLinkUrl">Link URL:</label>
     <input type="url" id="userLinkUrl" placeholder="Enter URL (e.g., https://yourwebsite.com)" required><br>
     
@@ -516,7 +551,7 @@ Understanding how tasks work is crucial for maximizing your income.<br><br>
       <option value="Bank">Allied Bank</option>
       <option value="Bitget">Bitget USDT (Min 12 USDT)</option>
     </select><br>
-    <input type="text" id="withdrawAccount" placeholder="Enter Your Account/Wallet Details" required><br>
+    <input type="text" id="withdrawAccount" placeholder="Enter Your Account/Wallet Details Name & wallet Number" required><br>
     <input type="number" id="withdrawAmount" placeholder="Enter Amount (Min ₹1200)" required><br>
     <button type="submit" class="submitBtn">Request Withdrawal</button>
   </form>
@@ -588,6 +623,15 @@ Understanding how tasks work is crucial for maximizing your income.<br><br>
         <select id="adminItemType" required>
             <option value="task">Task</option>
             <option value="link">Link</option>
+        </select><br>
+
+        <label for="adminCategory">Category:</label>
+        <select id="adminCategory" required>
+            <option value="YouTube">YouTube</option>
+            <option value="TikTok">TikTok</option>
+            <option value="Instagram">Instagram</option>
+            <option value="Facebook">Facebook</option>
+            <option value="Web">Web</option>
         </select><br>
 
         <label for="adminDescription">Description:</label>
@@ -683,10 +727,11 @@ const auth = getAuth();
 const adminEmail = "mn1691316@gmail.com"; // Your admin email
 const whatsappNumber = "+923495144924";   // Your WhatsApp number (with country code)
 const MIN_WITHDRAWAL_AMOUNT = 1200;
-const TASK_EARNING_AMOUNT = 0.020; // Default earning for tasks/links if admin doesn't set
+const TASK_EARNING_AMOUNT = 0.010; // Default earning for tasks/links if admin doesn't set
 const TASK_LINK_COOLDOWN_MS = 1 * 60 * 1000; // 5 minutes
 const LINK_COST = 200; // Cost for adding a user-generated link
 const MAX_USER_LINKS = 10; // Max links a user can add
+const CATEGORIES = ["YouTube", "TikTok", "Instagram", "Facebook", "Web"]; // Defined categories
 
 // --- DOM Elements ---
 const nav = document.querySelector("nav");
@@ -709,6 +754,7 @@ const depositAmountInput = document.getElementById("depositAmount");
 const depositListContainer = document.getElementById("depositList");
 const adminAddForm = document.getElementById("adminAddForm");
 const adminItemTypeSelect = document.getElementById("adminItemType");
+const adminCategorySelect = document.getElementById("adminCategory"); // Added category select
 const adminDescriptionInput = document.getElementById("adminDescription");
 const adminBaseUrlInput = document.getElementById("adminBaseUrl");
 const adminRewardInput = document.getElementById("adminReward");
@@ -738,13 +784,14 @@ const totalWithdrawalsDisplay = document.getElementById("totalWithdrawals");
 const totalEarningsDisplay = document.getElementById("totalEarnings");
 const dynamicLinkInputsContainer = document.getElementById("dynamicLinkInputs");
 // User Added Links elements
-const addUserLinkForm = document.getElementById("addUserLinkForm"); // Corrected ID
+const addUserLinkForm = document.getElementById("addUserLinkForm");
 const userLinkUrlInput = document.getElementById("userLinkUrl");
 const userLinkDescriptionInput = document.getElementById("userLinkDescription");
 const userLinksContainer = document.getElementById("userLinksContainer");
 
 // New For You Page elements
 const forYouTasksContainer = document.getElementById("forYouTasksContainer");
+const taskCategoryFilters = document.getElementById("taskCategoryFilters"); // Category filter buttons
 
 
 // --- Helper Functions ---
@@ -882,6 +929,37 @@ function generateReferralCode(uid) {
     return `${prefix}-${suffix}`;
 }
 
+// --- Category Determination from Description ---
+function getCategoryFromDescription(description) {
+    const lowerCaseDesc = description.toLowerCase();
+    for (const category of CATEGORIES) {
+        if (lowerCaseDesc.includes(category.toLowerCase())) {
+            return category;
+        }
+    }
+    return "Web"; // Default to "Web" if no category is found
+}
+
+// --- Task Filtering Logic ---
+function filterTasksByCategory(category) {
+    const taskContainer = document.getElementById("tasksContainer");
+    const taskBoxes = taskContainer.querySelectorAll(".taskBox");
+    
+    taskBoxes.forEach(box => {
+        const taskCategory = box.dataset.category;
+        if (category === "all" || taskCategory === category) {
+            box.style.display = "block";
+        } else {
+            box.style.display = "none";
+        }
+    });
+
+    // Update active class on filter buttons
+    document.querySelectorAll(".category-filter-buttons button").forEach(btn => {
+        btn.classList.toggle("active", btn.dataset.filter === category);
+    });
+}
+
 // --- Authentication and UI State Management ---
 onAuthStateChanged(auth, async user => {
   clearAllCountdowns(); 
@@ -950,6 +1028,7 @@ onAuthStateChanged(auth, async user => {
     depositListContainer.innerHTML = "";
     userLinksContainer.innerHTML = ""; // Clear user added links
     forYouTasksContainer.innerHTML = ""; // Clear for you tasks
+    document.getElementById("tasksContainer").innerHTML = ""; // Clear tasks on logout
   }
 });
 
@@ -1095,15 +1174,20 @@ function loadUserData(user) {
         }
     });
 
-    onSnapshot(tasksCol, snap => {
+    // Load tasks and apply category from description
+    const tasksColRef = collection(db, "tasks");
+    onSnapshot(tasksColRef, snap => {
         const container = document.getElementById("tasksContainer");
         container.innerHTML = ""; 
         
         snap.forEach(doc => {
             const t = doc.data();
             const taskId = doc.id;
+            const taskCategory = getCategoryFromDescription(t.description); // Determine category from description
+            
             const taskDiv = document.createElement("div");
             taskDiv.classList.add("taskBox");
+            taskDiv.dataset.category = taskCategory; // Assign category to data attribute for filtering
             const reward = t.reward || TASK_EARNING_AMOUNT;
             taskDiv.innerHTML = `<p>${t.description}</p><button class="submitBtn">Open & Earn ₹${reward.toFixed(2)}</button>`;
             const button = taskDiv.querySelector("button");
@@ -1138,6 +1222,11 @@ function loadUserData(user) {
             });
             container.appendChild(taskDiv);
         });
+        // Apply initial filter (if any active)
+        const activeFilterButton = document.querySelector(".category-filter-buttons button.active");
+        if (activeFilterButton) {
+            filterTasksByCategory(activeFilterButton.dataset.filter);
+        }
     });
 
     // Dashboard Stats (Totals)
@@ -1267,7 +1356,7 @@ async function loadForYouContent(userId) {
     const userRef = doc(db, "users", userId);
     
     // Keywords specifically for filtering "For You" content as requested.
-    const keywords = ["nazim", "umar", "cpm"]; 
+    const keywords = ["nazim", "umar", "For You","YouTube","TikTok","Instagram","Facebook","Google", "cpm"]; 
 
     const tasksCol = collection(db, "tasks");
     const linksCol = collection(db, "links");
@@ -1538,6 +1627,7 @@ depositForm.addEventListener("submit", async (e) => {
 adminAddForm.addEventListener("submit", async (e) => {
     e.preventDefault();
     const itemType = adminItemTypeSelect.value;
+    const selectedCategory = adminCategorySelect.value; // Get the category selected by admin
     const description = adminDescriptionInput.value.trim();
     const mainUrl = adminBaseUrlInput.value.trim();
     const reward = parseFloat(adminRewardInput.value);
@@ -1550,7 +1640,15 @@ adminAddForm.addEventListener("submit", async (e) => {
     }
 
     let collectionRef;
-    let itemData = { description, reward, createdAt: Timestamp.now() };
+    let category = selectedCategory; // Start with the admin's selected category
+
+    // Determine category from description if it overrides admin's choice
+    const categoryFromDesc = getCategoryFromDescription(description);
+    if (categoryFromDesc !== "Web") { // If description has a specific category keyword
+        category = categoryFromDesc;
+    }
+
+    let itemData = { description, reward, category, createdAt: Timestamp.now() }; // Include category
 
     if (itemType === "task") {
         if (!mainUrl || !mainUrl.startsWith("http")) {
@@ -1607,6 +1705,7 @@ async function displayAdminItems(collectionRef, container, itemType) {
         let displayContent = `
             <p><strong>${item.description}</strong></p>
             <p>Reward: ₹${(item.reward || TASK_EARNING_AMOUNT).toFixed(2)}</p>
+            <p>Category: <strong>${item.category || 'N/A'}</strong></p> 
             <small>Created: ${item.createdAt ? item.createdAt.toDate().toLocaleDateString() : 'N/A'}</small><br>
         `;
 
@@ -1733,9 +1832,21 @@ document.querySelectorAll("nav button[data-section]").forEach(button => {
     });
 });
 
-// Initial UI Setup on DOM Load
+// Initialize Category Filter Buttons
 document.addEventListener('DOMContentLoaded', () => {
-    // The onAuthStateChanged listener will handle showing the correct initial section.
+    // Set initial active button for filters
+    document.querySelector('.category-filter-buttons button[data-filter="all"]').classList.add('active');
+    
+    // Add event listeners for category filters
+    taskCategoryFilters.addEventListener("click", (e) => {
+        if (e.target.tagName === 'BUTTON') {
+            const category = e.target.dataset.filter;
+            filterTasksByCategory(category);
+        }
+    });
+
+    // Initial load of data and UI setup
+    // onAuthStateChanged will handle showing the correct initial section.
 });
 </script>
 
