@@ -476,6 +476,9 @@ Understanding how tasks work is crucial for maximizing your income.<br><br>
       <button data-filter="TikTok">TikTok</button>
       <button data-filter="Instagram">Instagram</button>
       <button data-filter="Facebook">Facebook</button>
+      <button data-filter="App">App</button> <!-- New category button -->
+      <button data-filter="Products">Products</button> <!-- New category button -->
+      <button data-filter="Channel">Channel</button> <!-- New category button -->
       <button data-filter="Web">Web</button>
   </div>
   <div id="tasksContainer"></div>
@@ -512,7 +515,7 @@ Understanding how tasks work is crucial for maximizing your income.<br><br>
 <p>5. Apna WhatsApp number bhejein.</p>
 <p>6. Jo link add karwana chahte hain wo bhi <b>mn1691316@gmail.com</b> par email karein.</p>
 <p>7. Aap maximum 10 links add karwa sakte hain.</p>
-<p>8. Aur baki sab kuch bhi <b>mn1691316@gmail.com</b> par email karein.</p>
+<p>8. Aur baki sab kuch bhi <b>mn1691316@gmail.com</b> par email karna hai.</p>
 <p>8. Aur baki sab kuch bhi (agar koi additional information ya details hain) <b>mn1691316@gmail.com</b> par email karna hai.</p>
   <p>Add your own links here and earn rewards when others visit them. Each link costs ₹200 from your wallet and has a limit of 10 links per user. This Is Working </p>
   
@@ -551,7 +554,7 @@ Understanding how tasks work is crucial for maximizing your income.<br><br>
       <option value="Bank">Allied Bank</option>
       <option value="Bitget">Bitget USDT (Min 12 USDT)</option>
     </select><br>
-    <input type="text" id="withdrawAccount" placeholder="Enter Your Account/Wallet Details Name & wallet Number" required><br>
+    <input type="text" id="withdrawAccount" placeholder="Enter Your Account/Wallet Details" required><br>
     <input type="number" id="withdrawAmount" placeholder="Enter Amount (Min ₹1200)" required><br>
     <button type="submit" class="submitBtn">Request Withdrawal</button>
   </form>
@@ -631,6 +634,9 @@ Understanding how tasks work is crucial for maximizing your income.<br><br>
             <option value="TikTok">TikTok</option>
             <option value="Instagram">Instagram</option>
             <option value="Facebook">Facebook</option>
+            <option value="App">App</option> <!-- New category option -->
+            <option value="Products">Products</option> <!-- New category option -->
+            <option value="Channel">Channel</option> <!-- New category option -->
             <option value="Web">Web</option>
         </select><br>
 
@@ -677,7 +683,7 @@ Understanding how tasks work is crucial for maximizing your income.<br><br>
   <div id="videoPlayerContainer">
     <iframe id="youtubeVideoPlayer" width="560" height="315" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
   </div>
-  <p>Stay updated with our latest tutorials and earning tips!</p>
+  <p>Stay updated with our latest earning tips!</p>
 </section>
 
 <!-- Modal for Details -->
@@ -731,7 +737,7 @@ const TASK_EARNING_AMOUNT = 0.010; // Default earning for tasks/links if admin d
 const TASK_LINK_COOLDOWN_MS = 1 * 60 * 1000; // 5 minutes
 const LINK_COST = 200; // Cost for adding a user-generated link
 const MAX_USER_LINKS = 10; // Max links a user can add
-const CATEGORIES = ["YouTube", "TikTok", "Instagram", "Facebook", "Web"]; // Defined categories
+const CATEGORIES = ["YouTube", "TikTok", "Instagram", "Facebook", "App", "Products", "Channel", "Web"]; // Defined categories including Channel
 
 // --- DOM Elements ---
 const nav = document.querySelector("nav");
@@ -1639,7 +1645,6 @@ adminAddForm.addEventListener("submit", async (e) => {
         return;
     }
 
-    let collectionRef;
     let category = selectedCategory; // Start with the admin's selected category
 
     // Determine category from description if it overrides admin's choice
