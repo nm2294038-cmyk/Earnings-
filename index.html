@@ -345,6 +345,88 @@
         font-weight: bold;
     }
 
+    /* --- Price Selection Modal --- */
+    #priceSelectionModal {
+        display: none; /* Hidden by default */
+        position: fixed;
+        z-index: 1001; /* Higher than other modals */
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0,0,0,0.8);
+        backdrop-filter: blur(5px);
+        justify-content: center; /* Center horizontally */
+        align-items: center; /* Center vertically */
+    }
+    #priceSelectionModal .modal-content {
+        background-color: #1a1a1a;
+        color: #fff;
+        margin: 0 auto; /* Center modal horizontally */
+        padding: 30px 40px;
+        border: 1px solid #0ff;
+        border-radius: 12px;
+        width: 85%;
+        max-width: 500px; /* Adjusted max-width for price selection */
+        box-shadow: 0 0 25px rgba(0, 255, 255, 0.4);
+        position: relative;
+        text-align: center; /* Center content within modal */
+    }
+    #priceSelectionModal .modal-close-btn {
+        color: #aaa;
+        position: absolute;
+        top: 15px;
+        right: 25px;
+        font-size: 35px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: color 0.3s ease;
+    }
+    #priceSelectionModal .modal-close-btn:hover { color: #0ff; }
+    #priceSelectionModal h2 { color: #0ff; margin-bottom: 20px; font-size: 30px; }
+    .price-option {
+        background: #222;
+        padding: 15px 20px;
+        margin-bottom: 10px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background 0.3s ease, transform 0.2s ease;
+        border: 1px solid #333;
+    }
+    .price-option:hover {
+        background: #333;
+        transform: translateY(-2px);
+    }
+    .price-option p { margin: 0; font-size: 16px; font-weight: bold; }
+    .price-option span { color: #ffc107; font-size: 14px; } /* Price display */
+    .price-selection-confirm-btn {
+        background: #0ff;
+        color: #000;
+        border: none;
+        padding: 12px 25px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: all 0.3s ease;
+        font-size: 16px;
+        margin-top: 20px; /* Space above confirm button */
+    }
+    .price-selection-confirm-btn:hover {
+        box-shadow: 0 0 10px #0ff, 0 4px 8px rgba(0,255,255,0.3);
+        background: #fff;
+        color: #000;
+        transform: translateY(-2px);
+    }
+    .price-selection-confirm-btn:disabled {
+        background: #555;
+        color: #aaa;
+        cursor: not-allowed;
+        box-shadow: none;
+        transform: none;
+    }
+
+
     /* --- Responsive Adjustments --- */
     @media (max-width: 768px) {
         nav button { padding: 8px 12px; font-size: 13px; }
@@ -360,6 +442,7 @@
         #deposit form { width: 90%; }
         #authSection .auth-container { margin: 20px auto; } /* Adjust margin for smaller screens */
         #userLinksSection form { width: 95%; }
+        #priceSelectionModal .modal-content { width: 90%; } /* Adjust modal width for smaller screens */
     }
     @media (max-width: 480px) {
         header { font-size: 20px; padding: 12px; }
@@ -373,6 +456,7 @@
         .modal-close-btn { font-size: 25px; top: 10px; right: 15px; }
         #authSection .auth-container { padding: 20px; } /* Less padding for auth form on very small screens */
         #userLinksSection form { padding: 20px; }
+        #priceSelectionModal .modal-content { padding: 20px; } /* Less padding in price selection modal */
     }
   </style>
 </head>
@@ -517,7 +601,19 @@ Understanding how tasks work is crucial for maximizing your income.<br><br>
 <p>7. Aap maximum 10 links add karwa sakte hain.</p>
 <p>8. Aur baki sab kuch bhi <b>mn1691316@gmail.com</b> par email karna hai.</p>
 <p>8. Aur baki sab kuch bhi (agar koi additional information ya details hain) <b>mn1691316@gmail.com</b> par email karna hai.</p>
-  <p>Add your own links here and earn rewards when others visit them. Each link costs ₹200 from your wallet and has a limit of 10 links per user. This Is Working </p>
+  <p>Add your own links here and earn rewards when others visit them. Select a category below to see its cost and add your link:</p>
+  <ul>
+    <li><strong>YouTube:</strong> ₹1200</li>
+    <li><strong>Instagram:</strong> ₹1000</li>
+    <li><strong>Facebook:</strong> ₹1600</li>
+    <li><strong>TikTok:</strong> ₹200</li>
+    <li><strong>Web:</strong> ₹150</li>
+    <li><strong>App:</strong> ₹500 (Default if not specified)</li>
+    <li><strong>Products:</strong> ₹500 (Default if not specified)</li>
+    <li><strong>Channel:</strong> ₹500 (Default if not specified)</li>
+    <li><strong>For You Page Promotion Life time k ley :</strong> ₹5000</li>
+  </ul>
+  <p>This Is Working</p>
   
   <form id="addUserLinkForm">
     <label for="userLinkUrl">Link URL:</label>
@@ -526,12 +622,25 @@ Understanding how tasks work is crucial for maximizing your income.<br><br>
     <label for="userLinkDescription">Link Description:</label>
     <input type="text" id="userLinkDescription" placeholder="Brief description for your link" required><br>
 
-    <button type="submit" class="submitBtn">Add Link (Cost: ₹200)</button>
+    <!-- The button below will now trigger the price selection modal -->
+    <button type="submit" class="submitBtn">Add Link (Select Category & Cost)</button>
   </form>
   
   <h3>Your Added Links:</h3>
   <div id="userLinksContainer" class="dashboard-container"></div>
 </section>
+
+<!-- Price Selection Modal -->
+<div id="priceSelectionModal" class="modal">
+    <div class="modal-content">
+        <span class="modal-close-btn">&times;</span>
+        <h2>Select Category & Price</h2>
+        <div id="priceOptionsContainer">
+            <!-- Price options will be loaded here by JavaScript -->
+        </div>
+        <button id="confirmPriceSelectionBtn" class="submitBtn price-selection-confirm-btn" disabled>Confirm & Add Link</button>
+    </div>
+</div>
 
 <!-- Withdrawals Section -->
 <section id="withdrawals">
@@ -733,11 +842,29 @@ const auth = getAuth();
 const adminEmail = "mn1691316@gmail.com"; // Your admin email
 const whatsappNumber = "+923495144924";   // Your WhatsApp number (with country code)
 const MIN_WITHDRAWAL_AMOUNT = 1200;
-const TASK_EARNING_AMOUNT = 0.010; // Default earning for tasks/links if admin doesn't set
+const TASK_EARNING_AMOUNT = 0.070; // Default earning for tasks/links if admin doesn't set
 const TASK_LINK_COOLDOWN_MS = 1 * 60 * 1000; // 5 minutes
-const LINK_COST = 200; // Cost for adding a user-generated link
+
+// Dynamic Pricing for Link Addition - As per your list
+const PLATFORM_PRICES = {
+    "YouTube": 1200,
+    "Instagram": 1000,
+    "Facebook": 1600,
+    "TikTok": 200,
+    "Web": 150,
+    "For You": 5000 // Price for "For You" page promotion
+};
+// Ensure all defined categories are present, even if not explicitly priced above
+const CATEGORIES = ["YouTube", "TikTok", "Instagram", "Facebook", "App", "Products", "Channel", "Web"]; 
+// Add any other categories used by admin that might not have a price here
+CATEGORIES.forEach(cat => {
+    if (PLATFORM_PRICES[cat] === undefined) {
+        PLATFORM_PRICES[cat] = 500; // Default price for unspecified categories like App, Products, Channel
+    }
+});
+
 const MAX_USER_LINKS = 10; // Max links a user can add
-const CATEGORIES = ["YouTube", "TikTok", "Instagram", "Facebook", "App", "Products", "Channel", "Web"]; // Defined categories including Channel
+
 
 // --- DOM Elements ---
 const nav = document.querySelector("nav");
@@ -799,6 +926,13 @@ const userLinksContainer = document.getElementById("userLinksContainer");
 const forYouTasksContainer = document.getElementById("forYouTasksContainer");
 const taskCategoryFilters = document.getElementById("taskCategoryFilters"); // Category filter buttons
 
+// Price Selection Modal Elements
+const priceSelectionModal = document.getElementById("priceSelectionModal");
+const priceOptionsContainer = document.getElementById("priceOptionsContainer");
+const confirmPriceSelectionBtn = document.getElementById("confirmPriceSelectionBtn");
+const priceSelectionModalCloseBtn = priceSelectionModal.querySelector(".modal-close-btn");
+
+let currentLinkToAdd = null; // To store the link details temporarily
 
 // --- Helper Functions ---
 
@@ -838,7 +972,9 @@ function updateButtonState(button, itemId, itemType) {
 
   if (!lastOpenedTimestamp) {
     button.disabled = false;
-    button.innerText = `Open & Earn ₹${TASK_EARNING_AMOUNT.toFixed(2)}`; 
+    // Dynamically set reward amount based on task or use default
+    const rewardAmount = parseFloat(button.dataset.reward) || TASK_EARNING_AMOUNT;
+    button.innerText = `Open & Earn ₹${rewardAmount.toFixed(2)}`; 
     return;
   }
 
@@ -852,7 +988,8 @@ function updateButtonState(button, itemId, itemType) {
       if (newTimeElapsed >= TASK_LINK_COOLDOWN_MS) {
         clearInterval(countdownInterval);
         button.disabled = false;
-        button.innerText = `Open & Earn ₹${TASK_EARNING_AMOUNT.toFixed(2)}`; 
+        const rewardAmount = parseFloat(button.dataset.reward) || TASK_EARNING_AMOUNT;
+        button.innerText = `Open & Earn ₹${rewardAmount.toFixed(2)}`; 
         localStorage.removeItem(lastOpenedKey);
         button.dataset.intervalId = '';
       } else {
@@ -865,7 +1002,8 @@ function updateButtonState(button, itemId, itemType) {
     button.dataset.intervalId = countdownInterval;
   } else {
     button.disabled = false;
-    button.innerText = `Open & Earn ₹${TASK_EARNING_AMOUNT.toFixed(2)}`; 
+    const rewardAmount = parseFloat(button.dataset.reward) || TASK_EARNING_AMOUNT;
+    button.innerText = `Open & Earn ₹${rewardAmount.toFixed(2)}`; 
     localStorage.removeItem(lastOpenedKey);
   }
 }
@@ -1195,7 +1333,7 @@ function loadUserData(user) {
             taskDiv.classList.add("taskBox");
             taskDiv.dataset.category = taskCategory; // Assign category to data attribute for filtering
             const reward = t.reward || TASK_EARNING_AMOUNT;
-            taskDiv.innerHTML = `<p>${t.description}</p><button class="submitBtn">Open & Earn ₹${reward.toFixed(2)}</button>`;
+            taskDiv.innerHTML = `<p>${t.description}</p><button class="submitBtn" data-reward="${reward}" data-task-id="${taskId}">Open & Earn ₹${reward.toFixed(2)}</button>`;
             const button = taskDiv.querySelector("button");
             updateButtonState(button, taskId, 'task');
 
@@ -1298,6 +1436,7 @@ function loadUserAddedLinks(userId) {
             linkDiv.innerHTML = `
                 <p><strong>${linkData.description}</strong></p>
                 <p><a href="${linkData.url}" target="_blank" style="color: #0ff; text-decoration: none;">${linkData.url}</a></p>
+                <small>Category: ${linkData.category || 'N/A'}</small><br>
                 <small>Added: ${linkData.addedAt ? linkData.addedAt.toDate().toLocaleDateString() : 'N/A'}</small><br>
                 <div class="edit-delete-buttons">
                     <button class="edit-btn">Edit</button>
@@ -1317,6 +1456,7 @@ async function editUserLink(linkId, currentData) {
     if (newUrl === null) return; // User cancelled
     const newDescription = prompt("Edit Link Description:", currentData.description);
     if (newDescription === null) return; // User cancelled
+    // For editing category, a more complex UI would be needed, so we'll skip category edit for now via prompt.
 
     if (!newUrl.trim() || !newDescription.trim()) {
         showToast("URL and description cannot be empty.");
@@ -1453,7 +1593,7 @@ async function loadForYouContent(userId) {
 
 // --- Event Listeners for Forms and Buttons ---
 
-// Add User Link Form Submission
+// Show Price Selection Modal when Add Link is clicked
 addUserLinkForm.addEventListener("submit", async (e) => {
     e.preventDefault();
     const user = auth.currentUser;
@@ -1471,7 +1611,69 @@ addUserLinkForm.addEventListener("submit", async (e) => {
         return;
     }
 
-    // Check current user's added links count
+    // Store link details temporarily
+    currentLinkToAdd = { url, description };
+    populatePriceSelectionModal(); // Show the modal with pricing options
+    priceSelectionModal.style.display = "flex"; // Show the modal
+});
+
+// Function to populate the price selection modal
+function populatePriceSelectionModal() {
+    priceOptionsContainer.innerHTML = ''; // Clear previous options
+    
+    // Sort categories by price for a better user experience
+    const sortedCategories = Object.keys(PLATFORM_PRICES).sort((a, b) => PLATFORM_PRICES[a] - PLATFORM_PRICES[b]);
+
+    sortedCategories.forEach(category => {
+        const price = PLATFORM_PRICES[category];
+        const priceOptionDiv = document.createElement('div');
+        priceOptionDiv.classList.add('price-option');
+        priceOptionDiv.dataset.category = category;
+        priceOptionDiv.dataset.price = price;
+        priceOptionDiv.innerHTML = `
+            <p>${category}</p>
+            <span>₹${price}</span>
+        `;
+        priceOptionDiv.addEventListener('click', () => selectPriceOption(priceOptionDiv));
+        priceOptionsContainer.appendChild(priceOptionDiv);
+    });
+}
+
+// Function to handle price option selection
+function selectPriceOption(selectedDiv) {
+    // Remove 'selected' class from all options
+    priceOptionsContainer.querySelectorAll('.price-option').forEach(div => {
+        div.style.backgroundColor = '#222'; // Reset background
+        div.style.transform = 'translateY(0)'; // Reset transform
+        div.style.borderColor = '#333';
+    });
+
+    // Apply 'selected' style to the clicked option
+    selectedDiv.style.backgroundColor = '#333'; // Darker background for selected
+    selectedDiv.style.borderColor = '#0ff'; // Highlight border
+    
+    confirmPriceSelectionBtn.dataset.selectedPrice = selectedDiv.dataset.price;
+    confirmPriceSelectionBtn.dataset.selectedCategory = selectedDiv.dataset.category;
+    confirmPriceSelectionBtn.disabled = false; // Enable confirm button
+}
+
+// Event listener for the confirm button in the price selection modal
+confirmPriceSelectionBtn.addEventListener("click", async () => {
+    const user = auth.currentUser;
+    if (!user || !currentLinkToAdd) {
+        showToast("Error: User not logged in or link details missing.");
+        priceSelectionModal.style.display = "none";
+        return;
+    }
+
+    const selectedPrice = parseInt(confirmPriceSelectionBtn.dataset.selectedPrice);
+    const selectedCategory = confirmPriceSelectionBtn.dataset.selectedCategory;
+
+    if (isNaN(selectedPrice) || !selectedCategory) {
+        showToast("Please select a valid category.");
+        return;
+    }
+
     const userRef = doc(db, "users", user.uid);
     let userDocSnap;
     try {
@@ -1492,12 +1694,14 @@ addUserLinkForm.addEventListener("submit", async (e) => {
 
     if (currentUserLinkCount >= MAX_USER_LINKS) {
         showToast(`You have reached the maximum limit of ${MAX_USER_LINKS} added links.`);
+        priceSelectionModal.style.display = "none";
         return;
     }
 
     // Check wallet balance
-    if ((userData.wallet || 0) < LINK_COST) {
-        showToast(`Insufficient balance. You need at least ₹${LINK_COST} to add a link.`);
+    if ((userData.wallet || 0) < selectedPrice) {
+        showToast(`Insufficient balance. You need at least ₹${selectedPrice} for ${selectedCategory}.`);
+        priceSelectionModal.style.display = "none";
         return;
     }
 
@@ -1506,7 +1710,7 @@ addUserLinkForm.addEventListener("submit", async (e) => {
         const batch = writeBatch(db);
 
         // 1. Deduct cost from wallet
-        batch.update(userRef, { wallet: (userData.wallet || 0) - LINK_COST });
+        batch.update(userRef, { wallet: (userData.wallet || 0) - selectedPrice });
 
         // 2. Increment userLinkCount
         batch.update(userRef, { userLinkCount: currentUserLinkCount + 1 });
@@ -1516,20 +1720,29 @@ addUserLinkForm.addEventListener("submit", async (e) => {
         const newLinkRef = doc(userAddedLinksCol); // Auto-generated ID
         batch.set(newLinkRef, {
             addedByUserId: user.uid,
-            url: url,
-            description: description,
+            url: currentLinkToAdd.url,
+            description: currentLinkToAdd.description,
+            category: selectedCategory, // Store the selected category
             addedAt: Timestamp.now(),
             status: "Active" // Assuming links are active by default
         });
 
         await batch.commit();
-        showToast(`Link added successfully! ₹${LINK_COST} deducted from your wallet.`);
+        showToast(`Link added to ${selectedCategory} successfully! ₹${selectedPrice} deducted from your wallet.`);
         addUserLinkForm.reset(); 
+        priceSelectionModal.style.display = "none";
+        currentLinkToAdd = null; // Clear temporary storage
+        confirmPriceSelectionBtn.disabled = true; // Reset button state
+        confirmPriceSelectionBtn.dataset.selectedPrice = '';
+        confirmPriceSelectionBtn.dataset.selectedCategory = '';
+
     } catch (error) {
         console.error("Error adding user link:", error);
         showToast("Failed to add link. Please try again.");
+        priceSelectionModal.style.display = "none"; // Close modal on error
     }
 });
+
 
 // Withdrawal Form Submission
 document.getElementById("withdrawForm").addEventListener("submit", async (e) => {
@@ -1817,10 +2030,20 @@ contactWhatsappLink.addEventListener("click", () => {
 
 // Modal Close Button and Outside Click
 closeBtn.onclick = () => { modal.style.display = "none"; };
+priceSelectionModalCloseBtn.onclick = () => { priceSelectionModal.style.display = "none"; }; // Close price selection modal
 window.onclick = (event) => { 
     if (event.target == modal) { 
         modal.style.display = "none"; 
     } 
+    if (event.target == priceSelectionModal) { // Close price selection modal if clicking outside
+        priceSelectionModal.style.display = "none";
+        confirmPriceSelectionBtn.disabled = true; // Reset button state
+        confirmPriceSelectionBtn.dataset.selectedPrice = '';
+        confirmPriceSelectionBtn.dataset.selectedCategory = '';
+        priceOptionsContainer.querySelectorAll('.price-option').forEach(div => {
+            div.style.backgroundColor = '#222'; div.style.borderColor = '#333';
+        });
+    }
 };
 
 // Navigation Section Switching
