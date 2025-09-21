@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -202,12 +203,14 @@
     .modal-content {
         background-color: #1a1a1a; /* Darker modal content */
         color: #fff;
-        margin: 8% auto; /* Adjusted margin */
+        margin: 5% auto; /* Adjusted margin */
         padding: 30px 40px; /* Increased padding */
         border: 1px solid #0ff;
         border-radius: 12px; /* More rounded */
         box-shadow: 0 0 25px rgba(0, 255, 255, 0.4); /* Stronger glow */
         position: relative;
+        max-height: 80vh;
+        overflow-y: auto;
     }
     .modal-close-btn {
         color: #aaa; /* Softer close button color */
@@ -221,6 +224,7 @@
     }
     .modal-close-btn:hover { color: #0ff; }
     .modal-content h2 { color: #0ff; text-align: center; margin-bottom: 20px; font-size: 30px;}
+    .modal-content h3 { color: #0ff; margin-top: 20px; border-bottom: 1px solid #0ff; padding-bottom: 5px; }
     .modal-content p { line-height: 1.7; text-align: left; }
     .modal-content ul { text-align: left; list-style-position: inside; padding-left: 10px;}
     .modal-content li { margin-bottom: 10px; }
@@ -254,6 +258,28 @@
     .profile-actions { margin-top: 25px; }
     .profile-actions button { background: #0ff; color: #000; border: none; padding: 14px 30px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: all 0.3s ease; font-size: 17px; }
     .profile-actions button:hover { box-shadow: 0 0 10px #0ff, 0 4px 8px rgba(0,255,255,0.3); background: #fff; color: #000; transform: translateY(-2px); }
+
+    /* --- Withdrawal Section --- */
+    .withdrawal-warning-box {
+        background-color: #4d0000;
+        border: 2px solid #dc3545;
+        color: #ffc107;
+        padding: 20px;
+        margin-bottom: 25px;
+        border-radius: 10px;
+        text-align: center;
+        box-shadow: 0 0 15px rgba(220, 53, 69, 0.5);
+    }
+    .withdrawal-warning-box h3 {
+        margin-top: 0;
+        color: #dc3545;
+        font-size: 22px;
+    }
+    .withdrawal-warning-box p {
+        color: #fff;
+        font-size: 16px;
+        line-height: 1.7;
+    }
 
     /* --- Withdrawal/Deposit Status Styles --- */
     .status-pending, .status-pending-verification { color: #ffc107; font-weight: bold; } /* Yellow */
@@ -483,7 +509,7 @@
 </head>
 <body>
 
-<header>Free Earnings And All Social  Media Promotion Available </header>
+<header>Free Earnings And All Social Media Promotion Available</header>
 
 <!-- Auth Section -->
 <section id="authSection" class="active">
@@ -632,6 +658,17 @@
 <!-- Withdrawals Section -->
 <section id="withdrawals">
   <h2>Request Withdrawal</h2>
+
+  <!-- NEW WARNING BOX -->
+  <div class="withdrawal-warning-box">
+      <h3>انتہائی اہم انتباہ - Warning</h3>
+      <p>
+          آپ کا Withdrawal اسی صورت میں منظور (Approve) کیا جائے گا جب آپ نے تمام Tasks بالکل اُسی طرح مکمل کیے ہوں گے جیسا کہ Task کی Description میں لکھا ہے۔ اگر آپ نے کوئی بھی ہدایت (Instruction) نظر انداز کی، ٹائمر پورا نہیں کیا، یا غلط کام کیا تو آپ کی Withdrawal Request بغیر کسی اطلاع کے مسترد (Reject) کر دی جائے گی اور اس فیصلے پر کوئی اپیل نہیں ہوگی۔
+          <br><br>
+          <strong>Your withdrawal will ONLY be approved if you have completed ALL tasks EXACTLY as instructed in the task description. If you ignore any instruction, do not wait for the full timer, or perform the task incorrectly, your withdrawal request will be REJECTED without notice, and this decision will be final.</strong>
+      </p>
+  </div>
+
   <div style="background: #1a1a1a; padding: 15px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #333;">
     <p style="color: #ffc107;"><strong>Important Withdrawal Information:</strong></p>
     <ul>
@@ -700,19 +737,19 @@
   <p>4. Apna naam bhejein.</p>
   <p>5. Apna WhatsApp number bhejein.</p>
   <p>6. Jo link add karwana chahte hain wo bhi <b>mn1691316@gmail.com</b> par email karein.</p>
-  <p>7. Aap maximum 10 links add karwa sakte hain.</p>
+  <p>7. Aap maximum 30 links add karwa sakte hain.</p>
   <p>8. Aur baki sab kuch bhi (agar koi additional information ya details hain) <b>mn1691316@gmail.com</b> par email karna hai.</p>
   <p>Add your own links here and earn rewards when others visit them. Select a category below to see its cost and add your link:</p>
   <ul>
-    <li><strong>YouTube:</strong> ₹1200</li>
-    <li><strong>Instagram:</strong> ₹1000</li>
-    <li><strong>Facebook:</strong> ₹1600</li>
-    <li><strong>TikTok:</strong> ₹200</li>
-    <li><strong>Web:</strong> ₹150</li>
-    <li><strong>App:</strong> ₹500 (Default if not specified)</li>
-    <li><strong>Products:</strong> ₹500 (Default if not specified)</li>
-    <li><strong>Channel:</strong> ₹500 (Default if not specified)</li>
-    <li><strong>For You Page Promotion Life time k ley :</strong> ₹5000</li>
+    <li><strong>YouTube:</strong> PKR 1200</li>
+    <li><strong>Instagram:</strong> PKR 1000</li>
+    <li><strong>Facebook:</strong> PKR 1600</li>
+    <li><strong>TikTok:</strong> PKR 200</li>
+    <li><strong>Web:</strong> PKR 150</li>
+    <li><strong>App:</strong> PKR 500 (Default if not specified)</li>
+    <li><strong>Products:</strong> PKR 500 (Default if not specified)</li>
+    <li><strong>Channel:</strong> PKR 500 (Default if not specified)</li>
+    <li><strong>For You Page Promotion Life time k ley :</strong> PKR 5000</li>
   </ul>
   <p>This Is Working</p>
   <form id="addUserLinkForm">
@@ -852,7 +889,7 @@ const CATEGORIES = ["YouTube", "TikTok", "Instagram", "Facebook", "App", "Produc
 CATEGORIES.forEach(cat => {
     if (PLATFORM_PRICES[cat] === undefined) PLATFORM_PRICES[cat] = 500;
 });
-const MAX_USER_LINKS = 10;
+const MAX_USER_LINKS = 30;
 
 // --- DOM Elements ---
 const nav = document.querySelector("nav");
@@ -1733,11 +1770,168 @@ async function displayAdminItems(collectionRef, container, itemType) {
 
 // --- Modal Content Definitions ---
 const modalContent = {
-    privacy: { title: "Privacy Policy", text: `<p>This Privacy Policy describes how Free Earnings App...` },
-    terms: { title: "Terms of Service", text: `<p>Welcome to Free Earnings App...` },
-    about: { title: "About Us", text: `<p>Welcome to Free Earnings App...` },
-    taskDetails: { title: "Task Details & Earnings Guide", text: `<p>Understanding how tasks work...` },
-    withdrawalProfile: { title: "Withdrawal Profile Management", text: `<p>Managing your withdrawal profile...` }
+    privacy: {
+        title: "Privacy Policy (رازداری کی پالیسی)",
+        text: `
+            <h3>1. Introduction (تعارف)</h3>
+            <p>Welcome to Free Earnings App. We are committed to protecting your privacy and handling your data in an open and transparent manner. This privacy policy sets out how we will collect, use, process, and disclose your information across the platform. By using our service, you agree to the collection and use of information in accordance with this policy.</p>
+            <p>Yeh policy batati hai ke hum aapki maloomat (information) kaise jama karte, istemal karte, aur mehfooz rakhte hain. Is app ko istemal karke, aap is Privacy Policy se ittefaq karte hain.</p>
+            
+            <h3>2. Information We Collect (معلومات جو ہم جمع کرتے ہیں)</h3>
+            <p>We collect various types of information to provide and improve our Service to you.</p>
+            <ul>
+                <li><strong>Personal Identification Information:</strong> When you register, we collect your name, email address, and password. For withdrawals, we may collect your payment details such as Easypaisa/JazzCash number or bank account information. This information is essential for creating and managing your account and processing payments.</li>
+                <li><strong>Usage Data:</strong> We automatically collect information on how the Service is accessed and used. This may include your IP address, browser type, device type, pages visited, time spent on pages, and task completion data. This helps us understand user behavior and improve our platform.</li>
+                <li><strong>Referral Information:</strong> If you were referred by another user, we store a connection to that user's account to manage referral commissions.</li>
+            </ul>
+
+            <h3>3. How We Use Your Information (آپ کی معلومات کا استعمال)</h3>
+            <p>Your data is used for the following purposes:</p>
+            <ul>
+                <li><strong>To Provide and Maintain our Service:</strong> Your account details are used to log you in, display your balance, and manage your profile.</li>
+                <li><strong>To Process Transactions:</strong> Your payment information is used exclusively for sending you your earnings.</li>
+                <li><strong>To Communicate With You:</strong> We may use your email address to send you important updates, notifications about your account, or promotional information.</li>
+                <li><strong>For Security and Fraud Prevention:</strong> We analyze usage data to detect and prevent fraudulent activities, such as the use of bots, VPNs, or multiple accounts, ensuring a fair platform for everyone.</li>
+                <li><strong>To Improve Our Platform:</strong> By understanding how you use our app, we can identify areas for improvement and develop new features.</li>
+            </ul>
+            <p>Hum aapki maloomat kisi teesre fareeq (third party) ko farokht nahi karte hain. Sirf payment process karne ke liye zaroori maloomat payment provider ke sath share ki jaati hai.</p>
+
+            <h3>4. Data Security (ڈیٹا کی حفاظت)</h3>
+            <p>The security of your data is a top priority. We use a variety of industry-standard security technologies and procedures to help protect your personal information from unauthorized access, use, or disclosure. All data is transmitted over secure channels (HTTPS), and sensitive information like passwords is encrypted. However, no method of transmission over the Internet or method of electronic storage is 100% secure. While we strive to use commercially acceptable means to protect your Personal Information, we cannot guarantee its absolute security.</p>
+            
+            <h3>5. Your Rights (آپ کے حقوق)</h3>
+            <p>You have certain rights regarding your personal data. You have the right to access, update, or delete the information we have on you. You can update your profile information directly within your account settings. If you wish to delete your account, please contact our support.</p>
+        `
+    },
+    terms: {
+        title: "Terms of Service (سروس کی شرائط)",
+        text: `
+            <p>Please read these Terms of Service ("Terms") carefully before using the Free Earnings App ("Service"). Your access to and use of the Service is conditioned on your acceptance of and compliance with these Terms. These Terms apply to all visitors, users, and others who access or use the Service.</p>
+            
+            <h3>1. Account Eligibility & Responsibilities (اکاؤنٹ کی اہلیت اور ذمہ داریاں)</h3>
+            <ul>
+                <li><strong>Eligibility:</strong> You must be at least 18 years old to use this service.</li>
+                <li><strong>One Account Rule:</strong> Each user is strictly limited to one account per person, per household, and per IP address. Creating multiple accounts to abuse the system or referral program will result in the permanent ban of all associated accounts and forfeiture of all earnings.</li>
+                <li><strong>Account Security:</strong> You are responsible for safeguarding the password that you use to access the Service and for any activities or actions under your password. We are not liable for any loss or damage arising from your failure to comply with this security obligation.</li>
+            </ul>
+
+            <h3>2. Prohibited Conduct (ممنوعہ سرگرمیاں)</h3>
+            <p>Engaging in any of the following activities is strictly prohibited and will lead to immediate account termination without any payment:</p>
+            <ul>
+                <li><strong>Automation:</strong> Using any bots, scripts, spiders, or any other automated means to complete tasks or interact with the platform.</li>
+                <li><strong>Fraudulent Activity:</strong> Falsifying task completion, using VPNs or proxies to hide your location, or any other method to deceive the system.</li>
+                <li><strong>Multiple Accounts:</strong> As stated above, creating or using more than one account is strictly forbidden.</li>
+                <li><strong>Exploiting Bugs:</strong> Abusing any vulnerability or bug in the system for personal gain.</li>
+                <li><strong>Harassment:</strong> Abusing or harassing other users or the support staff.</li>
+            </ul>
+             <p><strong>Khulasa:</strong> Koi bhi gair qanooni, fraudulent, ya aisi sargarmi jis se system ko nuqsan ho, sakhti se mana hai. Is mein bots, scripts, VPN, ya multiple accounts ka istemal shamil hai. Aisa karne par aapka account foran block kar diya jayega aur aapki tamam earnings z-bat (forfeit) kar li jayengi.</p>
+
+            <h3>3. Earnings, Withdrawals, and Payments (کمائی اور ادائیگی)</h3>
+            <ul>
+                <li><strong>Task Verification:</strong> All completed tasks are subject to verification. The decision of our verification team is final. Earnings will only be credited for tasks that are completed correctly and fully according to the provided instructions.</li>
+                <li><strong>Payment Schedule:</strong> Withdrawals are processed during specific periods each month as mentioned in the withdrawal section. We reserve the right to change this schedule.</li>
+                <li><strong>Minimum Withdrawal:</strong> A minimum balance is required to be eligible for a withdrawal. This amount is specified in the withdrawal section.</li>
+                <li><strong>Forfeiture on Violation:</strong> If your account is terminated due to a violation of these Terms, you will lose all rights to any balance in your account.</li>
+                <li><strong>Task Compliance is Mandatory:</strong> As stated in our withdrawal policy, failure to follow task instructions precisely will result in withdrawal rejection. This is a core condition of using our service.</li>
+            </ul>
+
+            <h3>4. Termination (اکاؤنٹ کی برطرفی)</h3>
+            <p>We may terminate or suspend your account immediately, without prior notice or liability, for any reason whatsoever, including without limitation if you breach the Terms. Upon termination, your right to use the Service will immediately cease.</p>
+
+            <h3>5. Limitation of Liability (ذمہ داری کی حد)</h3>
+            <p>In no event shall Free Earnings App, nor its directors, employees, partners, or agents, be liable for any indirect, incidental, special, consequential or punitive damages, including without limitation, loss of profits, data, or other intangible losses, resulting from your access to or use of or inability to access or use the Service.</p>
+        `
+    },
+    about: {
+        title: "About Us (ہمارے بارے میں)",
+        text: `
+            <h3>Our Mission (ہمارا مقصد)</h3>
+            <p>At Free Earnings App, our mission is to create a reliable and accessible bridge between individuals seeking supplementary income and businesses looking for genuine online engagement. In a rapidly evolving digital world, we aim to empower people from all walks of life by providing them with a simple, secure, and transparent platform to monetize their free time. We believe in the dignity of work and strive to offer legitimate micro-earning opportunities that are fair and rewarding.</p>
+            <p>Free Earnings App ka maqsad logon ko online extra income hasil karne ke liye ek aasan aur aitemad-mand (reliable) platform faraham karna hai. Hum is safar mein aapki madad karna chahte hain.</p>
+            
+            <h3>What We Do (ہم کیا کرتے ہیں؟)</h3>
+            <p>We partner with businesses, marketers, and content creators who need to promote their products, services, and content online. We break down their requirements into simple, manageable digital tasks. Our users, from across the country, can then choose from a variety of these tasks, complete them according to clear instructions, and earn real money. Whether it's visiting a website, watching a video, engaging with a social media post, or testing an app, our platform provides a constant stream of opportunities.</p>
+            
+            <h3>Our Core Values (ہماری اقدار)</h3>
+            <ul>
+                <li><strong>Transparency (شفافیت):</strong> We believe in clear communication. All task rewards, withdrawal policies, and rules are clearly stated. There are no hidden fees or confusing terms. What you see is what you get.</li>
+                <li><strong>Fairness (انصاف):</strong> We ensure that the rewards for tasks are fair and competitive. We have a robust verification system to ensure that every correctly completed task is rewarded, and we have strict anti-fraud measures to protect the integrity of the platform for our honest users.</li>
+                <li><strong>Security (تحفظ):</strong> The security of your account and your data is paramount. We employ modern security practices to protect your information and ensure that your earnings are safe.</li>
+                <li><strong>Empowerment (بااختیار بنانا):</strong> We are passionate about providing a tool that can help people achieve small financial goals, whether it's paying for a utility bill, saving up for something special, or simply having a bit of extra disposable income.</li>
+            </ul>
+
+            <h3>Our Vision for the Future (مستقبل کا وژن)</h3>
+            <p>We are continuously working to enhance our platform, expand the variety of tasks available, and build a thriving community of earners. Our vision is to become the most trusted and user-friendly micro-tasking platform in the region, known for its reliability and commitment to its users.</p>
+        `
+    },
+    taskDetails: {
+        title: "Task Details & Earnings Guide (ٹاسک کی تفصیلات)",
+        text: `
+            <h3>The Golden Rules of Task Completion (ٹاسک مکمل کرنے کے سنہری اصول)</h3>
+            <p>Your success on this platform depends entirely on your ability to follow instructions correctly. Cheating the system will only lead to account termination. Follow these golden rules to ensure you get paid for your hard work.</p>
+            <ol>
+                <li><strong>Read Every Instruction Carefully (ہر ہدایت کو غور سے پڑھیں):</strong> Before starting a task, read the description from start to finish. Do not assume you know what to do. Every task is different. The description is your contract; fulfilling it is how you earn.</li>
+                <li><strong>Respect Timers and Delays (ٹائمر کا احترام کریں):</strong> If a task says "Wait for 30 seconds," you must wait for the full 30 seconds. Our system has mechanisms to verify this. Closing the page early will invalidate the task, and you will not be paid.</li>
+                <li><strong>Perform the EXACT Action Required (صرف مطلوبہ کام کریں):</strong> If the task is to "Like the video," then only liking it is required. If it says "Like and Comment," you must do both. Do not do less than what is asked.</li>
+                <li><strong>No Cheating (دھوکہ دہی نہیں):</strong> Do not use VPNs, proxies, ad-blockers that interfere with tasks, or any kind of automation (bots/scripts). Our system is designed to detect such activities. Attempting to cheat is the fastest way to get your account permanently banned and lose all your earnings.</li>
+                <li><strong>Honesty is Key (ایمانداری کلید ہے):</strong> If a task asks for a screenshot or proof, provide genuine proof. Fabricated proof will be caught during withdrawal review and will lead to rejection and a potential ban.</li>
+            </ol>
+
+            <h3>Understanding the Verification Process (تصدیق کا عمل)</h3>
+            <p>After you complete a task, it goes through a verification process:</p>
+            <ul>
+                <li><strong>Automated Checks:</strong> Our system performs initial checks, such as verifying visit duration, clicks, or if an action was registered.</li>
+                <li><strong>Manual Review:</strong> For some tasks, and especially during a withdrawal request, our team may manually review your task history to ensure compliance. This is where we check for patterns of abuse or failure to follow instructions.</li>
+                <li><strong>Why Tasks Get Rejected:</strong> A task can be rejected if you:
+                    <ul>
+                        <li>Did not wait for the full duration.</li>
+                        <li>Did not perform all the required actions (e.g., forgot to comment).</li>
+                        <li>Used a VPN or other forbidden tools.</li>
+                        <li>The link was not working, and you did not report it (if applicable).</li>
+                    </ul>
+                </li>
+            </ul>
+             <p><strong>یاد رکھیں:</strong> آپ کی کمائی کا انحصار آپ کی ایمانداری اور ہدایات پر عمل کرنے پر ہے۔</p>
+        `
+    },
+    withdrawalProfile: {
+        title: "Withdrawal Profile & Rules (پیسے نکالنے کے اصول)",
+        text: `
+            <h3>1. The Importance of Accuracy (درست معلومات کی اہمیت)</h3>
+            <p>Your Withdrawal Profile is the most critical part of getting paid. Providing 100% accurate information is your responsibility. Any error in your payment details can lead to significant delays or even the permanent loss of your funds. Double-check every digit and every letter before submitting a withdrawal request.</p>
+            <p>Withdrawal request karte waqt, apna account number, account title (naam), aur mobile number bilkul sahi likhein. Ek choti si ghalti se aapki payment ghalat jagah ja sakti hai ya ruk sakti hai. Ghalat maloomat faraham karne ki soorat mein, hum payment ke nuqsan ke zimmedar nahi honge.</p>
+            
+            <h3>2. The Withdrawal Process Flow (پیسے نکالنے کا مکمل عمل)</h3>
+            <p>When you request a withdrawal, it goes through several stages:</p>
+            <ol>
+                <li><strong>Request Submitted (درخواست جمع ہوگئی):</strong> You submit a request from the withdrawal page. The amount is deducted from your wallet and is now locked for processing.</li>
+                <li><strong>Pending Review (جائزے کے لیے زیر التوا):</strong> Your request enters a queue. During this stage, our team has not yet started reviewing it.</li>
+                <li><strong>In-Depth Review & Processing (تفصیلی جائزہ):</strong> This is the most important stage. Our team performs a rigorous audit of your account, which includes:
+                    <ul>
+                        <li><strong>Task Compliance Check:</strong> We manually and automatically review your recent task history. We check if you have followed all instructions, respected timers, and completed tasks honestly. <strong>This is the number one reason for rejection. Any evidence of cutting corners or violating task rules will result in immediate rejection.</strong></li>
+                        <li><strong>Fraud Check:</strong> We check your account for any signs of prohibited activities, such as multiple accounts from the same IP, VPN usage, or bot-like activity.</li>
+                        <li><strong>Payment Detail Verification:</strong> We ensure your provided payment details are in the correct format.</li>
+                    </ul>
+                </li>
+                <li><strong>Approved / Rejected (منظور / مسترد):</strong> Based on the review, your request is either approved or rejected.
+                    <ul>
+                        <li><strong>Approved:</strong> If approved, the funds are sent to your specified account. Please allow 24-72 business hours for the funds to reflect.</li>
+                        <li><strong>Rejected:</strong> If rejected, the funds are returned to your app wallet (unless the rejection was due to severe fraud, in which case the account is banned). You will see the "Rejected" status in your history.</li>
+                    </ul>
+                </li>
+            </ol>
+
+            <h3>3. Common Reasons for Withdrawal Rejection (مسترد ہونے کی عام وجوہات)</h3>
+            <ul>
+                <li><strong>FAILURE TO FOLLOW TASK INSTRUCTIONS: This is the most common reason.</strong></li>
+                <li>Providing incorrect payment details (wrong account number, name mismatch).</li>
+                <li>Suspicion of using bots, VPNs, or multiple accounts.</li>
+                <li>Not meeting the minimum withdrawal threshold.</li>
+                <li>Requesting withdrawal before any mandatory holding period is over.</li>
+            </ul>
+            <p><strong>Final Decision:</strong> The decision made by our review team regarding any withdrawal request is final and not subject to appeal, especially in cases of clear violation of our terms and task rules.</p>
+        `
+    }
 };
 
 function openModal(type) {
