@@ -12,452 +12,450 @@
     nav button[data-section="adminPanel"] { background: #ffc107; color: #000; } /* Admin button style */
     nav button[data-section="adminPanel"]:hover { background: #e0a800; box-shadow: 0 0 15px #e0a800, 0 4px 8px rgba(0,0,0,0.3); }
 
-    section { display:none; padding:20px; margin-top: 20px; }
-    section.active { display:block; }
+section { display:none; padding:20px; margin-top: 20px; }
+section.active { display:block; }
 
-    /* --- Input and Buttons --- */
-    input[type="text"], input[type="email"], input[type="password"], input[type="number"], select, textarea {
-        padding: 10px; margin: 8px 0; border-radius: 8px; border: 1px solid #333; width: 100%; box-sizing: border-box; background-color: #222; color: #fff; font-size: 14px;
-    }
-    input:focus, select:focus, textarea:focus { border-color: #0ff; outline: none; box-shadow: 0 0 8px rgba(0, 255, 255, 0.5); }
+/* --- Input and Buttons --- */
+input[type="text"], input[type="email"], input[type="password"], input[type="number"], select, textarea {
+    padding: 10px; margin: 8px 0; border-radius: 8px; border: 1px solid #333; width: 100%; box-sizing: border-box; background-color: #222; color: #fff; font-size: 14px;
+}
+input:focus, select:focus, textarea:focus { border-color: #0ff; outline: none; box-shadow: 0 0 8px rgba(0, 255, 255, 0.5); }
 
-    button.submitBtn {
-        background: #0ff; color: #000; border: none; padding: 12px 25px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: all 0.3s ease; font-size: 16px;
-        display: inline-block;
-        margin-top: 10px;
-    }
-    button.submitBtn:hover { box-shadow: 0 0 10px #0ff, 0 4px 8px rgba(0,255,255,0.3); background: #fff; color: #000; transform: translateY(-2px); }
-    button.submitBtn:disabled { background: #555; color: #aaa; cursor: not-allowed; box-shadow: none; transform: none; }
-    
-    /* --- Full Screen Auth Section --- */
-    #authSection {
-        position: fixed; /* Use fixed position */
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0,0,0,0.9); /* Darker background for full screen */
-        display: flex; /* Use flexbox for centering */
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        z-index: 999; /* Ensure it's above other content */
-        padding: 20px;
-        box-sizing: border-box;
-    }
-    #authSection .auth-container { /* New container for centering form */
-        max-width: 400px;
-        width: 100%; /* Full width up to max-width */
-        padding: 30px;
-        background: rgba(17, 17, 17, 0.8);
-        border-radius: 10px;
-        box-shadow: 0 0 20px rgba(0,255,255,0.2);
-        text-align: center;
-    }
-    #authSection h2 { color: #0ff; margin-bottom: 25px; }
-    #authSection hr { border: 0; height: 1px; background-image: linear-gradient(to right, rgba(0, 255, 255, 0), rgba(0, 255, 255, 0.75), rgba(0, 255, 255, 0)); margin: 30px 0; }
-    #authSection button.submitBtn { width: 100%; }
+button.submitBtn {
+    background: #0ff; color: #000; border: none; padding: 12px 25px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: all 0.3s ease; font-size: 16px;
+    display: inline-block;
+    margin-top: 10px;
+}
+button.submitBtn:hover { box-shadow: 0 0 10px #0ff, 0 4px 8px rgba(0,255,255,0.3); background: #fff; color: #000; transform: translateY(-2px); }
+button.submitBtn:disabled { background: #555; color: #aaa; cursor: not-allowed; box-shadow: none; transform: none; }
 
-    /* --- Containers for Boxes --- */
-    .dashboard-container, #tasksContainer, #forYouTasksContainer, #withdrawList, #adminTasksContainer, #adminLinksContainer, #depositList, #userLinksContainer { /* Added forYouTasksContainer */
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 20px; /* Increased gap */
-        margin-top: 25px;
-    }
+/* --- Full Screen Auth Section --- */
+#authSection {
+    position: fixed; /* Use fixed position */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.9); /* Darker background for full screen */
+    display: flex; /* Use flexbox for centering */
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 999; /* Ensure it's above other content */
+    padding: 20px;
+    box-sizing: border-box;
+}
+#authSection .auth-container { /* New container for centering form */
+    max-width: 400px;
+    width: 100%; /* Full width up to max-width */
+    padding: 30px;
+    background: rgba(17, 17, 17, 0.8);
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0,255,255,0.2);
+    text-align: center;
+}
+#authSection h2 { color: #0ff; margin-bottom: 25px; }
+#authSection hr { border: 0; height: 1px; background-image: linear-gradient(to right, rgba(0, 255, 255, 0), rgba(0, 255, 255, 0.75), rgba(0, 255, 255, 0)); margin: 30px 0; }
+#authSection button.submitBtn { width: 100%; }
 
-    /* --- Individual Boxes (Dashboard, Task, Withdraw, Link, Deposit History) --- */
-    .dashboard-box, .taskBox, .withdrawBox, .linkBox, .depositBox, .userLinkBox { /* Added .userLinkBox */
-        background: #1a1a1a; /* Darker background */
-        padding: 20px;
-        border-radius: 12px; /* More rounded corners */
-        box-shadow: 0 5px 15px rgba(0, 255, 255, 0.15); /* Softer glow */
-        min-width: 220px; /* Consistent min-width */
-        text-align: center;
-        flex-grow: 1;
-        max-width: 280px; /* Consistent max-width */
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-    .dashboard-box:hover, .taskBox:hover, .withdrawBox:hover, .linkBox:hover, .depositBox:hover, .userLinkBox:hover { /* Added hover for depositBox and userLinkBox */
-        transform: translateY(-5px);
-        box-shadow: 0 8px 25px rgba(0, 255, 255, 0.3);
-    }
-    .taskBox p { margin-bottom: 15px; font-size: 15px; color: #ccc; }
-    
-    /* --- NEW STYLES FOR ADMIN PANEL --- */
-    #adminPanel form {
-        max-width: 600px;
-        margin: 20px auto;
-        background: #1a1a1a; /* Darker background */
-        padding: 30px;
-        border-radius: 12px;
-        box-shadow: 0 5px 15px rgba(0, 255, 255, 0.2);
-        border: 1px solid #333;
-    }
-    #adminPanel h2 {
-        color: #0ff;
-        text-align: center;
-        margin-bottom: 25px;
-        font-size: 28px;
-    }
-    #adminPanel input,
-    #adminPanel select,
-    #adminPanel textarea {
-        background-color: #222;
-        color: #fff;
-        border: 1px solid #333;
-        padding: 12px; /* Slightly larger padding */
-    }
-    #adminPanel input:focus,
-    #adminPanel select:focus,
-    #adminPanel textarea:focus {
-        border-color: #0ff;
-        box-shadow: 0 0 10px rgba(0, 255, 255, 0.6);
-    }
-    #adminPanel .submitBtn {
-        width: 100%;
-        display: block;
-        margin-top: 25px; /* More space above button */
-    }
-     /* Style for dynamically added link fields */
-    .dynamic-link-input {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        margin-bottom: 10px;
-    }
-    .dynamic-link-input input {
-        flex-grow: 1;
-        margin-bottom: 0; /* Remove bottom margin for better alignment */
-        padding: 10px; /* Consistent padding */
-    }
-    .dynamic-link-input button {
-        background: #dc3545; /* Red for remove */
-        color: white;
-        border: none;
-        padding: 10px 12px; /* Adjusted padding */
-        border-radius: 6px; /* Slightly more rounded */
-        cursor: pointer;
-        font-size: 14px; /* Adjusted font size */
-        transition: all 0.3s ease;
-        flex-shrink: 0; /* Prevent button from shrinking */
-    }
-    .dynamic-link-input button:hover {
-        background: #c82333;
-        transform: translateY(-1px);
-    }
-    #adminPanel p { color: #ccc; margin-bottom: 10px; font-size: 13px; }
+/* --- Containers for Boxes --- */
+.dashboard-container, #tasksContainer, #forYouTasksContainer, #withdrawList, #adminTasksContainer, #adminLinksContainer, #depositList, #userLinksContainer { /* Added forYouTasksContainer */
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px; /* Increased gap */
+    margin-top: 25px;
+}
 
-    /* --- Deposit Section Specific Styles --- */
-    #deposit .deposit-info-box {
-        background: #1a1a1a;
-        padding: 20px;
-        border-radius: 10px;
-        margin-bottom: 20px;
-        border: 1px solid #333;
-        text-align: left;
-    }
-    #deposit .deposit-info-box p { color: #ffc107; font-weight: bold; margin-bottom: 10px; }
-    #deposit .deposit-info-box ul { padding-left: 20px; color: #ccc; }
-    #deposit .deposit-info-box li { margin-bottom: 8px; }
-    #deposit form { max-width: 500px; margin: 20px auto; padding: 25px; background: #1a1a1a; border-radius: 12px; box-shadow: 0 5px 15px rgba(0, 255, 255, 0.2); }
-    #deposit h3 { margin-top: 30px; color: #0ff; text-align: center; }
+/* --- Individual Boxes (Dashboard, Task, Withdraw, Link, Deposit History) --- */
+.dashboard-box, .taskBox, .withdrawBox, .linkBox, .depositBox, .userLinkBox { /* Added .userLinkBox */
+    background: #1a1a1a; /* Darker background */
+    padding: 20px;
+    border-radius: 12px; /* More rounded corners */
+    box-shadow: 0 5px 15px rgba(0, 255, 255, 0.15); /* Softer glow */
+    min-width: 220px; /* Consistent min-width */
+    text-align: center;
+    flex-grow: 1;
+    max-width: 280px; /* Consistent max-width */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.dashboard-box:hover, .taskBox:hover, .withdrawBox:hover, .linkBox:hover, .depositBox:hover, .userLinkBox:hover { /* Added hover for depositBox and userLinkBox */
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 255, 255, 0.3);
+}
+.taskBox p { margin-bottom: 15px; font-size: 15px; color: #ccc; }
 
-    /* --- UPDATED FOOTER STYLE --- */
-    footer {
-        background:#111;
-        padding: 15px 0;
-        text-align:center;
-        margin-top:40px;
-        border-top:2px solid #0ff;
-        width: 100%;
-        height: auto; /* Changed from fixed height to auto */
-        box-sizing: border-box;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-    }
-    .footer-links { display: flex; justify-content: center; gap: 25px; flex-wrap: wrap; margin-bottom: 10px; }
-    .footer-links a { color: #0ff; text-decoration: none; font-weight: bold; cursor: pointer; white-space: nowrap; transition: color 0.3s ease; }
-    .footer-links a:hover { text-decoration: underline; color: #fff; }
-    footer .copyright { font-size:13px; color:#aaa; margin:0; }
+/* --- NEW STYLES FOR ADMIN PANEL --- */
+#adminPanel form {
+    max-width: 600px;
+    margin: 20px auto;
+    background: #1a1a1a; /* Darker background */
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0, 255, 255, 0.2);
+    border: 1px solid #333;
+}
+#adminPanel h2 {
+    color: #0ff;
+    text-align: center;
+    margin-bottom: 25px;
+    font-size: 28px;
+}
+#adminPanel input,
+#adminPanel select,
+#adminPanel textarea {
+    background-color: #222;
+    color: #fff;
+    border: 1px solid #333;
+    padding: 12px; /* Slightly larger padding */
+}
+#adminPanel input:focus,
+#adminPanel select:focus,
+#adminPanel textarea:focus {
+    border-color: #0ff;
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.6);
+}
+#adminPanel .submitBtn {
+    width: 100%;
+    display: block;
+    margin-top: 25px; /* More space above button */
+}
+ /* Style for dynamically added link fields */
+.dynamic-link-input {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+.dynamic-link-input input {
+    flex-grow: 1;
+    margin-bottom: 0; /* Remove bottom margin for better alignment */
+    padding: 10px; /* Consistent padding */
+}
+.dynamic-link-input button {
+    background: #dc3545; /* Red for remove */
+    color: white;
+    border: none;
+    padding: 10px 12px; /* Adjusted padding */
+    border-radius: 6px; /* Slightly more rounded */
+    cursor: pointer;
+    font-size: 14px; /* Adjusted font size */
+    transition: all 0.3s ease;
+    flex-shrink: 0; /* Prevent button from shrinking */
+}
+.dynamic-link-input button:hover {
+    background: #c82333;
+    transform: translateY(-1px);
+}
+#adminPanel p { color: #ccc; margin-bottom: 10px; font-size: 13px; }
 
-    /* --- Modal Styles --- */
-    .modal {
-        display: none;
-        position: fixed;
-        z-index: 1000;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        overflow: auto;
-        background-color: rgba(0,0,0,0.8); /* Darker modal background */
-        backdrop-filter: blur(5px); /* Slight blur effect */
-    }
-    .modal-content {
-        background-color: #1a1a1a; /* Darker modal content */
-        color: #fff;
-        margin: 8% auto; /* Adjusted margin */
-        padding: 30px 40px; /* Increased padding */
-        border: 1px solid #0ff;
-        border-radius: 12px; /* More rounded */
-        width: 85%;
-        max-width: 700px;
-        box-shadow: 0 0 25px rgba(0, 255, 255, 0.4); /* Stronger glow */
-        position: relative;
-    }
-    .modal-close-btn {
-        color: #aaa; /* Softer close button color */
-        position: absolute;
-        top: 15px;
-        right: 25px;
-        font-size: 35px; /* Larger close icon */
-        font-weight: bold;
-        cursor: pointer;
-        transition: color 0.3s ease;
-    }
-    .modal-close-btn:hover { color: #0ff; }
-    .modal-content h2 { color: #0ff; text-align: center; margin-bottom: 20px; font-size: 30px;}
-    .modal-content p { line-height: 1.7; text-align: left; }
-    .modal-content ul { text-align: left; list-style-position: inside; padding-left: 10px;}
-    .modal-content li { margin-bottom: 10px; }
+/* --- Deposit Section Specific Styles --- */
+#deposit .deposit-info-box {
+    background: #1a1a1a;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #333;
+    text-align: left;
+}
+#deposit .deposit-info-box p { color: #ffc107; font-weight: bold; margin-bottom: 10px; }
+#deposit .deposit-info-box ul { padding-left: 20px; color: #ccc; }
+#deposit .deposit-info-box li { margin-bottom: 8px; }
+#deposit form { max-width: 500px; margin: 20px auto; padding: 25px; background: #1a1a1a; border-radius: 12px; box-shadow: 0 5px 15px rgba(0, 255, 255, 0.2); }
+#deposit h3 { margin-top: 30px; color: #0ff; text-align: center; }
 
-    /* --- Specific Sections --- */
-    #tasks { /* ... existing styles ... */ }
+/* --- UPDATED FOOTER STYLE --- */
+footer {
+    background:#111;
+    padding: 15px 0;
+    text-align:center;
+    margin-top:40px;
+    border-top:2px solid #0ff;
+    width: 100%;
+    height: auto; /* Changed from fixed height to auto */
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.footer-links { display: flex; justify-content: center; gap: 25px; flex-wrap: wrap; margin-bottom: 10px; }
+.footer-links a { color: #0ff; text-decoration: none; font-weight: bold; cursor: pointer; white-space: nowrap; transition: color 0.3s ease; }
+.footer-links a:hover { text-decoration: underline; color: #fff; }
+footer .copyright { font-size:13px; color:#aaa; margin:0; }
 
-    /* --- Profile Section --- */
-    .profile-card {
-        background: #1a1a1a; /* Darker */
-        padding: 30px; /* More padding */
-        border-radius: 12px; /* More rounded */
-        box-shadow: 0 5px 15px rgba(0, 255, 255, 0.2); /* Softer glow */
-        max-width: 480px; /* Slightly wider */
-        width: 90%;
-        margin: 40px auto; /* More margin */
-        text-align: center;
-    }
-    .profile-header { margin-bottom: 25px; }
-    .profile-pic {
-        width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 4px solid #0ff; /* Thicker border */
-        box-shadow: 0 0 15px rgba(0, 255, 255, 0.6); /* Brighter glow */
-        background-color: #333; display: flex; justify-content: center; align-items: center; font-size: 45px; font-weight: bold; color: white;
-    }
-    .profile-info h2 { margin: 12px 0 6px 0; color: #0ff; font-size: 30px; }
-    .profile-info p { margin: 6px 0; color: #ccc; font-size: 17px; }
-    .profile-info p.referral-code { font-weight: bold; color: #fff; background: #2a2a2a; padding: 8px 15px; border-radius: 6px; display: inline-block; margin-top: 12px; font-size: 15px; }
-    .profile-stats { margin: 30px 0; padding: 20px 0; border-top: 1px solid #333; border-bottom: 1px solid #333; display: flex; justify-content: space-around; }
-    .stat-item p { margin: 0; color: #aaa; font-size: 15px; }
-    .stat-item h3 { margin: 6px 0 0 0; color: #fff; font-size: 24px; font-weight: bold; }
-    .profile-actions { margin-top: 25px; }
-    .profile-actions button { background: #0ff; color: #000; border: none; padding: 14px 30px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: all 0.3s ease; font-size: 17px; }
-    .profile-actions button:hover { box-shadow: 0 0 10px #0ff, 0 4px 8px rgba(0,255,255,0.3); background: #fff; color: #000; transform: translateY(-2px); }
+/* --- Modal Styles --- */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.8); /* Darker modal background */
+    backdrop-filter: blur(5px); /* Slight blur effect */
+}
+.modal-content {
+    background-color: #1a1a1a; /* Darker modal content */
+    color: #fff;
+    margin: 8% auto; /* Adjusted margin */
+    padding: 30px 40px; /* Increased padding */
+    border: 1px solid #0ff;
+    border-radius: 12px; /* More rounded */
+    box-shadow: 0 0 25px rgba(0, 255, 255, 0.4); /* Stronger glow */
+    position: relative;
+}
+.modal-close-btn {
+    color: #aaa; /* Softer close button color */
+    position: absolute;
+    top: 15px;
+    right: 25px;
+    font-size: 35px; /* Larger close icon */
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+.modal-close-btn:hover { color: #0ff; }
+.modal-content h2 { color: #0ff; text-align: center; margin-bottom: 20px; font-size: 30px;}
+.modal-content p { line-height: 1.7; text-align: left; }
+.modal-content ul { text-align: left; list-style-position: inside; padding-left: 10px;}
+.modal-content li { margin-bottom: 10px; }
 
-    /* --- Withdrawal/Deposit Status Styles --- */
-    .status-pending, .status-pending-verification { color: #ffc107; font-weight: bold; } /* Yellow */
-    .status-approved { color: #28a745; font-weight: bold; } /* Green */
-    .status-rejected { color: #dc3545; font-weight: bold; } /* Red */
+/* --- Specific Sections --- */
+#tasks { /* ... existing styles ... */ }
 
-    /* --- YouTube Video Section --- */
-    #youtubeVideoSection { text-align: center; margin-top: 30px; padding: 20px; background: #1a1a1a; border-radius: 12px; box-shadow: 0 5px 15px rgba(0, 255, 255, 0.15); }
-    #youtubeVideoSection iframe { max-width: 100%; border: none; border-radius: 8px; }
-    #youtubeVideoSection h2 { color: #0ff; margin-bottom: 20px; }
-    #youtubeVideoSection p { color: #ccc; font-size: 15px; }
+/* --- Profile Section --- */
+.profile-card {
+    background: #1a1a1a; /* Darker */
+    padding: 30px; /* More padding */
+    border-radius: 12px; /* More rounded */
+    box-shadow: 0 5px 15px rgba(0, 255, 255, 0.2); /* Softer glow */
+    max-width: 480px; /* Slightly wider */
+    width: 90%;
+    margin: 40px auto; /* More margin */
+    text-align: center;
+}
+.profile-header { margin-bottom: 25px; }
+.profile-pic {
+    width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 4px solid #0ff; /* Thicker border */
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.6); /* Brighter glow */
+    background-color: #333; display: flex; justify-content: center; align-items: center; font-size: 45px; font-weight: bold; color: white;
+}
+.profile-info h2 { margin: 12px 0 6px 0; color: #0ff; font-size: 30px; }
+.profile-info p { margin: 6px 0; color: #ccc; font-size: 17px; }
+.profile-info p.referral-code { font-weight: bold; color: #fff; background: #2a2a2a; padding: 8px 15px; border-radius: 6px; display: inline-block; margin-top: 12px; font-size: 15px; }
+.profile-stats { margin: 30px 0; padding: 20px 0; border-top: 1px solid #333; border-bottom: 1px solid #333; display: flex; justify-content: space-around; }
+.stat-item p { margin: 0; color: #aaa; font-size: 15px; }
+.stat-item h3 { margin: 6px 0 0 0; color: #fff; font-size: 24px; font-weight: bold; }
+.profile-actions { margin-top: 25px; }
+.profile-actions button { background: #0ff; color: #000; border: none; padding: 14px 30px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: all 0.3s ease; font-size: 17px; }
+.profile-actions button:hover { box-shadow: 0 0 10px #0ff, 0 4px 8px rgba(0,255,255,0.3); background: #fff; color: #000; transform: translateY(-2px); }
 
-    /* --- User Added Links Section --- */
-    #userLinksSection {
-        margin-top: 30px;
-        padding: 25px;
-        background: #1a1a1a;
-        border-radius: 12px;
-        box-shadow: 0 5px 15px rgba(0, 255, 255, 0.15);
-    }
-    #userLinksSection h2 {
-        color: #0ff;
-        text-align: center;
-        margin-bottom: 25px;
-        font-size: 28px;
-    }
-    #userLinksSection form {
-        max-width: 500px;
-        margin: 0 auto 30px auto; /* Center form, add bottom margin */
-        background: #222;
-        padding: 25px;
-        border-radius: 10px;
-        box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
-        border: 1px solid #333;
-    }
-    #userLinksSection form label { display: block; margin-bottom: 5px; color: #ccc; font-size: 14px; }
-    #userLinksSection form input[type="text"],
-    #userLinksSection form input[type="url"] {
-        background-color: #333; /* Darker input */
-        border: 1px solid #444;
-    }
-    #userLinksSection form input[type="text"]:focus,
-    #userLinksSection form input[type="url"]:focus {
-        border-color: #0ff;
-        box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
-    }
-    .userLinkBox .edit-delete-buttons button {
-        background: #ffc107; /* Yellow for edit */
-        color: #000;
-        margin-right: 5px;
-        padding: 8px 12px;
-        font-size: 13px;
-    }
-    .userLinkBox .edit-delete-buttons button.delete-btn {
-        background: #dc3545; /* Red for delete */
-        color: white;
-    }
-    .userLinkBox .edit-delete-buttons button:hover {
-        opacity: 0.9;
-        transform: translateY(-1px);
-    }
-    
-    /* --- Category Filter Buttons --- */
-    .category-filter-buttons {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 10px;
-        margin-top: 15px;
-        margin-bottom: 25px;
-    }
-    .category-filter-buttons button {
-        background: #333;
-        color: #fff;
-        border: none;
-        padding: 8px 15px;
-        border-radius: 6px;
-        cursor: pointer;
-        font-size: 13px;
-        transition: all 0.3s ease;
-    }
-    .category-filter-buttons button:hover {
-        background: #555;
-        transform: translateY(-1px);
-    }
-    .category-filter-buttons button.active {
-        background: #0ff;
-        color: #000;
-        font-weight: bold;
-    }
+/* --- Withdrawal/Deposit Status Styles --- */
+.status-pending, .status-pending-verification { color: #ffc107; font-weight: bold; } /* Yellow */
+.status-approved { color: #28a745; font-weight: bold; } /* Green */
+.status-rejected { color: #dc3545; font-weight: bold; } /* Red */
 
-    /* --- Price Selection Modal --- */
-    #priceSelectionModal {
-        display: none; /* Hidden by default */
-        position: fixed;
-        z-index: 1001; /* Higher than other modals */
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        overflow: auto;
-        background-color: rgba(0,0,0,0.8);
-        backdrop-filter: blur(5px);
-        justify-content: center; /* Center horizontally */
-        align-items: center; /* Center vertically */
-    }
-    #priceSelectionModal .modal-content {
-        background-color: #1a1a1a;
-        color: #fff;
-        margin: 0 auto; /* Center modal horizontally */
-        padding: 30px 40px;
-        border: 1px solid #0ff;
-        border-radius: 12px;
-        width: 85%;
-        max-width: 500px; /* Adjusted max-width for price selection */
-        box-shadow: 0 0 25px rgba(0, 255, 255, 0.4);
-        position: relative;
-        text-align: center; /* Center content within modal */
-    }
-    #priceSelectionModal .modal-close-btn {
-        color: #aaa;
-        position: absolute;
-        top: 15px;
-        right: 25px;
-        font-size: 35px;
-        font-weight: bold;
-        cursor: pointer;
-        transition: color 0.3s ease;
-    }
-    #priceSelectionModal .modal-close-btn:hover { color: #0ff; }
-    #priceSelectionModal h2 { color: #0ff; margin-bottom: 20px; font-size: 30px; }
-    .price-option {
-        background: #222;
-        padding: 15px 20px;
-        margin-bottom: 10px;
-        border-radius: 8px;
-        cursor: pointer;
-        transition: background 0.3s ease, transform 0.2s ease;
-        border: 1px solid #333;
-    }
-    .price-option:hover {
-        background: #333;
-        transform: translateY(-2px);
-    }
-    .price-option p { margin: 0; font-size: 16px; font-weight: bold; }
-    .price-option span { color: #ffc107; font-size: 14px; } /* Price display */
-    .price-selection-confirm-btn {
-        background: #0ff;
-        color: #000;
-        border: none;
-        padding: 12px 25px;
-        border-radius: 8px;
-        cursor: pointer;
-        font-weight: bold;
-        transition: all 0.3s ease;
-        font-size: 16px;
-        margin-top: 20px; /* Space above confirm button */
-    }
-    .price-selection-confirm-btn:hover {
-        box-shadow: 0 0 10px #0ff, 0 4px 8px rgba(0,255,255,0.3);
-        background: #fff;
-        color: #000;
-        transform: translateY(-2px);
-    }
-    .price-selection-confirm-btn:disabled {
-        background: #555;
-        color: #aaa;
-        cursor: not-allowed;
-        box-shadow: none;
-        transform: none;
-    }
+/* --- YouTube Video Section --- */
+#youtubeVideoSection { text-align: center; margin-top: 30px; padding: 20px; background: #1a1a1a; border-radius: 12px; box-shadow: 0 5px 15px rgba(0, 255, 255, 0.15); }
+#youtubeVideoSection iframe { max-width: 100%; border: none; border-radius: 8px; }
+#youtubeVideoSection h2 { color: #0ff; margin-bottom: 20px; }
+#youtubeVideoSection p { color: #ccc; font-size: 15px; }
+
+/* --- User Added Links Section --- */
+#userLinksSection {
+    margin-top: 30px;
+    padding: 25px;
+    background: #1a1a1a;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0, 255, 255, 0.15);
+}
+#userLinksSection h2 {
+    color: #0ff;
+    text-align: center;
+    margin-bottom: 25px;
+    font-size: 28px;
+}
+#userLinksSection form {
+    max-width: 500px;
+    margin: 0 auto 30px auto; /* Center form, add bottom margin */
+    background: #222;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
+    border: 1px solid #333;
+}
+#userLinksSection form label { display: block; margin-bottom: 5px; color: #ccc; font-size: 14px; }
+#userLinksSection form input[type="text"],
+#userLinksSection form input[type="url"] {
+    background-color: #333; /* Darker input */
+    border: 1px solid #444;
+}
+#userLinksSection form input[type="text"]:focus,
+#userLinksSection form input[type="url"]:focus {
+    border-color: #0ff;
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+}
+.userLinkBox .edit-delete-buttons button {
+    background: #ffc107; /* Yellow for edit */
+    color: #000;
+    margin-right: 5px;
+    padding: 8px 12px;
+    font-size: 13px;
+}
+.userLinkBox .edit-delete-buttons button.delete-btn {
+    background: #dc3545; /* Red for delete */
+    color: white;
+}
+.userLinkBox .edit-delete-buttons button:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+
+/* --- Category Filter Buttons --- */
+.category-filter-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 15px;
+    margin-bottom: 25px;
+}
+.category-filter-buttons button {
+    background: #333;
+    color: #fff;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: all 0.3s ease;
+}
+.category-filter-buttons button:hover {
+    background: #555;
+    transform: translateY(-1px);
+}
+.category-filter-buttons button.active {
+    background: #0ff;
+    color: #000;
+    font-weight: bold;
+}
+
+/* --- Price Selection Modal --- */
+#priceSelectionModal {
+    display: none; /* Hidden by default */
+    position: fixed;
+    z-index: 1001; /* Higher than other modals */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.8);
+    backdrop-filter: blur(5px);
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+}
+#priceSelectionModal .modal-content {
+    background-color: #1a1a1a;
+    color: #fff;
+    margin: 0 auto; /* Center modal horizontally */
+    padding: 30px 40px;
+    border: 1px solid #0ff;
+    border-radius: 12px;
+    width: 85%;
+    max-width: 500px; /* Adjusted max-width for price selection */
+    box-shadow: 0 0 25px rgba(0, 255, 255, 0.4);
+    position: relative;
+    text-align: center; /* Center content within modal */
+}
+#priceSelectionModal .modal-close-btn {
+    color: #aaa;
+    position: absolute;
+    top: 15px;
+    right: 25px;
+    font-size: 35px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+#priceSelectionModal .modal-close-btn:hover { color: #0ff; }
+#priceSelectionModal h2 { color: #0ff; margin-bottom: 20px; font-size: 30px; }
+.price-option {
+    background: #222;
+    padding: 15px 20px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+    border: 1px solid #333;
+}
+.price-option:hover {
+    background: #333;
+    transform: translateY(-2px);
+}
+.price-option p { margin: 0; font-size: 16px; font-weight: bold; }
+.price-option span { color: #ffc107; font-size: 14px; } /* Price display */
+.price-selection-confirm-btn {
+    background: #0ff;
+    color: #000;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    font-size: 16px;
+    margin-top: 20px; /* Space above confirm button */
+}
+.price-selection-confirm-btn:hover {
+    box-shadow: 0 0 10px #0ff, 0 4px 8px rgba(0,255,255,0.3);
+    background: #fff;
+    color: #000;
+    transform: translateY(-2px);
+}
+.price-selection-confirm-btn:disabled {
+    background: #555;
+    color: #aaa;
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+}
 
 
-    /* --- Responsive Adjustments --- */
-    @media (max-width: 768px) {
-        nav button { padding: 8px 12px; font-size: 13px; }
-        .dashboard-container, #tasksContainer, #forYouTasksContainer, #withdrawList, #adminTasksContainer, #adminLinksContainer, #depositList, #userLinksContainer {
-            gap: 15px;
-        }
-        .dashboard-box, .taskBox, .withdrawBox, .linkBox, .depositBox, .userLinkBox {
-            min-width: 180px;
-            max-width: 45%; /* Allow two per row on smaller screens */
-        }
-        .modal-content { width: 90%; margin: 5% auto; }
-        .profile-card { width: 95%; margin: 20px auto; }
-        #deposit form { width: 90%; }
-        #authSection .auth-container { margin: 20px auto; } /* Adjust margin for smaller screens */
-        #userLinksSection form { width: 95%; }
-        #priceSelectionModal .modal-content { width: 90%; } /* Adjust modal width for smaller screens */
+/* --- Responsive Adjustments --- */
+@media (max-width: 768px) {
+    nav button { padding: 8px 12px; font-size: 13px; }
+    .dashboard-container, #tasksContainer, #forYouTasksContainer, #withdrawList, #adminTasksContainer, #adminLinksContainer, #depositList, #userLinksContainer {
+        gap: 15px;
     }
-    @media (max-width: 480px) {
-        header { font-size: 20px; padding: 12px; }
-        nav { padding: 8px 0; }
-        nav button { margin: 3px; padding: 8px 10px; font-size: 12px; }
-        .dashboard-box, .taskBox, .withdrawBox, .linkBox, .depositBox, .userLinkBox {
-            min-width: 150px;
-            max-width: 100%; /* Full width on very small screens */
-        }
-        .modal-content h2 { font-size: 24px; }
-        .modal-close-btn { font-size: 25px; top: 10px; right: 15px; }
-        #authSection .auth-container { padding: 20px; } /* Less padding for auth form on very small screens */
-        #userLinksSection form { padding: 20px; }
-        #priceSelectionModal .modal-content { padding: 20px; } /* Less padding in price selection modal */
+    .dashboard-box, .taskBox, .withdrawBox, .linkBox, .depositBox, .userLinkBox {
+        min-width: 180px;
+        max-width: 45%; /* Allow two per row on smaller screens */
     }
+    .modal-content { width: 90%; margin: 5% auto; }
+    .profile-card { width: 95%; margin: 20px auto; }
+    #deposit form { width: 90%; }
+    #authSection .auth-container { margin: 20px auto; } /* Adjust margin for smaller screens */
+    #userLinksSection form { width: 95%; }
+    #priceSelectionModal .modal-content { width: 90%; } /* Adjust modal width for smaller screens */
+}
+@media (max-width: 480px) {
+    header { font-size: 20px; padding: 12px; }
+    nav { padding: 8px 0; }
+    nav button { margin: 3px; padding: 8px 10px; font-size: 12px; }
+    .dashboard-box, .taskBox, .withdrawBox, .linkBox, .depositBox, .userLinkBox {
+        min-width: 150px;
+        max-width: 100%; /* Full width on very small screens */
+    }
+    .modal-content h2 { font-size: 24px; }
+    .modal-close-btn { font-size: 25px; top: 10px; right: 15px; }
+    #authSection .auth-container { padding: 20px; } /* Less padding for auth form on very small screens */
+    #userLinksSection form { padding: 20px; }
+    #priceSelectionModal .modal-content { padding: 20px; } /* Less padding in price selection modal */
+}
   </style>
 </head>
 <body>
@@ -465,6 +463,7 @@
 <header>Free Earnings And All SoicMedia promotion Available </header>
 
 <!-- Auth Section -->
+
 <section id="authSection" class="active">
   <div class="auth-container">
     <h2>Sign Up / Login</h2>
@@ -481,6 +480,7 @@
 </section>
 
 <!-- Navigation -->
+
 <nav style="display:none;">
   <button data-section="dashboard">Dashboard</button>
   <button data-section="tasks">Tasks</button>
@@ -496,12 +496,12 @@
 </nav>
 
 <!-- Dashboard Section -->
+
 <section id="dashboard">
   <h2>Dashboard</h2>
   <p>Any Problems? Contact the owner via the footer links.</p>
   <div class="dashboard-container">
     <div class="dashboard-box">
-
       <p>Total Users</p>
       <h3 id="totalUsers">0</h3>
     </div>
@@ -525,32 +525,41 @@
 <p>
 Tasks ko samajhna aapki income barhane ke liye bohot zaroori hai.<br><br>
 
+
 <strong>1. Tasks ke Types:</strong><br>
+
 <ul>
   <li><strong>Website Visits/Clicks:</strong> Zyada tar tasks me aapko specified website visit karni hoti hai aur kuch actions perform karne hote hain.</li>
   <li><strong>Content Engagement:</strong> Isme short videos dekhna ya posts like karna shamil ho sakta hai.</li>
 </ul>
 
+
 <strong>2. Instructions Dhyan Se Padhen:</strong> Har task ke sath clear instructions hoti hai. Inko accurately follow karna bohot zaroori hai taake aapko payment mile.<br><br>
 
 <strong>3. Verification Process:</strong> Hamara system aapke actions track karta hai taake task completion verify ho sake. Jo tasks incomplete ya fraudulent samjhe jayenge unko credit nahi kiya jayega.
+
 </p>
 <p>
 Understanding how tasks work is crucial for maximizing your income.<br><br>
 
+
 <strong>1. Types of Tasks:</strong><br>
+
 <ul>
   <li><strong>Website Visits/Clicks:</strong> Most tasks involve visiting a specified website and performing certain actions.</li>
   <li><strong>Content Engagement:</strong> This could include watching short videos or liking posts.</li>
 </ul>
 
+
 <strong>2. READ INSTRUCTIONS CAREFULLY:</strong> Each task comes with a clear set of instructions. It is absolutely essential to read and follow these instructions precisely to get paid.<br><br>
 
 <strong>3. Verification Process:</strong> Our system tracks your actions to verify task completion. Tasks that are deemed incomplete or fraudulent will not be credited.
+
 </p>
 </section>
 
 <!-- Tasks Section -->
+
 <section id="tasks">
   <h2>Tasks to Complete</h2>
   <p>Complete tasks to earn rewards. Cooldown: 5 minutes between completions.</p>
@@ -569,6 +578,7 @@ Understanding how tasks work is crucial for maximizing your income.<br><br>
 </section>
 
 <!-- For You Page Section -->
+
 <section id="forYouPage">
   <h2>For You</h2>
   <p>Here are some recommended tasks and links For You.</p>
@@ -576,6 +586,7 @@ Understanding how tasks work is crucial for maximizing your income.<br><br>
 </section>
 
 <!-- Referrals Section -->
+
 <section id="referrals">
   <h2>Referral Earnings</h2>
   <p>Share your referral link to earn rewards when new users join through your link!</p>
@@ -585,6 +596,7 @@ Understanding how tasks work is crucial for maximizing your income.<br><br>
 </section>
 
 <!-- User Added Links Section -->
+
 <section id="userLinksSection">
   <h2>My Added Links</h2>
 <p> App 1 Free Add karwa Sakte Hain</p>
@@ -614,23 +626,24 @@ Understanding how tasks work is crucial for maximizing your income.<br><br>
     <li><strong>For You Page Promotion Life time k ley :</strong> ₹5000</li>
   </ul>
   <p>This Is Working</p>
-  
+
   <form id="addUserLinkForm">
     <label for="userLinkUrl">Link URL:</label>
     <input type="url" id="userLinkUrl" placeholder="Enter URL (e.g., https://yourwebsite.com)" required><br>
-    
+
     <label for="userLinkDescription">Link Description:</label>
     <input type="text" id="userLinkDescription" placeholder="Brief description for your link" required><br>
 
-    <!-- The button below will now trigger the price selection modal -->
-    <button type="submit" class="submitBtn">Add Link (Select Category & Cost)</button>
+<!-- The button below will now trigger the price selection modal -->
+<button type="submit" class="submitBtn">Add Link (Select Category & Cost)</button>
   </form>
-  
+
   <h3>Your Added Links:</h3>
   <div id="userLinksContainer" class="dashboard-container"></div>
 </section>
 
 <!-- Price Selection Modal -->
+
 <div id="priceSelectionModal" class="modal">
     <div class="modal-content">
         <span class="modal-close-btn">&times;</span>
@@ -643,6 +656,7 @@ Understanding how tasks work is crucial for maximizing your income.<br><br>
 </div>
 
 <!-- Withdrawals Section -->
+
 <section id="withdrawals">
   <h2>Request Withdrawal</h2>
   <div style="background: #1a1a1a; padding: 15px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #333;">
@@ -672,6 +686,7 @@ Understanding how tasks work is crucial for maximizing your income.<br><br>
 </section>
 
 <!-- Deposit Section -->
+
 <section id="deposit">
   <h2>Deposit Funds</h2>
   <p>Apne account mein funds add karne ke liye, neeche di gai hidayat follow karen:</p>
@@ -700,6 +715,7 @@ Understanding how tasks work is crucial for maximizing your income.<br><br>
 </section>
 
 <!-- Profile Section -->
+
 <section id="profile">
   <h2>My Profile</h2>
   <div class="profile-card">
@@ -728,6 +744,7 @@ Understanding how tasks work is crucial for maximizing your income.<br><br>
 </section>
 
 <!-- Admin Panel Section -->
+
 <section id="adminPanel">
     <h2>Admin Panel</h2>
     <form id="adminAddForm">
@@ -738,55 +755,56 @@ Understanding how tasks work is crucial for maximizing your income.<br><br>
         </select><br>
 
         <label for="adminCategory">Category:</label>
-        <select id="adminCategory" required>
-            <option value="YouTube">YouTube</option>
-            <option value="TikTok">TikTok</option>
-            <option value="Instagram">Instagram</option>
-            <option value="Facebook">Facebook</option>
-            <option value="App">App</option> <!-- New category option -->
-            <option value="Products">Products</option> <!-- New category option -->
-            <option value="Channel">Channel</option> <!-- New category option -->
-            <option value="Web">Web</option>
-        </select><br>
+    <select id="adminCategory" required>
+        <option value="YouTube">YouTube</option>
+        <option value="TikTok">TikTok</option>
+        <option value="Instagram">Instagram</option>
+        <option value="Facebook">Facebook</option>
+        <option value="App">App</option> <!-- New category option -->
+        <option value="Products">Products</option> <!-- New category option -->
+        <option value="Channel">Channel</option> <!-- New category option -->
+        <option value="Web">Web</option>
+    </select><br>
 
-        <label for="adminDescription">Description:</label>
-        <input type="text" id="adminDescription" placeholder="e.g., Visit this website for 30 seconds" required><br>
-        
-        <label for="adminBaseUrl">Main URL (for Tasks):</label>
-        <input type="text" id="adminBaseUrl" placeholder="e.g., https://example.com"><br>
-
-        <div id="dynamicLinkInputs">
-            <p>Additional Links (optional, up to 4):</p>
-            <div class="dynamic-link-input">
-                <input type="text" name="links[]" placeholder="Link 1 URL">
-            </div>
-            <div class="dynamic-link-input">
-                <input type="text" name="links[]" placeholder="Link 2 URL">
-            </div>
-             <div class="dynamic-link-input">
-                <input type="text" name="links[]" placeholder="Link 3 URL">
-            </div>
-             <div class="dynamic-link-input">
-                <input type="text" name="links[]" placeholder="Link 4 URL">
-            </div>
-        </div>
-        
-        <label for="adminReward">Reward Amount (₹) - Optional:</label>
-        <input type="number" id="adminReward" placeholder="e.g., 0.50 (Overrides category default)" step="0.01"><br>
-
-        <button type="submit" class="submitBtn">Add Earning Item</button>
-    </form>
+    <label for="adminDescription">Description:</label>
+    <input type="text" id="adminDescription" placeholder="e.g., Visit this website for 30 seconds" required><br>
     
-    <div style="margin-top: 40px;">
-        <h3>Current Tasks:</h3>
-        <div id="adminTasksContainer" class="dashboard-container"></div>
-        <h3>Current Links:</h3>
-        <div id="adminLinksContainer" class="dashboard-container"></div>
+    <label for="adminBaseUrl">Main URL (for Tasks):</label>
+    <input type="text" id="adminBaseUrl" placeholder="e.g., https://example.com"><br>
+
+    <div id="dynamicLinkInputs">
+        <p>Additional Links (optional, up to 4):</p>
+        <div class="dynamic-link-input">
+            <input type="text" name="links[]" placeholder="Link 1 URL">
+        </div>
+        <div class="dynamic-link-input">
+            <input type="text" name="links[]" placeholder="Link 2 URL">
+        </div>
+         <div class="dynamic-link-input">
+            <input type="text" name="links[]" placeholder="Link 3 URL">
+        </div>
+         <div class="dynamic-link-input">
+            <input type="text" name="links[]" placeholder="Link 4 URL">
+        </div>
     </div>
+    
+    <label for="adminReward">Reward Amount (₹) - Optional:</label>
+    <input type="number" id="adminReward" placeholder="e.g., 0.07 (Overrides category default)" step="0.01"><br>
+
+    <button type="submit" class="submitBtn">Add Earning Item</button>
+</form>
+
+<div style="margin-top: 40px;">
+    <h3>Current Tasks:</h3>
+    <div id="adminTasksContainer" class="dashboard-container"></div>
+    <h3>Current Links:</h3>
+    <div id="adminLinksContainer" class="dashboard-container"></div>
+</div>
 </section>
 
 <!-- YouTube Video Section -->
-             <p> watch Video full earn 0.005$ </p> 
+
+<p> watch Video full earn 0.005$ </p>
 <section id="youtubeVideoSection">
   <h2>Watch Our Latest Video</h2>
   <div id="videoPlayerContainer">
@@ -796,6 +814,7 @@ Understanding how tasks work is crucial for maximizing your income.<br><br>
 </section>
 
 <!-- Modal for Details -->
+
 <div id="detailsModal" class="modal">
   <div class="modal-content">
     <span class="modal-close-btn">&times;</span>
@@ -805,6 +824,7 @@ Understanding how tasks work is crucial for maximizing your income.<br><br>
 </div>
 
 <!-- Footer -->
+
 <footer>
   <div class="footer-links">
     <a id="privacyBtn">Privacy Policy</a>
@@ -842,10 +862,10 @@ const auth = getAuth();
 const adminEmail = "mn1691316@gmail.com"; // Your admin email
 const whatsappNumber = "+923495144924";   // Your WhatsApp number (with country code)
 const MIN_WITHDRAWAL_AMOUNT = 1200;
-const TASK_EARNING_AMOUNT = 0.07; // Default fallback earning
+const TASK_EARNING_AMOUNT = 0.07; // Default fallback earning for tasks if no category-specific or admin reward is set.
 const TASK_LINK_COOLDOWN_MS = 1 * 60 * 1000; // 5 minutes
 
-// New Category-Specific Earnings
+// New Category-Specific Earnings for Tasks
 const CATEGORY_EARNINGS = {
     "YouTube": 0.07,
     "Instagram": 0.08,
@@ -854,7 +874,7 @@ const CATEGORY_EARNINGS = {
     "App": 0.50,
     "Web": 0.55,
     "Channel": 0.15,
-    "Products": 10,
+    "Products": 10, // High reward for 'Products' category
 };
 
 // Dynamic Pricing for Link Addition - As per your list
@@ -972,17 +992,29 @@ function updateYouTubeVideo(videoUrl) {
   }
 }
 
+// Clear all countdown intervals running on the page
+function clearAllCountdowns() {
+    document.querySelectorAll('button[data-interval-id]').forEach(btn => {
+        if (btn.dataset.intervalId) {
+            clearInterval(parseInt(btn.dataset.intervalId));
+            btn.dataset.intervalId = '';
+        }
+    });
+}
+
 // Button State Management for Cooldowns
 function updateButtonState(button, itemId, itemType) {
-  const lastOpenedKey = `${itemType}_${itemId}`;
+  const lastOpenedKey = `${itemType}_${itemId}`; // e.g., 'task_someTaskId'
   const lastOpenedTimestamp = localStorage.getItem(lastOpenedKey);
   
+  // Clear any existing interval for this button to avoid multiple intervals
   if (button.dataset.intervalId) { 
     clearInterval(parseInt(button.dataset.intervalId));
-    button.dataset.intervalId = '';
+    button.dataset.intervalId = ''; // Clear the dataset
   }
 
   if (!lastOpenedTimestamp) {
+    // No recent activity, button should be enabled
     button.disabled = false;
     const rewardAmount = parseFloat(button.dataset.reward);
     button.innerText = `Open & Earn ₹${rewardAmount.toFixed(2)}`; 
@@ -993,40 +1025,35 @@ function updateButtonState(button, itemId, itemType) {
   const timeElapsed = new Date().getTime() - lastOpened;
 
   if (timeElapsed < TASK_LINK_COOLDOWN_MS) {
+    // Within cooldown period
     button.disabled = true;
+    // Start a countdown interval
     const countdownInterval = setInterval(() => {
       const newTimeElapsed = new Date().getTime() - lastOpened;
       if (newTimeElapsed >= TASK_LINK_COOLDOWN_MS) {
+        // Cooldown finished
         clearInterval(countdownInterval);
         button.disabled = false;
         const rewardAmount = parseFloat(button.dataset.reward);
         button.innerText = `Open & Earn ₹${rewardAmount.toFixed(2)}`; 
-        localStorage.removeItem(lastOpenedKey);
-        button.dataset.intervalId = '';
+        localStorage.removeItem(lastOpenedKey); // Clear cooldown from local storage
+        button.dataset.intervalId = ''; // Clear the interval ID from dataset
       } else {
+        // Update countdown text
         const timeLeftMs = TASK_LINK_COOLDOWN_MS - newTimeElapsed;
         const minutes = Math.floor(timeLeftMs / 60000);
         const seconds = Math.floor((timeLeftMs % 60000) / 1000).toString().padStart(2, '0');
         button.innerText = `Wait ${minutes}:${seconds}`;
       }
-    }, 1000);
-    button.dataset.intervalId = countdownInterval;
+    }, 1000); // Update every second
+    button.dataset.intervalId = countdownInterval; // Store interval ID to be able to clear it later
   } else {
+    // Cooldown has expired but timestamp was still there
     button.disabled = false;
     const rewardAmount = parseFloat(button.dataset.reward);
     button.innerText = `Open & Earn ₹${rewardAmount.toFixed(2)}`; 
-    localStorage.removeItem(lastOpenedKey);
+    localStorage.removeItem(lastOpenedKey); // Clean up expired timestamp
   }
-}
-
-// Clear all countdown intervals
-function clearAllCountdowns() {
-    document.querySelectorAll('button[data-interval-id]').forEach(btn => {
-        if (btn.dataset.intervalId) {
-            clearInterval(parseInt(btn.dataset.intervalId));
-            btn.dataset.intervalId = '';
-        }
-    });
 }
 
 // Show specific section, hide others
@@ -1036,7 +1063,7 @@ function showSection(id) {
   if (sectionToShow) sectionToShow.classList.add('active');
 }
 
-// Show a toast notification
+// Show a toast notification (simple alert for now)
 function showToast(message) {
     alert(message);
 }
@@ -1052,47 +1079,52 @@ function openLinkSafely(url) {
         const newWindow = window.open(url, '_blank');
         if (newWindow) {
             newWindow.focus();
-            return true;
+            return true; // Successfully opened in new tab/window
         } else {
+            // If window.open returns null, it likely means a popup blocker is active
             showToast("Pop-up blocked. Please allow pop-ups for this site or click the link directly.");
-            createAndClickAnchor(url);
-            return false;
+            createAndClickAnchor(url); // Attempt fallback
+            return false; // Indicate failure to open directly, but fallback initiated
         }
     } catch (e) {
+        // Catch any other errors during window.open
         console.error("Error using window.open:", e);
         showToast("Could not open link directly. Trying an alternative method.");
-        createAndClickAnchor(url);
-        return false;
+        createAndClickAnchor(url); // Attempt fallback
+        return false; // Indicate failure to open directly, but fallback initiated
     }
 }
 
-// Fallback to create and click an anchor element
+// Fallback function to create and click an anchor element for opening links
 function createAndClickAnchor(url) {
     const link = document.createElement('a');
     link.href = url;
     link.target = '_blank';
-    link.style.display = 'none';
+    link.style.display = 'none'; // Hide the link element
     document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    link.click(); // Programmatically click the link
+    document.body.removeChild(link); // Clean up the element
 }
 
-// Function to generate a referral code
+// Function to generate a referral code based on user ID
 function generateReferralCode(uid) {
+    // Take the first few chars of UID and append random chars
     const prefix = uid.substring(0, 4).toUpperCase();
     const suffix = Math.random().toString(36).substring(2, 6).toUpperCase();
     return `${prefix}-${suffix}`;
 }
 
 // --- Category Determination from Description ---
+// This function attempts to find a known category within the task's description.
 function getCategoryFromDescription(description) {
     const lowerCaseDesc = description.toLowerCase();
     for (const category of CATEGORIES) {
+        // Check if the description contains the category name (case-insensitive)
         if (lowerCaseDesc.includes(category.toLowerCase())) {
             return category;
         }
     }
-    return "Web"; // Default to "Web" if no category is found
+    return "Web"; // Default to "Web" if no specific category is found
 }
 
 // --- Task Filtering Logic ---
@@ -1101,15 +1133,15 @@ function filterTasksByCategory(category) {
     const taskBoxes = taskContainer.querySelectorAll(".taskBox");
     
     taskBoxes.forEach(box => {
-        const taskCategory = box.dataset.category;
+        const taskCategory = box.dataset.category; // Get the category assigned during rendering
         if (category === "all" || taskCategory === category) {
-            box.style.display = "block";
+            box.style.display = "block"; // Show tasks matching the filter
         } else {
-            box.style.display = "none";
+            box.style.display = "none"; // Hide tasks not matching
         }
     });
 
-    // Update active class on filter buttons
+    // Update active class on filter buttons for visual feedback
     document.querySelectorAll(".category-filter-buttons button").forEach(btn => {
         btn.classList.toggle("active", btn.dataset.filter === category);
     });
@@ -1117,42 +1149,47 @@ function filterTasksByCategory(category) {
 
 // --- Authentication and UI State Management ---
 onAuthStateChanged(auth, async user => {
-  clearAllCountdowns(); 
+  clearAllCountdowns(); // Clear any running countdowns when auth state changes
 
   if (user) {
-    authSection.style.display = "none";
-    nav.style.display = "flex";
-    showSection('dashboard'); 
+    // User is logged in
+    authSection.style.display = "none"; // Hide login/signup
+    nav.style.display = "flex"; // Show navigation
+    showSection('dashboard'); // Show dashboard by default
 
+    // Check if the logged-in user is the admin
     if (user.email === adminEmail) {
-      adminPanelBtn.style.display = "block";
-      loadAdminDataIfAdmin(user); 
+      adminPanelBtn.style.display = "block"; // Show admin panel button
+      loadAdminDataIfAdmin(user); // Load admin-specific data if admin
     } else {
-      adminPanelBtn.style.display = "none";
+      adminPanelBtn.style.display = "none"; // Hide admin panel button for regular users
+      // If admin panel was somehow active, switch back to dashboard
       if (adminPanelSection.classList.contains('active')) {
           showSection('dashboard');
       }
     }
-    loadUserData(user);
-    loadUserDepositHistory(user.uid);
+    loadUserData(user); // Load general user data
+    loadUserDepositHistory(user.uid); // Load user's deposit history
     loadUserAddedLinks(user.uid); // Load user's added links
     loadForYouContent(user.uid); // Load content for the "For You" page
     
-    // Listen for user's withdrawal history
+    // Real-time listener for user's withdrawal history
     const withdrawalsCol = collection(db, "withdrawals");
     onSnapshot(query(withdrawalsCol, where("userId", "==", user.uid), orderBy("timestamp", "desc")), snap => {
         const container = document.getElementById("withdrawList");
-        container.innerHTML = "";
+        container.innerHTML = ""; // Clear previous list
         snap.forEach(doc => {
             const w = doc.data();
             const withdrawDiv = document.createElement("div");
             withdrawDiv.classList.add("withdrawBox");
+            // Dynamically apply status class for styling
             const statusClass = 'status-' + w.status.toLowerCase().replace(/\s+/g, '-');
             
+            // Format timestamp if available
             let requestDate = 'N/A';
             if (w.timestamp && typeof w.timestamp.toDate === 'function') {
                 requestDate = w.timestamp.toDate().toLocaleString();
-            } else if (w.timestamp) {
+            } else if (w.timestamp) { // Fallback for non-Firebase timestamps
                 requestDate = new Date(w.timestamp).toLocaleString();
             }
 
@@ -1168,11 +1205,13 @@ onAuthStateChanged(auth, async user => {
     });
 
   } else {
-    authSection.style.display = "block";
-    nav.style.display = "none";
-    showSection('authSection');
-    adminPanelBtn.style.display = "none";
+    // User is logged out
+    authSection.style.display = "block"; // Show login/signup
+    nav.style.display = "none"; // Hide navigation
+    showSection('authSection'); // Show auth section by default
+    adminPanelBtn.style.display = "none"; // Hide admin button
     
+    // Reset all user-specific display elements
     userNameDisplay.innerText = ""; userEmailDisplay.innerText = ""; userRefDisplay.innerText = "";
     walletBalanceDisplay.innerText = "0.00"; walletBalanceProfileDisplay.innerText = "0.00";
     totalReferralsCountDisplay.innerText = "0"; refLinkInput.value = "";
@@ -1192,56 +1231,65 @@ signupBtn.addEventListener("click", async () => {
     const name = signupNameInput.value.trim();
     const email = signupEmailInput.value.trim();
     const password = signupPasswordInput.value.trim();
-    const referralCode = signupReferralCodeInput.value.trim(); // Get referral code
+    const referralCode = signupReferralCodeInput.value.trim(); // Get referral code from input
 
     if (!name || !email || !password) { showToast("Please fill in all fields."); return; }
 
     try {
+        // Create user with email and password
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
+        // Update display name
         await updateProfile(user, { displayName: name });
 
         let referrerDoc = null;
         let referredByUserId = null;
 
+        // If a referral code was provided, find the referrer
         if (referralCode) {
             const usersCol = collection(db, "users");
             const q = query(usersCol, where("referralCode", "==", referralCode));
             const querySnapshot = await getDocs(q);
 
             if (!querySnapshot.empty) {
+                // Found the referrer
                 referrerDoc = querySnapshot.docs[0]; 
-                referredByUserId = referrerDoc.id;
+                referredByUserId = referrerDoc.id; // Get the ID of the referrer
                 showToast(`Welcome! You were referred by ${referrerDoc.data().name}.`);
             } else {
+                // Referral code not found
                 showToast("Referral code not found. You will not be credited for a referral.");
             }
         }
         
-        const newUserRefCode = generateReferralCode(user.uid);
+        const newUserRefCode = generateReferralCode(user.uid); // Generate a unique referral code for the new user
         
+        // Data for the new user document in Firestore
         const newUserDocData = {
             name: name, 
             email: email, 
-            wallet: 0, 
+            wallet: 0, // Initial wallet balance
             referralCode: newUserRefCode, 
-            referredBy: referredByUserId, 
+            referredBy: referredByUserId, // Store the ID of the referrer (null if no valid code)
             createdAt: Timestamp.now(),
             referralCount: 0, // Initialize referral count
-            userLinkCount: 0 // Initialize user link count
+            userLinkCount: 0 // Initialize count for user-added links
         };
 
+        // Create the new user document in Firestore
         await setDoc(doc(db, "users", user.uid), newUserDocData);
 
+        // If a referrer was found, increment their referral count
         if (referrerDoc) {
             const batch = writeBatch(db);
-            const referrerRef = doc(db, "users", referrerDoc.id);
+            const referrerRef = doc(db, "users", referrerDoc.id); // Reference to referrer's document
             const currentReferralCount = referrerDoc.data().referralCount || 0;
-            batch.update(referrerRef, { referralCount: currentReferralCount + 1 });
-            await batch.commit();
+            batch.update(referrerRef, { referralCount: currentReferralCount + 1 }); // Increment count
+            await batch.commit(); // Commit the batch operation
         }
 
         showToast("Sign up successful! Please log in.");
+        // Clear signup form fields
         signupNameInput.value = ''; signupEmailInput.value = ''; signupPasswordInput.value = '';
         signupReferralCodeInput.value = ''; 
 
@@ -1277,37 +1325,50 @@ logoutBtn.addEventListener("click", async () => {
 // --- User Data Loading and Real-time Updates ---
 function loadUserData(user) {
     const usersCol = collection(db, "users");
-    const userRef = doc(db, "users", user.uid);
+    const userRef = doc(db, "users", user.uid); // Reference to the current user's document
     const tasksCol = collection(db, "tasks");
     const settingsCol = collection(db, "settings");
 
+    // Fetch YouTube video URL from settings
     const youtubeSettingsRef = doc(settingsCol, "youtubeSettings");
     getDoc(youtubeSettingsRef).then(docSnap => {
-        if (docSnap.exists() && docSnap.data().videoUrl) updateYouTubeVideo(docSnap.data().videoUrl);
-    }).catch(error => { console.error("Error fetching YouTube settings:", error); updateYouTubeVideo(null); });
+        if (docSnap.exists() && docSnap.data().videoUrl) {
+            updateYouTubeVideo(docSnap.data().videoUrl); // Update the embedded video
+        }
+    }).catch(error => { 
+        console.error("Error fetching YouTube settings:", error); 
+        updateYouTubeVideo(null); // Clear video if error occurs
+    });
 
+    // Real-time listener for the current user's document
     onSnapshot(userRef, async snap => {
         if (snap.exists()) {
             const data = snap.data();
+            // Update profile display
             userNameDisplay.innerText = data.name || user.displayName || "N/A";
             userEmailDisplay.innerText = data.email || user.email;
             
-            const referralCode = data.referralCode || generateReferralCode(user.uid); 
+            // Set referral code and link
+            const referralCode = data.referralCode || generateReferralCode(user.uid); // Use existing or generate new
             userRefDisplay.innerText = referralCode;
-            refLinkInput.value = `${window.location.origin}${window.location.pathname}?ref=${referralCode}`;
+            refLinkInput.value = `${window.location.origin}${window.location.pathname}?ref=${referralCode}`; // Construct full referral link
             
+            // Update wallet balance display
             walletBalanceDisplay.innerText = (data.wallet || 0).toFixed(2);
             walletBalanceProfileDisplay.innerText = (data.wallet || 0).toFixed(2);
 
+            // Display user's profile picture or initials
             if (data.profilePicUrl) {
-                userProfilePic.innerHTML = '';
+                userProfilePic.innerHTML = ''; // Clear any previous text
                 userProfilePic.style.backgroundImage = `url(${data.profilePicUrl})`;
                 userProfilePic.style.backgroundSize = 'cover'; userProfilePic.style.backgroundPosition = 'center';
-                userProfilePic.style.color = 'transparent'; 
+                userProfilePic.style.color = 'transparent'; // Hide text if image is shown
             } else if (data.name) {
+                // Generate initials from name
                 const initials = data.name.trim().split(' ').map(word => word[0]).join('').toUpperCase();
                 userProfilePic.innerText = initials;
-                userProfilePic.style.backgroundImage = 'none';
+                userProfilePic.style.backgroundImage = 'none'; // Ensure no background image
+                // Assign a background color based on initials for visual distinction
                 const colors = ['#1abc9c', '#3498db', '#9b59b6', '#f1c40f', '#e67e22', '#e74c3c'];
                 userProfilePic.style.backgroundColor = colors[initials.charCodeAt(0) % colors.length];
             } else {
@@ -1315,42 +1376,45 @@ function loadUserData(user) {
                 userProfilePic.style.backgroundImage = 'none';
             }
 
+            // Fetch and display referral count in real-time
             const referralQuery = query(usersCol, where("referredBy", "==", user.uid));
             getCountFromServer(referralQuery).then(querySnapshot => {
                 totalReferralsCountDisplay.innerText = querySnapshot.data().count;
             }).catch(error => console.error("Error getting referral count: ", error));
         } else {
+            // If user document doesn't exist (rare case), initialize it
             const referralCode = generateReferralCode(user.uid);
             await setDoc(userRef, {
-                name: user.displayName || "New User", email: user.email, wallet: 0, referralCode: referralCode, referredBy: null, createdAt: Timestamp.now(), referralCount: 0, userLinkCount: 0
+                name: user.displayName || "New User", email: user.email, wallet: 0, referralCode: referralCode, referredBy: null, createdAt: Timestamp.now(), referralCount: 0, userLinkCount: 0, earningsHistory: {}
             });
             showToast("Your profile data was initialized.");
-            loadUserData(user); 
+            loadUserData(user); // Re-load data after initialization
         }
     });
 
-    // Load tasks and apply category from description
+    // Real-time listener for all tasks to display them in the tasks section
     const tasksColRef = collection(db, "tasks");
     onSnapshot(tasksColRef, snap => {
         const container = document.getElementById("tasksContainer");
-        container.innerHTML = ""; 
+        container.innerHTML = ""; // Clear existing tasks
         
-        snap.forEach(doc => {
-            const t = doc.data();
-            const taskId = doc.id;
+        snap.forEach(taskDoc => {
+            const t = taskDoc.data();
+            const taskId = taskDoc.id;
             const taskCategory = getCategoryFromDescription(t.description); // Determine category from description
             
             const taskDiv = document.createElement("div");
             taskDiv.classList.add("taskBox");
             taskDiv.dataset.category = taskCategory; // Assign category to data attribute for filtering
             
-            // New Reward Logic: Use admin-defined reward first, then category-specific, then fallback default.
+            // Determine the reward amount
             const reward = t.reward || CATEGORY_EARNINGS[taskCategory] || TASK_EARNING_AMOUNT;
             
-            taskDiv.innerHTML = `<p>${t.description}</p><button class="submitBtn" data-reward="${reward}" data-task-id="${taskId}">Open & Earn ₹${reward.toFixed(2)}</button>`;
+            taskDiv.innerHTML = `<p>${t.description}</p><button class="submitBtn" data-reward="${reward.toFixed(2)}" data-task-id="${taskId}">Open & Earn ₹${reward.toFixed(2)}</button>`;
             const button = taskDiv.querySelector("button");
-            updateButtonState(button, taskId, 'task');
+            updateButtonState(button, taskId, 'task'); 
 
+            // --- Event Listener for Task Button Click (INTEGRATED WITH addEarning) ---
             button.addEventListener("click", async () => {
                 const lastOpenedKey = `task_${taskId}`;
                 const lastOpenedTimestamp = localStorage.getItem(lastOpenedKey);
@@ -1362,32 +1426,36 @@ function loadUserData(user) {
                     return;
                 }
 
-                const opened = openLinkSafely(t.url);
+                const linkOpened = openLinkSafely(t.url); 
                 
-                if (opened) {
-                    localStorage.setItem(lastOpenedKey, new Date().getTime().toString());
-                    updateButtonState(button, taskId, 'task');
+                if (linkOpened || !document.getElementById('popup-blocker-message')) { 
+                    localStorage.setItem(lastOpenedKey, new Date().getTime().toString()); 
+                    updateButtonState(button, taskId, 'task'); 
 
-                    // Update wallet in Firestore
-                    const userSnap = await getDoc(userRef);
-                    if (userSnap.exists()) {
-                        await setDoc(userRef, { wallet: (userSnap.data().wallet || 0) + reward }, { merge: true });
-                        showToast(`You earned ₹${reward.toFixed(2)}! Wallet updated.`);
-                    } else {
-                        showToast("Error: User document not found for wallet update.");
+                    // --- NEW Wallet Update Logic using addEarning ---
+                    try {
+                        await addEarning(auth.currentUser.uid, taskCategory, reward);
+                        showToast(`You earned ₹${reward.toFixed(2)} from ${taskCategory}!`);
+                    } catch (error) { 
+                        console.error("An unexpected error occurred during task completion:", error);
+                        showToast(`An error occurred: ${error.message}. Please try again.`);
                     }
+                } else {
+                    showToast("Could not open the task link. Please ensure the URL is valid.");
                 }
             });
+            // --- End of Event Listener ---
+            
             container.appendChild(taskDiv);
         });
-        // Apply initial filter (if any active)
+
         const activeFilterButton = document.querySelector(".category-filter-buttons button.active");
         if (activeFilterButton) {
             filterTasksByCategory(activeFilterButton.dataset.filter);
         }
     });
 
-    // Dashboard Stats (Totals)
+    // Dashboard Stats (Total counts)
     onSnapshot(usersCol, snap => { totalUsersDisplay.innerText = snap.size; });
     onSnapshot(tasksCol, snap => { totalTasksDisplay.innerText = snap.size; });
     onSnapshot(collection(db, "withdrawals"), snap => {
@@ -1406,7 +1474,7 @@ function loadUserData(user) {
 function loadUserDepositHistory(userId) {
     const depositsCol = collection(db, "deposits");
     onSnapshot(query(depositsCol, where("userId", "==", userId), orderBy("timestamp", "desc")), snap => {
-        depositListContainer.innerHTML = "";
+        depositListContainer.innerHTML = ""; // Clear previous list
         snap.forEach(doc => {
             const d = doc.data();
             const depositDiv = document.createElement("div");
@@ -1457,7 +1525,6 @@ function loadUserAddedLinks(userId) {
                     <button class="delete-btn">Delete</button>
                 </div>
             `;
-            // Add event listeners for edit and delete
             linkDiv.querySelector('.edit-btn').addEventListener('click', () => editUserLink(linkId, linkData));
             linkDiv.querySelector('.delete-btn').addEventListener('click', () => deleteUserLink(linkId));
             userLinksContainer.appendChild(linkDiv);
@@ -1467,10 +1534,9 @@ function loadUserAddedLinks(userId) {
 
 async function editUserLink(linkId, currentData) {
     const newUrl = prompt("Edit Link URL:", currentData.url);
-    if (newUrl === null) return; // User cancelled
+    if (newUrl === null) return;
     const newDescription = prompt("Edit Link Description:", currentData.description);
-    if (newDescription === null) return; // User cancelled
-    // For editing category, a more complex UI would be needed, so we'll skip category edit for now via prompt.
+    if (newDescription === null) return;
 
     if (!newUrl.trim() || !newDescription.trim()) {
         showToast("URL and description cannot be empty.");
@@ -1512,32 +1578,24 @@ async function deleteUserLink(linkId) {
 
 // --- "For You" Page Logic ---
 async function loadForYouContent(userId) {
-    forYouTasksContainer.innerHTML = ""; // Clear existing content
-    const userRef = doc(db, "users", userId);
-    
-    // Keywords specifically for filtering "For You" content as requested.
+    forYouTasksContainer.innerHTML = "";
     const keywords = ["nazim", "umar", "For You","YouTube","TikTok","Instagram","Facebook","Google", "cpm"]; 
-
     const tasksCol = collection(db, "tasks");
     const linksCol = collection(db, "links");
 
     let itemsToDisplay = [];
 
-    // Fetch tasks
     const tasksSnapshot = await getDocs(tasksCol);
     tasksSnapshot.forEach(doc => {
         const item = doc.data();
-        // Check if the description contains any of the specified keywords.
         if (item.description && keywords.some(keyword => item.description.toLowerCase().includes(keyword))) {
             itemsToDisplay.push({ ...item, id: doc.id, type: 'task' });
         }
     });
 
-    // Fetch links
     const linksSnapshot = await getDocs(linksCol);
     linksSnapshot.forEach(doc => {
         const item = doc.data();
-        // Check if the description contains any of the specified keywords.
         if (item.description && keywords.some(keyword => item.description.toLowerCase().includes(keyword))) {
             itemsToDisplay.push({ ...item, id: doc.id, type: 'link' });
         }
@@ -1550,34 +1608,24 @@ async function loadForYouContent(userId) {
 
     itemsToDisplay.forEach(item => {
         const itemDiv = document.createElement("div");
-        itemDiv.classList.add("taskBox"); // Reusing taskBox style for consistency
-        
-        // --- MODIFICATION START: "For You" page - No Earnings, No Cooldown, Specific Keywords ---
-        // Changed button text to simply "Visit" and removed earning amount display.
+        itemDiv.classList.add("taskBox");
         itemDiv.innerHTML = `<p>${item.description}</p><button class="submitBtn">Visit</button>`; 
-        
         const button = itemDiv.querySelector("button");
-        
         button.addEventListener("click", async () => {
             const urlToOpen = (item.type === 'task' && item.url) ? item.url : 
                               (item.type === 'link' && item.urls && item.urls.length > 0) ? item.urls[0] : null;
-
             if (!urlToOpen) {
                 showToast("Invalid URL for this item.");
                 return;
             }
             openLinkSafely(urlToOpen);
         });
-        // --- MODIFICATION END ---
-        
         forYouTasksContainer.appendChild(itemDiv);
     });
 }
 
-
 // --- Event Listeners for Forms and Buttons ---
 
-// Show Price Selection Modal when Add Link is clicked
 addUserLinkForm.addEventListener("submit", async (e) => {
     e.preventDefault();
     const user = auth.currentUser;
@@ -1595,17 +1643,13 @@ addUserLinkForm.addEventListener("submit", async (e) => {
         return;
     }
 
-    // Store link details temporarily
     currentLinkToAdd = { url, description };
-    populatePriceSelectionModal(); // Show the modal with pricing options
-    priceSelectionModal.style.display = "flex"; // Show the modal
+    populatePriceSelectionModal();
+    priceSelectionModal.style.display = "flex";
 });
 
-// Function to populate the price selection modal
 function populatePriceSelectionModal() {
-    priceOptionsContainer.innerHTML = ''; // Clear previous options
-    
-    // Sort categories by price for a better user experience
+    priceOptionsContainer.innerHTML = '';
     const sortedCategories = Object.keys(PLATFORM_PRICES).sort((a, b) => PLATFORM_PRICES[a] - PLATFORM_PRICES[b]);
 
     sortedCategories.forEach(category => {
@@ -1614,34 +1658,27 @@ function populatePriceSelectionModal() {
         priceOptionDiv.classList.add('price-option');
         priceOptionDiv.dataset.category = category;
         priceOptionDiv.dataset.price = price;
-        priceOptionDiv.innerHTML = `
-            <p>${category}</p>
-            <span>₹${price}</span>
-        `;
+        priceOptionDiv.innerHTML = `<p>${category}</p><span>₹${price}</span>`;
         priceOptionDiv.addEventListener('click', () => selectPriceOption(priceOptionDiv));
         priceOptionsContainer.appendChild(priceOptionDiv);
     });
 }
 
-// Function to handle price option selection
 function selectPriceOption(selectedDiv) {
-    // Remove 'selected' class from all options
     priceOptionsContainer.querySelectorAll('.price-option').forEach(div => {
-        div.style.backgroundColor = '#222'; // Reset background
-        div.style.transform = 'translateY(0)'; // Reset transform
+        div.style.backgroundColor = '#222';
+        div.style.transform = 'translateY(0)';
         div.style.borderColor = '#333';
     });
 
-    // Apply 'selected' style to the clicked option
-    selectedDiv.style.backgroundColor = '#333'; // Darker background for selected
-    selectedDiv.style.borderColor = '#0ff'; // Highlight border
+    selectedDiv.style.backgroundColor = '#333';
+    selectedDiv.style.borderColor = '#0ff';
     
     confirmPriceSelectionBtn.dataset.selectedPrice = selectedDiv.dataset.price;
     confirmPriceSelectionBtn.dataset.selectedCategory = selectedDiv.dataset.category;
-    confirmPriceSelectionBtn.disabled = false; // Enable confirm button
+    confirmPriceSelectionBtn.disabled = false;
 }
 
-// Event listener for the confirm button in the price selection modal
 confirmPriceSelectionBtn.addEventListener("click", async () => {
     const user = auth.currentUser;
     if (!user || !currentLinkToAdd) {
@@ -1674,7 +1711,7 @@ confirmPriceSelectionBtn.addEventListener("click", async () => {
     }
     const userData = userDocSnap.data();
     
-    const currentUserLinkCount = userData.userLinkCount || 0; 
+    const currentUserLinkCount = userData.userLinkCount || 0;
 
     if (currentUserLinkCount >= MAX_USER_LINKS) {
         showToast(`You have reached the maximum limit of ${MAX_USER_LINKS} added links.`);
@@ -1682,53 +1719,46 @@ confirmPriceSelectionBtn.addEventListener("click", async () => {
         return;
     }
 
-    // Check wallet balance
     if ((userData.wallet || 0) < selectedPrice) {
         showToast(`Insufficient balance. You need at least ₹${selectedPrice} for ${selectedCategory}.`);
         priceSelectionModal.style.display = "none";
         return;
     }
 
-    // Proceed with adding the link and deducting cost
     try {
         const batch = writeBatch(db);
-
-        // 1. Deduct cost from wallet
         batch.update(userRef, { wallet: (userData.wallet || 0) - selectedPrice });
-
-        // 2. Increment userLinkCount
         batch.update(userRef, { userLinkCount: currentUserLinkCount + 1 });
-
-        // 3. Add the new link to userAddedLinks collection
         const userAddedLinksCol = collection(db, "userAddedLinks");
-        const newLinkRef = doc(userAddedLinksCol); // Auto-generated ID
+        const newLinkRef = doc(userAddedLinksCol);
         batch.set(newLinkRef, {
             addedByUserId: user.uid,
             url: currentLinkToAdd.url,
             description: currentLinkToAdd.description,
-            category: selectedCategory, // Store the selected category
+            category: selectedCategory,
             addedAt: Timestamp.now(),
-            status: "Active" // Assuming links are active by default
+            status: "Active"
         });
 
         await batch.commit();
         showToast(`Link added to ${selectedCategory} successfully! ₹${selectedPrice} deducted from your wallet.`);
-        addUserLinkForm.reset(); 
+        addUserLinkForm.reset();
         priceSelectionModal.style.display = "none";
-        currentLinkToAdd = null; // Clear temporary storage
-        confirmPriceSelectionBtn.disabled = true; // Reset button state
+        currentLinkToAdd = null;
+        confirmPriceSelectionBtn.disabled = true;
         confirmPriceSelectionBtn.dataset.selectedPrice = '';
         confirmPriceSelectionBtn.dataset.selectedCategory = '';
+        priceOptionsContainer.querySelectorAll('.price-option').forEach(div => {
+            div.style.backgroundColor = '#222'; div.style.borderColor = '#333';
+        });
 
     } catch (error) {
         console.error("Error adding user link:", error);
         showToast("Failed to add link. Please try again.");
-        priceSelectionModal.style.display = "none"; // Close modal on error
+        priceSelectionModal.style.display = "none";
     }
 });
 
-
-// Withdrawal Form Submission
 document.getElementById("withdrawForm").addEventListener("submit", async (e) => {
     e.preventDefault();
     const user = auth.currentUser;
@@ -1750,7 +1780,7 @@ document.getElementById("withdrawForm").addEventListener("submit", async (e) => 
     const userRef = doc(db, "users", user.uid);
     let userDocSnap;
     try {
-        userDocSnap = await getDoc(userRef); // Get the latest user data
+        userDocSnap = await getDoc(userRef);
     } catch (error) {
         console.error("Error fetching user document for withdrawal:", error);
         showToast("Failed to retrieve your account balance. Please try again.");
@@ -1771,32 +1801,27 @@ document.getElementById("withdrawForm").addEventListener("submit", async (e) => 
     }
 
     try {
-        const batch = writeBatch(db); // Create a new batch
-
-        // Deduct amount from user's wallet
+        const batch = writeBatch(db);
         batch.update(userRef, { wallet: currentWalletBalance - amount });
-
-        // Add the withdrawal request to the withdrawals collection
-        const withdrawalRef = doc(collection(db, "withdrawals")); // Get a new document reference with an auto-generated ID
+        const withdrawalRef = doc(collection(db, "withdrawals"));
         batch.set(withdrawalRef, {
             userId: user.uid,
             method: method,
             accountNumber: accountNumber,
             amount: amount,
-            status: "Pending", // Initial status for withdrawal requests
+            status: "Pending",
             timestamp: Timestamp.now()
         });
 
-        await batch.commit(); // Commit the batch operations
+        await batch.commit();
         showToast("Withdrawal request submitted successfully and wallet balance deducted. It will be processed soon.");
-        e.target.reset(); // Clear the form
+        e.target.reset();
     } catch (error) {
         console.error("Error submitting withdrawal request or deducting balance:", error);
         showToast("Failed to submit withdrawal request or deduct balance. Please try again.");
     }
 });
 
-// Deposit Form Submission Handler
 depositForm.addEventListener("submit", async (e) => {
     e.preventDefault();
     const user = auth.currentUser;
@@ -1811,12 +1836,14 @@ depositForm.addEventListener("submit", async (e) => {
         return;
     }
 
-    const userRef = doc(db, "users", user.uid);
-    const depositsCol = collection(db, "deposits");
-
     try {
-        await addDoc(depositsCol, {
-            userId: user.uid, userName: user.displayName || user.email, transactionId: txId, amount: amount, status: "Pending Verification", timestamp: Timestamp.now()
+        await addDoc(collection(db, "deposits"), {
+            userId: user.uid, 
+            userName: user.displayName || user.email,
+            transactionId: txId, 
+            amount: amount, 
+            status: "Pending Verification",
+            timestamp: Timestamp.now()
         });
 
         showToast("Deposit request submitted successfully. Please wait for verification.");
@@ -1826,14 +1853,13 @@ depositForm.addEventListener("submit", async (e) => {
     }
 });
 
-// Admin Panel Form Submission
 adminAddForm.addEventListener("submit", async (e) => {
     e.preventDefault();
     const itemType = adminItemTypeSelect.value;
     const selectedCategory = adminCategorySelect.value;
     const description = adminDescriptionInput.value.trim();
     const mainUrl = adminBaseUrlInput.value.trim();
-    const reward = adminRewardInput.value ? parseFloat(adminRewardInput.value) : null; // Can be null
+    const reward = adminRewardInput.value ? parseFloat(adminRewardInput.value) : null;
     const linkInputs = adminAddForm.querySelectorAll('.dynamic-link-input input');
     const urls = Array.from(linkInputs).map(input => input.value.trim()).filter(url => url);
 
@@ -1853,11 +1879,11 @@ adminAddForm.addEventListener("submit", async (e) => {
     let itemData = { 
         description, 
         category: finalCategory, 
-        createdAt: Timestamp.now() 
+        createdAt: Timestamp.now()
     };
     
     if (reward) {
-        itemData.reward = reward; // Only add reward if admin specified one
+        itemData.reward = reward;
     }
 
     let collectionRef;
@@ -1884,12 +1910,11 @@ adminAddForm.addEventListener("submit", async (e) => {
         await addDoc(collectionRef, itemData);
         showToast(`${itemType.charAt(0).toUpperCase() + itemType.slice(1)} added successfully!`);
         adminAddForm.reset();
-        linkInputs.forEach(input => input.value = ''); 
+        linkInputs.forEach(input => input.value = '');
     } catch (error) {
         console.error("Error adding item:", error); showToast(`Failed to add ${itemType}. Please try again.`);
     }
 });
-
 
 // --- Admin Specific Functions ---
 function loadAdminDataIfAdmin(user) {
@@ -1911,14 +1936,18 @@ async function displayAdminItems(collectionRef, container, itemType) {
         const item = doc.data();
         const itemDiv = document.createElement("div");
         itemDiv.classList.add(itemType === "tasks" ? "taskBox" : "linkBox"); 
-        itemDiv.style.maxWidth = "300px"; itemDiv.style.flexGrow = "0"; 
+        itemDiv.style.maxWidth = "300px"; itemDiv.style.flexGrow = "0";
 
-        let reward = item.reward; // Admin-defined reward
-        if (itemType === "tasks" && !reward) { // Only for tasks and only if admin didn't set one
-            const taskCategory = getCategoryFromDescription(item.description);
-            reward = CATEGORY_EARNINGS[taskCategory] || TASK_EARNING_AMOUNT;
-        } else if (!reward) {
-            reward = TASK_EARNING_AMOUNT; // Fallback for links
+        let reward;
+        if (itemType === "tasks") {
+            if (item.reward) {
+                reward = item.reward;
+            } else {
+                const taskCategory = getCategoryFromDescription(item.description);
+                reward = CATEGORY_EARNINGS[taskCategory] || TASK_EARNING_AMOUNT;
+            }
+        } else {
+            reward = item.reward || TASK_EARNING_AMOUNT;
         }
 
         let displayContent = `
@@ -1947,9 +1976,9 @@ async function displayAdminItems(collectionRef, container, itemType) {
         deleteButton.onclick = async () => {
             if (confirm(`Are you sure you want to delete this ${itemType.slice(0, -1)}?`)) {
                 try {
-                    await deleteDoc(doc(db, itemType, doc.id));
+                    await deleteDoc(doc.id);
                     showToast(`${itemType.slice(0, -1)} deleted successfully.`);
-                    itemDiv.remove(); 
+                    itemDiv.remove();
                 } catch (error) { 
                     console.error("Error deleting item:", error); showToast("Failed to delete item."); 
                 }
@@ -1960,10 +1989,11 @@ async function displayAdminItems(collectionRef, container, itemType) {
     });
 }
 
-
-// --- Modal Logic ---
+// --- Modal Content Definitions ---
 const modalContent = {
-  privacy: { title: "Privacy Policy", text: `<p>This Privacy Policy describes how Free Earnings App (the "App", "we", "us", or "our") collects, uses, and discloses your information. Your privacy is of utmost importance to us.</p>
+  privacy: { 
+      title: "Privacy Policy", 
+      text: `<p>This Privacy Policy describes how Free Earnings App (the "App", "we", "us", or "our") collects, uses, and discloses your information. Your privacy is of utmost importance to us.</p>
            <p><strong>1. Information We Collect</strong></p>
            <p>We collect information you provide directly to us when you create an account, such as your name, email address, and password. We also collect information related to your activity on the App, including tasks completed, earnings, withdrawal history, and referral information. We do not collect sensitive personal information.</p>
            <p><strong>2. How We Use Your Information</strong></p>
@@ -1971,27 +2001,39 @@ const modalContent = {
            <ul><li>Operate and maintain your account.</li><li>Process transactions, including withdrawal requests.</li><li>Verify your identity to prevent fraud.</li><li>Communicate with you about your account, updates, and promotional offers.</li><li>Monitor and analyze usage and trends to improve your experience.</li></ul>
            <p><strong>3. Information Sharing and Disclosure</strong></p>
            <p>We are committed to not sharing your personal information with third parties without your consent, except in the following circumstances: </p>
-           <ul><li>To comply with a legal obligation, such as a court order or government request.</li><li>To enforce our Terms of Service and protect the security and integrity of our App.</li><li>In connection with a merger, acquisition, or sale of assets.</li></ul>` },
-  terms: { title: "Terms of Service", text: `<p>Welcome to Free Earnings App. By creating an account and using our services, you agree to be bound by the following terms and conditions.</p>
+           <ul><li>To comply with a legal obligation, such as a court order or government request.</li><li>To enforce our Terms of Service and protect the security and integrity of our App.</li><li>In connection with a merger, acquisition, or sale of assets.</li></ul>` 
+  },
+  terms: { 
+      title: "Terms of Service", 
+      text: `<p>Welcome to Free Earnings App. By creating an account and using our services, you agree to be bound by the following terms and conditions.</p>
            <p><strong>1. User Eligibility and Account</strong></p>
            <p>You must be at least 18 years old to use this App. You are responsible for maintaining the confidentiality of your account password and for all activities that occur under your account. You agree to create only one account per person. Creating multiple accounts is a violation of our policy and will result in the termination of all associated accounts without any payment.</p>
            <p><strong>2. Prohibited Activities</strong></p>
            <ul><li>Using any automated software, bots, or scripts to complete tasks.</li><li>Creating fake or multiple accounts.</li><li>Engaging in any activity that disrupts or interferes with our services.</li></ul>
            <p><strong>3. Withdrawal Policy</strong></p>
-           <p>The minimum withdrawal amount is ₹1200. All withdrawal requests are reviewed manually. We reserve the right to reject any withdrawal request if we suspect fraudulent activity or violation of our terms.</p>` },
-  about: { title: "About Us", text: `<p>Welcome to Free Earnings App, your trusted platform for simple and reliable online earnings.</p>
+           <p>The minimum withdrawal amount is ₹1200. All withdrawal requests are reviewed manually. We reserve the right to reject any withdrawal request if we suspect fraudulent activity or violation of our terms.</p>` 
+  },
+  about: { 
+      title: "About Us", 
+      text: `<p>Welcome to Free Earnings App, your trusted platform for simple and reliable online earnings.</p>
            <p><strong>Our Mission</strong></p>
            <p>Our mission is to provide a straightforward and accessible opportunity for individuals to earn a supplementary income from the comfort of their homes. We aim to bridge the gap between businesses that need online engagement and users who are willing to provide it.</p>
            <p><strong>Our Commitment to You</strong></p>
-           <p>We are committed to transparency, fairness, and reliability. We believe in building a strong, long-lasting relationship with our user community based on trust. Our dedicated support team is always available to assist you with any questions or issues.</p>` },
-  taskDetails: { title: "Task Details & Earnings Guide", text: `<p>Understanding how tasks work is crucial for maximizing your income.</p>
+           <p>We are committed to transparency, fairness, and reliability. We believe in building a strong, long-lasting relationship with our user community based on trust. Our dedicated support team is always available to assist you with any questions or issues.</p>` 
+  },
+  taskDetails: { 
+      title: "Task Details & Earnings Guide", 
+      text: `<p>Understanding how tasks work is crucial for maximizing your income.</p>
            <p><strong>1. Types of Tasks:</strong></p>
            <ul><li><strong>Website Visits/Clicks:</strong> Most tasks involve visiting a specified website and performing certain actions.</li><li><strong>Content Engagement:</strong> This could include watching short videos or liking posts.</li></ul>
             <p><strong>2. READ INSTRUCTIONS CAREFULLY:</strong></p>
             <p>Each task comes with a clear set of instructions. It is absolutely essential to read and follow these instructions precisely to get paid.</p>
            <p><strong>3. Verification Process:</strong></p>
-           <p>Our system tracks your actions to verify task completion. Tasks that are deemed incomplete or fraudulent will not be credited.</p>` },
-  withdrawalProfile: { title: "Withdrawal Profile Management", text: `<p>Managing your withdrawal profile correctly is vital for receiving your earnings securely and on time.</p>
+           <p>Our system tracks your actions to verify task completion. Tasks that are deemed incomplete or fraudulent will not be credited.</p>` 
+  },
+  withdrawalProfile: { 
+      title: "Withdrawal Profile Management", 
+      text: `<p>Managing your withdrawal profile correctly is vital for receiving your earnings securely and on time.</p>
            <p><strong>1. Available Withdrawal Methods:</strong></p>
            <ul><li>Easypaisa (03435640880 - Mujtaba Hassan)</li><li>JazzCash</li><li>Pakistan Bank Transfer (Allied Bank)</li><li>Bitget (Cryptocurrency)</li><li> Payment dates are 19-22 and 28-31 of each month.</li><li> If these dates fall on weekends or holidays, payments will be processed on the nearest business day.</li><li>A two-week hold period applies after reaching the minimum payout amount.</li><li>All withdrawal requests are manually reviewed.</li></ul>
            <p><strong>2. Setting Up Your Account:</strong></p>
@@ -1999,7 +2041,8 @@ const modalContent = {
            <p><strong>3. Minimum Withdrawal Amount:</strong></p>
            <p>A minimum balance of <b>₹1200</b> is required.</p>
            <p><strong>4. Processing Time:</strong></p>
-           <p>All requests are manually reviewed and processed within <b>1 week to 2 weeks</b>.</p>` }
+           <p>All requests are manually reviewed and processed within <b>1 week to 2 weeks</b>.</p>` 
+  }
 };
 
 function openModal(type) {
@@ -2008,14 +2051,12 @@ function openModal(type) {
   modal.style.display = "block";
 }
 
-// Event Listeners for Footer Links
 privacyBtn.onclick = () => openModal('privacy');
 termsBtn.onclick = () => openModal('terms');
 aboutBtn.onclick = () => openModal('about');
 taskDetailsBtn.onclick = () => openModal('taskDetails');
 withdrawalProfileBtn.onclick = () => openModal('withdrawalProfile');
 
-// Contact Links
 contactEmailLink.addEventListener("click", () => {
   const userEmail = auth.currentUser ? auth.currentUser.email : 'N/A';
   const subject = "Inquiry from Free Earnings App User";
@@ -2029,16 +2070,24 @@ contactWhatsappLink.addEventListener("click", () => {
   window.open(`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(prefillText)}`, "_blank");
 });
 
-// Modal Close Button and Outside Click
 closeBtn.onclick = () => { modal.style.display = "none"; };
-priceSelectionModalCloseBtn.onclick = () => { priceSelectionModal.style.display = "none"; }; // Close price selection modal
+priceSelectionModalCloseBtn.onclick = () => {
+    priceSelectionModal.style.display = "none";
+    confirmPriceSelectionBtn.disabled = true; 
+    confirmPriceSelectionBtn.dataset.selectedPrice = '';
+    confirmPriceSelectionBtn.dataset.selectedCategory = '';
+    priceOptionsContainer.querySelectorAll('.price-option').forEach(div => {
+        div.style.backgroundColor = '#222'; div.style.borderColor = '#333';
+    });
+}; 
+
 window.onclick = (event) => { 
     if (event.target == modal) { 
         modal.style.display = "none"; 
     } 
-    if (event.target == priceSelectionModal) { // Close price selection modal if clicking outside
+    if (event.target == priceSelectionModal) {
         priceSelectionModal.style.display = "none";
-        confirmPriceSelectionBtn.disabled = true; // Reset button state
+        confirmPriceSelectionBtn.disabled = true; 
         confirmPriceSelectionBtn.dataset.selectedPrice = '';
         confirmPriceSelectionBtn.dataset.selectedCategory = '';
         priceOptionsContainer.querySelectorAll('.price-option').forEach(div => {
@@ -2047,13 +2096,11 @@ window.onclick = (event) => {
     }
 };
 
-// Navigation Section Switching
 document.querySelectorAll("nav button[data-section]").forEach(button => {
     button.addEventListener("click", () => {
         const sectionId = button.dataset.section;
         if (sectionId) {
             showSection(sectionId);
-            // If the "For You" page is being shown, refresh its content
             if (sectionId === 'forYouPage' && auth.currentUser) {
                 loadForYouContent(auth.currentUser.uid);
             }
@@ -2061,22 +2108,140 @@ document.querySelectorAll("nav button[data-section]").forEach(button => {
     });
 });
 
-// Initialize Category Filter Buttons
 document.addEventListener('DOMContentLoaded', () => {
-    // Set initial active button for filters
     document.querySelector('.category-filter-buttons button[data-filter="all"]').classList.add('active');
     
-    // Add event listeners for category filters
     taskCategoryFilters.addEventListener("click", (e) => {
         if (e.target.tagName === 'BUTTON') {
             const category = e.target.dataset.filter;
             filterTasksByCategory(category);
         }
     });
-
-    // Initial load of data and UI setup
-    // onAuthStateChanged will handle showing the correct initial section.
 });
+
+
+// --- NEW EARNINGS MANAGEMENT FUNCTIONS ---
+
+/**
+ * Adds earnings to a user's wallet and updates their earnings history.
+ * @param {string} userId - The ID of the user.
+ * @param {string} category - The category of earning (e.g., "YouTube", "Facebook").
+ * @param {number} amount - The amount earned.
+ */
+async function addEarning(userId, category, amount) {
+    if (!userId || !category || amount === undefined || amount === null || isNaN(amount) || amount <= 0) {
+        console.error("Invalid input for addEarning:", { userId, category, amount });
+        showToast("Error adding earning: Invalid data provided.");
+        return;
+    }
+
+    const userRef = doc(db, "users", userId);
+
+    try {
+        const userSnap = await getDoc(userRef);
+        if (!userSnap.exists()) {
+            console.error(`Earning update failed: User document ${userId} not found.`);
+            showToast("Error: User profile not found. Please contact support.");
+            return;
+        }
+
+        const userData = userSnap.data();
+        const currentWallet = userData.wallet || 0;
+        const currentEarningsHistory = userData.earningsHistory || {};
+
+        currentEarningsHistory[category] = (currentEarningsHistory[category] || 0) + amount;
+
+        await setDoc(userRef, {
+            wallet: currentWallet + amount,
+            earningsHistory: currentEarningsHistory
+        }, { merge: true });
+
+        console.log(`Earning added: User ${userId}, Category ${category}, Amount ${amount}`);
+    } catch (error) {
+        console.error(`Error adding earning for user ${userId}, category ${category}:`, error);
+        showToast(`Failed to add earning: ${error.message}. Please check your internet connection or contact support.`);
+    }
+}
+
+/**
+ * Updates a user's wallet balance directly.
+ * @param {string} userId - The ID of the user.
+ * @param {number} newBalance - The new total balance for the wallet.
+ */
+async function updateWalletBalance(userId, newBalance) {
+    if (!userId || newBalance === undefined || newBalance === null || isNaN(newBalance) || newBalance < 0) {
+        console.error("Invalid input for updateWalletBalance:", { userId, newBalance });
+        showToast("Error updating wallet balance: Invalid data provided.");
+        return;
+    }
+
+    const userRef = doc(db, "users", userId);
+
+    try {
+        await setDoc(userRef, { wallet: newBalance }, { merge: true });
+        console.log(`Wallet balance updated: User ${userId}, New Balance ${newBalance}`);
+    } catch (error) {
+        console.error(`Error updating wallet balance for user ${userId}:`, error);
+        showToast(`Failed to update wallet balance: ${error.message}.`);
+    }
+}
+
+/**
+ * Retrieves the current wallet balance for a user.
+ * @param {string} userId - The ID of the user.
+ * @returns {Promise<number|null>} The wallet balance, or null if an error occurs.
+ */
+async function getWalletBalance(userId) {
+    if (!userId) {
+        console.error("Cannot get wallet balance: User ID is missing.");
+        showToast("Error: Cannot retrieve wallet balance, User ID missing.");
+        return null;
+    }
+
+    const userRef = doc(db, "users", userId);
+    try {
+        const userSnap = await getDoc(userRef);
+        if (userSnap.exists()) {
+            return userSnap.data().wallet || 0;
+        } else {
+            console.warn(`Wallet balance retrieval: User document ${userId} not found.`);
+            return 0;
+        }
+    } catch (error) {
+        console.error(`Error retrieving wallet balance for user ${userId}:`, error);
+        showToast(`Failed to retrieve wallet balance: ${error.message}.`);
+        return null;
+    }
+}
+
+/**
+ * Retrieves the earnings history for a user.
+ * @param {string} userId - The ID of the user.
+ * @returns {Promise<object|null>} The earnings history object, or null if an error occurs.
+ */
+async function getEarningsHistory(userId) {
+    if (!userId) {
+        console.error("Cannot get earnings history: User ID is missing.");
+        showToast("Error: Cannot retrieve earnings history, User ID missing.");
+        return null;
+    }
+
+    const userRef = doc(db, "users", userId);
+    try {
+        const userSnap = await getDoc(userRef);
+        if (userSnap.exists()) {
+            return userSnap.data().earningsHistory || {};
+        } else {
+            console.warn(`Earnings history retrieval: User document ${userId} not found.`);
+            return {};
+        }
+    } catch (error) {
+        console.error(`Error retrieving earnings history for user ${userId}:`, error);
+        showToast(`Failed to retrieve earnings history: ${error.message}.`);
+        return null;
+    }
+}
+
 </script>
 
 </body>
