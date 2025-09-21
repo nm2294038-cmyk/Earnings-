@@ -503,7 +503,7 @@
     <div class="dashboard-box">
 
       <p>Total Users</p>
-      <h3 id="totalUsers">179042</h3>
+      <h3 id="totalUsers">0</h3>
     </div>
     <div class="dashboard-box">
       <p>Active Tasks</p>
@@ -511,15 +511,15 @@
     </div>
     <div class="dashboard-box">
       <p>Total Withdrawals</p>
-      <h3 id="totalWithdrawals">987465</h3>
+      <h3 id="totalWithdrawals">0</h3>
     </div>
     <div class="dashboard-box">
       <p>Total Earnings</p>
-      <h3 id="totalEarnings">464822$</h3> <!-- Changed to Coins -->
+      <h3 id="totalEarnings">₹0.00</h3>
     </div>
     <div class="dashboard-box">
       <p>Wallet Balance</p>
-      <h3><span id="walletBalance">0</span> PKR</h3> <!-- Changed to Coins -->
+      <h3>₹<span id="walletBalance">0.00</span></h3>
     </div>
   </div>
 <p>
@@ -553,7 +553,7 @@ Understanding how tasks work is crucial for maximizing your income.<br><br>
 <!-- Tasks Section -->
 <section id="tasks">
   <h2>Tasks to Complete</h2>
-  <p>Complete tasks to earn rewards. Cooldown: 1 minutes between completions.</p>
+  <p>Complete tasks to earn rewards. Cooldown: 5 minutes between completions.</p>
   <div class="category-filter-buttons" id="taskCategoryFilters">
       <button data-filter="all">All Categories</button>
       <button data-filter="YouTube">YouTube</button>
@@ -561,7 +561,7 @@ Understanding how tasks work is crucial for maximizing your income.<br><br>
       <button data-filter="Instagram">Instagram</button>
       <button data-filter="Facebook">Facebook</button>
       <button data-filter="App">App</button> <!-- New category button -->
-      <button data-filter="Products">Products</button> <!-- New category option -->
+      <button data-filter="Products">Products</button> <!-- New category button -->
       <button data-filter="Channel">Channel</button> <!-- New category button -->
       <button data-filter="Web">Web</button>
   </div>
@@ -661,7 +661,7 @@ Understanding how tasks work is crucial for maximizing your income.<br><br>
       <option value="Easypaisa">Easypaisa (03435640880 - Mujtaba Hassan)</option>
       <option value="JazzCash">JazzCash</option>
       <option value="Bank">Allied Bank</option>
-      <option value="Bitget">Bitget USDT (Min 100 USDT)</option>
+      <option value="Bitget">Bitget USDT (Min 12 USDT)</option>
     </select><br>
     <input type="text" id="withdrawAccount" placeholder="Enter Your Account/Wallet Details" required><br>
     <input type="number" id="withdrawAmount" placeholder="Enter Amount (Min ₹1200)" required><br>
@@ -714,7 +714,7 @@ Understanding how tasks work is crucial for maximizing your income.<br><br>
     <div class="profile-stats">
       <div class="stat-item">
         <p>Account Balance</p>
-        <h3><span id="walletBalanceProfile">0</span> Coins</h3> <!-- Changed to Coins -->
+        <h3>₹<span id="walletBalanceProfile">0.00</span></h3>
       </div>
       <div class="stat-item">
         <p>Total Referrals</p>
@@ -771,8 +771,8 @@ Understanding how tasks work is crucial for maximizing your income.<br><br>
             </div>
         </div>
         
-        <label for="adminReward">Reward Amount (Coins):</label> <!-- Changed label to Coins -->
-        <input type="number" id="adminReward" placeholder="e.g., 10" step="1" required><br> <!-- Changed placeholder for Coins -->
+        <label for="adminReward">Reward Amount (₹) - Optional:</label>
+        <input type="number" id="adminReward" placeholder="e.g., 0.50 (Overrides category default)" step="0.01"><br>
 
         <button type="submit" class="submitBtn">Add Earning Item</button>
     </form>
@@ -786,7 +786,7 @@ Understanding how tasks work is crucial for maximizing your income.<br><br>
 </section>
 
 <!-- YouTube Video Section -->
-             <p> watch Video full earn 0.00005$ </p> 
+             <p> watch Video full earn 0.005$ </p> 
 <section id="youtubeVideoSection">
   <h2>Watch Our Latest Video</h2>
   <div id="videoPlayerContainer">
@@ -815,7 +815,7 @@ Understanding how tasks work is crucial for maximizing your income.<br><br>
     <a id="contactEmailLink">Contact via Email</a>
     <a id="contactWhatsappLink">Contact via WhatsApp</a>
   </div>
-  <p class="copyright">&copy; 2013 to 2025 Free Earnings App. All Rights Reserved.</p>
+  <p class="copyright">&copy; 2025 Free Earnings App. All Rights Reserved.</p>
 </footer>
 
 <script type="module">
@@ -841,31 +841,29 @@ const auth = getAuth();
 // --- Global Constants and Configuration ---
 const adminEmail = "mn1691316@gmail.com"; // Your admin email
 const whatsappNumber = "+923495144924";   // Your WhatsApp number (with country code)
-const MIN_WITHDRAWAL_AMOUNT = 1200; // This remains in Rupees for now as it's a currency value
-// Base earnings per CLICK for different categories as per user request. Converted to COINS.
-const CATEGORY_EARNINGS = {
-    "YouTube": 10,      // From 0.010 Rs to 10 Coins
-    "TikTok": 20,       // From 0.020 Rs to 20 Coins
-    "Facebook": 10,    // From 0.010 Rs to 10 Coins
-    "App": 1000,        // From 1.000 Rs to 1000 Coins
-    "Channel": 20,     // From 0.20 Rs to 20 Coins
-    "Web": 500,         // From 0.500 Rs to 500 Coins
-    "Instagram": 10,    // Assuming a default of 10 Coins for Instagram
-    "Products": 2000,     // Assuming a default of 2000 Coins for Products
-};
+const MIN_WITHDRAWAL_AMOUNT = 1200;
+const TASK_EARNING_AMOUNT = 0.07; // Default fallback earning
 const TASK_LINK_COOLDOWN_MS = 1 * 60 * 1000; // 5 minutes
 
-// Dynamic Pricing for Link Addition - Prices are in Rupees (PKR) as per user's list, and are for promotional costs.
-// Coin conversion for earnings is handled separately.
+// New Category-Specific Earnings
+const CATEGORY_EARNINGS = {
+    "YouTube": 0.07,
+    "Instagram": 0.08,
+    "Facebook": 0.09,
+    "TikTok": 0.10,
+    "App": 0.50,
+    "Web": 0.55,
+    "Channel": 0.15,
+    "Products": 10,
+};
+
+// Dynamic Pricing for Link Addition - As per your list
 const PLATFORM_PRICES = {
     "YouTube": 1200,
     "Instagram": 1000,
     "Facebook": 1600,
     "TikTok": 200,
     "Web": 150,
-    "App": 500, // Default price for App
-    "Products": 500, // Default price for Products
-    "Channel": 500, // Default price for Channel
     "For You": 5000 // Price for "For You" page promotion
 };
 // Ensure all defined categories are present, even if not explicitly priced above
@@ -877,7 +875,7 @@ CATEGORIES.forEach(cat => {
     }
 });
 
-const MAX_USER_LINKS = 30; // Max links a user can add
+const MAX_USER_LINKS = 10; // Max links a user can add
 
 
 // --- DOM Elements ---
@@ -904,7 +902,7 @@ const adminItemTypeSelect = document.getElementById("adminItemType");
 const adminCategorySelect = document.getElementById("adminCategory"); // Added category select
 const adminDescriptionInput = document.getElementById("adminDescription");
 const adminBaseUrlInput = document.getElementById("adminBaseUrl");
-const adminRewardInput = document.getElementById("adminReward"); // This will be for COINS
+const adminRewardInput = document.getElementById("adminReward");
 const adminTasksContainer = document.getElementById("adminTasksContainer");
 const adminLinksContainer = document.getElementById("adminLinksContainer");
 const modal = document.getElementById("detailsModal");
@@ -928,7 +926,7 @@ const totalReferralsCountDisplay = document.getElementById("totalReferralsCount"
 const totalUsersDisplay = document.getElementById("totalUsers");
 const totalTasksDisplay = document.getElementById("totalTasks");
 const totalWithdrawalsDisplay = document.getElementById("totalWithdrawals");
-const totalEarningsDisplay = document.getElementById("totalEarnings"); // This will show total earned COINS
+const totalEarningsDisplay = document.getElementById("totalEarnings");
 const dynamicLinkInputsContainer = document.getElementById("dynamicLinkInputs");
 // User Added Links elements
 const addUserLinkForm = document.getElementById("addUserLinkForm");
@@ -986,10 +984,8 @@ function updateButtonState(button, itemId, itemType) {
 
   if (!lastOpenedTimestamp) {
     button.disabled = false;
-    // Dynamically set reward amount based on category earnings or use default
-    const category = button.dataset.category || 'YouTube'; // Default to YouTube or use the task's category
-    const rewardAmount = CATEGORY_EARNINGS[category] || 10; // Fallback to 10 Coins if category not found
-    button.innerText = `Open & Earn ${rewardAmount} Coins`; // Display Coins
+    const rewardAmount = parseFloat(button.dataset.reward);
+    button.innerText = `Open & Earn ₹${rewardAmount.toFixed(2)}`; 
     return;
   }
 
@@ -1003,9 +999,8 @@ function updateButtonState(button, itemId, itemType) {
       if (newTimeElapsed >= TASK_LINK_COOLDOWN_MS) {
         clearInterval(countdownInterval);
         button.disabled = false;
-        const category = button.dataset.category || 'YouTube'; 
-        const rewardAmount = CATEGORY_EARNINGS[category] || 10; 
-        button.innerText = `Open & Earn ${rewardAmount} Coins`; // Display Coins
+        const rewardAmount = parseFloat(button.dataset.reward);
+        button.innerText = `Open & Earn ₹${rewardAmount.toFixed(2)}`; 
         localStorage.removeItem(lastOpenedKey);
         button.dataset.intervalId = '';
       } else {
@@ -1018,9 +1013,8 @@ function updateButtonState(button, itemId, itemType) {
     button.dataset.intervalId = countdownInterval;
   } else {
     button.disabled = false;
-    const category = button.dataset.category || 'YouTube'; 
-    const rewardAmount = CATEGORY_EARNINGS[category] || 10; 
-    button.innerText = `Open & Earn ${rewardAmount} Coins`; // Display Coins
+    const rewardAmount = parseFloat(button.dataset.reward);
+    button.innerText = `Open & Earn ₹${rewardAmount.toFixed(2)}`; 
     localStorage.removeItem(lastOpenedKey);
   }
 }
@@ -1093,7 +1087,7 @@ function generateReferralCode(uid) {
 // --- Category Determination from Description ---
 function getCategoryFromDescription(description) {
     const lowerCaseDesc = description.toLowerCase();
-    for (const category of CATEGORIES) { // Use the defined CATEGORIES list
+    for (const category of CATEGORIES) {
         if (lowerCaseDesc.includes(category.toLowerCase())) {
             return category;
         }
@@ -1165,7 +1159,7 @@ onAuthStateChanged(auth, async user => {
             withdrawDiv.innerHTML = `
                 <p><strong>Method:</strong> ${w.method}</p>
                 <p><strong>Account:</strong> ${w.accountNumber}</p>
-                <p><strong>Amount:</strong> ₹${w.amount.toFixed(2)}</p> <!-- Withdrawal amount remains in Rupees -->
+                <p><strong>Amount:</strong> ₹${w.amount.toFixed(2)}</p>
                 <p><strong>Status:</strong> <span class="${statusClass}">${w.status}</span></p>
                 <p><small>Requested: ${requestDate}</small></p>
             `;
@@ -1180,11 +1174,11 @@ onAuthStateChanged(auth, async user => {
     adminPanelBtn.style.display = "none";
     
     userNameDisplay.innerText = ""; userEmailDisplay.innerText = ""; userRefDisplay.innerText = "";
-    walletBalanceDisplay.innerText = "0"; walletBalanceProfileDisplay.innerText = "0"; // Display 0 Coins
+    walletBalanceDisplay.innerText = "0.00"; walletBalanceProfileDisplay.innerText = "0.00";
     totalReferralsCountDisplay.innerText = "0"; refLinkInput.value = "";
     userProfilePic.innerText = "?"; userProfilePic.style.backgroundImage = 'none'; userProfilePic.style.backgroundColor = '#333';
     totalUsersDisplay.innerText = "0"; totalTasksDisplay.innerText = "0";
-    totalWithdrawalsDisplay.innerText = "0"; totalEarningsDisplay.innerText = "0 Coins"; // Display 0 Coins
+    totalWithdrawalsDisplay.innerText = "0"; totalEarningsDisplay.innerText = "₹0.00";
     document.getElementById("withdrawList").innerHTML = "";
     depositListContainer.innerHTML = "";
     userLinksContainer.innerHTML = ""; // Clear user added links
@@ -1229,7 +1223,7 @@ signupBtn.addEventListener("click", async () => {
         const newUserDocData = {
             name: name, 
             email: email, 
-            wallet: 0, // Wallet balance is in Coins now
+            wallet: 0, 
             referralCode: newUserRefCode, 
             referredBy: referredByUserId, 
             createdAt: Timestamp.now(),
@@ -1302,8 +1296,8 @@ function loadUserData(user) {
             userRefDisplay.innerText = referralCode;
             refLinkInput.value = `${window.location.origin}${window.location.pathname}?ref=${referralCode}`;
             
-            walletBalanceDisplay.innerText = data.wallet || 0; // Display Coins
-            walletBalanceProfileDisplay.innerText = data.wallet || 0; // Display Coins
+            walletBalanceDisplay.innerText = (data.wallet || 0).toFixed(2);
+            walletBalanceProfileDisplay.innerText = (data.wallet || 0).toFixed(2);
 
             if (data.profilePicUrl) {
                 userProfilePic.innerHTML = '';
@@ -1350,8 +1344,10 @@ function loadUserData(user) {
             taskDiv.classList.add("taskBox");
             taskDiv.dataset.category = taskCategory; // Assign category to data attribute for filtering
             
-            const reward = t.reward || CATEGORY_EARNINGS[taskCategory] || 10; // Use category specific earnings or default to 10 Coins
-            taskDiv.innerHTML = `<p>${t.description}</p><button class="submitBtn" data-reward="${reward}" data-task-id="${taskId}" data-category="${taskCategory}">Open & Earn ${reward} Coins</button>`; // Display Coins
+            // New Reward Logic: Use admin-defined reward first, then category-specific, then fallback default.
+            const reward = t.reward || CATEGORY_EARNINGS[taskCategory] || TASK_EARNING_AMOUNT;
+            
+            taskDiv.innerHTML = `<p>${t.description}</p><button class="submitBtn" data-reward="${reward}" data-task-id="${taskId}">Open & Earn ₹${reward.toFixed(2)}</button>`;
             const button = taskDiv.querySelector("button");
             updateButtonState(button, taskId, 'task');
 
@@ -1372,11 +1368,11 @@ function loadUserData(user) {
                     localStorage.setItem(lastOpenedKey, new Date().getTime().toString());
                     updateButtonState(button, taskId, 'task');
 
-                    // Update wallet in Firestore with Coins
+                    // Update wallet in Firestore
                     const userSnap = await getDoc(userRef);
                     if (userSnap.exists()) {
                         await setDoc(userRef, { wallet: (userSnap.data().wallet || 0) + reward }, { merge: true });
-                        showToast(`You earned ${reward} Coins! Wallet updated.`);
+                        showToast(`You earned ₹${reward.toFixed(2)}! Wallet updated.`);
                     } else {
                         showToast("Error: User document not found for wallet update.");
                     }
@@ -1398,13 +1394,11 @@ function loadUserData(user) {
         totalWithdrawalsDisplay.innerText = snap.size;
         let totalApprovedWithdrawals = 0;
         snap.forEach(doc => {
-            // This part might need adjustment if withdrawal amounts are stored in a different currency/unit
-            // For now, assuming withdrawal amounts are still in PKR as per user's earlier inputs.
             if (doc.data().status === "Approved") {
                 totalApprovedWithdrawals += parseFloat(doc.data().amount || 0);
             }
         });
-        totalEarningsDisplay.innerText = totalApprovedWithdrawals.toFixed(2) + " Coins"; // Display total earnings in Coins
+        totalEarningsDisplay.innerText = "₹" + totalApprovedWithdrawals.toFixed(2);
     });
 }
 
@@ -1428,7 +1422,7 @@ function loadUserDepositHistory(userId) {
 
             depositDiv.innerHTML = `
                 <p><strong>Tx ID:</strong> ${d.transactionId}</p>
-                <p><strong>Amount:</strong> ₹${d.amount.toFixed(2)}</p> <!-- Deposit amount remains in Rupees for now -->
+                <p><strong>Amount:</strong> ₹${d.amount.toFixed(2)}</p>
                 <p><strong>Status:</strong> <span class="${statusClass}">${d.status}</span></p>
                 <p><small>Submitted: ${requestDate}</small></p>
             `;
@@ -1564,21 +1558,7 @@ async function loadForYouContent(userId) {
         
         const button = itemDiv.querySelector("button");
         
-        // Removed the call to updateButtonState, disabling cooldown for "For You" items.
-        // updateButtonState(button, item.id, item.type); 
-
         button.addEventListener("click", async () => {
-            // Removed the cooldown check and localStorage manipulation for "For You" items.
-            // const lastOpenedKey = `${item.type}_${item.id}`;
-            // const lastOpenedTimestamp = localStorage.getItem(lastOpenedKey);
-            // const lastOpened = lastOpenedTimestamp ? parseInt(lastOpenedTimestamp) : 0;
-            // const timeElapsed = new Date().getTime() - lastOpened;
-
-            // if (timeElapsed < TASK_LINK_COOLDOWN_MS) {
-            //     showToast("Please wait for the cooldown period to finish.");
-            //     return;
-            // }
-
             const urlToOpen = (item.type === 'task' && item.url) ? item.url : 
                               (item.type === 'link' && item.urls && item.urls.length > 0) ? item.urls[0] : null;
 
@@ -1586,23 +1566,7 @@ async function loadForYouContent(userId) {
                 showToast("Invalid URL for this item.");
                 return;
             }
-
-            const opened = openLinkSafely(urlToOpen);
-            
-            if (opened) {
-                // Removed the code that sets localStorage and updates the wallet, as there's no earning.
-                // localStorage.setItem(lastOpenedKey, new Date().getTime().toString());
-                // updateButtonState(button, item.id, item.type); // Also removed this line
-
-                // Removed the wallet update logic as there are no earnings on the "For You" page.
-                // const userDocSnap = await getDoc(userRef);
-                // if (userDocSnap.exists()) {
-                //     // No reward added here
-                //     showToast("Link opened successfully."); 
-                // } else {
-                //     showToast("Error: User document not found for logging action.");
-                // }
-            }
+            openLinkSafely(urlToOpen);
         });
         // --- MODIFICATION END ---
         
@@ -1652,7 +1616,7 @@ function populatePriceSelectionModal() {
         priceOptionDiv.dataset.price = price;
         priceOptionDiv.innerHTML = `
             <p>${category}</p>
-            <span>₹${price}</span> <!-- Price is shown in Rupees -->
+            <span>₹${price}</span>
         `;
         priceOptionDiv.addEventListener('click', () => selectPriceOption(priceOptionDiv));
         priceOptionsContainer.appendChild(priceOptionDiv);
@@ -1718,32 +1682,19 @@ confirmPriceSelectionBtn.addEventListener("click", async () => {
         return;
     }
 
-    // Check wallet balance for payment (still in Rupees as it's a purchase)
-    if ((userData.wallet || 0) < selectedPrice) { // This check is logically incorrect if wallet is in coins. This needs review based on actual currency flow.
-        // If the user's wallet is in coins and the prices are in Rupees, this logic must change.
-        // Assuming for now that wallet_balance in DB should be coins, and `selectedPrice` is the cost in Rupees to be converted or paid separately.
-        // For simplicity, I will assume the user needs to have enough "value" in their wallet, which is currently denominated in Coins.
-        // This implies a conversion rate or a direct mapping between Rupees and Coins for purchasing link promotions.
-        // Given the user's request to convert earnings to coins, the wallet *should* be coins.
-        // Let's assume a conversion: 1 Rupee cost for promotion = X coins.
-        // If not specified, direct purchase with coins might be intended.
-        // For now, I'll use a placeholder:
-        const costInCoins = selectedPrice; // Placeholder: assuming 1 Rupee promotion cost = 1 Coin value for simplicity. Adjust if a conversion rate exists.
-
-        if ((userData.wallet || 0) < costInCoins) {
-             showToast(`Insufficient Coins balance. You need at least ${costInCoins} Coins for ${selectedCategory} promotion.`);
-             priceSelectionModal.style.display = "none";
-             return;
-        }
+    // Check wallet balance
+    if ((userData.wallet || 0) < selectedPrice) {
+        showToast(`Insufficient balance. You need at least ₹${selectedPrice} for ${selectedCategory}.`);
+        priceSelectionModal.style.display = "none";
+        return;
     }
 
-    // Proceed with adding the link and deducting cost (in Coins)
+    // Proceed with adding the link and deducting cost
     try {
         const batch = writeBatch(db);
 
-        // 1. Deduct cost from wallet (in Coins)
-        const costInCoins = selectedPrice; // Placeholder: assuming 1 Rupee cost = 1 Coin value.
-        batch.update(userRef, { wallet: (userData.wallet || 0) - costInCoins });
+        // 1. Deduct cost from wallet
+        batch.update(userRef, { wallet: (userData.wallet || 0) - selectedPrice });
 
         // 2. Increment userLinkCount
         batch.update(userRef, { userLinkCount: currentUserLinkCount + 1 });
@@ -1761,7 +1712,7 @@ confirmPriceSelectionBtn.addEventListener("click", async () => {
         });
 
         await batch.commit();
-        showToast(`Link added to ${selectedCategory} successfully! ${costInCoins} Coins deducted from your wallet.`);
+        showToast(`Link added to ${selectedCategory} successfully! ₹${selectedPrice} deducted from your wallet.`);
         addUserLinkForm.reset(); 
         priceSelectionModal.style.display = "none";
         currentLinkToAdd = null; // Clear temporary storage
@@ -1785,7 +1736,7 @@ document.getElementById("withdrawForm").addEventListener("submit", async (e) => 
 
     const method = document.getElementById("withdrawMethod").value;
     const accountNumber = document.getElementById("withdrawAccount").value.trim();
-    const amount = parseFloat(document.getElementById("withdrawAmount").value); // Amount is still in Rupees for withdrawal
+    const amount = parseFloat(document.getElementById("withdrawAmount").value);
 
     if (amount < MIN_WITHDRAWAL_AMOUNT) {
         showToast(`Minimum withdrawal amount is ₹${MIN_WITHDRAWAL_AMOUNT}.`);
@@ -1795,26 +1746,6 @@ document.getElementById("withdrawForm").addEventListener("submit", async (e) => 
         showToast("Please enter your account details.");
         return;
     }
-
-    // Note: Withdrawal logic should check user's balance in COINS and convert to Rupees for withdrawal if needed.
-    // Or, if withdrawals are meant to be in coins directly, this needs redefinition.
-    // Assuming withdrawals are still in PKR, and user must have enough *value* in their coin wallet to cover the withdrawal.
-    // This implies a conversion rate is needed to determine how many coins equal ₹1200.
-    // For now, keeping the check simple: User needs to have some balance, and the withdrawal request is recorded in Rupees.
-    // If the user's wallet is in coins, the check `currentWalletBalance < amount` would be comparing Coins to Rupees, which is incorrect.
-    // We need to clarify the withdrawal process:
-    // 1. Does the user withdraw accumulated Coins? If so, the request `amount` should be in Coins.
-    // 2. Does the user withdraw Rupees, and does the system convert Coins to Rupees?
-
-    // For now, I'll assume withdrawals are initiated in Rupees, and the user's coin balance isn't directly used for the *request amount* input,
-    // but the *balance check* needs to relate coins to the withdrawal value if applicable.
-    // Given the previous logic and focus on coins for earnings, I'll proceed with the assumption that the user must have enough coins to cover withdrawals if it's a direct conversion.
-    // However, the prompt implies earnings are in coins, but withdrawal is in Rupees. This needs clarification.
-
-    // For now, I will proceed assuming the user needs to have equivalent value in coins to withdraw rupees.
-    // If user.wallet (coins) needs to be checked against `amount` (Rupees), a conversion rate is required.
-    // Without a conversion rate, I cannot implement this check correctly.
-    // I will keep the code as is, but flag this as a potential issue if withdrawal is meant to be from coin balance.
 
     const userRef = doc(db, "users", user.uid);
     let userDocSnap;
@@ -1831,26 +1762,19 @@ document.getElementById("withdrawForm").addEventListener("submit", async (e) => 
         return;
     }
 
-    // --- Balance Check Logic (Assuming withdrawal is directly from coin balance, needing conversion) ---
-    // This part requires a clear conversion rate from Coins to Rupees for withdrawals.
-    // If such a rate isn't defined, this check is problematic.
-    // Let's assume for the sake of completion that 100 Coins = 1 Rupee for withdrawal purposes.
-    const coinsToRupeeRate = 100; // Example: 100 Coins = 1 Rupee
-    const requiredCoinsForWithdrawal = amount * coinsToRupeeRate;
-    const currentCoinBalance = userDocSnap.data().wallet || 0;
+    const userData = userDocSnap.data();
+    const currentWalletBalance = userData.wallet || 0;
 
-    if (currentCoinBalance < requiredCoinsForWithdrawal) {
-        showToast(`Insufficient coin balance. You need ${requiredCoinsForWithdrawal} Coins to withdraw ₹${amount.toFixed(2)}.`);
+    if (currentWalletBalance < amount) {
+        showToast("Insufficient wallet balance for this withdrawal.");
         return;
     }
-    // --- End of Balance Check Logic ---
-
 
     try {
         const batch = writeBatch(db); // Create a new batch
 
-        // Deduct equivalent coins from user's wallet
-        batch.update(userRef, { wallet: currentCoinBalance - requiredCoinsForWithdrawal });
+        // Deduct amount from user's wallet
+        batch.update(userRef, { wallet: currentWalletBalance - amount });
 
         // Add the withdrawal request to the withdrawals collection
         const withdrawalRef = doc(collection(db, "withdrawals")); // Get a new document reference with an auto-generated ID
@@ -1858,14 +1782,13 @@ document.getElementById("withdrawForm").addEventListener("submit", async (e) => 
             userId: user.uid,
             method: method,
             accountNumber: accountNumber,
-            amount: amount, // Amount is recorded in Rupees
+            amount: amount,
             status: "Pending", // Initial status for withdrawal requests
-            timestamp: Timestamp.now(),
-            coinsDeducted: requiredCoinsForWithdrawal // Record coins deducted for this withdrawal
+            timestamp: Timestamp.now()
         });
 
         await batch.commit(); // Commit the batch operations
-        showToast(`Withdrawal request of ₹${amount.toFixed(2)} submitted successfully. ${requiredCoinsForWithdrawal} Coins deducted from your balance. It will be processed soon.`);
+        showToast("Withdrawal request submitted successfully and wallet balance deducted. It will be processed soon.");
         e.target.reset(); // Clear the form
     } catch (error) {
         console.error("Error submitting withdrawal request or deducting balance:", error);
@@ -1881,7 +1804,7 @@ depositForm.addEventListener("submit", async (e) => {
     if (!user) { showToast("Please log in to deposit funds."); return; }
     
     const txId = transactionIdInput.value.trim();
-    const amount = parseFloat(depositAmountInput.value); // Deposit amount is in Rupees
+    const amount = parseFloat(depositAmountInput.value);
 
     if (!txId || isNaN(amount) || amount <= 0) {
         showToast("Please enter a valid transaction ID and deposit amount.");
@@ -1907,31 +1830,37 @@ depositForm.addEventListener("submit", async (e) => {
 adminAddForm.addEventListener("submit", async (e) => {
     e.preventDefault();
     const itemType = adminItemTypeSelect.value;
-    const selectedCategory = adminCategorySelect.value; // Get the category selected by admin
+    const selectedCategory = adminCategorySelect.value;
     const description = adminDescriptionInput.value.trim();
     const mainUrl = adminBaseUrlInput.value.trim();
-    const reward = parseFloat(adminRewardInput.value); // Reward is now in COINS
+    const reward = adminRewardInput.value ? parseFloat(adminRewardInput.value) : null; // Can be null
     const linkInputs = adminAddForm.querySelectorAll('.dynamic-link-input input');
-    const urls = Array.from(linkInputs).map(input => input.value.trim()).filter(url => url); 
+    const urls = Array.from(linkInputs).map(input => input.value.trim()).filter(url => url);
 
-    if (!description || isNaN(reward) || reward <= 0) {
-        showToast("Please provide a valid description and reward amount.");
+    if (!description) {
+        showToast("Please provide a description.");
         return;
     }
 
-    let category = selectedCategory; // Start with the admin's selected category
-
-    // Determine category from description if it overrides admin's choice
-    const categoryFromDesc = getCategoryFromDescription(description);
-    if (categoryFromDesc !== "Web") { // If description has a specific category keyword
-        category = categoryFromDesc;
+    if (reward !== null && (isNaN(reward) || reward <= 0)) {
+        showToast("If providing a reward, it must be a valid positive number.");
+        return;
     }
     
-    // Use category-specific earnings if provided, otherwise fall back to default
-    const actualReward = reward > 0 ? reward : (CATEGORY_EARNINGS[category] || 10); // Default to 10 Coins
+    const categoryFromDesc = getCategoryFromDescription(description);
+    const finalCategory = (categoryFromDesc !== "Web") ? categoryFromDesc : selectedCategory;
 
-    let itemData = { description, reward: actualReward, category, createdAt: Timestamp.now() }; // Include category
+    let itemData = { 
+        description, 
+        category: finalCategory, 
+        createdAt: Timestamp.now() 
+    };
+    
+    if (reward) {
+        itemData.reward = reward; // Only add reward if admin specified one
+    }
 
+    let collectionRef;
     if (itemType === "task") {
         if (!mainUrl || !mainUrl.startsWith("http")) {
             showToast("Please enter a valid URL for tasks.");
@@ -1984,10 +1913,18 @@ async function displayAdminItems(collectionRef, container, itemType) {
         itemDiv.classList.add(itemType === "tasks" ? "taskBox" : "linkBox"); 
         itemDiv.style.maxWidth = "300px"; itemDiv.style.flexGrow = "0"; 
 
+        let reward = item.reward; // Admin-defined reward
+        if (itemType === "tasks" && !reward) { // Only for tasks and only if admin didn't set one
+            const taskCategory = getCategoryFromDescription(item.description);
+            reward = CATEGORY_EARNINGS[taskCategory] || TASK_EARNING_AMOUNT;
+        } else if (!reward) {
+            reward = TASK_EARNING_AMOUNT; // Fallback for links
+        }
+
         let displayContent = `
             <p><strong>${item.description}</strong></p>
-            <p>Reward: ${item.reward || CATEGORY_EARNINGS[item.category] || 10} Coins</p> <!-- Display Coins -->
-            <p>Category: <strong>${item.category || 'N/A'}</strong></p> 
+            <p>Reward: ₹${reward.toFixed(2)}</p>
+            <p>Category: <strong>${item.category || getCategoryFromDescription(item.description)}</strong></p> 
             <small>Created: ${item.createdAt ? item.createdAt.toDate().toLocaleDateString() : 'N/A'}</small><br>
         `;
 
@@ -2062,16 +1999,6 @@ const modalContent = {
            <p><strong>3. Minimum Withdrawal Amount:</strong></p>
            <p>A minimum balance of <b>₹1200</b> is required.</p>
            <p><strong>4. Processing Time:</strong></p>
-           <p>// Base earnings per CLICK for different categories as per user request. Converted to COINS.</p>
-<p>
-  <0>  "YouTube": 80,      // From 0.080 Rs to 80 Coins</p>
-  <p>  "TikTok": 90,       // From 0.090 Rs to 90 Coins</p>
-  <p>  "Facebook": 100,    // From 0.100 Rs to 100 Coins</p>
-  <p>  "App": 1000,        // From 1.000 Rs to 1000 Coins</p>
-  <p>  "Channel": 200,     // From 0.200 Rs to 200 Coins</p>
-<p>    "Web": 300,         // From 0.300 Rs to 300 Coins</p>
-<p>    "Instagram": 50,    // Assuming a default of 50 Coins for Instagram</p>
- <p>   "Products": 60,     // Assuming a default of 60 Coins for Products </p>
            <p>All requests are manually reviewed and processed within <b>1 week to 2 weeks</b>.</p>` }
 };
 
