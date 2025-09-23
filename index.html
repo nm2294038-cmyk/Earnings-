@@ -214,7 +214,7 @@
         justify-content: center;
         align-items: center;
         position: fixed; /* Footer ko fixed kiya gaya */
-        bottom: 0;       /* Screen k bottom par rakha gaya */
+        bottom: 0;       /* Screen k bottom par rakha گیا */
         left: 0;
         z-index: 100;    /* Baqi content k upar rakhne k liye */
     }
@@ -541,14 +541,14 @@
 <!-- Navigation (REORDERED and UPDATED) -->
 <nav style="display:none;">
   <button data-section="dashboard">Dashboard</button>
-  <button data-section="tasks">Tasks</button>
+  <button data-section="tasks">Tasks</button> <!-- Moved to second position -->
   <button data-section="profile">Profile</button>
   <button data-section="referrals">Referral</button>
   <button data-section="forYouPage">For You</button>
   <button data-section="withdrawals">Withdrawal</button>
   <button data-section="deposit">Deposit</button>
-  <button data-section="publicLinksSection">Public Links</button> <!-- NEW -->
-  <button data-section="userLinksSection">Add/Manage My Links</button> <!-- RENAMED -->
+  <button data-section="publicLinksSection">Public Links</button>
+  <button data-section="userLinksSection">Add/Manage My Links</button>
   <button data-section="youtubeVideo">Watch Video</button>
   <button id="adminPanelBtn" data-section="adminPanel" style="display:none;">Admin Panel</button>
   <button id="logoutBtn">Logout</button>
@@ -600,7 +600,7 @@
   <strong>3. Verification Process:</strong> Our system tracks your actions to verify task completion. Tasks that are deemed incomplete or fraudulent will not be credited.</p>
 </section>
 
-<!-- Tasks Section -->
+<!-- Tasks Section (Moved to be the first functional section after Dashboard) -->
 <section id="tasks">
   <h2>Tasks to Complete</h2>
   <p>Complete tasks to earn rewards. Cooldown: 5 minutes between completions.</p>
@@ -747,7 +747,7 @@
   <p>1 day k ley</p>
   <p>only website link</p>
   <p><b>Payment Account Name: Mujtbha Hassan</b></p>
-  <p>Easypaisa Number: <b>03425640880</b></p>
+  <p>Easypaisa Number: <b>03435640880</b></p>
   <p>1. 1st payment karein (per link charges: 200 PKR).</p>
   <p>2. Payment ka screenshot <b>mn1691316@gmail.com</b> par email karein.</p>
   <p>3. Transaction ID send karein.</p>
@@ -862,7 +862,7 @@
     <a id="contactEmailLink">Contact via Email</a>
     <a id="contactWhatsappLink">Contact via WhatsApp</a>
   </div>
-  <p class="copyright">&copy; 2025 Free Earnings App. All Rights Reserved.</p>
+  <p class="copyright">&copy;2013 to 2025 Free Earnings App. All Rights Reserved.</p>
 </footer>
 
 <script type="module">
@@ -892,15 +892,18 @@ const MIN_WITHDRAWAL_AMOUNT = 1200;
 const TASK_EARNING_AMOUNT = 0.01;
 const TASK_LINK_COOLDOWN_MS = 1 * 60 * 1000;
 const REFERRAL_COMMISSION_RATE = 0.05; // 5%
+const DEFAULT_MIN_CLICKS_BEFORE_COOLDOWN = 10; // Default minimum clicks before cooldown activates
+const WEB_CATEGORY_MIN_CLICKS_BEFORE_COOLDOWN = 30; // Minimum clicks for 'Web' category before cooldown activates
+
 
 const CATEGORY_EARNINGS = {
     "YouTube": 0.01, "Instagram": 0.01, "Facebook": 0.01, "TikTok": 0.10,
-    "App": 0.50, "Web": 0.55, "Channel": 0.15, "Products": 10,
+    "App": 0.50, "Web": 0.05, "Channel": 0.05, "Products": 10,
 };
 
 const PLATFORM_PRICES = {
-    "YouTube": 1200, "Instagram": 1000, "Facebook": 1600,
-    "TikTok": 200, "Web": 150, "For You": 5000
+    "YouTube Task": 1200, "Instagram Task": 1000, "Facebook Task": 1600,
+    "TikTok Task": 200, "Web Task": 150, "For You": 5000
 };
 const CATEGORIES = ["YouTube", "TikTok", "Instagram", "Facebook", "App", "Products", "Channel", "Web"];
 CATEGORIES.forEach(cat => {
@@ -1016,21 +1019,45 @@ function clearAllCountdowns() {
     });
 }
 
-function updateButtonState(button, itemId, itemType) {
-    const lastOpenedKey = `${itemType}_${itemId}`;
-    const lastOpenedTimestamp = localStorage.getItem(lastOpenedKey);
+// MODIFIED: updateButtonState to incorporate category-specific click thresholds
+function updateButtonState(button, itemId, itemType, taskCategory) {
+    const rewardAmount = parseFloat(button.dataset.reward);
+    
+    // Clear any existing interval to prevent multiple timers running for the same button
     if (button.dataset.intervalId) {
         clearInterval(parseInt(button.dataset.intervalId));
         button.dataset.intervalId = '';
     }
+
+    // Determine the minimum clicks before cooldown based on category
+    let currentMinClicksBeforeCooldown = DEFAULT_MIN_CLICKS_BEFORE_COOLDOWN;
+    if (taskCategory === "Web") {
+        currentMinClicksBeforeCooldown = WEB_CATEGORY_MIN_CLICKS_BEFORE_COOLDOWN;
+    }
+
+    // Check click count first
+    const itemClicksKey = `${itemType}_${itemId}_clicks`;
+    const currentClicks = parseInt(localStorage.getItem(itemClicksKey) || '0');
+
+    if (currentClicks < currentMinClicksBeforeCooldown) {
+        button.disabled = false;
+        button.innerText = `Open & Earn ₹${rewardAmount.toFixed(2)} (Clicks: ${currentClicks}/${currentMinClicksBeforeCooldown})`; // Show click progress
+        return;
+    }
+
+    // If minimum clicks threshold is met, apply the cooldown logic
+    const lastOpenedKey = `${itemType}_${itemId}`;
+    const lastOpenedTimestamp = localStorage.getItem(lastOpenedKey);
+    
     if (!lastOpenedTimestamp) {
         button.disabled = false;
-        const rewardAmount = parseFloat(button.dataset.reward);
         button.innerText = `Open & Earn ₹${rewardAmount.toFixed(2)}`;
         return;
     }
+
     const lastOpened = parseInt(lastOpenedTimestamp);
     const timeElapsed = new Date().getTime() - lastOpened;
+
     if (timeElapsed < TASK_LINK_COOLDOWN_MS) {
         button.disabled = true;
         const countdownInterval = setInterval(() => {
@@ -1038,9 +1065,10 @@ function updateButtonState(button, itemId, itemType) {
             if (newTimeElapsed >= TASK_LINK_COOLDOWN_MS) {
                 clearInterval(countdownInterval);
                 button.disabled = false;
-                const rewardAmount = parseFloat(button.dataset.reward);
                 button.innerText = `Open & Earn ₹${rewardAmount.toFixed(2)}`;
                 localStorage.removeItem(lastOpenedKey);
+                // Reset clicks for this task after cooldown
+                localStorage.setItem(itemClicksKey, '0'); // Reset clicks after cooldown
                 button.dataset.intervalId = '';
             } else {
                 const timeLeftMs = TASK_LINK_COOLDOWN_MS - newTimeElapsed;
@@ -1052,9 +1080,10 @@ function updateButtonState(button, itemId, itemType) {
         button.dataset.intervalId = countdownInterval;
     } else {
         button.disabled = false;
-        const rewardAmount = parseFloat(button.dataset.reward);
         button.innerText = `Open & Earn ₹${rewardAmount.toFixed(2)}`;
         localStorage.removeItem(lastOpenedKey);
+        // Reset clicks for this task after cooldown
+        localStorage.setItem(itemClicksKey, '0'); // Reset clicks after cooldown
     }
 }
 
@@ -1145,20 +1174,20 @@ onAuthStateChanged(auth, async user => {
     if (user) {
         authSection.style.display = "none";
         nav.style.display = "flex";
-        showSection('dashboard'); // Default view
+        showSection('tasks'); // Default view changed to 'tasks'
         if (user.email === adminEmail) {
             adminPanelBtn.style.display = "block";
             loadAdminDataIfAdmin(user);
         } else {
             adminPanelBtn.style.display = "none";
             if (adminPanelSection.classList.contains('active')) {
-                showSection('dashboard');
+                showSection('tasks'); // If admin panel was active, switch to tasks
             }
         }
         loadUserData(user);
         loadUserDepositHistory(user.uid);
-        loadUserAddedLinks(user.uid);
-        loadPublicLinks(); // NEW: Load public links for all logged-in users
+loadUserAddedLinks(user.uid);
+loadPublicLinks();
         loadForYouContent(user.uid);
         const withdrawalsCol = collection(db, "withdrawals");
         onSnapshot(query(withdrawalsCol, where("userId", "==", user.uid), orderBy("timestamp", "desc")), snap => {
@@ -1194,7 +1223,7 @@ onAuthStateChanged(auth, async user => {
         document.getElementById("withdrawList").innerHTML = "";
         depositListContainer.innerHTML = "";
         userLinksContainer.innerHTML = "";
-        publicLinksContainer.innerHTML = ""; // NEW: Clear public links on logout
+        publicLinksContainer.innerHTML = "";
         forYouTasksContainer.innerHTML = "";
         document.getElementById("tasksContainer").innerHTML = "";
     }
@@ -1331,12 +1360,13 @@ function loadUserData(user) {
             const t = taskDoc.data();
             const taskId = taskDoc.id;
             const taskCategory = getCategoryFromDescription(t.description);
+            const reward = t.reward || CATEGORY_EARNINGS[taskCategory] || TASK_EARNING_AMOUNT;
+
+            // FIX: Declare taskDiv using 'const'
             const taskDiv = document.createElement("div");
             taskDiv.classList.add("taskBox");
             taskDiv.dataset.category = taskCategory;
-            const reward = t.reward || CATEGORY_EARNINGS[taskCategory] || TASK_EARNING_AMOUNT;
-
-            // === UPDATED PART: Added the warning message to each task ===
+            
             taskDiv.innerHTML = `
                 <p>${t.description}</p>
                 <div class="task-warning">
@@ -1347,29 +1377,67 @@ function loadUserData(user) {
             `;
             
             const button = taskDiv.querySelector("button");
-            updateButtonState(button, taskId, 'task');
+            updateButtonState(button, taskId, 'task', taskCategory); // Initial state with click count
+            
             button.addEventListener("click", async () => {
-                const lastOpenedKey = `task_${taskId}`;
-                const lastOpenedTimestamp = localStorage.getItem(lastOpenedKey);
-                const lastOpened = lastOpenedTimestamp ? parseInt(lastOpenedTimestamp) : 0;
-                const timeElapsed = new Date().getTime() - lastOpened;
-                if (timeElapsed < TASK_LINK_COOLDOWN_MS) {
-                    showToast("Please wait for the cooldown period to finish.");
-                    return;
+                const currentUserId = auth.currentUser.uid;
+                if (!currentUserId) { showToast("Please log in to complete tasks."); return; }
+
+                const itemClicksKey = `task_${taskId}_clicks`;
+                let currentClicks = parseInt(localStorage.getItem(itemClicksKey) || '0');
+                
+                // Determine the minimum clicks before cooldown based on category
+                let effectiveMinClicks = DEFAULT_MIN_CLICKS_BEFORE_COOLDOWN;
+                if (taskCategory === "Web") {
+                    effectiveMinClicks = WEB_CATEGORY_MIN_CLICKS_BEFORE_COOLDOWN;
                 }
-                const linkOpened = openLinkSafely(t.url);
-                if (linkOpened || !document.getElementById('popup-blocker-message')) {
-                    localStorage.setItem(lastOpenedKey, new Date().getTime().toString());
-                    updateButtonState(button, taskId, 'task');
-                    try {
-                        await addEarning(auth.currentUser.uid, taskCategory, reward);
-                        showToast(`You earned ₹${reward.toFixed(2)} from ${taskCategory}!`);
-                    } catch (error) {
-                        console.error("An unexpected error occurred during task completion:", error);
-                        showToast(`An error occurred: ${error.message}. Please try again.`);
+
+                // Increment clicks for this specific task
+                currentClicks++;
+                localStorage.setItem(itemClicksKey, currentClicks.toString());
+
+                // Re-evaluate button state immediately after click to reflect new count or cooldown
+                updateButtonState(button, taskId, 'task', taskCategory); // Pass taskCategory
+
+                if (currentClicks < effectiveMinClicks) {
+                    // Below cooldown threshold, just open link and earn
+                    const linkOpened = openLinkSafely(t.url);
+                    if (linkOpened) {
+                        try {
+                            await addEarning(currentUserId, taskCategory, reward);
+                            showToast(`You earned ₹${reward.toFixed(2)} from ${taskCategory}! (Clicks: ${currentClicks}/${effectiveMinClicks})`);
+                        } catch (error) {
+                            console.error("An unexpected error occurred during task completion:", error);
+                            showToast(`An error occurred: ${error.message}. Please try again.`);
+                        }
+                    } else {
+                        showToast("Could not open the task link. Please ensure the URL is valid.");
                     }
                 } else {
-                    showToast("Could not open the task link. Please ensure the URL is valid.");
+                    // Cooldown threshold met, proceed with cooldown logic
+                    const lastOpenedKey = `task_${taskId}`;
+                    const lastOpenedTimestamp = localStorage.getItem(lastOpenedKey);
+                    const lastOpened = lastOpenedTimestamp ? parseInt(lastOpenedTimestamp) : 0;
+                    const timeElapsed = new Date().getTime() - lastOpened;
+
+                    if (timeElapsed < TASK_LINK_COOLDOWN_MS) {
+                        showToast("Please wait for the cooldown period to finish.");
+                        return; // Do not open link or earn if cooldown is active
+                    }
+                    
+                    const linkOpened = openLinkSafely(t.url);
+                    if (linkOpened || !document.getElementById('popup-blocker-message')) {
+                        localStorage.setItem(lastOpenedKey, new Date().getTime().toString()); // Set cooldown timestamp
+                        try {
+                            await addEarning(currentUserId, taskCategory, reward);
+                            showToast(`You earned ₹${reward.toFixed(2)} from ${taskCategory}! Cooldown activated.`);
+                        } catch (error) {
+                            console.error("An unexpected error occurred during task completion:", error);
+                            showToast(`An error occurred: ${error.message}. Please try again.`);
+                        }
+                    } else {
+                        showToast("Could not open the task link. Please ensure the URL is valid.");
+                    }
                 }
             });
             container.appendChild(taskDiv);
@@ -1670,6 +1738,18 @@ document.getElementById("withdrawForm").addEventListener("submit", async (e) => 
     e.preventDefault();
     const user = auth.currentUser;
     if (!user) { showToast("Please log in to request withdrawal."); return; }
+
+    // --- Withdrawal Date Check ---
+    const today = new Date();
+    const dayOfMonth = today.getDate();
+    const allowedDays = [19, 20, 21, 22, 28, 29, 30, 31];
+
+    if (!allowedDays.includes(dayOfMonth)) {
+        showToast("Withdrawal requests can only be submitted on the 19th-22nd and 28th-31st of each month. Please check the current date.");
+        return;
+    }
+    // --- End Withdrawal Date Check ---
+
     const method = document.getElementById("withdrawMethod").value;
     const accountNumber = document.getElementById("withdrawAccount").value.trim();
     const amount = parseFloat(document.getElementById("withdrawAmount").value);
