@@ -58,6 +58,30 @@
     #authSection h2 { color: #0ff; margin-bottom: 25px; }
     #authSection hr { border: 0; height: 1px; background-image: linear-gradient(to right, rgba(0, 255, 255, 0), rgba(0, 255, 255, 0.75), rgba(0, 255, 255, 0)); margin: 30px 0; }
     #authSection button.submitBtn { width: 100%; }
+    #authSection .location-button {
+        background: #4CAF50; /* Green */
+        color: white;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: all 0.3s ease;
+        font-size: 14px;
+        margin-top: 10px;
+        width: 100%;
+        display: block;
+    }
+    #authSection .location-button:hover {
+        background: #45a049;
+        box-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
+        transform: translateY(-1px);
+    }
+    #authSection .location-button:disabled {
+        background: #808080;
+        cursor: not-allowed;
+    }
+
 
     /* --- Containers for Boxes --- */
     .dashboard-container, #tasksContainer, #forYouTasksContainer, #withdrawList, #adminTasksContainer, #adminLinksContainer, #depositList, #userLinksContainer, #publicLinksContainer { /* Added publicLinksContainer */
@@ -530,6 +554,10 @@
     <input type="email" id="signupEmail" placeholder="Email" required><br>
     <input type="password" id="signupPassword" placeholder="Password" required><br>
     <input type="text" id="signupReferralCode" placeholder="Referral Code (Optional)"><br>
+    <!-- New button for location -->
+    <button type="button" id="useMyLocationBtn" class="location-button">Use My Current Location</button>
+    <!-- Hidden input to store location -->
+    <input type="hidden" id="userLocationInput">
     <button id="signupBtn" class="submitBtn">Sign Up</button>
     <hr>
     <input type="email" id="loginEmail" placeholder="Email" required><br>
@@ -892,7 +920,7 @@ const MIN_WITHDRAWAL_AMOUNT = 1200;
 const TASK_EARNING_AMOUNT = 0.01;
 const TASK_LINK_COOLDOWN_MS = 1 * 60 * 1000;
 const REFERRAL_COMMISSION_RATE = 0.05; // 5%
-const DEFAULT_MIN_CLICKS_BEFORE_COOLDOWN = 10; // Default minimum clicks before cooldown activates
+const DEFAULT_MIN_CLICKS_BEFORE_COOLDOWN = 2; // Default minimum clicks before cooldown activates
 const WEB_CATEGORY_MIN_CLICKS_BEFORE_COOLDOWN = 30; // Minimum clicks for 'Web' category before cooldown activates
 
 
@@ -973,6 +1001,10 @@ const priceOptionsContainer = document.getElementById("priceOptionsContainer");
 const confirmPriceSelectionBtn = document.getElementById("confirmPriceSelectionBtn");
 const priceSelectionModalCloseBtn = priceSelectionModal.querySelector(".modal-close-btn");
 const publicLinksContainer = document.getElementById("publicLinksContainer"); // NEW
+
+// New elements for location
+const useMyLocationBtn = document.getElementById("useMyLocationBtn");
+const userLocationInput = document.getElementById("userLocationInput");
 
 let currentLinkToAdd = null;
 
@@ -1168,6 +1200,44 @@ function filterTasks() {
     });
 }
 
+// Function to get user's current location
+function useCurrentLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                const latitude = position.coords.latitude;
+                const longitude = position.coords.longitude;
+                const locationString = `${latitude}, ${longitude}`;
+                userLocationInput.value = locationString; // Update hidden input
+                console.log("Location obtained:", locationString);
+                showToast("Your current location has been recorded.");
+            },
+            (error) => {
+                console.error("Error getting location:", error);
+                switch(error.code) {
+                    case error.PERMISSION_DENIED:
+                        showToast("User denied the request for Geolocation. Please allow location access to use this feature.");
+                        break;
+                    case error.POSITION_UNAVAILABLE:
+                        showToast("Location information is unavailable.");
+                        break;
+                    case error.TIMEOUT:
+                        showToast("The request to get user location timed out.");
+                        break;
+                    case error.UNKNOWN_ERROR:
+                        showToast("An unknown error occurred while getting location.");
+                        break;
+                }
+                userLocationInput.value = ""; // Clear input if error occurs
+            }
+        );
+    } else {
+        showToast("Geolocation is not supported by this browser.");
+        userLocationInput.value = ""; // Clear input if not supported
+    }
+}
+
+
 // --- Authentication and UI State Management ---
 onAuthStateChanged(auth, async user => {
     clearAllCountdowns();
@@ -1186,8 +1256,8 @@ onAuthStateChanged(auth, async user => {
         }
         loadUserData(user);
         loadUserDepositHistory(user.uid);
-loadUserAddedLinks(user.uid);
-loadPublicLinks();
+        loadUserAddedLinks(user.uid);
+        loadPublicLinks();
         loadForYouContent(user.uid);
         const withdrawalsCol = collection(db, "withdrawals");
         onSnapshot(query(withdrawalsCol, where("userId", "==", user.uid), orderBy("timestamp", "desc")), snap => {
@@ -1235,11 +1305,14 @@ signupBtn.addEventListener("click", async () => {
     const email = signupEmailInput.value.trim();
     const password = signupPasswordInput.value.trim();
     const referralCode = signupReferralCodeInput.value.trim();
+    const locationData = userLocationInput.value; // Get location data
+
     if (!name || !email || !password) { showToast("Please fill in all fields."); return; }
     try {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
         await updateProfile(user, { displayName: name });
+        
         let referrerDoc = null;
         let referredByUserId = null;
         if (referralCode) {
@@ -1254,13 +1327,23 @@ signupBtn.addEventListener("click", async () => {
                 showToast("Referral code not found. You will not be credited for a referral.");
             }
         }
+
         const newUserRefCode = generateReferralCode(user.uid);
         const newUserDocData = {
-            name: name, email: email, wallet: 0, referralCode: newUserRefCode,
-            referredBy: referredByUserId, createdAt: Timestamp.now(), referralCount: 0,
-            userLinkCount: 0, totalReferralEarnings: 0
+            name: name,
+            email: email,
+            wallet: 0,
+            referralCode: newUserRefCode,
+            referredBy: referredByUserId,
+            createdAt: Timestamp.now(),
+            referralCount: 0,
+            userLinkCount: 0,
+            totalReferralEarnings: 0,
+            location: locationData ? { raw: locationData, geo: { latitude: parseFloat(locationData.split(',')[0]), longitude: parseFloat(locationData.split(',')[1]) } } : null // Store location
         };
+        
         await setDoc(doc(db, "users", user.uid), newUserDocData);
+        
         if (referrerDoc) {
             const batch = writeBatch(db);
             const referrerRef = doc(db, "users", referrerDoc.id);
@@ -1268,9 +1351,14 @@ signupBtn.addEventListener("click", async () => {
             batch.update(referrerRef, { referralCount: currentReferralCount + 1 });
             await batch.commit();
         }
+        
         showToast("Sign up successful! Please log in.");
-        signupNameInput.value = ''; signupEmailInput.value = ''; signupPasswordInput.value = '';
+        signupNameInput.value = '';
+        signupEmailInput.value = '';
+        signupPasswordInput.value = '';
         signupReferralCodeInput.value = '';
+        userLocationInput.value = ''; // Clear location input after signup
+        useMyLocationBtn.innerText = "Use My Current Location"; // Reset button text
     } catch (error) {
         console.error("Sign up error:", error);
         showToast(`Sign up failed: ${error.message}`);
@@ -1297,6 +1385,11 @@ logoutBtn.addEventListener("click", async () => {
         console.error("Logout error:", error); showToast(`Logout failed: ${error.message}`);
     }
 });
+
+// Event listener for the new location button
+if (useMyLocationBtn) {
+    useMyLocationBtn.addEventListener("click", useCurrentLocation);
+}
 
 // --- User Data Loading and Real-time Updates ---
 function loadUserData(user) {
@@ -1346,7 +1439,7 @@ function loadUserData(user) {
             await setDoc(userRef, {
                 name: user.displayName || "New User", email: user.email, wallet: 0, referralCode: referralCode,
                 referredBy: null, createdAt: Timestamp.now(), referralCount: 0, userLinkCount: 0,
-                earningsHistory: {}, totalReferralEarnings: 0
+                earningsHistory: {}, totalReferralEarnings: 0, location: null // Initialize location as null
             });
             showToast("Your profile data was initialized.");
             loadUserData(user);
@@ -1362,7 +1455,6 @@ function loadUserData(user) {
             const taskCategory = getCategoryFromDescription(t.description);
             const reward = t.reward || CATEGORY_EARNINGS[taskCategory] || TASK_EARNING_AMOUNT;
 
-            // FIX: Declare taskDiv using 'const'
             const taskDiv = document.createElement("div");
             taskDiv.classList.add("taskBox");
             taskDiv.dataset.category = taskCategory;
@@ -1386,21 +1478,17 @@ function loadUserData(user) {
                 const itemClicksKey = `task_${taskId}_clicks`;
                 let currentClicks = parseInt(localStorage.getItem(itemClicksKey) || '0');
                 
-                // Determine the minimum clicks before cooldown based on category
                 let effectiveMinClicks = DEFAULT_MIN_CLICKS_BEFORE_COOLDOWN;
                 if (taskCategory === "Web") {
                     effectiveMinClicks = WEB_CATEGORY_MIN_CLICKS_BEFORE_COOLDOWN;
                 }
 
-                // Increment clicks for this specific task
                 currentClicks++;
                 localStorage.setItem(itemClicksKey, currentClicks.toString());
 
-                // Re-evaluate button state immediately after click to reflect new count or cooldown
-                updateButtonState(button, taskId, 'task', taskCategory); // Pass taskCategory
+                updateButtonState(button, taskId, 'task', taskCategory);
 
                 if (currentClicks < effectiveMinClicks) {
-                    // Below cooldown threshold, just open link and earn
                     const linkOpened = openLinkSafely(t.url);
                     if (linkOpened) {
                         try {
@@ -1414,7 +1502,6 @@ function loadUserData(user) {
                         showToast("Could not open the task link. Please ensure the URL is valid.");
                     }
                 } else {
-                    // Cooldown threshold met, proceed with cooldown logic
                     const lastOpenedKey = `task_${taskId}`;
                     const lastOpenedTimestamp = localStorage.getItem(lastOpenedKey);
                     const lastOpened = lastOpenedTimestamp ? parseInt(lastOpenedTimestamp) : 0;
@@ -1422,12 +1509,12 @@ function loadUserData(user) {
 
                     if (timeElapsed < TASK_LINK_COOLDOWN_MS) {
                         showToast("Please wait for the cooldown period to finish.");
-                        return; // Do not open link or earn if cooldown is active
+                        return;
                     }
                     
                     const linkOpened = openLinkSafely(t.url);
                     if (linkOpened || !document.getElementById('popup-blocker-message')) {
-                        localStorage.setItem(lastOpenedKey, new Date().getTime().toString()); // Set cooldown timestamp
+                        localStorage.setItem(lastOpenedKey, new Date().getTime().toString());
                         try {
                             await addEarning(currentUserId, taskCategory, reward);
                             showToast(`You earned ₹${reward.toFixed(2)} from ${taskCategory}! Cooldown activated.`);
@@ -1941,7 +2028,7 @@ const modalContent = {
             <h3>2. Information We Collect (معلومات جو ہم جمع کرتے ہیں)</h3>
             <p>We collect various types of information to provide and improve our Service to you.</p>
             <ul>
-                <li><strong>Personal Identification Information:</strong> When you register, we collect your name, email address, and password. For withdrawals, we may collect your payment details such as Easypaisa/JazzCash number or bank account information. This information is essential for creating and managing your account and processing payments.</li>
+                <li><strong>Personal Identification Information:</strong> When you register, we collect your name, email address, and password. For withdrawals, we may collect your payment details such as Easypaisa/JazzCash number or bank account information. This information is essential for creating and managing your account and processing payments. We also collect your location if you choose to provide it.</li>
                 <li><strong>Usage Data:</strong> We automatically collect information on how the Service is accessed and used. This may include your IP address, browser type, device type, pages visited, time spent on pages, and task completion data. This helps us understand user behavior and improve our platform.</li>
                 <li><strong>Referral Information:</strong> If you were referred by another user, we store a connection to that user's account to manage referral commissions.</li>
             </ul>
@@ -1952,13 +2039,13 @@ const modalContent = {
                 <li><strong>To Provide and Maintain our Service:</strong> Your account details are used to log you in, display your balance, and manage your profile.</li>
                 <li><strong>To Process Transactions:</strong> Your payment information is used exclusively for sending you your earnings.</li>
                 <li><strong>To Communicate With You:</strong> We may use your email address to send you important updates, notifications about your account, or promotional information.</li>
-                <li><strong>For Security and Fraud Prevention:</strong> We analyze usage data to detect and prevent fraudulent activities, such as the use of bots, VPNs, or multiple accounts, ensuring a fair platform for everyone.</li>
+                <li><strong>For Security and Fraud Prevention:</strong> We analyze usage data and location data (if provided) to detect and prevent fraudulent activities, such as the use of bots, VPNs, or multiple accounts, ensuring a fair platform for everyone.</li>
                 <li><strong>To Improve Our Platform:</strong> By understanding how you use our app, we can identify areas for improvement and develop new features.</li>
             </ul>
             <p>Hum aapki maloomat kisi teesre fareeq (third party) ko farokht nahi karte hain. Sirf payment process karne ke liye zaroori maloomat payment provider ke sath share ki jaati hai.</p>
 
             <h3>4. Data Security (ڈیٹا کی حفاظت)</h3>
-            <p>The security of your data is a top priority. We use a variety of industry-standard security technologies and procedures to help protect your personal information from unauthorized access, use, or disclosure. All data is transmitted over secure channels (HTTPS), and sensitive information like passwords is encrypted. However, no method of transmission over the Internet or method of electronic storage is 100% secure. While we strive to use commercially acceptable means to protect your Personal Information, we cannot guarantee its absolute security.</p>
+            <p>The security of your data is a top priority. We use a variety of industry-standard security technologies and procedures to help protect your personal information from unauthorized access, use, or disclosure. All data is transmitted over secure channels (HTTPS), and sensitive information like passwords is encrypted. Location data, if provided, is stored securely. However, no method of transmission over the Internet or method of electronic storage is 100% secure. While we strive to use commercially acceptable means to protect your Personal Information, we cannot guarantee its absolute security.</p>
             
             <h3>5. Your Rights (آپ کے حقوق)</h3>
             <p>You have certain rights regarding your personal data. You have the right to access, update, or delete the information we have on you. You can update your profile information directly within your account settings. If you wish to delete your account, please contact our support.</p>
@@ -1974,13 +2061,14 @@ const modalContent = {
                 <li><strong>Eligibility:</strong> You must be at least 18 years old to use this service.</li>
                 <li><strong>One Account Rule:</strong> Each user is strictly limited to one account per person, per household, and per IP address. Creating multiple accounts to abuse the system or referral program will result in the permanent ban of all associated accounts and forfeiture of all earnings.</li>
                 <li><strong>Account Security:</strong> You are responsible for safeguarding the password that you use to access the Service and for any activities or actions under your password. We are not liable for any loss or damage arising from your failure to comply with this security obligation.</li>
+                <li><strong>Location Data:</strong> If you choose to provide your location, it will be used for verification and security purposes to ensure fair play and prevent fraud. Providing accurate location data is part of your responsibility as a user.</li>
             </ul>
 
             <h3>2. Prohibited Conduct (ممنوعہ سرگرمیاں)</h3>
             <p>Engaging in any of the following activities is strictly prohibited and will lead to immediate account termination without any payment:</p>
             <ul>
                 <li><strong>Automation:</strong> Using any bots, scripts, spiders, or any other automated means to complete tasks or interact with the platform.</li>
-                <li><strong>Fraudulent Activity:</strong> Falsifying task completion, using VPNs or proxies to hide your location, or any other method to deceive the system.</li>
+                <li><strong>Fraudulent Activity:</strong> Falsifying task completion, using VPNs or proxies to hide your location, or any other method to deceive the system. This includes providing false location data.</li>
                 <li><strong>Multiple Accounts:</strong> As stated above, creating or using more than one account is strictly forbidden.</li>
                 <li><strong>Exploiting Bugs:</strong> Abusing any vulnerability or bug in the system for personal gain.</li>
                 <li><strong>Harassment:</strong> Abusing or harassing other users or the support staff.</li>
@@ -2007,17 +2095,17 @@ const modalContent = {
         title: "About Us (ہمارے بارے میں)",
         text: `
             <h3>Our Mission (ہمارا مقصد)</h3>
-            <p>At Free Earnings App, our mission is to create a reliable and accessible bridge between individuals seeking supplementary income and businesses looking for genuine online engagement. In a rapidly evolving digital world, we aim to empower people from all walks of life by providing them with a simple, secure, and transparent platform to monetize their free time. We believe in the dignity of work and strive to offer legitimate micro-earning opportunities that are fair and rewarding.</p>
+            <p>At Free Earnings App, our mission is to create a reliable and accessible bridge between individuals seeking supplementary income and businesses looking for genuine online engagement. In a rapidly evolving digital world, we aim to empower people from all walks of life by providing them with a simple, secure, and transparent platform to monetize their free time. We believe in the dignity of work and strive to offer legitimate micro-earning opportunities that are fair and rewarding. We aim to provide a secure platform where users can earn and securely manage their digital assets.</p>
             <p>Free Earnings App ka maqsad logon ko online extra income hasil karne ke liye ek aasan aur aitemad-mand (reliable) platform faraham karna hai. Hum is safar mein aapki madad karna chahte hain.</p>
             
             <h3>What We Do (ہم کیا کرتے ہیں؟)</h3>
-            <p>We partner with businesses, marketers, and content creators who need to promote their products, services, and content online. We break down their requirements into simple, manageable digital tasks. Our users, from across the country, can then choose from a variety of these tasks, complete them according to clear instructions, and earn real money. Whether it's visiting a website, watching a video, engaging with a social media post, or testing an app, our platform provides a constant stream of opportunities.</p>
+            <p>We partner with businesses, marketers, and content creators who need to promote their products, services, and content online. We break down their requirements into simple, manageable digital tasks. Our users, from across the country, can then choose from a variety of these tasks, complete them according to clear instructions, and earn real money. Whether it's visiting a website, watching a video, engaging with a social media post, or testing an app, our platform provides a constant stream of opportunities. We are committed to ensuring that the earning process is transparent and that user data, including location (if shared), is handled responsibly.</p>
             
             <h3>Our Core Values (ہماری اقدار)</h3>
             <ul>
                 <li><strong>Transparency (شفافیت):</strong> We believe in clear communication. All task rewards, withdrawal policies, and rules are clearly stated. There are no hidden fees or confusing terms. What you see is what you get.</li>
                 <li><strong>Fairness (انصاف):</strong> We ensure that the rewards for tasks are fair and competitive. We have a robust verification system to ensure that every correctly completed task is rewarded, and we have strict anti-fraud measures to protect the integrity of the platform for our honest users.</li>
-                <li><strong>Security (تحفظ):</strong> The security of your account and your data is paramount. We employ modern security practices to protect your information and ensure that your earnings are safe.</li>
+                <li><strong>Security (تحفظ):</strong> The security of your account and your data is paramount. We employ modern security practices to protect your information and ensure that your earnings are safe. This includes secure handling of any location data provided.</li>
                 <li><strong>Empowerment (بااختیار بنانا):</strong> We are passionate about providing a tool that can help people achieve small financial goals, whether it's paying for a utility bill, saving up for something special, or simply having a bit of extra disposable income.</li>
             </ul>
 
@@ -2070,7 +2158,7 @@ const modalContent = {
                 <li><strong>In-Depth Review & Processing (تفصیلی جائزہ):</strong> This is the most important stage. Our team performs a rigorous audit of your account, which includes:
                     <ul>
                         <li><strong>Task Compliance Check:</strong> We manually and automatically review your recent task history. We check if you have followed all instructions, respected timers, and completed tasks honestly. <strong>This is the number one reason for rejection. Any evidence of cutting corners or violating task rules will result in immediate rejection.</strong></li>
-                        <li><strong>Fraud Check:</strong> We check your account for any signs of prohibited activities, such as multiple accounts from the same IP, VPN usage, or bot-like activity.</li>
+                        <li><strong>Fraud Check:</strong> We check your account for any signs of prohibited activities, such as multiple accounts from the same IP, VPN usage, or bot-like activity. Location data may be used to verify consistent and legitimate usage patterns.</li>
                         <li><strong>Payment Detail Verification:</strong> We ensure your provided payment details are in the correct format.</li>
                     </ul>
                 </li>
