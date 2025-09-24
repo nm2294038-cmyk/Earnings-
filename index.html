@@ -1339,7 +1339,15 @@ signupBtn.addEventListener("click", async () => {
             referralCount: 0,
             userLinkCount: 0,
             totalReferralEarnings: 0,
-            location: locationData ? { raw: locationData, geo: { latitude: parseFloat(locationData.split(',')[0]), longitude: parseFloat(locationData.split(',')[1]) } } : null // Store location
+            // Store location data with latitude, longitude, and timestamp
+            location: locationData ? { 
+                raw: locationData, // Store raw string for easy display
+                geo: { 
+                    latitude: parseFloat(locationData.split(',')[0]), 
+                    longitude: parseFloat(locationData.split(',')[1]) 
+                },
+                timestamp: Timestamp.now() // Add timestamp when location is recorded
+            } : null 
         };
         
         await setDoc(doc(db, "users", user.uid), newUserDocData);
