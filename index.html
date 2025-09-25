@@ -918,7 +918,7 @@ const adminEmail = "mn1691316@gmail.com";
 const whatsappNumber = "+923495144924";
 const MIN_WITHDRAWAL_AMOUNT = 1200;
 const TASK_EARNING_AMOUNT = 0.01;
-const TASK_LINK_COOLDOWN_MS = 1 * 60 * 1000;
+const TASK_LINK_COOLDOWN_MS = 5 * 60 * 1000; // 5 minutes cooldown
 const REFERRAL_COMMISSION_RATE = 0.05; // 5%
 const DEFAULT_MIN_CLICKS_BEFORE_COOLDOWN = 2; // Default minimum clicks before cooldown activates
 const WEB_CATEGORY_MIN_CLICKS_BEFORE_COOLDOWN = 30; // Minimum clicks for 'Web' category before cooldown activates
@@ -1181,7 +1181,7 @@ function getCategoryFromDescription(description) {
             return mainCategory;
         }
     }
-    return "Web";
+    return "Web"; // Default category
 }
 
 function filterTasks() {
@@ -1339,15 +1339,7 @@ signupBtn.addEventListener("click", async () => {
             referralCount: 0,
             userLinkCount: 0,
             totalReferralEarnings: 0,
-            // Store location data with latitude, longitude, and timestamp
-            location: locationData ? { 
-                raw: locationData, // Store raw string for easy display
-                geo: { 
-                    latitude: parseFloat(locationData.split(',')[0]), 
-                    longitude: parseFloat(locationData.split(',')[1]) 
-                },
-                timestamp: Timestamp.now() // Add timestamp when location is recorded
-            } : null 
+            location: locationData ? { raw: locationData, geo: { latitude: parseFloat(locationData.split(',')[0]), longitude: parseFloat(locationData.split(',')[1]) } } : null // Store location
         };
         
         await setDoc(doc(db, "users", user.uid), newUserDocData);
@@ -1686,28 +1678,40 @@ async function deleteUserLink(linkId) {
 // --- "For You" Page Logic ---
 async function loadForYouContent(userId) {
     forYouTasksContainer.innerHTML = "";
-    const keywords = ["nazim", "umar", "For You", "YouTube", "TikTok", "Instagram", "Facebook", "Google", "cpm"];
+    // Removed the broad 'keywords' array
     const tasksCol = collection(db, "tasks");
     const linksCol = collection(db, "links");
     let itemsToDisplay = [];
+
+    // Fetch tasks
     const tasksSnapshot = await getDocs(tasksCol);
     tasksSnapshot.forEach(doc => {
         const item = doc.data();
-        if (item.description && keywords.some(keyword => item.description.toLowerCase().includes(keyword))) {
+        const description = item.description ? item.description.toLowerCase() : "";
+        // --- MODIFIED LOGIC FOR TASKS ---
+        // Show if "for you" is in description AND "umar" is NOT AND "nazim" is NOT
+        if (description.includes("for you") && !description.includes("umar") && !description.includes("nazim")) {
             itemsToDisplay.push({ ...item, id: doc.id, type: 'task' });
         }
     });
+
+    // Fetch links
     const linksSnapshot = await getDocs(linksCol);
     linksSnapshot.forEach(doc => {
         const item = doc.data();
-        if (item.description && keywords.some(keyword => item.description.toLowerCase().includes(keyword))) {
+        const description = item.description ? item.description.toLowerCase() : "";
+        // --- MODIFIED LOGIC FOR LINKS ---
+        // Show if "for you" is in description AND "umar" is NOT AND "nazim" is NOT
+        if (description.includes("for you") && !description.includes("umar") && !description.includes("nazim")) {
             itemsToDisplay.push({ ...item, id: doc.id, type: 'link' });
         }
     });
+
     if (itemsToDisplay.length === 0) {
         forYouTasksContainer.innerHTML = "<p>No specific tasks or links matching your criteria are available right now.</p>";
         return;
     }
+
     itemsToDisplay.forEach(item => {
         const itemDiv = document.createElement("div");
         itemDiv.classList.add("taskBox");
