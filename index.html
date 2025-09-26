@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -588,7 +587,7 @@
   <button data-section="youtubeVideo">Watch Video</button>
   <button data-section="addBalanceSection">Send Balance</button> <!-- Existing Add Balance -->
   <!-- NEW BUTTON FOR SEND BALANCE -->
-  <button data-section="sendBalanceSection">Send Balance</button>
+
   <button id="adminPanelBtn" data-section="adminPanel" style="display:none;">Admin Panel</button>
   <button id="logoutBtn">Logout</button>
 </nav>
@@ -772,14 +771,26 @@
   <div id="depositList"></div>
 </section>
 
-<!-- Send Balance Section -->
+<!-- Add Balance Section -->
 <section id="addBalanceSection">
   <h2>Send Balance to Another Wallet </h2>
   <form id="addBalanceForm">
     <input type="email" id="recipientEmail" placeholder="Recipient's Email" required><br>
-    <input type="number" id="transferAmount" placeholder="Amount to Add" required step="0.01"><br>
+    <input type="number" id="transferAmount" placeholder="Amount to Add 200 to 5000" required step="0.01"><br>
     <button type="submit" class="submitBtn">Send Balance</button>
   </form>
+  <!-- NEW WARNING MESSAGES -->
+  <div class="balance-warning" style="margin-top: 15px; color: #ffc107; border-left: 3px solid #ffc107; padding-left: 10px; background-color: rgba(255, 193, 7, 0.1); border-radius: 4px;">
+    <p style="margin-bottom: 5px; font-weight: bold;">
+      <strong>انتباہ:</strong> آپ جو بیلنس ایڈ کر رہے ہیں، وہ صرف لنک ایڈ کرنے کے لیے استعمال کیا جا سکتا ہے۔<br>
+      <strong>Warning:</strong> The balance you are send can only be used to add links.
+    </p>
+    <p style="margin-top: 0; font-weight: bold;">
+      <strong>نوٹ:</strong> بھیجا گیا بیلنس ودھراؤ نہیں کیا جا سکتا۔<br>
+      <strong>Note:</strong> Sent balance cannot be withdrawn.
+    </p>
+  </div>
+  <!-- END NEW WARNING MESSAGES -->
   <p id="addBalanceMessage" style="color: yellow; margin-top: 15px;"></p>
 </section>
 
@@ -2211,7 +2222,7 @@ const modalContent = {
         text: `
             <h3>1. The Importance of Accuracy (درست معلومات کی اہمیت)</h3>
             <p>Your Withdrawal Profile is the most critical part of getting paid. Providing 100% accurate information is your responsibility. Any error in your payment details can lead to significant delays or even the permanent loss of your funds. Double-check every digit and every letter before submitting a withdrawal request.</p>
-            <p>Withdrawal request karte waqt, apna account number, account title (naam), aur mobile number bilkul sahi likhein. Ek choti si ghalti se aapki payment ghalat jagah ja sakti hai ya ruk sakti hai. Ghalat maloomat faraham karne ki soorat mein, hum payment ke nuqsan ke zimmedar nahi honge.</p>
+            <p>Withdrawal request karte waqt, Apna account number, account title (naam), aur mobile number bilkul sahi likhein. Ek choti si ghalti se aapki payment ghalat jagah ja sakti hai ya ruk sakti hai. Ghalat maloomat faraham karne ki soorat mein, hum payment ke nuqsan ke zimmedar nahi honge.</p>
             
             <h3>2. The Withdrawal Process Flow (پیسے نکالنے کا مکمل عمل)</h3>
             <p>When you request a withdrawal, it goes through several stages:</p>
