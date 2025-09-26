@@ -541,6 +541,14 @@
         .video-item { max-width: 100%; }
     }
   </style>
+  <!-- Google Translate Widget -->
+  <div id="google_translate_element"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'en', includedLanguages: 'en,es,fr,de,hi,ur,bn,pa,gu,mr,ta,te,kn,ml,ne,mr', layout: google.translate.TranslateElement.FloatPosition.TOP_LEFT}, 'google_translate_element');
+    }
+  </script>
+  <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 </head>
 <body>
 
@@ -578,6 +586,9 @@
   <button data-section="publicLinksSection">Public Links</button>
   <button data-section="userLinksSection">Add/Manage My Links</button>
   <button data-section="youtubeVideo">Watch Video</button>
+  <button data-section="addBalanceSection">Send Balance</button> <!-- Existing Add Balance -->
+  <!-- NEW BUTTON FOR SEND BALANCE -->
+  <button data-section="sendBalanceSection">Send Balance</button>
   <button id="adminPanelBtn" data-section="adminPanel" style="display:none;">Admin Panel</button>
   <button id="logoutBtn">Logout</button>
 </nav>
@@ -759,6 +770,29 @@
   </form>
   <h3>Your Deposit History:</h3>
   <div id="depositList"></div>
+</section>
+
+<!-- Send Balance Section -->
+<section id="addBalanceSection">
+  <h2>Send Balance to Another Wallet </h2>
+  <form id="addBalanceForm">
+    <input type="email" id="recipientEmail" placeholder="Recipient's Email" required><br>
+    <input type="number" id="transferAmount" placeholder="Amount to Add" required step="0.01"><br>
+    <button type="submit" class="submitBtn">Send Balance</button>
+  </form>
+  <p id="addBalanceMessage" style="color: yellow; margin-top: 15px;"></p>
+</section>
+
+
+<!-- NEW SECTION: Send Balance -->
+<section id="sendBalanceSection">
+  <h2>Send Balance to Another User</h2>
+  <form id="sendBalanceForm">
+    <input type="email" id="recipientSendEmail" placeholder="Recipient's Email" required><br>
+    <input type="number" id="sendAmount" placeholder="Amount to Send" required step="0.01"><br>
+    <button type="submit" class="submitBtn">Send Balance</button>
+  </form>
+  <p id="sendBalanceMessage" style="color: yellow; margin-top: 15px;"></p>
 </section>
 
 <!-- Public Links Section (NEW) -->
@@ -1005,6 +1039,23 @@ const publicLinksContainer = document.getElementById("publicLinksContainer"); //
 // New elements for location
 const useMyLocationBtn = document.getElementById("useMyLocationBtn");
 const userLocationInput = document.getElementById("userLocationInput");
+
+// --- Elements for Add Balance Feature ---
+const addBalanceForm = document.getElementById("addBalanceForm");
+const recipientEmailInput = document.getElementById("recipientEmail");
+const transferAmountInput = document.getElementById("transferAmount");
+const addBalanceMessage = document.getElementById("addBalanceMessage");
+
+// --- Define allowed amounts for the "Add Balance" feature ---
+const ALLOWED_ADD_BALANCE_AMOUNTS = [200, 500, 800, 1100, 1500, 2000, 2500, 5000];
+
+// --- Elements for Send Balance Feature ---
+const sendBalanceForm = document.getElementById("sendBalanceForm");
+const recipientSendEmailInput = document.getElementById("recipientSendEmail");
+const sendAmountInput = document.getElementById("sendAmount");
+const sendBalanceMessage = document.getElementById("sendBalanceMessage");
+// --- END NEW ---
+
 
 let currentLinkToAdd = null;
 
@@ -2092,7 +2143,7 @@ const modalContent = {
                 <li><strong>Task Verification:</strong> All completed tasks are subject to verification. The decision of our verification team is final. Earnings will only be credited for tasks that are completed correctly and fully according to the provided instructions.</li>
                 <li><strong>Payment Schedule:</strong> Withdrawals are processed during specific periods each month as mentioned in the withdrawal section. We reserve the right to change this schedule.</li>
                 <li><strong>Minimum Withdrawal:</strong> A minimum balance is required to be eligible for a withdrawal. This amount is specified in the withdrawal section.</li>
-                <li><strong>Forfeiture on Violation:</strong> If your account is terminated due to a violation of these Terms, you will lose all rights to any balance in your account.</li>
+                <li><strong>Forfeiture on Violation:</strong> If your account is terminated due to a breach of these Terms, you will lose all rights to any balance in your account.</li>
                 <li><strong>Task Compliance is Mandatory:</strong> As stated in our withdrawal policy, failure to follow task instructions precisely will result in withdrawal rejection. This is a core condition of using our service.</li>
             </ul>
 
@@ -2252,6 +2303,13 @@ document.querySelectorAll("nav button[data-section]").forEach(button => {
             if (sectionId === 'forYouPage' && auth.currentUser) {
                 loadForYouContent(auth.currentUser.uid);
             }
+            // --- NEW: Clear messages when switching sections ---
+            if (sectionId === 'addBalanceSection') {
+                if (addBalanceMessage) addBalanceMessage.textContent = "";
+            }
+            if (sectionId === 'sendBalanceSection') { // Clear message for send balance form
+                if (sendBalanceMessage) sendBalanceMessage.textContent = "";
+            }
         }
     });
 });
@@ -2263,6 +2321,218 @@ taskCategoryFilters.addEventListener("click", (e) => {
         filterTasks();
     }
 });
+
+// --- Add Balance Feature Logic ---
+if (addBalanceForm) {
+  addBalanceForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const senderUser = auth.currentUser;
+    if (!senderUser) {
+      showToast("Please log in to add balance.");
+      return;
+    }
+
+    const recipientEmail = recipientEmailInput.value.trim().toLowerCase();
+    const amountToAdd = parseFloat(transferAmountInput.value);
+
+    // Basic input validation
+    if (isNaN(amountToAdd) || amountToAdd <= 0) {
+      addBalanceMessage.textContent = "Please enter a valid positive amount.";
+      return;
+    }
+    if (!recipientEmail) {
+      addBalanceMessage.textContent = "Please enter the recipient's email address.";
+      return;
+    }
+
+    // --- NEW VALIDATION: Check if amountToAdd is in the allowed list ---
+    if (!ALLOWED_ADD_BALANCE_AMOUNTS.includes(amountToAdd)) {
+      addBalanceMessage.textContent = `Invalid amount. Please choose from: ${ALLOWED_ADD_BALANCE_AMOUNTS.join(', ')}.`;
+      return;
+    }
+    // --- END NEW VALIDATION ---
+
+
+    addBalanceMessage.textContent = "Processing transaction...";
+
+    try {
+      const usersCol = collection(db, "users");
+      const senderRef = doc(usersCol, senderUser.uid);
+      const senderSnap = await getDoc(senderRef);
+
+      if (!senderSnap.exists()) {
+        addBalanceMessage.textContent = "Error: Your profile not found.";
+        return;
+      }
+
+      const senderData = senderSnap.data();
+      const senderBalance = senderData.wallet || 0;
+
+      if (senderBalance < amountToAdd) {
+        addBalanceMessage.textContent = "Error: Insufficient balance in your wallet.";
+        return;
+      }
+
+      // Find recipient by email
+      const recipientQuery = query(usersCol, where("email", "==", recipientEmail));
+      const recipientSnapshot = await getDocs(recipientQuery);
+
+      if (recipientSnapshot.empty) {
+        addBalanceMessage.textContent = "Error: Recipient with this email not found.";
+        return;
+      }
+
+      const recipientDoc = recipientSnapshot.docs[0];
+      const recipientId = recipientDoc.id;
+      const recipientData = recipientDoc.data();
+      const recipientBalance = recipientData.wallet || 0;
+
+      // Perform the atomic transaction using a batch write
+      const batch = writeBatch(db);
+      
+      // Decrease sender's balance
+      batch.update(senderRef, {
+        wallet: senderBalance - amountToAdd
+      });
+
+      // Increase recipient's balance
+      batch.update(doc(usersCol, recipientId), {
+        wallet: recipientBalance + amountToAdd
+      });
+
+      // Record the transaction
+      const transactionsCol = collection(db, "transactions"); // Make sure you have this collection
+      const newTransactionRef = doc(transactionsCol);
+      batch.set(newTransactionRef, {
+        type: "balance_add", // Type of transaction: user adding to another user
+        senderId: senderUser.uid,
+        senderEmail: senderUser.email,
+        recipientId: recipientId,
+        recipientEmail: recipientEmail,
+        amount: amountToAdd,
+        timestamp: Timestamp.now(),
+        status: "completed" // Status of the transaction
+      });
+
+      await batch.commit(); // Commit the transaction
+
+      addBalanceMessage.textContent = `Successfully added ₹${amountToAdd.toFixed(2)} to ${recipientEmail}'s wallet.`;
+      addBalanceForm.reset();
+      transferAmountInput.value = ""; // Clear amount specifically
+
+    } catch (error) {
+      console.error("Error adding balance:", error);
+      addBalanceMessage.textContent = `Transaction failed: ${error.message}. Please try again.`;
+      // In case of failure, Firebase's batch write ensures atomicity.
+    }
+  });
+}
+// --- END Add Balance Feature Logic ---
+
+// --- NEW: Send Balance Feature Logic ---
+if (sendBalanceForm) {
+  sendBalanceForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const senderUser = auth.currentUser;
+    if (!senderUser) {
+      showToast("Please log in to send balance.");
+      return;
+    }
+
+    const recipientEmail = recipientSendEmailInput.value.trim().toLowerCase();
+    const amountToSend = parseFloat(sendAmountInput.value);
+
+    // Basic input validation
+    if (isNaN(amountToSend) || amountToSend <= 0) {
+      sendBalanceMessage.textContent = "Please enter a valid positive amount.";
+      return;
+    }
+    if (!recipientEmail) {
+      sendBalanceMessage.textContent = "Please enter the recipient's email address.";
+      return;
+    }
+    // Prevent sending to oneself
+    if (recipientEmail === senderUser.email) {
+        sendBalanceMessage.textContent = "You cannot send balance to yourself.";
+        return;
+    }
+
+    sendBalanceMessage.textContent = "Processing transaction...";
+
+    try {
+      const usersCol = collection(db, "users");
+      const senderRef = doc(usersCol, senderUser.uid);
+      const senderSnap = await getDoc(senderRef);
+
+      if (!senderSnap.exists()) {
+        sendBalanceMessage.textContent = "Error: Your profile not found.";
+        return;
+      }
+
+      const senderData = senderSnap.data();
+      const senderBalance = senderData.wallet || 0;
+
+      if (senderBalance < amountToSend) {
+        sendBalanceMessage.textContent = "Error: Insufficient balance in your wallet.";
+        return;
+      }
+
+      // Find recipient by email
+      const recipientQuery = query(usersCol, where("email", "==", recipientEmail));
+      const recipientSnapshot = await getDocs(recipientQuery);
+
+      if (recipientSnapshot.empty) {
+        sendBalanceMessage.textContent = "Error: Recipient with this email not found.";
+        return;
+      }
+
+      const recipientDoc = recipientSnapshot.docs[0];
+      const recipientId = recipientDoc.id;
+      const recipientData = recipientDoc.data();
+      const recipientBalance = recipientData.wallet || 0;
+
+      // Perform the atomic transaction using a batch write
+      const batch = writeBatch(db);
+      
+      // Decrease sender's balance
+      batch.update(senderRef, {
+        wallet: senderBalance - amountToSend
+      });
+
+      // Increase recipient's balance
+      batch.update(doc(usersCol, recipientId), {
+        wallet: recipientBalance + amountToSend
+      });
+
+      // Record the transaction
+      const transactionsCol = collection(db, "transactions"); // Make sure you have this collection
+      const newTransactionRef = doc(transactionsCol);
+      batch.set(newTransactionRef, {
+        type: "send_balance", // Type of transaction: user sending to another user
+        senderId: senderUser.uid,
+        senderEmail: senderUser.email,
+        recipientId: recipientId,
+        recipientEmail: recipientEmail,
+        amount: amountToSend,
+        timestamp: Timestamp.now(),
+        status: "completed" // Status of the transaction
+      });
+
+      await batch.commit(); // Commit the transaction
+
+      sendBalanceMessage.textContent = `Successfully sent ₹${amountToSend.toFixed(2)} to ${recipientEmail}.`;
+      sendBalanceForm.reset();
+      sendAmountInput.value = ""; // Clear amount specifically
+
+    } catch (error) {
+      console.error("Error sending balance:", error);
+      sendBalanceMessage.textContent = `Transaction failed: ${error.message}. Please try again.`;
+      // In case of failure, Firebase's batch write ensures atomicity.
+    }
+  });
+}
+// --- END Send Balance Feature Logic ---
+
 
 // --- EARNINGS MANAGEMENT FUNCTIONS (with Referral Logic) ---
 async function addEarning(userId, category, amount) {
