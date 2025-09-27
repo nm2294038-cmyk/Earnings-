@@ -831,7 +831,7 @@
   <p>4. Apna naam bhejein.</p>
   <p>5. Apna WhatsApp number bhejein.</p>
   <p>6. Jo link add karwana chahte hain wo bhi <b>mn1691316@gmail.com</b> par email karein.</p>
-  <p>7. Aap maximum 10 links add karwa sakte hain.</p>
+  <p>7. Aap maximum 90 links add karwa sakte hain.</p>
   <p>8. Aur baki sab kuch bhi (agar koi additional information ya details hain) <b>mn1691316@gmail.com</b> par email karna hai.</p>
   <p>Add your own links here and earn rewards when others visit them. Select a category below to see its cost and add your link:</p>
   <ul>
@@ -979,14 +979,14 @@ const CATEGORY_EARNINGS = {
 };
 
 const PLATFORM_PRICES = {
-    "YouTube Task": 1200, "Instagram Task": 1000, "Facebook Task": 1600,
-    "TikTok Task": 200, "Web Task": 150, "For You": 5000
+    "YouTube Task": 1900, "Instagram Task": 1100, "Facebook Task": 1700,
+    "TikTok Task": 600, "Web Task": 450, "For You": 6000
 };
 const CATEGORIES = ["YouTube", "TikTok", "Instagram", "Facebook", "App", "Products", "Channel", "Web"];
 CATEGORIES.forEach(cat => {
     if (PLATFORM_PRICES[cat] === undefined) PLATFORM_PRICES[cat] = 500;
 });
-const MAX_USER_LINKS = 10;
+const MAX_USER_LINKS = 90;
 
 // --- DOM Elements ---
 const nav = document.querySelector("nav");
