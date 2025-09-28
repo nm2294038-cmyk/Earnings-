@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -561,6 +562,37 @@
     <input type="email" id="signupEmail" placeholder="Email" required><br>
     <input type="password" id="signupPassword" placeholder="Password" required><br>
     <input type="text" id="signupReferralCode" placeholder="Referral Code (Optional)"><br>
+    
+    <!-- Agent Registration Button -->
+    <button type="button" id="showAgentFormBtn" class="submitBtn" style="background: #6c757d; color: white;">Agent Registration</button>
+
+    <!-- Agent Form (initially hidden) -->
+    <section id="agentFormSection" style="display:none; margin-top: 15px; padding: 15px; border: 1px solid #333; border-radius: 8px; background-color: rgba(25, 25, 25, 0.7);">
+        <h3 style="color: #0ff; margin-bottom: 10px; font-size: 18px;">Agent Information</h3>
+        <input type="text" id="agentName" placeholder="Agent Name"><br>
+        <input type="text" id="agentFatherName" placeholder="Agent Father Name"><br>
+        
+        <!-- Family Member Details Section -->
+        <div id="familyDetailsSection" style="margin-top: 10px;">
+            <h4 style="color: #0ff; font-size: 14px; margin-bottom: 5px;">Family Members (Optional)</h4>
+            <!-- Placeholder for dynamically adding family members -->
+            <div id="familyMembersInput">
+                <!-- Example for one member, can be duplicated or added dynamically -->
+                <input type="text" placeholder="Family Member 1 Name"><br>
+                <input type="text" placeholder="Family Member 1 Relation"><br>
+            </div>
+            <button type="button" id="addFamilyMemberBtn" style="background: #28a745; color: white; padding: 5px 10px; font-size: 12px; margin-top: 5px; border: none; border-radius: 5px;">Add Another Family Member</button>
+        </div>
+
+        <!-- ID Card Number -->
+        <input type="text" id="agentIdCard" placeholder="Agent ID Card Number (Optional)"><br>
+        
+        <!-- WhatsApp Number -->
+        <input type="text" id="agentWhatsApp" placeholder="Agent WhatsApp Number (Optional)"><br>
+
+        <p style="color: #ccc; font-size: 12px; margin-top: 8px;">(All fields are optional unless specified)</p>
+    </section>
+
     <!-- New button for location -->
     <button type="button" id="useMyLocationBtn" class="location-button">Use My Current Location</button>
     <!-- Hidden input to store location -->
@@ -585,8 +617,9 @@
   <button data-section="publicLinksSection">Public Links</button>
   <button data-section="userLinksSection">Add/Manage My Links</button>
   <button data-section="youtubeVideo">Watch Video</button>
-  <button data-section="addBalanceSection">Send Balance</button> <!-- Existing Add Balance -->
+
   <!-- NEW BUTTON FOR SEND BALANCE -->
+  <button data-section="sendBalanceSection">Send Balance</button>
 
   <button id="adminPanelBtn" data-section="adminPanel" style="display:none;">Admin Panel</button>
   <button id="logoutBtn">Logout</button>
@@ -598,10 +631,10 @@
 <section id="dashboard">
   <h2>Dashboard</h2>
   <p>Any Problems? Contact the owner via the footer links.</p>
-  <p>1. Task complete karke jo <b>balance earn hoga</b>, wo sirf <b>withdrawal ke liye</b> use ho sakta hai.</p>  
+<p>1. Task complete karke jo <b>balance earn hoga</b>, wo sirf <b>withdrawal ke liye</b> use ho sakta hai.</p>  
 <p>2. Task earning ka balance kisi bhi <b>user ko transfer / send</b> nahi kiya ja sakta.</p>  
-<p>3. Withdrawals sirf approved payment methods (Easypaisa, JazzCash, Bitget, etc.) par honge.</p>
-  <p><b>Warning:</b> Agar aap ne balance transfer/send karne ki koshish ki to <b>aapka account bina warning ke ban kar diya jayega.</b></p>
+<p>3. Withdrawals sirf approved payment methods (Easypaisa, JazzCash, Bitget , etc.) par honge.</p>
+<p><b>Warning:</b> Agar aap ne balance transfer/send karne ki koshish ki to <b>aapka account bina warning ke ban kar diya jayega.</b></p>
   <div class="dashboard-container">
     <div class="dashboard-box">
       <p>Total Users</p>
@@ -645,7 +678,7 @@
 <!-- Tasks Section (Moved to be the first functional section after Dashboard) -->
 <section id="tasks">
   <h2>Tasks to Complete</h2>
-  <p>Complete tasks to earn rewards. Cooldown: 5 minutes between completions.</p>
+  <p>Complete tasks to earn rewards. Cooldown: 1 minutes between completions.</p>
   <div class="category-filter-buttons" id="taskCategoryFilters">
       <button data-filter="all" class="active">All Categories</button>
       <button data-filter="YouTube">YouTube</button>
@@ -775,12 +808,12 @@
   <div id="depositList"></div>
 </section>
 
-<!-- Add Balance Section -->
-<section id="addBalanceSection">
-  <h2>Send Balance to Another Wallet </h2>
-  <form id="addBalanceForm">
-    <input type="email" id="recipientEmail" placeholder="Recipient's Email" required><br>
-    <input type="number" id="transferAmount" placeholder="Amount to Add 200 to 5000" required step="0.01"><br>
+<!-- NEW SECTION: Send Balance -->
+<section id="sendBalanceSection">
+  <h2>Send Balance to Another User</h2>
+  <form id="sendBalanceForm">
+    <input type="email" id="recipientSendEmail" placeholder="Recipient's Email" required><br>
+    <input type="number" id="sendAmount" placeholder="Amount to Send" required step="0.01"><br>
     <button type="submit" class="submitBtn">Send Balance</button>
   </form>
   <!-- NEW WARNING MESSAGES -->
@@ -794,20 +827,12 @@
       <strong>Note:</strong> Sent balance cannot be withdrawn.
     </p>
   </div>
-  <!-- END NEW WARNING MESSAGES -->
-  <p id="addBalanceMessage" style="color: yellow; margin-top: 15px;"></p>
-</section>
-
-
-<!-- NEW SECTION: Send Balance -->
-<section id="sendBalanceSection">
-  <h2>Send Balance to Another User</h2>
-  <form id="sendBalanceForm">
-    <input type="email" id="recipientSendEmail" placeholder="Recipient's Email" required><br>
-    <input type="number" id="sendAmount" placeholder="Amount to Send" required step="0.01"><br>
-    <button type="submit" class="submitBtn">Send Balance</button>
-  </form>
+  <!-- END NEW MESSAGES -->
   <p id="sendBalanceMessage" style="color: yellow; margin-top: 15px;"></p>
+  <!-- NEW: History Display -->
+  <h3>Your Send Balance History:</h3>
+  <div id="sendBalanceHistory" class="dashboard-container"></div>
+  <!-- END NEW -->
 </section>
 
 <!-- Public Links Section (NEW) -->
@@ -831,19 +856,19 @@
   <p>4. Apna naam bhejein.</p>
   <p>5. Apna WhatsApp number bhejein.</p>
   <p>6. Jo link add karwana chahte hain wo bhi <b>mn1691316@gmail.com</b> par email karein.</p>
-  <p>7. Aap maximum 90 links add karwa sakte hain.</p>
+  <p>7. Aap maximum 80 links add karwa sakte hain.</p>
   <p>8. Aur baki sab kuch bhi (agar koi additional information ya details hain) <b>mn1691316@gmail.com</b> par email karna hai.</p>
   <p>Add your own links here and earn rewards when others visit them. Select a category below to see its cost and add your link:</p>
   <ul>
-    <li><strong>YouTube:</strong> ₹1200</li>
-    <li><strong>Instagram:</strong> ₹1000</li>
-    <li><strong>Facebook:</strong> ₹1600</li>
-    <li><strong>TikTok:</strong> ₹200</li>
-    <li><strong>Web:</strong> ₹320</li>
-    <li><strong>App:</strong> ₹500 (Default if not specified)</li>
-    <li><strong>Products:</strong> ₹500 (Default if not specified)</li>
-    <li><strong>Channel:</strong> ₹500 (Default if not specified)</li>
-    <li><strong>For You Page Promotion Life time k ley :</strong> ₹5000</li>
+    <li><strong>YouTube:</strong>Rs.2200</li>
+    <li><strong>Instagram:</strong> Rs.1300</li>
+    <li><strong>Facebook:</strong> Rs.1600</li>
+    <li><strong>TikTok:</strong> Rs.600</li>
+    <li><strong>Web:</strong> Rs.350</li>
+    <li><strong>App:</strong> Rs.500 (Default if not specified)</li>
+    <li><strong>Products:</strong> Rs.1000 (Default if not specified)</li>
+    <li><strong>Channel:</strong> Rs.500 (Default if not specified)</li>
+    <li><strong>For You Page Promotion Life time k ley :</strong> Rs.7000</li>
   </ul>
   <p>This Is Working</p>
   <form id="addUserLinkForm">
@@ -967,10 +992,10 @@ const adminEmail = "mn1691316@gmail.com";
 const whatsappNumber = "+923495144924";
 const MIN_WITHDRAWAL_AMOUNT = 1200;
 const TASK_EARNING_AMOUNT = 0.01;
-const TASK_LINK_COOLDOWN_MS = 5 * 60 * 1000; // 5 minutes cooldown
+const TASK_LINK_COOLDOWN_MS = 1 * 60 * 1000; // 5 minutes cooldown
 const REFERRAL_COMMISSION_RATE = 0.05; // 5%
-const DEFAULT_MIN_CLICKS_BEFORE_COOLDOWN = 2; // Default minimum clicks before cooldown activates
-const WEB_CATEGORY_MIN_CLICKS_BEFORE_COOLDOWN = 30; // Minimum clicks for 'Web' category before cooldown activates
+const DEFAULT_MIN_CLICKS_BEFORE_COOLDOWN = 1; // Default minimum clicks before cooldown activates
+const WEB_CATEGORY_MIN_CLICKS_BEFORE_COOLDOWN = 50; // Minimum clicks for 'Web' category before cooldown activates
 
 
 const CATEGORY_EARNINGS = {
@@ -979,14 +1004,14 @@ const CATEGORY_EARNINGS = {
 };
 
 const PLATFORM_PRICES = {
-    "YouTube Task": 1900, "Instagram Task": 1100, "Facebook Task": 1700,
-    "TikTok Task": 600, "Web Task": 320, "For You": 6000
+    "YouTube Task": 2300, "Instagram Task": 1500, "Facebook Task": 1900,
+    "TikTok Task": 600, "Web Task": 350, "For You": 7000
 };
 const CATEGORIES = ["YouTube", "TikTok", "Instagram", "Facebook", "App", "Products", "Channel", "Web"];
 CATEGORIES.forEach(cat => {
     if (PLATFORM_PRICES[cat] === undefined) PLATFORM_PRICES[cat] = 500;
 });
-const MAX_USER_LINKS = 90;
+const MAX_USER_LINKS = 80;
 
 // --- DOM Elements ---
 const nav = document.querySelector("nav");
@@ -1055,20 +1080,35 @@ const publicLinksContainer = document.getElementById("publicLinksContainer"); //
 const useMyLocationBtn = document.getElementById("useMyLocationBtn");
 const userLocationInput = document.getElementById("userLocationInput");
 
+// --- Elements for Agent Section ---
+const agentSection = document.getElementById("agentSection"); // Added
+const agentNameInput = document.getElementById("agentName"); // Added
+const agentFatherNameInput = document.getElementById("agentFatherName"); // Added
+const showAgentFormBtn = document.getElementById("showAgentFormBtn"); // Added
+const agentFormSection = document.getElementById("agentFormSection"); // Added
+const familyDetailsSection = document.getElementById("familyDetailsSection"); // Added
+const familyMembersInput = document.getElementById("familyMembersInput"); // Added
+const addFamilyMemberBtn = document.getElementById("addFamilyMemberBtn"); // Added
+const agentIdCardInput = document.getElementById("agentIdCard"); // Added
+const agentWhatsAppInput = document.getElementById("agentWhatsApp"); // Added
+
+
 // --- Elements for Add Balance Feature ---
 const addBalanceForm = document.getElementById("addBalanceForm");
 const recipientEmailInput = document.getElementById("recipientEmail");
 const transferAmountInput = document.getElementById("transferAmount");
 const addBalanceMessage = document.getElementById("addBalanceMessage");
+const balanceAdditionHistoryContainer = document.getElementById("balanceAdditionHistory"); // NEW
 
 // --- Define allowed amounts for the "Add Balance" feature ---
-const ALLOWED_ADD_BALANCE_AMOUNTS = [200, 500, 800, 1100, 1500, 2000, 2500, 5000];
+const ALLOWED_ADD_BALANCE_AMOUNTS = [100,200,350, 500,600, 800,1000, 1100, 1300,1500,1800, 2000,2200, 2500, 8000];
 
 // --- Elements for Send Balance Feature ---
 const sendBalanceForm = document.getElementById("sendBalanceForm");
 const recipientSendEmailInput = document.getElementById("recipientSendEmail");
 const sendAmountInput = document.getElementById("sendAmount");
 const sendBalanceMessage = document.getElementById("sendBalanceMessage");
+const sendBalanceHistoryContainer = document.getElementById("sendBalanceHistory"); // NEW
 // --- END NEW ---
 
 
@@ -1325,6 +1365,8 @@ onAuthStateChanged(auth, async user => {
         loadUserAddedLinks(user.uid);
         loadPublicLinks();
         loadForYouContent(user.uid);
+        loadBalanceAdditionHistory(user.uid); // Load history for the current user
+        loadSendBalanceHistory(user.uid); // Load send balance history
         const withdrawalsCol = collection(db, "withdrawals");
         onSnapshot(query(withdrawalsCol, where("userId", "==", user.uid), orderBy("timestamp", "desc")), snap => {
             const container = document.getElementById("withdrawList");
@@ -1362,6 +1404,8 @@ onAuthStateChanged(auth, async user => {
         publicLinksContainer.innerHTML = "";
         forYouTasksContainer.innerHTML = "";
         document.getElementById("tasksContainer").innerHTML = "";
+        balanceAdditionHistoryContainer.innerHTML = ""; // Clear history on logout
+        sendBalanceHistoryContainer.innerHTML = ""; // Clear send balance history on logout
     }
 });
 
@@ -1373,7 +1417,26 @@ signupBtn.addEventListener("click", async () => {
     const referralCode = signupReferralCodeInput.value.trim();
     const locationData = userLocationInput.value; // Get location data
 
+    // Agent-related inputs (if they exist and are needed for signup)
+    const agentName = agentNameInput ? agentNameInput.value.trim() : '';
+    const agentFatherName = agentFatherNameInput ? agentFatherNameInput.value.trim() : '';
+    const agentIdCard = agentIdCardInput ? agentIdCardInput.value.trim() : '';
+    const agentWhatsApp = agentWhatsAppInput ? agentWhatsAppInput.value.trim() : '';
+    const familyMembers = [];
+    const familyInputs = document.querySelectorAll('#familyMembersInput input[type="text"]');
+    for (let i = 0; i < familyMembersInput.querySelectorAll('div').length; i++) {
+        const nameInput = familyMembersInput.querySelectorAll('div')[i].querySelector('input[placeholder*="Name"]');
+        const relationInput = familyMembersInput.querySelectorAll('div')[i].querySelector('input[placeholder*="Relation"]');
+        if (nameInput && relationInput && nameInput.value.trim() && relationInput.value.trim()) {
+            familyMembers.push({ name: nameInput.value.trim(), relation: relationInput.value.trim() });
+        }
+    }
+
     if (!name || !email || !password) { showToast("Please fill in all fields."); return; }
+    
+    // If agent section is mandatory for signup, add checks here
+    // if (!agentName || !agentFatherName) { showToast("Please fill in Agent details."); return; }
+
     try {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
@@ -1405,7 +1468,13 @@ signupBtn.addEventListener("click", async () => {
             referralCount: 0,
             userLinkCount: 0,
             totalReferralEarnings: 0,
-            location: locationData ? { raw: locationData, geo: { latitude: parseFloat(locationData.split(',')[0]), longitude: parseFloat(locationData.split(',')[1]) } } : null // Store location
+            location: locationData ? { raw: locationData, geo: { latitude: parseFloat(locationData.split(',')[0]), longitude: parseFloat(locationData.split(',')[1]) } } : null, // Store location
+            // Add agent details if collected
+            agentName: agentName || null,
+            agentFatherName: agentFatherName || null,
+            agentIdCard: agentIdCard || null,
+            agentWhatsApp: agentWhatsApp || null,
+            familyMembers: familyMembers.length > 0 ? familyMembers : null
         };
         
         await setDoc(doc(db, "users", user.uid), newUserDocData);
@@ -1423,6 +1492,11 @@ signupBtn.addEventListener("click", async () => {
         signupEmailInput.value = '';
         signupPasswordInput.value = '';
         signupReferralCodeInput.value = '';
+        if(agentNameInput) agentNameInput.value = ''; // Clear agent name
+        if(agentFatherNameInput) agentFatherNameInput.value = ''; // Clear agent father name
+        if(agentIdCardInput) agentIdCardInput.value = ''; // Clear ID card
+        if(agentWhatsAppInput) agentWhatsAppInput.value = ''; // Clear WhatsApp
+        if (agentFormSection) agentFormSection.style.display = 'none'; // Hide agent form after signup
         userLocationInput.value = ''; // Clear location input after signup
         useMyLocationBtn.innerText = "Use My Current Location"; // Reset button text
     } catch (error) {
@@ -1430,6 +1504,37 @@ signupBtn.addEventListener("click", async () => {
         showToast(`Sign up failed: ${error.message}`);
     }
 });
+
+// Event listener for the Agent Registration button
+if (showAgentFormBtn) {
+    showAgentFormBtn.addEventListener('click', () => {
+        const agentForm = document.getElementById('agentFormSection');
+        if (agentForm) {
+            agentForm.style.display = agentForm.style.display === 'none' ? 'block' : 'none';
+        }
+    });
+}
+
+// Event listener for adding family members (basic example)
+if (addFamilyMemberBtn) {
+    addFamilyMemberBtn.addEventListener('click', () => {
+        const familyMembersDiv = document.getElementById('familyMembersInput');
+        if (familyMembersDiv) {
+            // Clone the first member's inputs and clear their values
+            const firstMemberDiv = familyMembersDiv.querySelector('div');
+            if (firstMemberDiv) {
+                const clone = firstMemberDiv.cloneNode(true);
+                clone.querySelectorAll('input').forEach(input => input.value = '');
+                const memberCount = familyMembersDiv.querySelectorAll('div').length + 1;
+                // Update placeholders for clarity
+                clone.querySelectorAll('input[placeholder*="Name"]').forEach(input => input.placeholder = `Family Member ${memberCount} Name`);
+                clone.querySelectorAll('input[placeholder*="Relation"]').forEach(input => input.placeholder = `Family Member ${memberCount} Relation`);
+                familyMembersDiv.appendChild(clone);
+            }
+        }
+    });
+}
+
 
 loginBtn.addEventListener("click", async () => {
     const email = loginEmailInput.value.trim();
@@ -1665,13 +1770,13 @@ function loadPublicLinks() {
             }
             linkDiv.innerHTML = `
                 <p><strong>${linkData.description}</strong></p>
-                <button class="submitBtn open-public-link-btn" style="margin-bottom: 10px; padding: 8px 20px; font-size: 14px;">Open</button>
+                <button class="submitBtn" style="margin-bottom: 10px; padding: 8px 20px; font-size: 14px;">Follow to Follow </button>
                 <small>Category: ${linkData.category || 'N/A'}</small><br>
                 <small>Added: ${linkData.addedAt ? linkData.addedAt.toDate().toLocaleDateString() : 'N/A'}</small>
                 ${buttonsHTML}
             `;
             
-            const openBtn = linkDiv.querySelector('.open-public-link-btn');
+            const openBtn = linkDiv.querySelector('button:not(.edit-btn):not(.delete-btn)');
             openBtn.addEventListener('click', () => openLinkSafely(linkData.url));
 
             // Add event listeners ONLY if buttons were rendered for the owner
@@ -2282,7 +2387,7 @@ contactEmailLink.addEventListener("click", () => {
 
 contactWhatsappLink.addEventListener("click", () => {
     const userEmail = auth.currentUser ? auth.currentUser.email : 'N/A';
-    const prefillText = `Hello, I'm contacting you from the Free Earnings App. My Email: ${userEmail}.`;
+    const prefillText = `Asslam u Alikum, I'm contacting you from the Free Earnings App. My Email: ${userEmail}.`;
     window.open(`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(prefillText)}`, "_blank");
 });
 
@@ -2367,7 +2472,6 @@ if (addBalanceForm) {
     }
     // --- END NEW VALIDATION ---
 
-
     addBalanceMessage.textContent = "Processing transaction...";
 
     try {
@@ -2415,18 +2519,17 @@ if (addBalanceForm) {
         wallet: recipientBalance + amountToAdd
       });
 
-      // Record the transaction
-      const transactionsCol = collection(db, "transactions"); // Make sure you have this collection
-      const newTransactionRef = doc(transactionsCol);
-      batch.set(newTransactionRef, {
-        type: "balance_add", // Type of transaction: user adding to another user
-        senderId: senderUser.uid,
-        senderEmail: senderUser.email,
-        recipientId: recipientId,
-        recipientEmail: recipientEmail,
+      // Record the transaction in a "transactions" or "balanceAdditions" subcollection
+      // Using a dedicated subcollection under the recipient's document is a good practice
+      const balanceAdditionsRef = collection(db, "users", recipientId, "balanceAdditions");
+      const newAdditionRef = doc(balanceAdditionsRef); // Creates a new document with auto-generated ID
+      batch.set(newAdditionRef, {
+        addedBy: senderUser.uid, // ID of the user who added the balance
+        addedByEmail: senderUser.email,
         amount: amountToAdd,
         timestamp: Timestamp.now(),
-        status: "completed" // Status of the transaction
+        company: "Free Earnings App", // As requested
+        recipientEmail: recipientEmail // Store recipient email for history display
       });
 
       await batch.commit(); // Commit the transaction
@@ -2434,6 +2537,8 @@ if (addBalanceForm) {
       addBalanceMessage.textContent = `Successfully added ₹${amountToAdd.toFixed(2)} to ${recipientEmail}'s wallet.`;
       addBalanceForm.reset();
       transferAmountInput.value = ""; // Clear amount specifically
+      // Reload the history to show the new entry
+      loadBalanceAdditionHistory(senderUser.uid); 
 
     } catch (error) {
       console.error("Error adding balance:", error);
@@ -2443,6 +2548,46 @@ if (addBalanceForm) {
   });
 }
 // --- END Add Balance Feature Logic ---
+
+// --- NEW FUNCTION: Load Balance Addition History ---
+function loadBalanceAdditionHistory(userId) {
+    const userRef = doc(db, "users", userId);
+    const balanceAdditionsCol = collection(userRef, "balanceAdditions");
+    
+    onSnapshot(query(balanceAdditionsCol, orderBy("timestamp", "desc")), (snapshot) => {
+        balanceAdditionHistoryContainer.innerHTML = ""; // Clear previous history
+        if (snapshot.empty) {
+            balanceAdditionHistoryContainer.innerHTML = "<p>No balance additions recorded yet.</p>";
+            return;
+        }
+        snapshot.forEach(doc => {
+            const addition = doc.data();
+            const historyItemDiv = document.createElement("div");
+            historyItemDiv.classList.add("withdrawBox"); // Reusing withdrawBox style for consistency
+            
+            let formattedTimestamp = 'N/A';
+            if (addition.timestamp && typeof addition.timestamp.toDate === 'function') {
+                formattedTimestamp = addition.timestamp.toDate().toLocaleString();
+            } else if (addition.timestamp) {
+                formattedTimestamp = new Date(addition.timestamp).toLocaleString();
+            }
+
+            historyItemDiv.innerHTML = `
+                <p><strong>To Email:</strong> ${addition.recipientEmail || 'N/A'}</p>
+                <p><strong>Amount:</strong> ₹${addition.amount.toFixed(2)}</p>
+                <p><strong>Added By:</strong> ${addition.addedByEmail || 'N/A'}</p>
+                <p><strong>Company:</strong> ${addition.company || 'N/A'}</p>
+                <p><small>Time: ${formattedTimestamp}</small></p>
+            `;
+            balanceAdditionHistoryContainer.appendChild(historyItemDiv);
+        });
+    }, (error) => {
+        console.error("Error loading balance addition history:", error);
+        balanceAdditionHistoryContainer.innerHTML = "<p>Error loading history. Please try again.</p>";
+    });
+}
+// --- END NEW FUNCTION ---
+
 
 // --- NEW: Send Balance Feature Logic ---
 if (sendBalanceForm) {
