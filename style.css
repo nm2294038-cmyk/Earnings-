@@ -1,0 +1,693 @@
+/* --- Base Styles --- */
+body { font-family: Arial, sans-serif; margin:0; background:#0d0d0d; color:#fff; line-height: 1.6; padding-bottom: 80px; /* Footer k overlap ko roknay k liye padding add ki gai */ }
+header { background: linear-gradient(to right, #0ff, #0cc); color:#000; padding:15px; text-align:center; font-size:24px; font-weight:bold; text-shadow:0 0 5px #0ff; box-shadow: 0 2px 5px rgba(0,255,255,0.3); }
+nav { display:flex; flex-wrap:wrap; justify-content:center; background:#111; padding:10px 0; border-bottom: 2px solid #0ff; }
+nav button { background: #fff; border: none; padding: 10px 15px; margin: 5px; color: #000; font-weight:bold; border-radius: 8px; cursor:pointer; transition: all 0.3s ease; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+nav button:hover { box-shadow: 0 0 15px #0ff, 0 4px 8px rgba(0,0,0,0.3); transform: translateY(-2px); background: #f0f0f0; }
+nav button[data-section="adminPanel"] { background: #ffc107; color: #000; } /* Admin button style */
+nav button[data-section="adminPanel"]:hover { background: #e0a800; box-shadow: 0 0 15px #e0a800, 0 4px 8px rgba(0,0,0,0.3); }
+
+section { display:none; padding:20px; margin-top: 20px; }
+section.active { display:block; }
+
+/* --- Input and Buttons --- */
+input[type="text"], input[type="email"], input[type="password"], input[type="number"], select, textarea {
+    padding: 10px; margin: 8px 0; border-radius: 8px; border: 1px solid #333; width: 100%; box-sizing: border-box; background-color: #222; color: #fff; font-size: 14px;
+}
+input:focus, select:focus, textarea:focus { border-color: #0ff; outline: none; box-shadow: 0 0 8px rgba(0, 255, 255, 0.5); }
+
+button.submitBtn {
+    background: #0ff; color: #000; border: none; padding: 12px 25px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: all 0.3s ease; font-size: 16px;
+    display: inline-block;
+    margin-top: 10px;
+}
+button.submitBtn:hover { box-shadow: 0 0 10px #0ff, 0 4px 8px rgba(0,255,255,0.3); background: #fff; color: #000; transform: translateY(-2px); }
+button.submitBtn:disabled { background: #555; color: #aaa; cursor: not-allowed; box-shadow: none; transform: none; }
+
+/* --- Full Screen Auth Section --- */
+#authSection {
+    position: fixed; /* Use fixed position */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.9); /* Darker background for full screen */
+    display: flex; /* Use flexbox for centering */
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 999; /* Ensure it's above other content */
+    padding: 20px;
+    box-sizing: border-box;
+}
+#authSection .auth-container { /* New container for centering form */
+    max-width: 400px;
+    width: 100%; /* Full width up to max-width */
+    padding: 30px;
+    background: rgba(17, 17, 17, 0.8);
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0,255,255,0.2);
+    text-align: center;
+}
+#authSection h2 { color: #0ff; margin-bottom: 25px; }
+#authSection hr { border: 0; height: 1px; background-image: linear-gradient(to right, rgba(0, 255, 255, 0), rgba(0, 255, 255, 0.75), rgba(0, 255, 255, 0)); margin: 30px 0; }
+#authSection button.submitBtn { width: 100%; }
+#authSection .location-button {
+    background: #4CAF50; /* Green */
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    font-size: 14px;
+    margin-top: 10px;
+    width: 100%;
+    display: block;
+}
+#authSection .location-button:hover {
+    background: #45a049;
+    box-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
+    transform: translateY(-1px);
+}
+#authSection .location-button:disabled {
+    background: #808080;
+    cursor: not-allowed;
+}
+
+
+/* --- Containers for Boxes --- */
+.dashboard-container, #tasksContainer, #forYouTasksContainer, #withdrawList, #adminTasksContainer, #adminLinksContainer, #depositList, #userLinksContainer, #publicLinksContainer { /* Added publicLinksContainer */
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px; /* Increased gap */
+    margin-top: 25px;
+}
+
+/* --- Individual Boxes (Dashboard, Task, Withdraw, Link, Deposit History) --- */
+.dashboard-box, .taskBox, .withdrawBox, .linkBox, .depositBox, .userLinkBox { /* Added .userLinkBox */
+    background: #1a1a1a; /* Darker background */
+    padding: 20px;
+    border-radius: 12px; /* More rounded corners */
+    box-shadow: 0 5px 15px rgba(0, 255, 255, 0.15); /* Softer glow */
+    min-width: 220px; /* Consistent min-width */
+    text-align: center;
+    flex-grow: 1;
+    max-width: 280px; /* Consistent max-width */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.dashboard-box:hover, .taskBox:hover, .withdrawBox:hover, .linkBox:hover, .depositBox:hover, .userLinkBox:hover { /* Added hover for depositBox and userLinkBox */
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 255, 255, 0.3);
+}
+.taskBox p { margin-bottom: 15px; font-size: 15px; color: #ccc; }
+
+/* === NEW: Style for the warning inside each task box === */
+.task-warning {
+    color: #ffc107; /* Yellow color for attention */
+    font-weight: bold;
+    font-size: 13px;
+    margin-top: 10px;
+    padding: 8px;
+    background-color: rgba(255, 193, 7, 0.1); /* Faint yellow background */
+    border-left: 3px solid #ffc107;
+    border-radius: 4px;
+    text-align: left; /* Keep text aligned to the left */
+}
+
+/* --- NEW STYLES FOR ADMIN PANEL --- */
+#adminPanel form {
+    max-width: 600px;
+    margin: 20px auto;
+    background: #1a1a1a; /* Darker background */
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0, 255, 255, 0.2);
+    border: 1px solid #333;
+}
+#adminPanel h2, #publicLinksSection h2, #anusement h2 { /* Added anusement h2 */
+    color: #0ff;
+    text-align: center;
+    margin-bottom: 25px;
+    font-size: 28px;
+}
+#adminPanel input,
+#adminPanel select,
+#adminPanel textarea {
+    background-color: #222;
+    color: #fff;
+    border: 1px solid #333;
+    padding: 12px; /* Slightly larger padding */
+}
+#adminPanel input:focus,
+#adminPanel select:focus,
+#adminPanel textarea:focus {
+    border-color: #0ff;
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.6);
+}
+#adminPanel .submitBtn {
+    width: 100%;
+    display: block;
+    margin-top: 25px; /* More space above button */
+}
+ /* Style for dynamically added link fields */
+.dynamic-link-input {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+.dynamic-link-input input {
+    flex-grow: 1;
+    margin-bottom: 0; /* Remove bottom margin for better alignment */
+    padding: 10px; /* Consistent padding */
+}
+.dynamic-link-input button {
+    background: #dc3545; /* Red for remove */
+    color: white;
+    border: none;
+    padding: 10px 12px; /* Adjusted padding */
+    border-radius: 6px; /* Slightly more rounded */
+    cursor: pointer;
+    font-size: 14px; /* Adjusted font size */
+    transition: all 0.3s ease;
+    flex-shrink: 0; /* Prevent button from shrinking */
+}
+.dynamic-link-input button:hover {
+    background: #c82333;
+    transform: translateY(-1px);
+}
+#adminPanel p { color: #ccc; margin-bottom: 10px; font-size: 13px; }
+
+/* --- Deposit Section Specific Styles --- */
+#deposit .deposit-info-box {
+    background: #1a1a1a;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #333;
+    text-align: left;
+}
+#deposit .deposit-info-box p { color: #ffc107; font-weight: bold; margin-bottom: 10px; }
+#deposit .deposit-info-box ul { padding-left: 20px; color: #ccc; }
+#deposit .deposit-info-box li { margin-bottom: 8px; }
+#deposit form { max-width: 500px; margin: 20px auto; padding: 25px; background: #1a1a1a; border-radius: 12px; box-shadow: 0 5px 15px rgba(0, 255, 255, 0.2); }
+#deposit h3 { margin-top: 30px; color: #0ff; text-align: center; }
+
+/* Withdrawal Warning Box Style */
+.withdrawal-warning-box {
+    background-color: #2a1a1a; 
+    border: 1px solid #dc3545;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 25px;
+    text-align: left;
+}
+.withdrawal-warning-box h3 {
+    color: #ffc107;
+    margin-top: 0;
+    font-size: 20px;
+    border-bottom: 1px solid #555;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+.withdrawal-warning-box p {
+    color: #f0f0f0;
+    font-size: 15px;
+    line-height: 1.7;
+}
+
+/* --- UPDATED FOOTER STYLE (FIXED) --- */
+footer {
+    background:#111;
+    padding: 15px 0;
+    text-align:center;
+    border-top:2px solid #0ff;
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: fixed; /* Footer ko fixed kiya gaya */
+    bottom: 0;       /* Screen k bottom par rakha گیا */
+    left: 0;
+    z-index: 100;    /* Baqi content k upar rakhne k liye */
+}
+.footer-links { display: flex; justify-content: center; gap: 25px; flex-wrap: wrap; margin-bottom: 10px; }
+.footer-links a { color: #0ff; text-decoration: none; font-weight: bold; cursor: pointer; white-space: nowrap; transition: color 0.3s ease; }
+.footer-links a:hover { text-decoration: underline; color: #fff; }
+footer .copyright { font-size:13px; color:#aaa; margin:0; }
+
+/* --- Modal Styles --- */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.8); /* Darker modal background */
+    backdrop-filter: blur(5px); /* Slight blur effect */
+}
+.modal-content {
+    background-color: #1a1a1a; /* Darker modal content */
+    color: #fff;
+    margin: 8% auto; /* Adjusted margin */
+    padding: 30px 40px; /* Increased padding */
+    border: 1px solid #0ff;
+    border-radius: 12px; /* More rounded */
+    box-shadow: 0 0 25px rgba(0, 255, 255, 0.4); /* Stronger glow */
+    position: relative;
+}
+.modal-close-btn {
+    color: #aaa; /* Softer close button color */
+    position: absolute;
+    top: 15px;
+    right: 25px;
+    font-size: 35px; /* Larger close icon */
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+.modal-close-btn:hover { color: #0ff; }
+.modal-content h2 { color: #0ff; text-align: center; margin-bottom: 20px; font-size: 30px;}
+.modal-content p { line-height: 1.7; text-align: left; }
+.modal-content ul { text-align: left; list-style-position: inside; padding-left: 10px;}
+.modal-content li { margin-bottom: 10px; }
+
+/* --- Specific Sections --- */
+#tasks { /* ... existing styles ... */ }
+
+/* --- Profile Section --- */
+.profile-card {
+    background: #1a1a1a; /* Darker */
+    padding: 30px; /* More padding */
+    border-radius: 12px; /* More rounded */
+    box-shadow: 0 5px 15px rgba(0, 255, 255, 0.2); /* Softer glow */
+    max-width: 480px; /* Slightly wider */
+    width: 90%;
+    margin: 40px auto; /* More margin */
+    text-align: center;
+}
+.profile-header { margin-bottom: 25px; }
+.profile-pic {
+    width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 4px solid #0ff; /* Thicker border */
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.6); /* Brighter glow */
+    background-color: #333; display: flex; justify-content: center; align-items: center; font-size: 45px; font-weight: bold; color: white;
+}
+.profile-info h2 { margin: 12px 0 6px 0; color: #0ff; font-size: 30px; }
+.profile-info p { margin: 6px 0; color: #ccc; font-size: 17px; }
+.profile-info p.referral-code { font-weight: bold; color: #fff; background: #2a2a2a; padding: 8px 15px; border-radius: 6px; display: inline-block; margin-top: 12px; font-size: 15px; }
+.profile-stats { margin: 30px 0; padding: 20px 0; border-top: 1px solid #333; border-bottom: 1px solid #333; display: flex; justify-content: space-around; flex-wrap: wrap; gap: 15px; } /* Added flex-wrap and gap */
+.stat-item p { margin: 0; color: #aaa; font-size: 15px; }
+.stat-item h3 { margin: 6px 0 0 0; color: #fff; font-size: 24px; font-weight: bold; }
+.profile-actions { margin-top: 25px; }
+.profile-actions button { background: #0ff; color: #000; border: none; padding: 14px 30px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: all 0.3s ease; font-size: 17px; }
+.profile-actions button:hover { box-shadow: 0 0 10px #0ff, 0 4px 8px rgba(0,255,255,0.3); background: #fff; color: #000; transform: translateY(-2px); }
+
+/* --- Withdrawal/Deposit Status Styles --- */
+.status-pending, .status-pending-verification { color: #ffc107; font-weight: bold; } /* Yellow */
+.status-approved { color: #28a745; font-weight: bold; } /* Green */
+.status-rejected { color: #dc3545; font-weight: bold; } /* Red */
+
+/* --- YouTube Video Section --- */
+#youtubeVideoSection { text-align: center; margin-top: 30px; padding: 20px; background: #1a1a1a; border-radius: 12px; box-shadow: 0 5px 15px rgba(0, 255, 255, 0.15); }
+#youtubeVideoSection h2 { color: #0ff; margin-bottom: 20px; }
+#youtubeVideoSection p { color: #ccc; font-size: 15px; }
+/* --- NEW styles for multiple videos --- */
+#videoPlayerContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px; /* Space between videos */
+}
+.video-item {
+    width: 100%;
+    max-width: 480px; /* Control max size of each video */
+    aspect-ratio: 16 / 9; /* Maintain video aspect ratio */
+}
+.video-item iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    border-radius: 8px;
+}
+/* --- End of NEW styles --- */
+
+
+/* --- User Added Links Section --- */
+#userLinksSection {
+    margin-top: 30px;
+    padding: 25px;
+    background: #1a1a1a;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0, 255, 255, 0.15);
+}
+#userLinksSection h2 {
+    color: #0ff;
+    text-align: center;
+    margin-bottom: 25px;
+    font-size: 28px;
+}
+#userLinksSection form {
+    max-width: 500px;
+    margin: 0 auto 30px auto; /* Center form, add bottom margin */
+    background: #222;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
+    border: 1px solid #333;
+}
+#userLinksSection form label { display: block; margin-bottom: 5px; color: #ccc; font-size: 14px; }
+#userLinksSection form input[type="text"],
+#userLinksSection form input[type="url"] {
+    background-color: #333; /* Darker input */
+    border: 1px solid #444;
+}
+#userLinksSection form input[type="text"]:focus,
+#userLinksSection form input[type="url"]:focus {
+    border-color: #0ff;
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+}
+.userLinkBox .edit-delete-buttons button {
+    background: #ffc107; /* Yellow for edit */
+    color: #000;
+    margin-right: 5px;
+    padding: 8px 12px;
+    font-size: 13px;
+}
+.userLinkBox .edit-delete-buttons button.delete-btn {
+    background: #dc3545; /* Red for delete */
+    color: white;
+}
+.userLinkBox .edit-delete-buttons button:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+
+/* --- Category Filter Buttons --- */
+.category-filter-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 15px;
+    margin-bottom: 25px;
+}
+.category-filter-buttons button {
+    background: #333;
+    color: #fff;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: all 0.3s ease;
+}
+.category-filter-buttons button:hover {
+    background: #555;
+    transform: translateY(-1px);
+}
+.category-filter-buttons button.active {
+    background: #0ff;
+    color: #000;
+    font-weight: bold;
+}
+
+/* --- Price Selection Modal --- */
+#priceSelectionModal {
+    display: none; /* Hidden by default */
+    position: fixed;
+    z-index: 1001; /* Higher than other modals */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.8);
+    backdrop-filter: blur(5px);
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+}
+#priceSelectionModal .modal-content {
+    background-color: #1a1a1a;
+    color: #fff;
+    margin: 0 auto; /* Center modal horizontally */
+    padding: 30px 40px;
+    border: 1px solid #0ff;
+    border-radius: 12px;
+    width: 85%;
+    max-width: 500px; /* Adjusted max-width for price selection */
+    box-shadow: 0 0 25px rgba(0, 255, 255, 0.4);
+    position: relative;
+    text-align: center; /* Center content within modal */
+}
+#priceSelectionModal .modal-close-btn {
+    color: #aaa;
+    position: absolute;
+    top: 15px;
+    right: 25px;
+    font-size: 35px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+#priceSelectionModal .modal-close-btn:hover { color: #0ff; }
+#priceSelectionModal h2 { color: #0ff; margin-bottom: 20px; font-size: 30px; }
+.price-option {
+    background: #222;
+    padding: 15px 20px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+    border: 1px solid #333;
+}
+.price-option:hover {
+    background: #333;
+    transform: translateY(-2px);
+}
+.price-option p { margin: 0; font-size: 16px; font-weight: bold; }
+.price-option span { color: #ffc107; font-size: 14px; } /* Price display */
+.price-selection-confirm-btn {
+    background: #0ff;
+    color: #000;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    font-size: 16px;
+    margin-top: 20px; /* Space above confirm button */
+}
+.price-selection-confirm-btn:hover {
+    box-shadow: 0 0 10px #0ff, 0 4px 8px rgba(0,255,255,0.3);
+    background: #fff;
+    color: #000;
+    transform: translateY(-2px);
+}
+.price-selection-confirm-btn:disabled {
+    background: #555;
+    color: #aaa;
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+}
+
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 768px) {
+    nav button { padding: 8px 12px; font-size: 13px; }
+    .dashboard-container, #tasksContainer, #forYouTasksContainer, #withdrawList, #adminTasksContainer, #adminLinksContainer, #depositList, #userLinksContainer, #publicLinksContainer { /* Added publicLinksContainer */
+        gap: 15px;
+    }
+    .dashboard-box, .taskBox, .withdrawBox, .linkBox, .depositBox, .userLinkBox {
+        min-width: 180px;
+        max-width: 45%; /* Allow two per row on smaller screens */
+    }
+    .modal-content { width: 90%; margin: 5% auto; }
+    .profile-card { width: 95%; margin: 20px auto; }
+    #deposit form { width: 90%; }
+    #authSection .auth-container { margin: 20px auto; } /* Adjust margin for smaller screens */
+    #userLinksSection form { width: 95%; }
+    #priceSelectionModal .modal-content { width: 90%; } /* Adjust modal width for smaller screens */
+    .video-item { max-width: 90%; }
+}
+@media (max-width: 480px) {
+    header { font-size: 20px; padding: 12px; }
+    nav { padding: 8px 0; }
+    nav button { margin: 3px; padding: 8px 10px; font-size: 12px; }
+    .dashboard-box, .taskBox, .withdrawBox, .linkBox, .depositBox, .userLinkBox {
+        min-width: 150px;
+        max-width: 100%; /* Full width on very small screens */
+    }
+    .modal-content h2 { font-size: 24px; }
+    .modal-close-btn { font-size: 25px; top: 10px; right: 15px; }
+    #authSection .auth-container { padding: 20px; } /* Less padding for auth form on very small screens */
+    #userLinksSection form { padding: 20px; }
+    #priceSelectionModal .modal-content { padding: 20px; } /* Less padding in price selection modal */
+    .video-item { max-width: 100%; }
+}
+
+/* --- NEW NEON STYLES FOR ANUSEMENT SECTION --- */
+.neon-text {
+    color: #fff;
+    text-shadow: 0 0 5px #0ff, 0 0 10px #0ff, 0 0 20px #0ff, 0 0 30px #0ff, 0 0 40px #0ff, 0 0 55px #0ff, 0 0 75px #0ff;
+}
+.neon-border {
+    border: 2px solid #0ff;
+    box-shadow: 0 0 5px #0ff, inset 0 0 5px #0ff;
+}
+.neon-glow {
+    box-shadow: 0 0 2px rgba(0, 255, 255, 0.7);
+}
+
+.anusementBox {
+    background: rgba(0, 0, 0, 0.7); /* Slightly transparent background */
+    border: 1px solid #0ff;
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.3); /* Neon glow */
+    padding: 20px;
+    border-radius: 12px;
+    min-width: 220px;
+    text-align: center;
+    flex-grow: 1;
+    max-width: 280px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin-bottom: 20px;
+}
+.anusementBox:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0 25px rgba(0, 255, 255, 0.5); /* Brighter glow on hover */
+}
+.anusementBox h3 {
+    color: #0ff; /* Neon cyan text */
+    margin-bottom: 10px;
+    font-size: 1.3em;
+    text-shadow: 0 0 5px #0ff, 0 0 10px #0ff; /* Neon text shadow */
+}
+.anusementBox p {
+    color: #ddd; /* Lighter text for description */
+    font-size: 0.95em;
+    margin-bottom: 15px;
+}
+.anusementBox a {
+    color: #0ff; /* Neon cyan link */
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+.anusementBox a:hover {
+    color: #fff;
+    text-shadow: 0 0 8px #fff; /* White glow on hover */
+}
+.anusementBox small {
+    color: #aaa;
+    font-size: 0.8em;
+}
+/* --- END NEON STYLES --- */
+
+/* --- NEW STYLES FOR ADMIN PANEL ANUSEMENT MANAGEMENT --- */
+#adminPanel .admin-anusement-form-section {
+    margin-top: 40px;
+    border-top: 1px solid #333;
+    padding-top: 30px;
+    background: #1a1a1a; /* Darker background for the admin section */
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0, 255, 255, 0.2);
+    border: 1px solid #333;
+}
+#adminPanel .admin-anusement-form-section h3 {
+    color: #0ff;
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 26px;
+}
+#adminPanel .admin-anusement-form-section input[type="text"],
+#adminPanel .admin-anusement-form-section textarea {
+    background-color: #222;
+    color: #fff;
+    border: 1px solid #333;
+    padding: 12px;
+    margin-bottom: 15px; /* Added margin below inputs */
+}
+#adminPanel .admin-anusement-form-section textarea {
+    min-height: 100px; /* Give more space for description */
+    resize: vertical; /* Allow vertical resizing */
+}
+#adminPanel .admin-anusement-form-section .submit-anusement-btn { /* Specific style for add/update button */
+    width: 100%;
+    display: block;
+    margin-top: 25px;
+    background: #ffeb3b; /* Yellow button */
+    color: #000;
+}
+#adminPanel .admin-anusement-form-section .submit-anusement-btn:hover {
+    background: #e0d800; /* Darker yellow on hover */
+}
+
+#adminPanel .anusement-list-container {
+    margin-top: 20px;
+}
+#adminPanel .anusement-list-item {
+    background: #2a2a2a; /* Slightly darker background for list items */
+    border: 1px solid #444;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+    gap: 10px;
+}
+#adminPanel .anusement-list-item p {
+    margin: 0;
+    font-size: 14px;
+    color: #ccc;
+    flex-grow: 1; /* Allow text to take available space */
+    min-width: 150px; /* Minimum width for text */
+}
+#adminPanel .anusement-list-item p strong {
+    color: #0ff; /* Neon title */
+}
+#adminPanel .anusement-list-item small {
+    color: #aaa;
+    font-size: 11px;
+    display: block; /* Ensure small takes its own line if needed */
+    margin-top: 5px;
+    width: 100%; /* Take full width if wrapping */
+}
+#adminPanel .anusement-list-item .action-buttons {
+    display: flex;
+    gap: 8px;
+    flex-shrink: 0; /* Prevent buttons from shrinking */
+}
+#adminPanel .anusement-list-item .action-buttons button {
+    padding: 6px 10px;
+    font-size: 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+#adminPanel .anusement-list-item .edit-anusement-btn {
+    background-color: #ffc107; /* Yellow */
+    color: #000;
+}
+#adminPanel .anusement-list-item .edit-anusement-btn:hover {
+    background-color: #e0a800;
+}
+#adminPanel .anusement-list-item .delete-anusement-btn {
+    background-color: #dc3545; /* Red */
+    color: white;
+}
+#adminPanel .anusement-list-item .delete-anusement-btn:hover {
+    background-color: #c82333;
+}
+/* --- END ADMIN STYLES --- */
