@@ -14,7 +14,7 @@
 </head>
 <body>
 
-<header>Free Earnings And All Social Media Promotion Available </header>
+<header>Free Earnings And All Social  Media Promotion Available </header>
 
 <!-- Auth Section -->
 <section id="authSection" class="active">
@@ -71,7 +71,7 @@
 <!-- Navigation (REORDERED and UPDATED) -->
 <nav style="display:none;">
   <button data-section="dashboard">Dashboard</button>
-  <button data-section="tasks">Tasks</button>
+  <button data-section="tasks">Tasks</button> <!-- Moved to second position -->
   <button data-section="profile">Profile</button>
   <button data-section="referrals">Referral</button>
   <button data-section="forYouPage">For You</button>
@@ -232,7 +232,7 @@
   <form id="withdrawForm">
     <label for="withdrawMethod">Select Method:</label>
     <select id="withdrawMethod" required>
-      <option value="Easypaisa">Easypaisa (03460508583- Ghulam Murtaza)</option>
+      <option value="Easypaisa">Easypaisa (03435640880 - Mujtaba Hassan)</option>
       <option value="JazzCash">JazzCash</option>
       <option value="Bank">Allied Bank</option>
       <option value="Bitget">Bitget USDT (Min 12 USDT)</option>
@@ -253,10 +253,8 @@
     <p><strong>Payment Details:</strong></p>
     <ul>
       <li><strong>Method:</strong> Easypaisa</li>
-      <li><strong>Account Number:</strong> 03460508583</li>
-      <li><strong>Account Name:</strong> Ghulam Murtaza</li>
-      <li><strong>Account Number:</strong> 03453252637</li>
-      <li><strong>Account Name:</strong> Ghulam Mustafa</li>
+      <li><strong>Account Number:</strong> 03435640880</li>
+      <li><strong>Account Name:</strong> Mujtaba Hassan</li>
     </ul>
     <p><strong>Instructions:</strong></p>
     <ul>
@@ -267,7 +265,16 @@
     </ul>
   </div>
   <form id="depositForm">
-    <input type="text" id="transactionId" placeholder="Enter Transaction ID" required><br>
+    <!-- MODIFIED: Added a select dropdown for payment method before transaction ID -->
+    <label for="depositMethod">Payment Method:</label>
+    <select id="depositMethod" required>
+        <option value="">Select Payment Method</option>
+        <option value="Easypaisa">Easypaisa</option>
+        <option value="JazzCash">JazzCash</option>
+        <option value="FreeEarningsAppID">Free Earnings App ID (if applicable)</option>
+        <!-- Add other relevant options here if needed -->
+    </select><br>
+    <input type="text" id="transactionId" placeholder="Enter Transaction ID / Reference" required><br>
     <input type="number" id="depositAmount" placeholder="Enter Amount to Deposit" required><br>
     <button type="submit" class="submitBtn">Submit Deposit Request</button>
   </form>
@@ -311,11 +318,13 @@
 <!-- User Added Links Section -->
 <section id="userLinksSection">
   <h2>My Links</h2>
-  <p>App 1 Free Add karwa Sakte Hain</p>
+  <p>App 1 Free Add karwa Sakte Hain for try</p>
   <p>1 day k ley</p>
   <p>only website link</p>
+  <p><b>Payment Account Name: Mujtbha Hassan</b></p>
+  <p>Easypaisa Number: <b>03435640880</b></p>
   <p><b>Payment Account Name: Ghulam Mustafa</b></p>
-  <p>Easypaisa Number: <b>03453252637</b></p>
+  <p>Jazz Cash Number: <b>03226330532</b></p>
   <p>1. 1st payment karein (per link charges: 350 to 7000 PKR).</p>
   <p>2. Payment ka screenshot <b>mn1691316@gmail.com</b> par email karein.</p>
   <p>3. Transaction ID send karein.</p>
@@ -342,6 +351,17 @@
     <input type="url" id="userLinkUrl" placeholder="Enter URL (e.g., https://yourwebsite.com)" required><br>
     <label for="userLinkDescription">Link Description:</label>
     <input type="text" id="userLinkDescription" placeholder="Brief description for your link" required><br>
+    <!-- ADDED TRANSACTION ID INPUT FOR LINK ADDITION -->
+    <label for="linkTransactionId">Transaction ID (for link payment):</label>
+    <input type="text" id="linkTransactionId" placeholder="Enter Transaction ID from Payment" required><br>
+    <!-- ADDED PAYMENT METHOD SELECTION FOR LINK ADDITION -->
+    <label for="linkPaymentMethod">Payment Method:</label>
+    <select id="linkPaymentMethod" required>
+        <option value="">Select Payment Method</option>
+        <option value="Easypaisa">Easypaisa</option>
+        <option value="JazzCash">JazzCash</option>
+        <option value="FreeEarningsAppID">Free Earnings App ID (if applicable)</option>
+    </select><br>
     <button type="submit" class="submitBtn">Add Link (Select Category & Cost)</button>
   </form>
   <h3>Your Added Links:</h3>
@@ -361,7 +381,7 @@
 <!-- NEW SECTION: Anusement -->
 <section id="anusement">
   <h2><span class="neon-text">Work Details </span></h2>
-  <p>Here you can find our latest task details content.</p>
+  <p>Here you can find our latest task details  content.</p>
   <div id="anusementContainer" class="dashboard-container">
     <!-- Anusement items will be loaded here by JavaScript -->
   </div>
@@ -458,6 +478,7 @@
   <p class="copyright">&copy;2013 to 2025 Free Earnings App. All Rights Reserved.</p>
 </footer>
 
-<script src="script.js" type="module"></script>
+<script type="module" src="script.js"></script>
+
 </body>
 </html>
