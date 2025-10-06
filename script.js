@@ -60,7 +60,6 @@ const loginBtn = document.getElementById("loginBtn");
 const logoutBtn = document.getElementById("logoutBtn");
 const refLinkInput = document.getElementById("refLink");
 const depositForm = document.getElementById("depositForm");
-const depositMethodSelect = document.getElementById("depositMethod"); // GET DEPOSIT METHOD SELECT ELEMENT
 const transactionIdInput = document.getElementById("transactionId");
 const depositAmountInput = document.getElementById("depositAmount");
 const depositListContainer = document.getElementById("depositList");
@@ -771,8 +770,7 @@ function loadUserDepositHistory(userId) {
             } else if (d.timestamp) {
                 requestDate = new Date(d.timestamp).toLocaleString();
             }
-            // Display deposit history with payment method
-            depositDiv.innerHTML = `<p><strong>Method:</strong> ${d.depositMethod || 'N/A'}</p><p><strong>Tx ID:</strong> ${d.transactionId}</p><p><strong>Amount:</strong> ₹${d.amount.toFixed(2)}</p><p><strong>Status:</strong> <span class="${statusClass}">${d.status}</span></p><p><small>Submitted: ${requestDate}</small></p>`;
+            depositDiv.innerHTML = `<p><strong>Tx ID:</strong> ${d.transactionId}</p><p><strong>Amount:</strong> ₹${d.amount.toFixed(2)}</p><p><strong>Status:</strong> <span class="${statusClass}">${d.status}</span></p><p><small>Submitted: ${requestDate}</small></p>`;
             depositListContainer.appendChild(depositDiv);
         });
     });
@@ -940,16 +938,13 @@ addUserLinkForm.addEventListener("submit", async (e) => {
     if (!user) { showToast("Please log in to add links."); return; }
     const url = userLinkUrlInput.value.trim();
     const description = userLinkDescriptionInput.value.trim();
-    const transactionId = document.getElementById("linkTransactionId").value.trim(); // GET TRANSACTION ID
-    const linkPaymentMethod = document.getElementById("linkPaymentMethod").value; // GET SELECTED PAYMENT METHOD
-
-    if (!url || !description || !transactionId || !linkPaymentMethod) { // ENSURE ALL FIELDS ARE FILLED, INCLUDING PAYMENT METHOD
-        showToast("Please enter URL, Description, Transaction ID, and select a Payment Method."); return;
+    if (!url || !description) {
+        showToast("Please enter both URL and description."); return;
     }
     if (!url.startsWith('http')) {
         showToast("Please enter a valid URL starting with http or https."); return;
     }
-    currentLinkToAdd = { url, description, transactionId, linkPaymentMethod }; // STORE PAYMENT METHOD
+    currentLinkToAdd = { url, description };
     populatePriceSelectionModal();
     priceSelectionModal.style.display = "flex";
 });
@@ -990,10 +985,8 @@ confirmPriceSelectionBtn.addEventListener("click", async () => {
     }
     const selectedPrice = parseInt(confirmPriceSelectionBtn.dataset.selectedPrice);
     const selectedCategory = confirmPriceSelectionBtn.dataset.selectedCategory;
-    const transactionId = currentLinkToAdd.transactionId; // GET TRANSACTION ID
-    const linkPaymentMethod = currentLinkToAdd.linkPaymentMethod; // GET PAYMENT METHOD
-    if (isNaN(selectedPrice) || !selectedCategory || !transactionId || !linkPaymentMethod) { // CHECK TRANSACTION ID AND PAYMENT METHOD
-        showToast("Please select a valid category and ensure Transaction ID and Payment Method are entered."); return;
+    if (isNaN(selectedPrice) || !selectedCategory) {
+        showToast("Please select a valid category."); return;
     }
     const userRef = doc(db, "users", user.uid);
     let userDocSnap;
@@ -1024,15 +1017,11 @@ confirmPriceSelectionBtn.addEventListener("click", async () => {
         const newLinkRef = doc(userAddedLinksCol);
         batch.set(newLinkRef, {
             addedByUserId: user.uid, url: currentLinkToAdd.url, description: currentLinkToAdd.description,
-            category: selectedCategory, addedAt: Timestamp.now(), status: "Pending Transaction Verification", // SET STATUS TO PENDING
-            transactionId: transactionId, // SAVE TRANSACTION ID
-            paymentMethod: linkPaymentMethod // SAVE PAYMENT METHOD
+            category: selectedCategory, addedAt: Timestamp.now(), status: "Active"
         });
         await batch.commit();
-        showToast(`Link added to ${selectedCategory} successfully! ₹${selectedPrice} deducted from your wallet. Transaction ID ${transactionId} recorded via ${linkPaymentMethod}. Link pending verification.`);
+        showToast(`Link added to ${selectedCategory} successfully! ₹${selectedPrice} deducted from your wallet.`);
         addUserLinkForm.reset();
-        document.getElementById("linkTransactionId").value = ""; // CLEAR TRANSACTION ID INPUT
-        document.getElementById("linkPaymentMethod").value = ""; // CLEAR PAYMENT METHOD SELECT
         priceSelectionModal.style.display = "none";
         currentLinkToAdd = null;
         confirmPriceSelectionBtn.disabled = true;
@@ -1111,23 +1100,18 @@ depositForm.addEventListener("submit", async (e) => {
     e.preventDefault();
     const user = auth.currentUser;
     if (!user) { showToast("Please log in to deposit funds."); return; }
-    const depositMethod = depositMethodSelect.value; // GET SELECTED DEPOSIT METHOD
     const txId = transactionIdInput.value.trim();
     const amount = parseFloat(depositAmountInput.value);
-    if (!depositMethod || !txId || isNaN(amount) || amount <= 0) { // ADD DEPOSIT METHOD TO VALIDATION
-        showToast("Please select a payment method, enter a valid transaction ID, and deposit amount."); return;
+    if (!txId || isNaN(amount) || amount <= 0) {
+        showToast("Please enter a valid transaction ID and deposit amount."); return;
     }
     try {
         await addDoc(collection(db, "deposits"), {
             userId: user.uid, userName: user.displayName || user.email, transactionId: txId,
-            amount: amount, status: "Pending Verification", timestamp: Timestamp.now(),
-            depositMethod: depositMethod // SAVE DEPOSIT METHOD
+            amount: amount, status: "Pending Verification", timestamp: Timestamp.now()
         });
         showToast("Deposit request submitted successfully. Please wait for verification.");
         depositForm.reset();
-        // Clear the transaction ID and amount input fields after successful submission
-        transactionIdInput.value = '';
-        depositAmountInput.value = '';
     } catch (error) {
         console.error("Error submitting deposit request:", error); showToast("Failed to submit deposit request. Please try again.");
     }
@@ -1351,7 +1335,7 @@ const modalContent = {
         title: "Task Details & Earnings Guide (ٹاسک کی تفصیلات)",
         text: `
             <h3>The Golden Rules of Task Completion (ٹاسک مکمل کرنے کے سنہری اصول)</h3>
-            <p>Your success on this platform depends entirely on your ability to follow instructions correctly. Cheating the system will only lead to account termination. Follow these golden rules to ensure you get paid for your hard work.</p>
+            <p>Your success on this platform depends entirely on your ability to follow instructions correctly. Cheating the system will only lead to termination. Follow these golden rules to ensure you get paid for your hard work.</p>
             <ol>
                 <li><strong>Read Every Instruction Carefully (ہر ہدایت کو غور سے پڑھیں):</strong> Before starting a task, read the description from start to finish. Do not assume you know what to do. Every task is different. The description is your contract; fulfilling it is how you earn.</li>
                 <li><strong>Respect Timers and Delays (ٹائمر کا احترام کریں):</strong> If a task says "Wait for 30 seconds," you must wait for the full 30 seconds. Our system has mechanisms to verify this. Closing the page early will invalidate the task, and you will not be paid.</li>
