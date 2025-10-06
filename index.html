@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+
 <html>
 <head>
   <title>Free Earnings</title>
@@ -14,9 +14,10 @@
 </head>
 <body>
 
-<header>Free Earnings And All Social  Media Promotion Available </header>
+<header class="animated-description">Free Earnings And All Social Media Promotion Available </header>
 
 <!-- Auth Section -->
+
 <section id="authSection" class="active">
   <div class="auth-container">
     <h2>Sign Up / Login</h2>
@@ -24,54 +25,60 @@
     <input type="email" id="signupEmail" placeholder="Email" required><br>
     <input type="password" id="signupPassword" placeholder="Password" required><br>
     <input type="text" id="signupReferralCode" placeholder="Referral Code (Optional)"><br>
+
+code
+Code
+download
+content_copy
+expand_less
+<!-- Agent Registration Button -->
+<button type="button" id="showAgentFormBtn" class="submitBtn" style="background: #6c757d; color: white;">Agent Registration</button>
+
+<!-- Agent Form (initially hidden) -->
+<section id="agentFormSection" style="display:none; margin-top: 15px; padding: 15px; border: 1px solid #333; border-radius: 8px; background-color: rgba(25, 25, 25, 0.7);">
+    <h3 style="color: #0ff; margin-bottom: 10px; font-size: 18px;">Agent Information</h3>
+    <input type="text" id="agentName" placeholder="Agent Name"><br>
+    <input type="text" id="agentFatherName" placeholder="Agent Father Name"><br>
     
-    <!-- Agent Registration Button -->
-    <button type="button" id="showAgentFormBtn" class="submitBtn" style="background: #6c757d; color: white;">Agent Registration</button>
-
-    <!-- Agent Form (initially hidden) -->
-    <section id="agentFormSection" style="display:none; margin-top: 15px; padding: 15px; border: 1px solid #333; border-radius: 8px; background-color: rgba(25, 25, 25, 0.7);">
-        <h3 style="color: #0ff; margin-bottom: 10px; font-size: 18px;">Agent Information</h3>
-        <input type="text" id="agentName" placeholder="Agent Name"><br>
-        <input type="text" id="agentFatherName" placeholder="Agent Father Name"><br>
-        
-        <!-- Family Member Details Section -->
-        <div id="familyDetailsSection" style="margin-top: 10px;">
-            <h4 style="color: #0ff; font-size: 14px; margin-bottom: 5px;">Family Members (Optional)</h4>
-            <!-- Wrapper for family member inputs -->
-            <div id="familyMembersInputWrapper">
-                <div class="family-member-input-group">
-                    <input type="text" placeholder="Family Member 1 Name"><br>
-                    <input type="text" placeholder="Family Member 1 Relation"><br>
-                </div>
+    <!-- Family Member Details Section -->
+    <div id="familyDetailsSection" style="margin-top: 10px;">
+        <h4 style="color: #0ff; font-size: 14px; margin-bottom: 5px;">Family Members (Optional)</h4>
+        <!-- Wrapper for family member inputs -->
+        <div id="familyMembersInputWrapper">
+            <div class="family-member-input-group">
+                <input type="text" placeholder="Family Member 1 Name"><br>
+                <input type="text" placeholder="Family Member 1 Relation"><br>
             </div>
-            <button type="button" id="addFamilyMemberBtn" style="background: #28a745; color: white; padding: 5px 10px; font-size: 12px; margin-top: 5px; border: none; border-radius: 5px;">Add Another Family Member</button>
         </div>
+        <button type="button" id="addFamilyMemberBtn" style="background: #28a745; color: white; padding: 5px 10px; font-size: 12px; margin-top: 5px; border: none; border-radius: 5px;">Add Another Family Member</button>
+    </div>
 
-        <!-- ID Card Number -->
-        <input type="text" id="agentIdCard" placeholder="Agent ID Card Number (Optional)"><br>
-        
-        <!-- WhatsApp Number -->
-        <input type="text" id="agentWhatsApp" placeholder="Agent WhatsApp Number (Optional)"><br>
+    <!-- ID Card Number -->
+    <input type="text" id="agentIdCard" placeholder="Agent ID Card Number (Optional)"><br>
+    
+    <!-- WhatsApp Number -->
+    <input type="text" id="agentWhatsApp" placeholder="Agent WhatsApp Number (Optional)"><br>
 
-        <p style="color: #ccc; font-size: 12px; margin-top: 8px;">(All fields are optional unless specified)</p>
-    </section>
+    <p style="color: #ccc; font-size: 12px; margin-top: 8px;" >(All fields are optional unless specified)</p>
+</section>
 
-    <!-- New button for location -->
-    <button type="button" id="useMyLocationBtn" class="location-button">Use My Current Location</button>
-    <!-- Hidden input to store location -->
-    <input type="hidden" id="userLocationInput">
-    <button id="signupBtn" class="submitBtn">Sign Up</button>
-    <hr>
-    <input type="email" id="loginEmail" placeholder="Email" required><br>
-    <input type="password" id="loginPassword" placeholder="Password" required><br>
-    <button id="loginBtn" class="submitBtn">Login</button>
+<!-- New button for location -->
+<button type="button" id="useMyLocationBtn" class="location-button">Use My Current Location</button>
+<!-- Hidden input to store location -->
+<input type="hidden" id="userLocationInput">
+<button id="signupBtn" class="submitBtn">Sign Up</button>
+<hr>
+<input type="email" id="loginEmail" placeholder="Email" required><br>
+<input type="password" id="loginPassword" placeholder="Password" required><br>
+<button id="loginBtn" class="submitBtn">Login</button>
   </div>
 </section>
 
 <!-- Navigation (REORDERED and UPDATED) -->
+
 <nav style="display:none;">
   <button data-section="dashboard">Dashboard</button>
-  <button data-section="tasks">Tasks</button> <!-- Moved to second position -->
+  <button data-section="tasks">Tasks</button>
   <button data-section="profile">Profile</button>
   <button data-section="referrals">Referral</button>
   <button data-section="forYouPage">For You</button>
@@ -84,45 +91,49 @@
   <button data-section="anusement">Agents Work</button>
 
   <!-- NEW BUTTON FOR SEND BALANCE -->
-  <button data-section="sendBalanceSection">Send Balance</button>
 
-  <button id="adminPanelBtn" data-section="adminPanel" style="display:none;">Admin Panel</button>
-  <button id="logoutBtn">Logout</button>
+
+<button data-section="sendBalanceSection">Send Balance</button>
+
+<button id="adminPanelBtn" data-section="adminPanel" style="display:none;">Admin Panel</button>
+<button id="logoutBtn">Logout</button>
+
 </nav>
 
 <!-- Sections (REORDERED) -->
 
 <!-- Dashboard Section -->
+
 <section id="dashboard">
   <h2>Dashboard</h2>
-  <p>Any Problems? Contact the owner via the footer links.</p>
+  <p class="animated-description">Share Any Problems? Contact the owner via the footer links.</p>
 <p>1. Task complete karke jo <b>balance earn hoga</b>, wo sirf <b>withdrawal ke liye</b> use ho sakta hai.</p>  
-<p>2. Task earning ka balance kisi bhi <b>user ko transfer / send</b> nahi kiya ja sakta.</p>  
+<p class="animated-description"> 2. Task earning ka balance kisi bhi <b>user ko transfer / send</b> nahi kiya ja sakta.</p>  
 <p>3. Withdrawals sirf approved payment methods (Easypaisa, JazzCash, Bitget , etc.) par honge.</p>
-<p><b>Warning:</b> Agar aap ne balance transfer/send karne ki koshish ki to <b>aapka account bina warning ke ban kar diya jayega.</b></p>
+<p class="animated-description"> <b>Warning:</b> Agar aap ne balance transfer/send karne ki koshish ki to <b>aapka account bina warning ke ban kar diya jayega.</b></p>
   <div class="dashboard-container">
     <div class="dashboard-box">
-      <p>Agent Users</p>
+      <p class="animated-description">Total Users</p>
       <h3 id="totalUsers">0</h3>
     </div>
     <div class="dashboard-box">
-      <p>Active Tasks Selected Id</p>
+      <p class="animated-description">Active Tasks</p>
       <h3 id="totalTasks">0</h3>
     </div>
     <div class="dashboard-box">
-      <p>Total Withdrawals</p>
+      <p class="animated-description">Total Withdrawals</p>
       <h3 id="totalWithdrawals">0</h3>
     </div>
     <div class="dashboard-box">
-      <p>Total Earnings</p>
+      <p class="animated-description">Total Earnings</p>
       <h3 id="totalEarnings">₹0.00</h3>
     </div>
     <div class="dashboard-box">
-      <p>Wallet Balance</p>
+      <p class="animated-description">Wallet Balance</p>
       <h3>₹<span id="walletBalance">0.00</span></h3>
     </div>
   </div>
-  <p>Tasks ko samajhna aapki income barhane ke liye bohot zaroori hai.<br><br>
+  <p class="animated-description"> Tasks ko samajhna aapki income barhane ke liye bohot zaroori hai.<br class="animated-description">
   <strong>1. Tasks ke Types:</strong><br>
   <ul>
     <li><strong>Website Visits/Clicks:</strong> Zyada tar tasks me aapko specified website visit karni hoti hai aur kuch actions perform karne hote hain.</li>
@@ -138,103 +149,104 @@
   </ul>
   <strong>2. READ INSTRUCTIONS CAREFULLY:</strong> Each task comes with a clear set of instructions. It is absolutely essential to read and follow these instructions precisely to get paid.<br><br>
   <strong>3. Verification Process:</strong> Our system tracks your actions to verify task completion. Tasks that are deemed incomplete or fraudulent will not be credited.</p>
-  <p>🧠 <b>Overall Concept:</b> Ye website ek online earning aur promotion platform hai jahan users social media ke tasks complete karke paisay kama sakte hain, aur agents ya admins new links, tasks, videos aur promotions manage karte hain.</p>
+<p class="animated-description">🧠 <b>Overall Concept:</b> Ye website ek online earning aur promotion platform hai jahan users social media ke tasks complete karke paisay kama sakte hain, aur agents ya admins new links, tasks, videos aur promotions manage karte hain.</p>
 
-<p>Aap yahan:</p>
-<p>• Tasks complete kar ke earning karte ho 💰</p>
-<p>• Apna balance withdraw karte ho 💵</p>
-<p>• Referral system se extra income lete ho 👥</p>
-<p>• Apne khud ke links add kar ke promotion karte ho 🔗</p>
-<p>• Admin naye tasks aur content add karta hai 🧾</p>
+<p class="animated-description">Aap yahan:</p>
+<p class="animated-description">• Tasks complete kar ke earning karte ho 💰</p>
+<p class="animated-description">• Apna balance withdraw karte ho 💵</p>
+<p class="animated-description">• Referral system se extra income lete ho 👥</p>
+<p class="animated-description">• Apne khud ke links add kar ke promotion karte ho 🔗</p>
+<p class="animated-description">• Admin naye tasks aur content add karta hai 🧾</p>
 
 <hr>
 
-<p>⚙️ <b>Step-by-Step Work Process</b></p>
+<p class="animated-description">⚙️ <b>Step-by-Step Work Process</b></p>
 
-<p><b>1. Sign Up / Login</b></p>
-<p>• User apna name, email aur password daalta hai.</p>
-<p>• Referral code optional hota hai.</p>
-<p>• “Use My Current Location” button se location detect hoti hai.</p>
-<p>• Login hone ke baad Dashboard, Tasks aur Profile unlock ho jaate hain.</p>
-<p>• Agent registration option bhi hota hai jahan agent apni details (father name, CNIC, WhatsApp) likh sakta hai.</p>
+<p class="animated-description"><b>1. Sign Up / Login</b></p>
+<p class="animated-description">• User apna name, email aur password daalta hai.</p>
+<p class="animated-description">• Referral code optional hota hai.</p>
+<p class="animated-description">• “Use My Current Location” button se location detect hoti hai.</p>
+<p class="animated-description">• Login hone ke baad Dashboard, Tasks aur Profile unlock ho jaate hain.</p>
+<p class="animated-description">• Agent registration option bhi hota hai jahan agent apni details (father name, CNIC, WhatsApp) likh sakta hai.</p>
 
-<p><b>2. Dashboard Section</b></p>
-<p>• Yahan user apna account overview dekh sakta hai: Total Users, Active Tasks, Withdrawals, Earnings aur Wallet Balance.</p>
-<p>• Rules likhe hote hain jaise: earned balance sirf withdrawal ke liye hota hai, kisi user ko send nahi kar sakte.</p>
-<p>• Withdrawals sirf approved methods (Easypaisa, JazzCash, Bitget) par milte hain.</p>
-<p>• Rules break karne par account ban ho sakta hai.</p>
+<p class="animated-description"><b>2. Dashboard Section</b></p>
+<p class="animated-description">• Yahan user apna account overview dekh sakta hai: Total Users, Active Tasks, Withdrawals, Earnings aur Wallet Balance.</p>
+<p class="animated-description">• Rules likhe hote hain jaise: earned balance sirf withdrawal ke liye hota hai, kisi user ko send nahi kar sakte.</p>
+<p class="animated-description">• Withdrawals sirf approved methods (Easypaisa, JazzCash, Bitget) par milte hain.</p>
+<p class="animated-description">• Rules break karne par account ban ho sakta hai.</p>
 
-<p><b>3. Tasks Section (Main Earning Area)</b></p>
-<p>• Is section mein categories hoti hain: YouTube, TikTok, Instagram, Facebook, App, Products, Web.</p>
-<p>• Task types: (1) Website visit karna, (2) Videos dekhna, like/share karna.</p>
-<p>• System verify karta hai ke task sahi complete hua ya nahi.</p>
+<p class="animated-description"><b>3. Tasks Section (Main Earning Area)</b></p>
+<p class="animated-description">• Is section mein categories hoti hain: YouTube, TikTok, Instagram, Facebook, App, Products, Web.</p>
+<p class="animated-description">• Task types: (1) Website visit karna, (2) Videos dekhna, like/share karna.</p>
+<p class="animated-description">• System verify karta hai ke task sahi complete hua ya nahi.</p>
 
-<p><b>4. Profile Section</b></p>
-<p>• User apni info aur stats dekh sakta hai: Name, Email, Referral Code, Balance, Referrals.</p>
-<p>• “Edit Profile” button se info update kar sakta hai.</p>
+<p class="animated-description"><b>4. Profile Section</b></p>
+<p class="animated-description">• User apni info aur stats dekh sakta hai: Name, Email, Referral Code, Balance, Referrals.</p>
+<p class="animated-description">• “Edit Profile” button se info update kar sakta hai.</p>
 
-<p><b>5. Referral Section</b></p>
-<p>• Har user ka ek referral link hota hai.</p>
-<p>• Agar koi naye user us link se join kare to original user ko uske har task par 5% lifetime commission milta hai.</p>
+<p class="animated-description"><b>5. Referral Section</b></p>
+<p class="animated-description">• Har user ka ek referral link hota hai.</p>
+<p class="animated-description">• Agar koi naye user us link se join kare to original user ko uske har task par 5% lifetime commission milta hai.</p>
 
-<p><b>6. For You Page</b></p>
-<p>• System user ke liye recommended ya trending tasks show karta hai taake earning barhe.</p>
+<p class="animated-description"><b>6. For You Page</b></p>
+<p class="animated-description">• System user ke liye recommended ya trending tasks show karta hai taake earning barhe.</p>
 
-<p><b>7. Withdrawal Section</b></p>
-<p>• User apna paisa withdraw kar sakta hai Easypaisa, JazzCash, Bank, ya Bitget se.</p>
-<p>• Minimum amount Rs. 1200 (ya 12 USDT).</p>
-<p>• Payment manually review hoti hai (19–22 aur 28–31 date ko).</p>
-<p>• Galat task par withdrawal reject ho jata hai.</p>
+<p class="animated-description"><b>7. Withdrawal Section</b></p>
+<p class="animated-description">• User apna paisa withdraw kar sakta hai Easypaisa, JazzCash, Bank, ya Bitget se.</p>
+<p class="animated-description">• Minimum amount Rs. 1200 (ya 12 USDT).</p>
+<p class="animated-description">• Payment manually review hoti hai (19–22 aur 28–31 date ko).</p>
+<p class="animated-description">• Galat task par withdrawal reject ho jata hai.</p>
 
-<p><b>8. Deposit Section</b></p>
-<p>• User apne account mein paisa add kar sakta hai Easypaisa ke zariye.</p>
-<p>• Transaction ID aur amount likh kar submit karna hota hai.</p>
-<p>• Admin verify karke balance update karta hai.</p>
+<p class="animated-description"><b>8. Deposit Section</b></p>
+<p class="animated-description">• User apne account mein paisa add kar sakta hai Easypaisa ke zariye.</p>
+<p class="animated-description">• Transaction ID aur amount likh kar submit karna hota hai.</p>
+<p class="animated-description">• Admin verify karke balance update karta hai.</p>
 
-<p><b>9. Send Balance Section</b></p>
-<p>• Ek user doosre ko limited purpose balance bhej sakta hai.</p>
-<p>• Ye balance sirf link add karne ke liye hota hai, withdraw nahi hota.</p>
-<p>• History bhi show hoti hai ke kis ko kitna bheja gaya.</p>
+<p class="animated-description"><b>9. Send Balance Section</b></p>
+<p class="animated-description">• Ek user doosre ko limited purpose balance bhej sakta hai.</p>
+<p class="animated-description">• Ye balance sirf link add karne ke liye hota hai, withdraw nahi hota.</p>
+<p class="animated-description">• History bhi show hoti hai ke kis ko kitna bheja gaya.</p>
 
-<p><b>10. Public Links & User Links</b></p>
-<p>• Public Links: sab users ke links sabko dikhte hain.</p>
-<p>• User Links: user apne khud ke links add kar sakta hai (1 free daily).</p>
-<p>• Payment aur category charges likhe hote hain (YouTube 2200, Instagram 1300, Web 350, etc).</p>
+<p class="animated-description"><b>10. Public Links & User Links</b></p>
+<p class="animated-description">• Public Links: sab users ke links sabko dikhte hain.</p>
+<p class="animated-description">• User Links: user apne khud ke links add kar sakta hai (1 free daily).</p>
+<p class="animated-description">• Payment aur category charges likhe hote hain (YouTube 2200, Instagram 1300, Web 350, etc).</p>
 
-<p><b>11. Anusement Section (Agents Work)</b></p>
-<p>• Admin yahan work updates, instructions aur new campaigns post karta hai.</p>
-<p>• Ye section agents ke liye hota hai.</p>
+<p class="animated-description"><b>11. Anusement Section (Agents Work)</b></p>
+<p class="animated-description">• Admin yahan work updates, instructions aur new campaigns post karta hai.</p>
+<p class="animated-description">• Ye section agents ke liye hota hai.</p>
 
-<p><b>12. Admin Panel</b></p>
-<p>• Sirf admin ke liye: tasks, links, videos add karna aur manage karna.</p>
-<p>• Reward amounts set karna.</p>
-<p>• Data dekhna, delete ya update karna.</p>
+<p class="animated-description"><b>12. Admin Panel</b></p>
+<p class="animated-description">• Sirf admin ke liye: tasks, links, videos add karna aur manage karna.</p>
+<p class="animated-description">• Reward amounts set karna.</p>
+<p class="animated-description">• Data dekhna, delete ya update karna.</p>
 
-<p><b>13. YouTube Video Section</b></p>
-<p>• Users videos dekh kar earning karte hain (0.005$ per full watch).</p>
-<p>• Admin videos upload karta hai.</p>
+<p class="animated-description"><b>13. YouTube Video Section</b></p>
+<p class="animated-description">• Users videos dekh kar earning karte hain (0.005$ per full watch).</p>
+<p class="animated-description">• Admin videos upload karta hai.</p>
 
-<p><b>14. Footer Section</b></p>
-<p>• Important pages: Privacy Policy, Terms of Service, About Us, Task Details, Withdrawal Profile, aur Contact via Email/WhatsApp.</p>
+<p class="animated-description"><b>14. Footer Section</b></p>
+<p class="animated-description">• Important pages: Privacy Policy, Terms of Service, About Us, Task Details, Withdrawal Profile, aur Contact via Email/WhatsApp.</p>
 
-<p>💡 <b>Short Summary</b></p>
-<p>Sign Up / Login → Account banana ya access karna</p>
-<p>Dashboard → Account overview aur stats</p>
-<p>Tasks → Earn karne ke actions</p>
-<p>Profile → Personal info aur earning details</p>
-<p>Referral → Invite aur lifetime 5% commission</p>
-<p>Withdrawal → Apna balance nikalna</p>
-<p>Deposit → Paisa add karna</p>
-<p>Send Balance → Doosre user ko limited transfer</p>
-<p>Public Links / User Links → Promotions aur earning</p>
-<p>Anusement → Work updates aur info</p>
-
+<p class="animated-description">💡 <b>Short Summary</b></p>
+<p class="animated-description">Sign Up / Login → Account banana ya access karna</p>
+<p class="animated-description">Dashboard → Account overview aur stats</p>
+<p class="animated-description">Tasks → Earn karne ke actions</p>
+<p class="animated-description">Profile → Personal info aur earning details</p>
+<p class="animated-description">Referral → Invite aur lifetime 5% commission</p>
+<p class="animated-description">Withdrawal → Apna balance nikalna</p>
+<p class="animated-description">Deposit → Paisa add karna</p>
+<p class="animated-description">Send Balance → Doosre user ko limited transfer</p>
+<p class="animated-description">Public Links / User Links → Promotions aur earning</p>
+<p class="animated-description">Anusement → Work updates aur info</p>
+<p class="animated-description">Admin Panel → Pura system control</p>
 </section>
 
 <!-- Tasks Section (Moved to be the first functional section after Dashboard) -->
+
 <section id="tasks">
   <h2>Tasks to Complete</h2>
-  <p>Complete tasks to earn rewards. Cooldown: 1 minutes between completions.</p>
+  <p class="animated-description">Complete tasks to earn rewards. Cooldown: 1 minutes between completions.</p>
   <div class="category-filter-buttons" id="taskCategoryFilters">
       <button data-filter="all" class="active">All Categories</button>
       <button data-filter="YouTube">YouTube</button>
@@ -250,6 +262,7 @@
 </section>
 
 <!-- Profile Section -->
+
 <section id="profile">
   <h2>My Profile</h2>
   <div class="profile-card">
@@ -282,42 +295,45 @@
 </section>
 
 <!-- Referrals Section -->
+
 <section id="referrals">
   <h2>Referral Earnings</h2>
-  <p>Share your referral link to earn rewards when new users join through your link!</p>
-  <p><strong>You will earn a 5% commission for life on all tasks completed by your referred users.</strong></p>
+  <p class="animated-description">Share your referral link to earn rewards when new users join through your link!</p>
+  <p class="animated-description"><strong>You will earn a 5% commission for life on all tasks completed by your referred users.</strong></p>
   <input type="text" id="refLink" readonly style="cursor: copy; background: #2a2a2a;">
   <h3>Referred Users:</h3>
   <div id="refUsers"></div>
 </section>
 
 <!-- For You Page Section -->
+
 <section id="forYouPage">
   <h2>For You</h2>
-  <p>Here are some recommended tasks and links For You.</p>
+  <p  class="animated-description"> Here are some recommended tasks and links For You.</p>
   <div id="forYouTasksContainer" class="dashboard-container"></div>
 </section>
 
 <!-- Withdrawals Section -->
+
 <section id="withdrawals">
-  <h2>Request Withdrawal</h2>
+  <h2 class="animated-description">Request Withdrawal</h2>
   <div class="withdrawal-warning-box">
       <h3>انتہائی اہم انتباہ - Warning</h3>
       <p>
           آپ کا Withdrawal اسی صورت میں منظور (Approve) کیا جائے گا جب آپ نے تمام Tasks بالکل اُسی طرح مکمل کیے ہوں گے جیسا کہ Task کی Description میں لکھا ہے۔ اگر آپ نے کوئی بھی ہدایت (Instruction) نظر انداز کی، ٹائمر پورا نہیں کیا، یا غلط کام کیا تو آپ کی Withdrawal Request بغیر کسی اطلاع کے مسترد (Reject) کر دی جائے گی اور اس فیصلے پر کوئی اپیل نہیں ہوگی.
           <br><br>
-          <strong>Your withdrawal will ONLY be approved if you have completed ALL tasks EXACTLY as instructed in the task description. If you ignore any instruction, do not wait for the full timer, or perform the task incorrectly, your withdrawal request will be REJECTED without notice, and this decision will be final.</strong>
+          <strong class="animated-description">Your withdrawal will ONLY be approved if you have completed ALL tasks EXACTLY as instructed in the task description. If you ignore any instruction, do not wait for the full timer, or perform the task incorrectly, your withdrawal request will be REJECTED without notice, and this decision will be final.</strong>
       </p>
   </div>
 
   <div style="background: #1a1a1a; padding: 15px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #333;">
     <p style="color: #ffc107;"><strong>Important Withdrawal Information:</strong></p>
     <ul>
-        <li>Payment dates are 19-22 and 28-31 of each month.</li>
+        <li class="animated-description">Payment dates are 19-22 and 28-31 of each month.</li>
         <li>If these dates fall on weekends or holidays, payments will be processed on the nearest business day.</li>
-        <li>A two-week hold period applies after reaching the minimum payout amount.</li>
+        <li class="animated-description">A two-week hold period applies after reaching the minimum payout amount.</li>
         <li>Minimum withdrawal: ₹1200 for Easypaisa/JazzCash/Bank, 12 USDT for Bitget.</li>
-        <li>All withdrawal requests are manually reviewed.</li>
+        <li class="animated-description">All withdrawal requests are manually reviewed.</li>
     </ul>
   </div>
   <form id="withdrawForm">
@@ -332,40 +348,32 @@
     <input type="number" id="withdrawAmount" placeholder="Enter Amount (Min ₹1200)" required><br>
     <button type="submit" class="submitBtn">Request Withdrawal</button>
   </form>
-  <h3>Your Withdrawal History:</h3>
+  <h3 class="animated-description">Your Withdrawal History:</h3>
   <div id="withdrawList"></div>
 </section>
 
 <!-- Deposit Section -->
+
 <section id="deposit">
-  <h2>Deposit Funds</h2>
-  <p>Apne account mein funds add karne ke liye, neeche di gai hidayat follow karen:</p>
+  <h2 class="animated-description">Deposit Funds</h2>
+  <p class="animated-description">Apne account mein funds add karne ke liye, neeche di gai hidayat follow karen:</p>
   <div class="deposit-info-box">
-    <p><strong>Payment Details:</strong></p>
+    <p class="animated-description"><strong>Payment Details:</strong></p>
     <ul>
       <li><strong>Method:</strong> Easypaisa</li>
-      <li><strong>Account Number:</strong> 03435640880</li>
+      <li class="animated-description"><strong>Account Number:</strong> 03435640880</li>
       <li><strong>Account Name:</strong> Mujtaba Hassan</li>
     </ul>
     <p><strong>Instructions:</strong></p>
     <ul>
-      <li>Apnay Easypaisa account se oper diye gaye number par raqam send karen.</li>
+      <li class="animated-description">Apnay Easypaisa account se oper diye gaye number par raqam send karen.</li>
       <li>Raqam send karne ke baad, transaction ID ko copy karen.</li>
       <li>Neeche diye gaye form mein transaction ID aur amount enter karen aur Submit karen.</li>
-      <li>Admin apki payment verify karega aur kuch dair mein aapka balance update ho jayega.</li>
+      <li class="animated-description">Admin apki payment verify karega aur kuch dair mein aapka balance update ho jayega.</li>
     </ul>
   </div>
   <form id="depositForm">
-    <!-- MODIFIED: Added a select dropdown for payment method before transaction ID -->
-    <label for="depositMethod">Payment Method:</label>
-    <select id="depositMethod" required>
-        <option value="">Select Payment Method</option>
-        <option value="Easypaisa">Easypaisa</option>
-        <option value="JazzCash">JazzCash</option>
-        <option value="FreeEarningsAppID">Free Earnings App ID (if applicable)</option>
-        <!-- Add other relevant options here if needed -->
-    </select><br>
-    <input type="text" id="transactionId" placeholder="Enter Transaction ID / Reference" required><br>
+    <input type="text" id="transactionId" placeholder="Enter Transaction ID" required><br>
     <input type="number" id="depositAmount" placeholder="Enter Amount to Deposit" required><br>
     <button type="submit" class="submitBtn">Submit Deposit Request</button>
   </form>
@@ -374,8 +382,9 @@
 </section>
 
 <!-- NEW SECTION: Send Balance -->
+
 <section id="sendBalanceSection">
-  <h2>Send Balance to Another User</h2>
+  <h2 class="animated-description">Send Balance to Another User</h2>
   <form id="sendBalanceForm">
     <input type="email" id="recipientSendEmail" placeholder="Recipient's Email" required><br>
     <input type="number" id="sendAmount" placeholder="Amount to Send" required step="0.01"><br>
@@ -400,31 +409,31 @@
 </section>
 
 <!-- Public Links Section (NEW) -->
+
 <section id="publicLinksSection">
-  <h2>Public Links</h2>
-  <p>Explore links added by our community. You can only edit or delete the links you've added yourself.</p>
+  <h2 class="animated-description">Public Links</h2>
+  <p class="animated-description">Share Explore links added by our community. You can only edit or delete the links you've added yourself.</p>
   <div id="publicLinksContainer" class="dashboard-container"></div>
 </section>
 
 <!-- User Added Links Section -->
+
 <section id="userLinksSection">
-  <h2>My Links</h2>
-  <p>App 1 Free Add karwa Sakte Hain for try</p>
+  <h2 class="animated-description">Share My Links</h2>
+  <p class="animated-description">Share  App 1 Free Add karwa Sakte Hain</p>
   <p>1 day k ley</p>
   <p>only website link</p>
   <p><b>Payment Account Name: Mujtbha Hassan</b></p>
-  <p>Easypaisa Number: <b>03435640880</b></p>
-  <p><b>Payment Account Name: Ghulam Mustafa</b></p>
-  <p>Jazz Cash Number: <b>03226330532</b></p>
-  <p>1. 1st payment karein (per link charges: 350 to 7000 PKR).</p>
-  <p>2. Payment ka screenshot <b>mn1691316@gmail.com</b> par email karein.</p>
+  <p class="animated-description">Easypaisa Number: <b>03435640880</b></p>
+  <p>1. 1st payment karein (per link charges: 200 PKR).</p>
+  <p class="animated-description">2. Payment ka screenshot <b>mn1691316@gmail.com</b> par email karein.</p>
   <p>3. Transaction ID send karein.</p>
   <p>4. Apna naam bhejein.</p>
   <p>5. Apna WhatsApp number bhejein.</p>
-  <p>6. Jo link add karwana chahte hain wo bhi <b>mn1691316@gmail.com</b> par email karein.</p>
+  <p class="animated-description">Share 6. Jo link add karwana chahte hain wo bhi <b>mn1691316@gmail.com</b> par email karein.</p>
   <p>7. Aap maximum 80 links add karwa sakte hain.</p>
   <p>8. Aur baki sab kuch bhi (agar koi additional information ya details hain) <b>mn1691316@gmail.com</b> par email karna hai.</p>
-  <p>Add your own links here and earn rewards when others visit them. Select a category below to see its cost and add your link:</p>
+  <p class="animated-description">Share Add your own links here and earn rewards when others visit them. Select a category below to see its cost and add your link:</p>
   <ul>
     <li><strong>YouTube:</strong>Rs.2200</li>
     <li><strong>Instagram:</strong> Rs.1300</li>
@@ -436,23 +445,12 @@
     <li><strong>Channel:</strong> Rs.500 (Default if not specified)</li>
     <li><strong>For You Page Promotion Life time k ley :</strong> Rs.7000</li>
   </ul>
-  <p>This Is Working</p>
+  <p class="animated-description">This Is Working</p>
   <form id="addUserLinkForm">
     <label for="userLinkUrl">Link URL:</label>
     <input type="url" id="userLinkUrl" placeholder="Enter URL (e.g., https://yourwebsite.com)" required><br>
     <label for="userLinkDescription">Link Description:</label>
     <input type="text" id="userLinkDescription" placeholder="Brief description for your link" required><br>
-    <!-- ADDED TRANSACTION ID INPUT FOR LINK ADDITION -->
-    <label for="linkTransactionId">Transaction ID (for link payment):</label>
-    <input type="text" id="linkTransactionId" placeholder="Enter Transaction ID from Payment" required><br>
-    <!-- ADDED PAYMENT METHOD SELECTION FOR LINK ADDITION -->
-    <label for="linkPaymentMethod">Payment Method:</label>
-    <select id="linkPaymentMethod" required>
-        <option value="">Select Payment Method</option>
-        <option value="Easypaisa">Easypaisa</option>
-        <option value="JazzCash">JazzCash</option>
-        <option value="FreeEarningsAppID">Free Earnings App ID (if applicable)</option>
-    </select><br>
     <button type="submit" class="submitBtn">Add Link (Select Category & Cost)</button>
   </form>
   <h3>Your Added Links:</h3>
@@ -460,6 +458,7 @@
 </section>
 
 <!-- Price Selection Modal -->
+
 <div id="priceSelectionModal" class="modal">
     <div class="modal-content">
         <span class="modal-close-btn">&times;</span>
@@ -470,9 +469,10 @@
 </div>
 
 <!-- NEW SECTION: Anusement -->
+
 <section id="anusement">
-  <h2><span class="neon-text">Work Details </span></h2>
-  <p>Here you can find our latest task details  content.</p>
+<p class="neon-text">Work Details </span></h2>
+  <p class="animated-description">Here you can find our latest task details content.</p>
   <div id="anusementContainer" class="dashboard-container">
     <!-- Anusement items will be loaded here by JavaScript -->
   </div>
@@ -480,6 +480,7 @@
 <!-- END NEW SECTION -->
 
 <!-- Admin Panel Section -->
+
 <section id="adminPanel">
     <h2>Admin Panel</h2>
     <form id="adminAddForm">
@@ -521,32 +522,39 @@
         <h3>Current Links:</h3>
         <div id="adminLinksContainer" class="dashboard-container"></div>
 
-        <!-- Admin Anusement Management Section -->
-        <div class="admin-anusement-form-section">
-            <h3>Manage Anusement Content</h3>
-            <input type="text" id="anusementTitle" placeholder="Anusement Title" required>
-            <textarea id="anusementDescription" placeholder="Anusement Description" required></textarea>
-            <input type="url" id="anusementURL" placeholder="Link URL" required>
-            <button id="addAnusementBtn" class="submitBtn submit-anusement-btn">Add Anusement</button>
+code
+Code
+download
+content_copy
+expand_less
+<!-- Admin Anusement Management Section -->
+    <div class="admin-anusement-form-section">
+        <h3>Manage Anusement Content</h3>
+        <input type="text" id="anusementTitle" placeholder="Anusement Title" required>
+        <textarea id="anusementDescription" placeholder="Anusement Description" required></textarea>
+        <input type="url" id="anusementURL" placeholder="Link URL" required>
+        <button id="addAnusementBtn" class="submitBtn submit-anusement-btn">Add Anusement</button>
 
-            <h4>Current Anusement Items:</h4>
-            <div id="anusementList" class="anusement-list-container">
-                <!-- Anusement list will be loaded here by admin script -->
-            </div>
+        <h4>Current Anusement Items:</h4>
+        <div id="anusementList" class="anusement-list-container">
+            <!-- Anusement list will be loaded here by admin script -->
         </div>
-        <!-- End Admin Anusement Management Section -->
     </div>
+    <!-- End Admin Anusement Management Section -->
+</div>
 </section>
 
 <!-- YouTube Video Section (MOVED TO THE END) -->
+
 <section id="youtubeVideoSection">
   <h2>Watch Videos to Earn</h2>
-  <p>watch Video full earn 0.005$</p>
+  <p class="animated-description">watch Video full earn 0.005$</p>
   <div id="videoPlayerContainer"></div>
-  <p>Stay updated with our latest earning tips!</p>
+  <p class="animated-description">Stay updated with our latest earning tips!</p>
 </section>
 
 <!-- Modal for Details -->
+
 <div id="detailsModal" class="modal">
   <div class="modal-content">
     <span class="modal-close-btn">&times;</span>
@@ -556,6 +564,7 @@
 </div>
 
 <!-- Footer -->
+
 <footer>
   <div class="footer-links">
     <a id="privacyBtn">Privacy Policy</a>
@@ -566,10 +575,10 @@
     <a id="contactEmailLink">Contact via Email</a>
     <a id="contactWhatsappLink">Contact via WhatsApp</a>
   </div>
-  <p class="copyright">&copy;2013 to 2025 Free Earnings App. All Rights Reserved.</p>
+  <p class="animated-description" ="copyright">&copy;2013 to 2025 Free Earnings App. All Rights Reserved.</p>
 </footer>
 
-<script type="module" src="script.js"></script>
+<script src="script.js" type="module"></script>
 
 </body>
 </html>
