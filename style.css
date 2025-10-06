@@ -1,25 +1,49 @@
 /* --- Base Styles --- */
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Modern font */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
-    background: #0d0d0d; /* Very dark background */
-    color: #e0e0e0; /* Light gray text for readability */
+    background: #0d0d0d;
+    color: #e0e0e0;
     line-height: 1.6;
-    padding-bottom: 80px; /* Footer overlap prevention */
-    overflow-x: hidden; /* Prevent horizontal scroll */
+    padding-bottom: 80px; /* Space for fixed footer */
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    position: relative; /* For background animations */
 }
 
+/* --- Background Animation --- */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(30, 30, 30, 0.5) 0%, rgba(10, 10, 10, 0.8) 70%);
+    z-index: -1;
+    animation: backgroundShift 25s linear infinite alternate;
+}
+
+@keyframes backgroundShift {
+    0% { transform: scale(1); opacity: 0.6; }
+    50% { transform: scale(1.1); opacity: 0.8; }
+    100% { transform: scale(1); opacity: 0.6; }
+}
+
+
 header {
-    background: linear-gradient(to right, #0ff, #0cc); /* Neon cyan gradient */
+    background: linear-gradient(to right, #0ff, #0cc);
     color: #000;
-    padding: 20px 0; /* More padding */
+    padding: 25px 0; /* Slightly more padding */
     text-align: center;
-    font-size: 30px; /* Larger font */
+    font-size: 40px; /* Larger font for PC */
     font-weight: bold;
-    text-shadow: 0 0 7px #0ff, 0 0 15px #0ff, 0 0 25px #0ff; /* Enhanced neon text glow */
-    box-shadow: 0 5px 20px rgba(0, 255, 255, 0.5); /* Stronger neon glow */
-    letter-spacing: 1.5px; /* Increased letter spacing */
-    animation: headerGlow 2s infinite alternate; /* Pulsating glow animation */
+    text-shadow: 0 0 7px #0ff, 0 0 15px #0ff, 0 0 25px #0ff;
+    box-shadow: 0 5px 20px rgba(0, 255, 255, 0.5);
+    letter-spacing: 2px; /* Increased letter spacing */
+    animation: headerGlow 2s infinite alternate;
+    position: relative;
+    z-index: 10; /* Ensure header is above background animation */
 }
 
 @keyframes headerGlow {
@@ -31,32 +55,33 @@ nav {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    background: rgba(17, 17, 17, 0.95); /* Slightly lighter dark background */
-    padding: 14px 0;
-    border-bottom: 3px solid #0ff; /* Neon cyan border */
-    box-shadow: 0 3px 12px rgba(0, 255, 255, 0.3); /* Subtle glow */
-    position: sticky; /* Make navbar sticky */
+    background: rgba(17, 17, 17, 0.95);
+    padding: 18px 0; /* Slightly more padding */
+    border-bottom: 3px solid #0ff;
+    box-shadow: 0 3px 12px rgba(0, 255, 255, 0.3);
+    position: sticky;
     top: 0;
-    z-index: 100; /* Ensure it's above other content */
+    z-index: 100;
 }
 
 nav button {
-    background: linear-gradient(to bottom, #fff, #f0f0f0); /* Subtle gradient */
+    background: linear-gradient(to bottom, #fff, #f0f0f0);
     border: none;
-    padding: 12px 22px; /* Larger padding */
-    margin: 8px;
+    padding: 14px 25px; /* More padding */
+    margin: 10px; /* More margin */
     color: #000;
     font-weight: bold;
-    border-radius: 12px; /* More rounded */
+    border-radius: 12px;
     cursor: pointer;
     transition: all 0.4s ease;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-    font-size: 15px; /* Larger font */
-    position: relative; /* For pseudo-elements */
-    overflow: hidden; /* To contain pseudo-elements */
+    font-size: 16px; /* Larger font */
+    position: relative;
+    overflow: hidden;
+    outline: none; /* Remove outline on focus */
 }
 
-nav button::before { /* Neon glow effect */
+nav button::before {
     content: '';
     position: absolute;
     top: 0;
@@ -68,39 +93,43 @@ nav button::before { /* Neon glow effect */
     transform: translateX(-100%);
 }
 
-nav button:hover {
-    box-shadow: 0 0 25px #0ff, 0 8px 15px rgba(0, 0, 0, 0.4), 0 0 15px rgba(0, 255, 255, 0.8); /* Enhanced neon glow */
-    transform: translateY(-4px) scale(1.04); /* Lift and slight scale */
+nav button:hover,
+nav button:focus {
+    box-shadow: 0 0 25px #0ff, 0 8px 15px rgba(0, 0, 0, 0.4), 0 0 15px rgba(0, 255, 255, 0.8);
+    transform: translateY(-4px) scale(1.04);
     background: #f8f8f8;
     color: #007bff;
 }
 
-nav button:hover::before {
-    transform: translateX(100%); /* Slide glow effect */
+nav button:hover::before,
+nav button:focus::before {
+    transform: translateX(100%);
 }
 
 nav button[data-section="adminPanel"] {
-    background: linear-gradient(to bottom, #ffc107, #e0a800); /* Amber gradient */
+    background: linear-gradient(to bottom, #ffc107, #e0a800);
     color: #000;
     box-shadow: 0 4px 10px rgba(255, 193, 7, 0.5);
 }
 
-nav button[data-section="adminPanel"]:hover {
+nav button[data-section="adminPanel"]:hover,
+nav button[data-section="adminPanel"]:focus {
     background: #e0a800;
-    box-shadow: 0 0 25px #ffc107, 0 8px 15px rgba(0, 0, 0, 0.4), 0 0 20px rgba(255, 193, 7, 0.8); /* Neon amber glow */
+    box-shadow: 0 0 25px #ffc107, 0 8px 15px rgba(0, 0, 0, 0.4), 0 0 20px rgba(255, 193, 7, 0.8);
     transform: translateY(-4px) scale(1.04);
 }
 
 section {
     display: none;
-    padding: 40px; /* More padding */
-    margin-top: 30px; /* More space above sections */
-    background: rgba(26, 26, 26, 0.85); /* Semi-transparent dark background for content */
-    border-radius: 18px; /* Rounded corners for sections */
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6), 0 0 15px rgba(0, 255, 255, 0.2); /* Deeper shadow with neon hint */
-    animation: fadeInSection 0.6s ease-out forwards; /* Fade in animation */
-    opacity: 0; /* Initially hidden */
-    transform: translateY(20px); /* Slight downward start */
+    padding: 40px;
+    margin-top: 30px;
+    background: rgba(26, 26, 26, 0.85);
+    border-radius: 18px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6), 0 0 15px rgba(0, 255, 255, 0.2);
+    animation: fadeInSection 0.6s ease-out forwards;
+    opacity: 0;
+    transform: translateY(20px);
+    position: relative; /* For potential inner animations */
 }
 
 section.active {
@@ -121,45 +150,46 @@ input[type="password"],
 input[type="number"],
 select,
 textarea {
-    padding: 14px; /* Slightly larger padding */
+    padding: 16px; /* Increased padding */
     margin: 12px 0;
-    border-radius: 12px; /* More rounded */
-    border: 1px solid #444; /* Darker border */
+    border-radius: 12px;
+    border: 1px solid #444;
     width: 100%;
     box-sizing: border-box;
-    background-color: #222; /* Dark input background */
-    color: #fff; /* White text */
-    font-size: 16px; /* Larger font */
+    background-color: #222;
+    color: #fff;
+    font-size: 17px; /* Larger font */
     transition: all 0.3s ease;
-    box-shadow: inset 0 0 8px rgba(0,0,0,0.4); /* Inner shadow */
+    box-shadow: inset 0 0 8px rgba(0,0,0,0.4);
+    outline: none; /* Remove default outline */
 }
 
 input:focus,
 select:focus,
 textarea:focus {
-    border-color: #0ff; /* Neon cyan border on focus */
-    outline: none;
-    box-shadow: inset 0 0 8px rgba(0,0,0,0.4), 0 0 15px rgba(0, 255, 255, 0.7); /* Neon glow on focus */
+    border-color: #0ff;
+    box-shadow: inset 0 0 8px rgba(0,0,0,0.4), 0 0 15px rgba(0, 255, 255, 0.7);
 }
 
 button.submitBtn {
-    background: linear-gradient(to right, #0ff, #0cc); /* Neon cyan gradient */
+    background: linear-gradient(to right, #0ff, #0cc);
     color: #000;
     border: none;
-    padding: 16px 35px; /* Larger button */
-    border-radius: 12px; /* More rounded */
+    padding: 18px 40px; /* More padding */
+    border-radius: 12px;
     cursor: pointer;
     font-weight: bold;
     transition: all 0.4s ease;
-    font-size: 18px; /* Larger font */
+    font-size: 19px; /* Larger font */
     display: inline-block;
-    margin-top: 20px; /* More space */
-    box-shadow: 0 6px 15px rgba(0, 255, 255, 0.5), 0 0 10px rgba(0, 255, 255, 0.7); /* Neon glow */
+    margin-top: 20px;
+    box-shadow: 0 6px 15px rgba(0, 255, 255, 0.5), 0 0 10px rgba(0, 255, 255, 0.7);
     position: relative;
     overflow: hidden;
+    outline: none;
 }
 
-button.submitBtn::before { /* Sliding gradient */
+button.submitBtn::before {
     content: '';
     position: absolute;
     top: 0;
@@ -171,19 +201,20 @@ button.submitBtn::before { /* Sliding gradient */
     transform: translateX(-100%);
 }
 
-button.submitBtn:hover {
-    box-shadow: 0 0 20px #0ff, 0 8px 15px rgba(0, 255, 255, 0.7), 0 0 15px rgba(0, 255, 255, 0.9); /* Brighter glow */
-    background: linear-gradient(to right, #d6f7ff, #d0f2ff); /* Lighter cyan on hover */
+button.submitBtn:hover,
+button.submitBtn:focus {
+    box-shadow: 0 0 20px #0ff, 0 8px 15px rgba(0, 255, 255, 0.7), 0 0 15px rgba(0, 255, 255, 0.9);
+    background: linear-gradient(to right, #d6f7ff, #d0f2ff);
     color: #000;
-    transform: translateY(-4px) scale(1.03); /* Lift and slight scale */
+    transform: translateY(-4px) scale(1.03);
 }
-
-button.submitBtn:hover::before {
+button.submitBtn:hover::before,
+button.submitBtn:focus::before {
     transform: translateX(100%);
 }
 
 button.submitBtn:disabled {
-    background: #444; /* Darker disabled state */
+    background: #444;
     color: #aaa;
     cursor: not-allowed;
     box-shadow: none;
@@ -197,7 +228,7 @@ button.submitBtn:disabled {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.95); /* Deeper dark background */
+    background: rgba(0, 0, 0, 0.95);
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -205,22 +236,22 @@ button.submitBtn:disabled {
     z-index: 999;
     padding: 40px;
     box-sizing: border-box;
-    backdrop-filter: blur(10px); /* Stronger blur effect */
+    backdrop-filter: blur(10px);
     animation: fadeInBG 0.5s ease-out;
 }
 
 #authSection .auth-container {
-    max-width: 480px; /* Slightly wider */
+    max-width: 520px; /* Slightly wider for PC */
     width: 100%;
-    padding: 45px; /* More padding */
-    background: rgba(17, 17, 17, 0.88); /* Darker container */
-    border-radius: 18px; /* More rounded */
-    box-shadow: 0 10px 30px rgba(0, 255, 255, 0.3), inset 0 0 15px rgba(0, 255, 255, 0.2); /* Stronger neon glow with inset */
+    padding: 50px; /* More padding */
+    background: rgba(17, 17, 17, 0.88);
+    border-radius: 18px;
+    box-shadow: 0 10px 30px rgba(0, 255, 255, 0.3), inset 0 0 15px rgba(0, 255, 255, 0.2);
     text-align: center;
-    border: 1px solid rgba(0, 255, 255, 0.35); /* Subtle neon border */
-    animation: zoomInContainer 0.7s ease-out forwards; /* Zoom in animation */
-    transform: scale(0.9); /* Start slightly smaller */
-    opacity: 0; /* Start hidden */
+    border: 1px solid rgba(0, 255, 255, 0.35);
+    animation: zoomInContainer 0.7s ease-out forwards;
+    transform: scale(0.9);
+    opacity: 0;
 }
 
 @keyframes zoomInContainer {
@@ -230,41 +261,43 @@ button.submitBtn:disabled {
 
 #authSection h2 {
     color: #0ff;
-    margin-bottom: 35px; /* More space below heading */
-    font-size: 36px; /* Larger heading */
-    text-shadow: 0 0 10px #0ff, 0 0 18px #0ff; /* Enhanced neon glow */
+    margin-bottom: 35px;
+    font-size: 36px;
+    text-shadow: 0 0 10px #0ff, 0 0 18px #0ff;
 }
 
 #authSection hr {
     border: 0;
-    height: 2px; /* Thicker line */
+    height: 2px;
     background-image: linear-gradient(to right, rgba(0, 255, 255, 0), rgba(0, 255, 255, 0.9), rgba(0, 255, 255, 0));
-    margin: 45px 0; /* More space */
+    margin: 45px 0;
 }
 
 #authSection button.submitBtn {
     width: 100%;
-    padding: 18px 30px; /* Larger submit button */
+    padding: 18px 30px;
     font-size: 19px;
 }
 
 #authSection .location-button {
-    background: linear-gradient(to bottom, #4CAF50, #45a049); /* Green gradient */
+    background: linear-gradient(to bottom, #4CAF50, #45a049);
     color: white;
-    padding: 14px 20px;
+    padding: 16px 25px; /* More padding */
     border: none;
-    border-radius: 12px; /* More rounded */
+    border-radius: 12px;
     cursor: pointer;
     font-weight: bold;
     transition: all 0.4s ease;
-    font-size: 16px;
+    font-size: 17px; /* Larger font */
     margin-top: 20px;
     width: 100%;
     display: block;
-    box-shadow: 0 6px 15px rgba(76, 175, 80, 0.5); /* Green glow */
+    box-shadow: 0 6px 15px rgba(76, 175, 80, 0.5);
+    outline: none;
 }
 
-#authSection .location-button:hover {
+#authSection .location-button:hover,
+#authSection .location-button:focus {
     background: linear-gradient(to bottom, #45a049, #3e8e41);
     box-shadow: 0 0 20px rgba(76, 175, 80, 0.7), 0 8px 18px rgba(0, 0, 0, 0.3);
     transform: translateY(-4px);
@@ -287,12 +320,12 @@ button.submitBtn:disabled {
 #adminLinksContainer,
 #depositList,
 #userLinksContainer,
-#publicLinksContainer { /* Added publicLinksContainer */
+#publicLinksContainer {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 30px; /* Increased gap */
-    margin-top: 35px; /* More space */
+    gap: 30px;
+    margin-top: 35px;
 }
 
 /* --- Individual Boxes (Dashboard, Task, Withdraw, Link, Deposit History) --- */
@@ -301,18 +334,18 @@ button.submitBtn:disabled {
 .withdrawBox,
 .linkBox,
 .depositBox,
-.userLinkBox { /* Added .userLinkBox */
-    background: rgba(26, 26, 26, 0.9); /* Darker, more opaque background */
-    padding: 30px; /* More padding */
-    border-radius: 18px; /* More rounded corners */
-    box-shadow: 0 10px 25px rgba(0, 255, 255, 0.25), inset 0 0 10px rgba(0, 255, 255, 0.1); /* Softer neon glow with inset */
-    min-width: 250px; /* Consistent min-width */
+.userLinkBox {
+    background: rgba(26, 26, 26, 0.9);
+    padding: 30px;
+    border-radius: 18px;
+    box-shadow: 0 10px 25px rgba(0, 255, 255, 0.25), inset 0 0 10px rgba(0, 255, 255, 0.1);
+    min-width: 280px; /* Slightly wider */
     text-align: center;
     flex-grow: 1;
-    max-width: 320px; /* Consistent max-width */
+    max-width: 320px; /* Keep max width */
     transition: transform 0.4s ease, box-shadow 0.4s ease;
-    border: 1px solid rgba(0, 255, 255, 0.15); /* Subtle neon border */
-    animation: slideInUp 0.7s ease-out forwards; /* Slide in animation */
+    border: 1px solid rgba(0, 255, 255, 0.15);
+    animation: slideInUp 0.7s ease-out forwards;
     opacity: 0;
     transform: translateY(30px);
 }
@@ -322,54 +355,54 @@ button.submitBtn:disabled {
 .withdrawBox:hover,
 .linkBox:hover,
 .depositBox:hover,
-.userLinkBox:hover { /* Added hover for depositBox and userLinkBox */
-    transform: translateY(-10px); /* More pronounced lift */
-    box-shadow: 0 15px 35px rgba(0, 255, 255, 0.45), inset 0 0 15px rgba(0, 255, 255, 0.2); /* Brighter neon glow */
+.userLinkBox:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 35px rgba(0, 255, 255, 0.45), inset 0 0 15px rgba(0, 255, 255, 0.2);
 }
 
 .taskBox p {
-    margin-bottom: 20px; /* More space below paragraphs */
-    font-size: 17px; /* Larger font */
+    margin-bottom: 20px;
+    font-size: 17px;
     color: #ccc;
     line-height: 1.8;
 }
 
 /* === NEW: Style for the warning inside each task box === */
 .task-warning {
-    color: #ffc107; /* Yellow color for attention */
+    color: #ffc107;
     font-weight: bold;
-    font-size: 15px; /* Larger font */
-    margin-top: 20px; /* More space above warning */
+    font-size: 15px;
+    margin-top: 20px;
     padding: 12px;
-    background-color: rgba(255, 193, 7, 0.12); /* Faint yellow background */
-    border-left: 5px solid #ffc107; /* Thicker border */
-    border-radius: 6px; /* More rounded */
+    background-color: rgba(255, 193, 7, 0.12);
+    border-left: 5px solid #ffc107;
+    border-radius: 6px;
     text-align: left;
     transition: transform 0.3s ease;
 }
 .task-warning:hover {
-    transform: translateX(5px); /* Slight movement on hover */
+    transform: translateX(5px);
 }
 
 /* --- NEW STYLES FOR ADMIN PANEL --- */
 #adminPanel form {
-    max-width: 700px; /* Wider form */
+    max-width: 700px;
     margin: 40px auto;
-    background: rgba(26, 26, 26, 0.9); /* Darker background */
-    padding: 40px; /* More padding */
-    border-radius: 18px; /* More rounded */
-    box-shadow: 0 10px 30px rgba(0, 255, 255, 0.3), inset 0 0 15px rgba(0, 255, 255, 0.2); /* Stronger neon glow with inset */
-    border: 1px solid rgba(0, 255, 255, 0.35); /* Subtle neon border */
+    background: rgba(26, 26, 26, 0.9);
+    padding: 40px;
+    border-radius: 18px;
+    box-shadow: 0 10px 30px rgba(0, 255, 255, 0.3), inset 0 0 15px rgba(0, 255, 255, 0.2);
+    border: 1px solid rgba(0, 255, 255, 0.35);
 }
 
 #adminPanel h2,
 #publicLinksSection h2,
-#anusement h2 { /* Added anusement h2 */
+#anusement h2 {
     color: #0ff;
     text-align: center;
     margin-bottom: 35px;
-    font-size: 36px; /* Larger heading */
-    text-shadow: 0 0 10px #0ff, 0 0 18px #0ff; /* Enhanced neon glow */
+    font-size: 36px;
+    text-shadow: 0 0 10px #0ff, 0 0 18px #0ff;
 }
 
 #adminPanel input,
@@ -378,23 +411,23 @@ button.submitBtn:disabled {
     background-color: #222;
     color: #fff;
     border: 1px solid #444;
-    padding: 15px; /* Slightly larger padding */
-    margin-bottom: 15px; /* Space below inputs */
-    font-size: 17px; /* Larger font */
+    padding: 15px;
+    margin-bottom: 15px;
+    font-size: 17px;
 }
 
 #adminPanel input:focus,
 #adminPanel select:focus,
 #adminPanel textarea:focus {
     border-color: #0ff;
-    box-shadow: inset 0 0 8px rgba(0,0,0,0.4), 0 0 18px rgba(0, 255, 255, 0.8); /* Stronger neon glow */
+    box-shadow: inset 0 0 8px rgba(0,0,0,0.4), 0 0 18px rgba(0, 255, 255, 0.8);
 }
 
 #adminPanel .submitBtn {
     width: 100%;
     display: block;
-    margin-top: 35px; /* More space above button */
-    padding: 18px 30px; /* Larger button */
+    margin-top: 35px;
+    padding: 18px 30px;
     font-size: 19px;
 }
 
@@ -402,8 +435,8 @@ button.submitBtn:disabled {
 .dynamic-link-input {
     display: flex;
     align-items: center;
-    gap: 15px; /* More space */
-    margin-bottom: 15px; /* More space */
+    gap: 15px;
+    margin-bottom: 15px;
 }
 
 .dynamic-link-input input {
@@ -413,11 +446,11 @@ button.submitBtn:disabled {
 }
 
 .dynamic-link-input button {
-    background: #dc3545; /* Red for remove */
+    background: #dc3545;
     color: white;
     border: none;
-    padding: 12px 18px; /* Adjusted padding */
-    border-radius: 10px; /* More rounded */
+    padding: 12px 18px;
+    border-radius: 10px;
     cursor: pointer;
     font-size: 15px;
     transition: all 0.4s ease;
@@ -428,13 +461,13 @@ button.submitBtn:disabled {
 .dynamic-link-input button:hover {
     background: #c82333;
     transform: translateY(-2px);
-    box-shadow: 0 0 15px rgba(220, 53, 69, 0.6); /* Glow on hover */
+    box-shadow: 0 0 15px rgba(220, 53, 69, 0.6);
 }
 
 #adminPanel p {
     color: #ccc;
-    margin-bottom: 15px; /* More space */
-    font-size: 16px; /* Larger font */
+    margin-bottom: 15px;
+    font-size: 16px;
 }
 
 /* --- Deposit Section Specific Styles --- */
@@ -443,7 +476,7 @@ button.submitBtn:disabled {
     padding: 30px;
     border-radius: 18px;
     margin-bottom: 30px;
-    border: 1px solid rgba(0, 255, 255, 0.2); /* Subtle neon border */
+    border: 1px solid rgba(0, 255, 255, 0.2);
     text-align: left;
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6), inset 0 0 10px rgba(0, 255, 255, 0.1);
 }
@@ -457,16 +490,16 @@ button.submitBtn:disabled {
 
 #deposit .deposit-info-box ul {
     padding-left: 28px;
-    color: #ddd; /* Lighter text */
+    color: #ddd;
 }
 
 #deposit .deposit-info-box li {
     margin-bottom: 12px;
-    line-height: 1.9; /* More line spacing */
+    line-height: 1.9;
 }
 
 #deposit form {
-    max-width: 580px; /* Wider form */
+    max-width: 580px;
     margin: 35px auto;
     padding: 35px;
     background: rgba(26, 26, 26, 0.9);
@@ -476,7 +509,7 @@ button.submitBtn:disabled {
 }
 
 #deposit h3 {
-    margin-top: 45px; /* More space */
+    margin-top: 45px;
     color: #0ff;
     text-align: center;
     font-size: 32px;
@@ -485,36 +518,36 @@ button.submitBtn:disabled {
 
 /* Withdrawal Warning Box Style */
 .withdrawal-warning-box {
-    background-color: rgba(42, 26, 26, 0.9); /* Darker red-tinged background */
-    border: 1px solid #dc3545; /* Red border */
-    border-radius: 15px; /* More rounded */
+    background-color: rgba(42, 26, 26, 0.9);
+    border: 1px solid #dc3545;
+    border-radius: 15px;
     padding: 30px;
-    margin-bottom: 35px; /* More space */
+    margin-bottom: 35px;
     text-align: left;
-    box-shadow: 0 8px 25px rgba(220, 53, 69, 0.4); /* Red glow */
+    box-shadow: 0 8px 25px rgba(220, 53, 69, 0.4);
 }
 
 .withdrawal-warning-box h3 {
-    color: #ffc107; /* Amber heading */
+    color: #ffc107;
     margin-top: 0;
-    font-size: 24px; /* Larger heading */
+    font-size: 24px;
     border-bottom: 1px solid #555;
     padding-bottom: 14px;
-    margin-bottom: 20px; /* More space */
+    margin-bottom: 20px;
 }
 
 .withdrawal-warning-box p {
-    color: #f0f0f0; /* Lighter text */
+    color: #f0f0f0;
     font-size: 17px;
     line-height: 1.9;
 }
 
 /* --- UPDATED FOOTER STYLE (FIXED) --- */
 footer {
-    background: rgba(17, 17, 17, 0.95); /* Darker footer */
-    padding: 25px 0; /* More padding */
+    background: rgba(17, 17, 17, 0.95);
+    padding: 25px 0;
     text-align: center;
-    border-top: 4px solid #0ff; /* Neon cyan border */
+    border-top: 4px solid #0ff;
     width: 100%;
     box-sizing: border-box;
     display: flex;
@@ -525,15 +558,15 @@ footer {
     bottom: 0;
     left: 0;
     z-index: 100;
-    box-shadow: 0 -3px 15px rgba(0, 255, 255, 0.2); /* Subtle glow */
+    box-shadow: 0 -3px 15px rgba(0, 255, 255, 0.2);
 }
 
 .footer-links {
     display: flex;
     justify-content: center;
-    gap: 35px; /* More space between links */
+    gap: 35px;
     flex-wrap: wrap;
-    margin-bottom: 20px; /* More space */
+    margin-bottom: 20px;
 }
 
 .footer-links a {
@@ -549,11 +582,11 @@ footer {
 .footer-links a:hover {
     text-decoration: underline;
     color: #fff;
-    text-shadow: 0 0 10px #fff; /* White glow on hover */
+    text-shadow: 0 0 10px #fff;
 }
 
 footer .copyright {
-    font-size: 15px; /* Larger font */
+    font-size: 15px;
     color: #aaa;
     margin: 0;
 }
@@ -568,25 +601,25 @@ footer .copyright {
     width: 100%;
     height: 100%;
     overflow: auto;
-    background-color: rgba(0, 0, 0, 0.92); /* Darker modal background */
-    backdrop-filter: blur(12px); /* Stronger blur */
-    animation: fadeInBG 0.5s ease-out; /* Fade in animation */
-    justify-content: center; /* Center vertically */
-    align-items: center; /* Center horizontally */
+    background-color: rgba(0, 0, 0, 0.92);
+    backdrop-filter: blur(12px);
+    animation: fadeInBG 0.5s ease-out;
+    justify-content: center;
+    align-items: center;
 }
 
 .modal-content {
-    background-color: #1a1a1a; /* Darker modal content */
+    background-color: #1a1a1a;
     color: #fff;
-    margin: 5% auto; /* Adjusted margin */
-    padding: 40px 50px; /* Increased padding */
+    margin: 5% auto;
+    padding: 40px 50px;
     border: 1px solid #0ff;
-    border-radius: 18px; /* More rounded */
-    box-shadow: 0 0 35px rgba(0, 255, 255, 0.6), inset 0 0 20px rgba(0, 255, 255, 0.2); /* Stronger neon glow with inset */
+    border-radius: 18px;
+    box-shadow: 0 0 35px rgba(0, 255, 255, 0.6), inset 0 0 20px rgba(0, 255, 255, 0.2);
     position: relative;
-    max-width: 650px; /* Max width for modal content */
-    width: 90%; /* Responsive width */
-    animation: zoomInModal 0.7s ease-out forwards; /* Zoom in animation */
+    max-width: 650px;
+    width: 90%;
+    animation: zoomInModal 0.7s ease-out forwards;
     transform: scale(0.95);
     opacity: 0;
 }
@@ -597,11 +630,11 @@ footer .copyright {
 }
 
 .modal-close-btn {
-    color: #aaa; /* Softer close button color */
+    color: #aaa;
     position: absolute;
-    top: 20px; /* Adjusted position */
-    right: 30px; /* Adjusted position */
-    font-size: 45px; /* Larger close icon */
+    top: 20px;
+    right: 30px;
+    font-size: 45px;
     font-weight: bold;
     cursor: pointer;
     transition: color 0.4s ease;
@@ -609,31 +642,31 @@ footer .copyright {
 
 .modal-close-btn:hover {
     color: #0ff;
-    transform: scale(1.1); /* Slight scale on hover */
+    transform: scale(1.1);
 }
 
 .modal-content h2 {
     color: #0ff;
     text-align: center;
-    margin-bottom: 30px; /* More space */
-    font-size: 38px; /* Larger heading */
+    margin-bottom: 30px;
+    font-size: 38px;
     text-shadow: 0 0 12px #0ff, 0 0 20px #0ff;
 }
 
 .modal-content p {
-    line-height: 1.9; /* More spacing */
+    line-height: 1.9;
     text-align: left;
-    font-size: 17px; /* Larger font */
+    font-size: 17px;
 }
 
 .modal-content ul {
     text-align: left;
     list-style-position: inside;
-    padding-left: 20px; /* More padding */
+    padding-left: 20px;
 }
 
 .modal-content li {
-    margin-bottom: 14px; /* More space */
+    margin-bottom: 14px;
 }
 
 /* --- Specific Sections --- */
@@ -641,36 +674,36 @@ footer .copyright {
 
 /* --- Profile Section --- */
 .profile-card {
-    background: rgba(26, 26, 26, 0.9); /* Darker */
-    padding: 40px; /* More padding */
-    border-radius: 18px; /* More rounded */
-    box-shadow: 0 10px 30px rgba(0, 255, 255, 0.3), inset 0 0 15px rgba(0, 255, 255, 0.2); /* Softer neon glow */
-    max-width: 520px; /* Slightly wider */
+    background: rgba(26, 26, 26, 0.9);
+    padding: 40px;
+    border-radius: 18px;
+    box-shadow: 0 10px 30px rgba(0, 255, 255, 0.3), inset 0 0 15px rgba(0, 255, 255, 0.2);
+    max-width: 520px;
     width: 90%;
-    margin: 60px auto; /* More margin */
+    margin: 60px auto;
     text-align: center;
-    border: 1px solid rgba(0, 255, 255, 0.35); /* Subtle neon border */
+    border: 1px solid rgba(0, 255, 255, 0.35);
 }
 
 .profile-header {
-    margin-bottom: 35px; /* More space */
+    margin-bottom: 35px;
 }
 
 .profile-pic {
-    width: 140px; /* Larger pic */
+    width: 140px;
     height: 140px;
     border-radius: 50%;
     object-fit: cover;
-    border: 6px solid #0ff; /* Thicker neon border */
-    box-shadow: 0 0 25px rgba(0, 255, 255, 0.9); /* Brighter neon glow */
+    border: 6px solid #0ff;
+    box-shadow: 0 0 25px rgba(0, 255, 255, 0.9);
     background-color: #333;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 55px; /* Larger initial */
+    font-size: 55px;
     font-weight: bold;
     color: white;
-    animation: pulsePic 2s infinite alternate; /* Pulsing animation */
+    animation: pulsePic 2s infinite alternate;
 }
 
 @keyframes pulsePic {
@@ -679,27 +712,27 @@ footer .copyright {
 }
 
 .profile-info h2 {
-    margin: 18px 0 10px 0; /* Adjusted margin */
+    margin: 18px 0 10px 0;
     color: #0ff;
-    font-size: 38px; /* Larger heading */
+    font-size: 38px;
     text-shadow: 0 0 12px #0ff, 0 0 20px #0ff;
 }
 
 .profile-info p {
     margin: 10px 0;
     color: #ccc;
-    font-size: 19px; /* Larger font */
+    font-size: 19px;
 }
 
 .profile-info p.referral-code {
     font-weight: bold;
     color: #fff;
     background: #2a2a2a;
-    padding: 12px 20px; /* Larger padding */
+    padding: 12px 20px;
     border-radius: 10px;
     display: inline-block;
     margin-top: 18px;
-    font-size: 17px; /* Larger font */
+    font-size: 17px;
     transition: background 0.3s ease;
 }
 .profile-info p.referral-code:hover {
@@ -707,44 +740,44 @@ footer .copyright {
 }
 
 .profile-stats {
-    margin: 40px 0; /* More margin */
+    margin: 40px 0;
     padding: 30px 0;
     border-top: 1px solid #333;
     border-bottom: 1px solid #333;
     display: flex;
     justify-content: space-around;
     flex-wrap: wrap;
-    gap: 25px; /* More gap */
+    gap: 25px;
 }
 
 .stat-item p {
     margin: 0;
     color: #aaa;
-    font-size: 17px; /* Larger font */
+    font-size: 17px;
 }
 
 .stat-item h3 {
-    margin: 10px 0 0 0; /* Adjusted margin */
+    margin: 10px 0 0 0;
     color: #fff;
-    font-size: 28px; /* Larger font */
+    font-size: 28px;
     font-weight: bold;
 }
 
 .profile-actions {
-    margin-top: 40px; /* More space */
+    margin-top: 40px;
 }
 
 .profile-actions button {
     background: linear-gradient(to right, #0ff, #0cc);
     color: #000;
     border: none;
-    padding: 18px 40px; /* Larger button */
-    border-radius: 12px; /* More rounded */
+    padding: 18px 40px;
+    border-radius: 12px;
     cursor: pointer;
     font-weight: bold;
     transition: all 0.4s ease;
-    font-size: 19px; /* Larger font */
-    box-shadow: 0 7px 20px rgba(0, 255, 255, 0.6); /* Neon glow */
+    font-size: 19px;
+    box-shadow: 0 7px 20px rgba(0, 255, 255, 0.6);
     position: relative;
     overflow: hidden;
 }
@@ -761,15 +794,12 @@ footer .copyright {
     transform: translateX(-100%);
 }
 
-.profile-actions button:hover {
-    box-shadow: 0 0 25px #0ff, 0 10px 20px rgba(0, 255, 255, 0.8), 0 0 20px rgba(0, 255, 255, 1); /* Brighter glow */
+.profile-actions button:hover,
+.profile-actions button:focus {
+    box-shadow: 0 0 25px #0ff, 0 10px 20px rgba(0, 255, 255, 0.8), 0 0 20px rgba(0, 255, 255, 1);
     background: linear-gradient(to right, #d6f7ff, #d0f2ff);
     color: #000;
-    transform: translateY(-5px); /* More pronounced lift */
-}
-
-.profile-actions button:hover::before {
-    transform: translateX(100%);
+    transform: translateY(-5px);
 }
 
 /* --- Withdrawal/Deposit Status Styles --- */
@@ -777,42 +807,42 @@ footer .copyright {
 .status-pending-verification {
     color: #ffc107;
     font-weight: bold;
-    text-shadow: 0 0 5px #ffc107; /* Subtle glow */
-} /* Yellow */
+    text-shadow: 0 0 5px #ffc107;
+}
 
 .status-approved {
     color: #28a745;
     font-weight: bold;
-    text-shadow: 0 0 5px #28a745; /* Subtle glow */
-} /* Green */
+    text-shadow: 0 0 5px #28a745;
+}
 
 .status-rejected {
     color: #dc3545;
     font-weight: bold;
-    text-shadow: 0 0 5px #dc3545; /* Subtle glow */
-} /* Red */
+    text-shadow: 0 0 5px #dc3545;
+}
 
 /* --- YouTube Video Section --- */
 #youtubeVideoSection {
     text-align: center;
-    margin-top: 40px; /* More space */
+    margin-top: 40px;
     padding: 30px;
     background: rgba(26, 26, 26, 0.9);
-    border-radius: 18px; /* More rounded */
-    box-shadow: 0 10px 25px rgba(0, 255, 255, 0.3), inset 0 0 10px rgba(0, 255, 255, 0.1); /* Neon glow */
+    border-radius: 18px;
+    box-shadow: 0 10px 25px rgba(0, 255, 255, 0.3), inset 0 0 10px rgba(0, 255, 255, 0.1);
     border: 1px solid rgba(0, 255, 255, 0.2);
 }
 
 #youtubeVideoSection h2 {
     color: #0ff;
-    margin-bottom: 30px; /* More space */
+    margin-bottom: 30px;
     font-size: 36px;
     text-shadow: 0 0 10px #0ff, 0 0 18px #0ff;
 }
 
 #youtubeVideoSection p {
     color: #ccc;
-    font-size: 17px; /* Larger font */
+    font-size: 17px;
     line-height: 1.8;
 }
 
@@ -821,16 +851,16 @@ footer .copyright {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 30px; /* Space between videos */
-    margin-top: 30px; /* Space above container */
+    gap: 30px;
+    margin-top: 30px;
 }
 
 .video-item {
     width: 100%;
-    max-width: 550px; /* Control max size of each video */
+    max-width: 550px;
     aspect-ratio: 16 / 9;
-    border-radius: 12px; /* Rounded corners for video item */
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.7), 0 0 15px rgba(0, 255, 255, 0.2); /* Shadow for video item with neon hint */
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.7), 0 0 15px rgba(0, 255, 255, 0.2);
     animation: fadeInVideo 0.8s ease-out forwards;
     opacity: 0;
     transform: scale(0.95);
@@ -840,7 +870,7 @@ footer .copyright {
     width: 100%;
     height: 100%;
     border: none;
-    border-radius: 12px; /* Rounded corners for iframe */
+    border-radius: 12px;
 }
 
 @keyframes fadeInVideo {
@@ -852,7 +882,7 @@ footer .copyright {
 
 /* --- User Added Links Section --- */
 #userLinksSection {
-    margin-top: 40px; /* More space */
+    margin-top: 40px;
     padding: 35px;
     background: rgba(26, 26, 26, 0.9);
     border-radius: 18px;
@@ -869,8 +899,8 @@ footer .copyright {
 }
 
 #userLinksSection form {
-    max-width: 550px; /* Wider form */
-    margin: 0 auto 40px auto; /* Center form, add bottom margin */
+    max-width: 550px;
+    margin: 0 auto 40px auto;
     background: #222;
     padding: 30px;
     border-radius: 12px;
@@ -880,9 +910,9 @@ footer .copyright {
 
 #userLinksSection form label {
     display: block;
-    margin-bottom: 8px; /* More space */
+    margin-bottom: 8px;
     color: #ccc;
-    font-size: 16px; /* Larger font */
+    font-size: 16px;
     font-weight: bold;
 }
 
@@ -890,7 +920,7 @@ footer .copyright {
 #userLinksSection form input[type="url"] {
     background-color: #333;
     border: 1px solid #444;
-    padding: 14px; /* Consistent padding */
+    padding: 14px;
 }
 
 #userLinksSection form input[type="text"]:focus,
@@ -900,29 +930,31 @@ footer .copyright {
 }
 
 .userLinkBox .edit-delete-buttons button {
-    background: #ffc107; /* Yellow for edit */
+    background: #ffc107;
     color: #000;
-    margin-right: 10px; /* More space */
+    margin-right: 10px;
     padding: 10px 16px;
     font-size: 14px;
-    border-radius: 9px; /* More rounded */
+    border-radius: 9px;
     transition: all 0.4s ease;
     box-shadow: 0 4px 10px rgba(255, 193, 7, 0.4);
 }
 
 .userLinkBox .edit-delete-buttons button.delete-btn {
-    background: #dc3545; /* Red for delete */
+    background: #dc3545;
     color: white;
     box-shadow: 0 4px 10px rgba(220, 53, 69, 0.4);
 }
 
-.userLinkBox .edit-delete-buttons button:hover {
+.userLinkBox .edit-delete-buttons button:hover,
+.userLinkBox .edit-delete-buttons button:focus {
     transform: translateY(-3px);
-    box-shadow: 0 0 15px rgba(255, 193, 7, 0.7); /* Yellow glow */
+    box-shadow: 0 0 15px rgba(255, 193, 7, 0.7);
 }
-.userLinkBox .edit-delete-buttons button.delete-btn:hover {
+.userLinkBox .edit-delete-buttons button.delete-btn:hover,
+.userLinkBox .edit-delete-buttons button.delete-btn:focus {
     background: #c82333;
-    box-shadow: 0 0 15px rgba(220, 53, 69, 0.7); /* Red glow */
+    box-shadow: 0 0 15px rgba(220, 53, 69, 0.7);
 }
 
 /* --- Category Filter Buttons --- */
@@ -930,9 +962,9 @@ footer .copyright {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 14px; /* More space */
-    margin-top: 25px; /* More space */
-    margin-bottom: 35px; /* More space */
+    gap: 14px;
+    margin-top: 25px;
+    margin-bottom: 35px;
 }
 
 .category-filter-buttons button {
@@ -940,14 +972,16 @@ footer .copyright {
     color: #fff;
     border: none;
     padding: 10px 20px;
-    border-radius: 9px; /* More rounded */
+    border-radius: 9px;
     cursor: pointer;
     font-size: 15px;
     transition: all 0.4s ease;
     box-shadow: 0 3px 8px rgba(0,0,0,0.3);
+    outline: none;
 }
 
-.category-filter-buttons button:hover {
+.category-filter-buttons button:hover,
+.category-filter-buttons button:focus {
     background: #444;
     transform: translateY(-2px);
 }
@@ -956,7 +990,7 @@ footer .copyright {
     background: #0ff;
     color: #000;
     font-weight: bold;
-    box-shadow: 0 0 15px #0ff, 0 4px 10px rgba(0, 255, 255, 0.5); /* Neon glow */
+    box-shadow: 0 0 15px #0ff, 0 4px 10px rgba(0, 255, 255, 0.5);
 }
 
 /* --- Price Selection Modal --- */
@@ -971,9 +1005,9 @@ footer .copyright {
     overflow: auto;
     background-color: rgba(0, 0, 0, 0.92);
     backdrop-filter: blur(12px);
+    animation: fadeInBG 0.5s ease-out;
     justify-content: center;
     align-items: center;
-    animation: fadeInBG 0.5s ease-out;
 }
 
 #priceSelectionModal .modal-content {
@@ -1018,30 +1052,31 @@ footer .copyright {
 
 .price-option {
     background: #222;
-    padding: 18px 25px; /* Larger padding */
-    margin-bottom: 14px; /* More space */
-    border-radius: 12px; /* More rounded */
+    padding: 18px 25px;
+    margin-bottom: 14px;
+    border-radius: 12px;
     cursor: pointer;
     transition: background 0.4s ease, transform 0.3s ease, box-shadow 0.4s ease;
     border: 1px solid #333;
 }
 
-.price-option:hover {
+.price-option:hover,
+.price-option:focus {
     background: #333;
     transform: translateY(-4px);
-    box-shadow: 0 0 20px rgba(0, 255, 255, 0.5); /* Neon glow */
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
 }
 
 .price-option p {
     margin: 0;
-    font-size: 18px; /* Larger font */
+    font-size: 18px;
     font-weight: bold;
 }
 
 .price-option span {
     color: #ffc107;
-    font-size: 16px; /* Larger font */
-} /* Price display */
+    font-size: 16px;
+}
 
 .price-selection-confirm-btn {
     background: linear-gradient(to right, #0ff, #0cc);
@@ -1053,8 +1088,8 @@ footer .copyright {
     font-weight: bold;
     transition: all 0.4s ease;
     font-size: 18px;
-    margin-top: 30px; /* Space above confirm button */
-    box-shadow: 0 7px 20px rgba(0, 255, 255, 0.6); /* Neon glow */
+    margin-top: 30px;
+    box-shadow: 0 7px 20px rgba(0, 255, 255, 0.6);
     position: relative;
     overflow: hidden;
 }
@@ -1071,8 +1106,9 @@ footer .copyright {
     transform: translateX(-100%);
 }
 
-.price-selection-confirm-btn:hover {
-    box-shadow: 0 0 25px #0ff, 0 10px 20px rgba(0, 255, 255, 0.8), 0 0 20px rgba(0, 255, 255, 1); /* Brighter glow */
+.price-selection-confirm-btn:hover,
+.price-selection-confirm-btn:focus {
+    box-shadow: 0 0 25px #0ff, 0 10px 20px rgba(0, 255, 255, 0.8), 0 0 20px rgba(0, 255, 255, 1);
     background: linear-gradient(to right, #d6f7ff, #d0f2ff);
     color: #000;
     transform: translateY(-5px);
@@ -1087,7 +1123,368 @@ footer .copyright {
 }
 
 
-/* --- Responsive Adjustments --- */
+/* --- Responsive Adjustments (PC View Focused) --- */
+/* General PC view adjustments */
+body {
+    font-size: 16px; /* Base font size for PC */
+}
+
+header {
+    font-size: 40px; /* Larger header for PC */
+}
+
+nav button {
+    font-size: 16px; /* Larger nav buttons */
+    padding: 14px 25px;
+    margin: 10px;
+}
+
+section {
+    padding: 50px; /* More padding for sections on PC */
+}
+
+.dashboard-box, .taskBox, .withdrawBox, .linkBox, .depositBox, .userLinkBox {
+    min-width: 280px; /* Wider boxes */
+    max-width: 320px; /* Max width for spacing */
+}
+
+.profile-card {
+    padding: 50px; /* More padding */
+}
+
+.profile-pic {
+    width: 160px; /* Larger profile pic */
+    height: 160px;
+    font-size: 60px; /* Larger initial */
+}
+
+.profile-info h2 {
+    font-size: 40px; /* Larger profile name */
+}
+
+.profile-info p {
+    font-size: 20px; /* Larger profile details */
+}
+
+.stat-item h3 {
+    font-size: 32px; /* Larger stats numbers */
+}
+
+.profile-actions button {
+    padding: 20px 45px; /* Larger buttons */
+    font-size: 20px;
+}
+
+#adminPanel h2, #publicLinksSection h2, #anusement h2 {
+    font-size: 38px; /* Larger section titles */
+}
+
+#adminPanel form, #deposit form, #userLinksSection form {
+    padding: 45px; /* More padding in forms */
+}
+
+#adminPanel input, #adminPanel select, #adminPanel textarea {
+    font-size: 17px; /* Larger inputs */
+}
+
+.modal-content {
+    padding: 50px 60px; /* More padding in modals */
+    max-width: 700px; /* Wider modals */
+}
+
+.modal-close-btn {
+    font-size: 50px; /* Larger close button */
+}
+
+.modal-content h2 {
+    font-size: 40px; /* Larger modal titles */
+}
+
+/* Specific adjustments for the screenshot content */
+#authSection .auth-container {
+    max-width: 520px;
+    padding: 50px;
+}
+
+#authSection h2 {
+    font-size: 40px;
+}
+
+#authSection .location-button {
+    padding: 16px 25px;
+    font-size: 17px;
+}
+
+/* --- Text Animation Styles --- */
+
+/* 1. Text Glow Animation */
+.glowing-text {
+    font-size: 40px; /* Adjust size as needed */
+    color: #fff; /* Base text color */
+    text-shadow: 0 0 7px #fff,
+                 0 0 10px #fff,
+                 0 0 20px #0ff, /* Cyan glow */
+                 0 0 30px #0ff,
+                 0 0 40px #0ff,
+                 0 0 55px #0ff,
+                 0 0 75px #0ff;
+    animation: textGlow 1.5s ease-in-out infinite alternate; /* Animation applied */
+}
+
+@keyframes textGlow {
+    from {
+        text-shadow: 0 0 7px #fff,
+                     0 0 10px #fff,
+                     0 0 20px #0ff,
+                     0 0 30px #0ff,
+                     0 0 40px #0ff,
+                     0 0 55px #0ff,
+                     0 0 75px #0ff;
+    }
+    to {
+        text-shadow: 0 0 4px #fff,
+                     0 0 7px #fff,
+                     0 0 12px #0ff,
+                     0 0 20px #0ff,
+                     0 0 30px #0ff,
+                     0 0 40px #0ff,
+                     0 0 50px #0ff;
+    }
+}
+
+/* Example usage for a heading */
+h1.glowing-text {
+    font-size: 3em;
+}
+
+/* 2. Pulsating Text Effect */
+.pulsating-text {
+    animation: pulse 2s infinite ease-in-out; /* Animation applied */
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.05); opacity: 0.8; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+/* 3. Color Change Animation */
+.color-changing-text {
+    animation: colorChange 5s linear infinite alternate; /* Animation applied */
+}
+
+@keyframes colorChange {
+    0% { color: #ff0000; } /* Red */
+    25% { color: #ffff00; } /* Yellow */
+    50% { color: #00ff00; } /* Green */
+    75% { color: #00ffff; } /* Cyan */
+    100% { color: #ff00ff; } /* Magenta */
+}
+
+/* 4. Animated Text Shadow (Dancing Shadow) */
+.dancing-shadow-text {
+    color: #fff; /* Base text color */
+    text-shadow: 5px 5px 0px #0ff, /* Initial cyan shadow */
+                 10px 10px 0px #f0f; /* Initial purple shadow */
+    animation: shadowDance 3s infinite alternate; /* Animation applied */
+}
+
+@keyframes shadowDance {
+    0% { text-shadow: 5px 5px 0px #0ff, 10px 10px 0px #f0f; }
+    50% { text-shadow: -5px -5px 0px #0ff, -10px -10px 0px #f0f; }
+    100% { text-shadow: 5px 5px 0px #0ff, 10px 10px 0px #f0f; }
+}
+
+/* 5. Rainbow Text Animation (Animated Gradient) */
+.rainbow-text {
+    font-size: 48px; /* Adjust size as needed */
+    font-weight: bold;
+    letter-spacing: 2px;
+    background: linear-gradient(to right,
+        #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #9400d3
+    );
+    background-size: 200% auto; /* Make the gradient wider than the text */
+    -webkit-background-clip: text; /* Clip the background to the text */
+    background-clip: text;
+    color: transparent; /* Make the text color transparent to show the background */
+    animation: rainbowTextAnimation 6s ease-in-out infinite alternate; /* Animation applied */
+}
+
+@keyframes rainbowTextAnimation {
+    0% { background-position: 0% center; }
+    100% { background-position: 100% center; }
+}
+
+/* Example for multi-line rainbow text */
+.rainbow-text-multiline {
+    font-size: 48px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    background: linear-gradient(to right,
+        #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #9400d3
+    );
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: rainbowTextAnimation 6s ease-in-out infinite alternate;
+}
+
+/* --- Dashboard Specific Font Colors & Animations --- */
+.dashboard-box .color-primary { color: #0ff; } /* Bright Cyan */
+.dashboard-box .color-secondary { color: #ffc107; } /* Amber/Yellow */
+.dashboard-box .color-accent { color: #e040fb; } /* Bright Purple */
+
+.dashboard-box h3 { /* Titles */
+    font-size: 26px; /* Larger for PC */
+    margin-bottom: 12px; /* More margin */
+}
+
+.dashboard-box p { /* Main numbers/values */
+    font-size: 36px; /* Larger for PC */
+    font-weight: bold;
+    margin-bottom: 18px; /* More margin */
+}
+
+.dashboard-box span { /* Small stats/changes */
+    font-size: 17px; /* Larger */
+    opacity: 0.8;
+}
+
+/* --- NEW: Animated Description Text --- */
+.animated-description {
+    font-size: 17px;
+    color: #ccc;
+    animation: descriptionColorShift 8s linear infinite alternate;
+    transition: color 0.4s ease;
+}
+
+@keyframes descriptionColorShift {
+    0% { color: #ff6b6b; } /* Reddish-orange */
+    25% { color: #48dbfb; } /* Bright Blue */
+    50% { color: #1dd1a1; } /* Green */
+    75% { color: #f6e58d; } /* Yellow */
+    100% { color: #ff6b6b; } /* Back to Reddish-orange */
+}
+
+/* Specific color classes for descriptions */
+.dashboard-box .description-red { color: #ff6b6b; } /* Red */
+.dashboard-box .description-green { color: #1dd1a1; } /* Green */
+.dashboard-box .description-blue { color: #48dbfb; } /* Blue */
+
+/* --- End Dashboard Specific Font Colors & Animations --- */
+
+
+/* --- End Text Animation Styles --- */
+
+
+/* Keyframes for animations */
+@keyframes fadeInBG {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+@keyframes slideInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+@keyframes listItemFadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- Responsive Adjustments (PC View Focused) --- */
+/* General PC view adjustments */
+body {
+    font-size: 16px; /* Base font size for PC */
+}
+
+header {
+    font-size: 40px; /* Larger header for PC */
+}
+
+nav button {
+    font-size: 16px; /* Larger nav buttons */
+    padding: 14px 25px;
+    margin: 10px;
+}
+
+section {
+    padding: 50px; /* More padding for sections on PC */
+}
+
+.dashboard-box, .taskBox, .withdrawBox, .linkBox, .depositBox, .userLinkBox {
+    min-width: 280px; /* Wider boxes */
+    max-width: 320px; /* Max width for spacing */
+}
+
+.profile-card {
+    padding: 50px; /* More padding */
+}
+
+.profile-pic {
+    width: 160px; /* Larger profile pic */
+    height: 160px;
+    font-size: 60px; /* Larger initial */
+}
+
+.profile-info h2 {
+    font-size: 40px; /* Larger profile name */
+}
+
+.profile-info p {
+    font-size: 20px; /* Larger profile details */
+}
+
+.stat-item h3 {
+    font-size: 32px; /* Larger stats numbers */
+}
+
+.profile-actions button {
+    padding: 20px 45px; /* Larger buttons */
+    font-size: 20px;
+}
+
+#adminPanel h2, #publicLinksSection h2, #anusement h2 {
+    font-size: 38px; /* Larger section titles */
+}
+
+#adminPanel form, #deposit form, #userLinksSection form {
+    padding: 45px; /* More padding in forms */
+}
+
+#adminPanel input, #adminPanel select, #adminPanel textarea {
+    font-size: 17px; /* Larger inputs */
+}
+
+.modal-content {
+    padding: 50px 60px; /* More padding in modals */
+    max-width: 700px; /* Wider modals */
+}
+
+.modal-close-btn {
+    font-size: 50px; /* Larger close button */
+}
+
+.modal-content h2 {
+    font-size: 40px; /* Larger modal titles */
+}
+
+/* Specific adjustments for the screenshot content */
+#authSection .auth-container {
+    max-width: 520px;
+    padding: 50px;
+}
+
+#authSection h2 {
+    font-size: 40px;
+}
+
+#authSection .location-button {
+    padding: 16px 25px;
+    font-size: 17px;
+}
+
+/* --- Media Queries for smaller screens (less emphasis, but still present) --- */
 @media (max-width: 992px) {
     nav button { padding: 10px 18px; font-size: 14px; }
     .dashboard-container, #tasksContainer, #forYouTasksContainer, #withdrawList, #adminTasksContainer, #adminLinksContainer, #depositList, #userLinksContainer, #publicLinksContainer {
@@ -1146,7 +1543,7 @@ footer .copyright {
     nav button { margin: 5px; padding: 8px 12px; font-size: 12px; width: 80%; max-width: 250px; }
     .dashboard-box, .taskBox, .withdrawBox, .linkBox, .depositBox, .userLinkBox {
         min-width: 150px;
-        max-width: 100%; /* Full width on very small screens */
+        max-width: 100%;
     }
     .modal-content h2 { font-size: 28px; }
     .modal-close-btn { font-size: 30px; top: 12px; right: 15px; }
@@ -1166,7 +1563,7 @@ footer .copyright {
     .anusementBox { min-width: 100%; max-width: 100%; padding: 15px; margin-bottom: 15px; }
     .anusementBox h3 { font-size: 1.1em; }
     .anusementBox p { font-size: 0.9em; }
-    footer .copyright { font-size: 12px; }
+    footer .copyright { font-size: 13px; }
     .footer-links { gap: 10px; margin-bottom: 10px; }
     .footer-links a { font-size: 13px; }
     .modal-content { padding: 25px 30px; }
@@ -1189,15 +1586,15 @@ footer .copyright {
 }
 
 .anusementBox {
-    background: rgba(0, 0, 0, 0.75); /* Slightly transparent background */
+    background: rgba(0, 0, 0, 0.75);
     border: 1px solid #0ff;
-    box-shadow: 0 0 20px rgba(0, 255, 255, 0.4); /* Neon glow */
-    padding: 25px; /* Slightly more padding */
-    border-radius: 18px; /* More rounded */
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.4);
+    padding: 25px;
+    border-radius: 18px;
     min-width: 260px;
     text-align: center;
     flex-grow: 1;
-    max-width: 310px; /* Adjusted max-width */
+    max-width: 310px;
     transition: transform 0.4s ease, box-shadow 0.4s ease;
     margin-bottom: 25px;
     opacity: 0;
@@ -1205,27 +1602,28 @@ footer .copyright {
     animation: slideInUp 0.7s ease-out forwards;
 }
 
-.anusementBox:hover {
-    transform: translateY(-10px); /* More pronounced lift */
-    box-shadow: 0 0 30px rgba(0, 255, 255, 0.6); /* Brighter glow on hover */
+.anusementBox:hover,
+.anusementBox:focus {
+    transform: translateY(-10px);
+    box-shadow: 0 0 30px rgba(0, 255, 255, 0.6);
 }
 
 .anusementBox h3 {
-    color: #0ff; /* Neon cyan text */
-    margin-bottom: 15px; /* More space */
-    font-size: 1.5em; /* Slightly larger */
-    text-shadow: 0 0 10px #0ff, 0 0 20px #0ff; /* Neon text shadow */
+    color: #0ff;
+    margin-bottom: 15px;
+    font-size: 1.5em;
+    text-shadow: 0 0 10px #0ff, 0 0 20px #0ff;
 }
 
 .anusementBox p {
-    color: #ccc; /* Lighter text for description */
-    font-size: 1.05em; /* Standard font size */
-    margin-bottom: 20px; /* More space */
+    color: #ccc;
+    font-size: 1.05em;
+    margin-bottom: 20px;
     line-height: 1.8;
 }
 
 .anusementBox a {
-    color: #0ff; /* Neon cyan link */
+    color: #0ff;
     text-decoration: none;
     font-weight: bold;
     transition: color 0.4s ease, text-shadow 0.4s ease;
@@ -1234,21 +1632,21 @@ footer .copyright {
 
 .anusementBox a:hover {
     color: #fff;
-    text-shadow: 0 0 12px #fff; /* White glow on hover */
+    text-shadow: 0 0 12px #fff;
 }
 
 .anusementBox small {
     color: #aaa;
-    font-size: 0.9em; /* Slightly larger */
+    font-size: 0.9em;
 }
 /* --- END NEON STYLES --- */
 
 /* --- NEW STYLES FOR ADMIN PANEL ANUSEMENT MANAGEMENT --- */
 #adminPanel .admin-anusement-form-section {
-    margin-top: 50px; /* More space */
+    margin-top: 50px;
     border-top: 1px solid #333;
     padding-top: 40px;
-    background: rgba(26, 26, 26, 0.9); /* Darker background */
+    background: rgba(26, 26, 26, 0.9);
     padding: 40px;
     border-radius: 18px;
     box-shadow: 0 10px 30px rgba(0, 255, 255, 0.3), inset 0 0 15px rgba(0, 255, 255, 0.2);
@@ -1269,24 +1667,24 @@ footer .copyright {
     color: #fff;
     border: 1px solid #444;
     padding: 15px;
-    margin-bottom: 20px; /* Added margin below inputs */
+    margin-bottom: 20px;
     font-size: 17px;
 }
 
 #adminPanel .admin-anusement-form-section textarea {
-    min-height: 130px; /* Give more space for description */
+    min-height: 130px;
     resize: vertical;
 }
 
-#adminPanel .admin-anusement-form-section .submit-anusement-btn { /* Specific style for add/update button */
+#adminPanel .admin-anusement-form-section .submit-anusement-btn {
     width: 100%;
     display: block;
     margin-top: 35px;
-    background: #ffeb3b; /* Yellow button */
+    background: #ffeb3b;
     color: #000;
-    padding: 18px 30px; /* Larger button */
+    padding: 18px 30px;
     font-size: 19px;
-    box-shadow: 0 7px 20px rgba(255, 235, 59, 0.6); /* Yellow glow */
+    box-shadow: 0 7px 20px rgba(255, 235, 59, 0.6);
     position: relative;
     overflow: hidden;
 }
@@ -1302,26 +1700,28 @@ footer .copyright {
     transform: translateX(-100%);
 }
 
-#adminPanel .admin-anusement-form-section .submit-anusement-btn:hover {
-    background: linear-gradient(to right, #fff4a3, #ffe066); /* Lighter yellow */
-    box-shadow: 0 0 25px rgba(255, 235, 59, 0.8); /* Brighter glow */
+#adminPanel .admin-anusement-form-section .submit-anusement-btn:hover,
+#adminPanel .admin-anusement-form-section .submit-anusement-btn:focus {
+    background: linear-gradient(to right, #fff4a3, #ffe066);
+    box-shadow: 0 0 25px rgba(255, 235, 59, 0.8);
     transform: translateY(-4px);
 }
-#adminPanel .admin-anusement-form-section .submit-anusement-btn:hover::before {
+#adminPanel .admin-anusement-form-section .submit-anusement-btn:hover::before,
+#adminPanel .admin-anusement-form-section .submit-anusement-btn:focus::before {
     transform: translateX(100%);
 }
 
 
 #adminPanel .anusement-list-container {
-    margin-top: 30px; /* More space */
+    margin-top: 30px;
 }
 
 #adminPanel .anusement-list-item {
-    background: #2a2a2a; /* Slightly darker background for list items */
+    background: #2a2a2a;
     border: 1px solid #444;
-    padding: 20px; /* More padding */
-    margin-bottom: 15px; /* More space */
-    border-radius: 12px; /* More rounded */
+    padding: 20px;
+    margin-bottom: 15px;
+    border-radius: 12px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -1334,73 +1734,61 @@ footer .copyright {
 
 #adminPanel .anusement-list-item p {
     margin: 0;
-    font-size: 16px; /* Larger font */
+    font-size: 16px;
     color: #ccc;
     flex-grow: 1;
-    min-width: 180px; /* Minimum width for text */
+    min-width: 180px;
 }
 
 #adminPanel .anusement-list-item p strong {
-    color: #0ff; /* Neon title */
+    color: #0ff;
     text-shadow: 0 0 7px #0ff;
 }
 
 #adminPanel .anusement-list-item small {
     color: #aaa;
-    font-size: 12.5px; /* Slightly larger */
+    font-size: 12.5px;
     display: block;
-    margin-top: 8px; /* More space */
+    margin-top: 8px;
     width: 100%;
 }
 
 #adminPanel .anusement-list-item .action-buttons {
     display: flex;
-    gap: 12px; /* More space */
+    gap: 12px;
     flex-shrink: 0;
 }
 
 #adminPanel .anusement-list-item .action-buttons button {
     padding: 10px 15px;
-    font-size: 14px; /* Larger font */
-    border-radius: 9px; /* More rounded */
+    font-size: 14px;
+    border-radius: 9px;
     cursor: pointer;
     transition: all 0.4s ease;
     box-shadow: 0 4px 10px rgba(0,0,0,0.3);
 }
 
 #adminPanel .anusement-list-item .edit-anusement-btn {
-    background-color: #ffc107; /* Yellow */
+    background-color: #ffc107;
     color: #000;
 }
 
-#adminPanel .anusement-list-item .edit-anusement-btn:hover {
+#adminPanel .anusement-list-item .edit-anusement-btn:hover,
+#adminPanel .anusement-list-item .edit-anusement-btn:focus {
     background-color: #e0a800;
     transform: translateY(-3px);
-    box-shadow: 0 0 20px rgba(255, 193, 7, 0.7); /* Yellow glow */
+    box-shadow: 0 0 20px rgba(255, 193, 7, 0.7);
 }
 
 #adminPanel .anusement-list-item .delete-anusement-btn {
-    background-color: #dc3545; /* Red */
+    background-color: #dc3545;
     color: white;
 }
 
-#adminPanel .anusement-list-item .delete-anusement-btn:hover {
+#adminPanel .anusement-list-item .delete-anusement-btn:hover,
+#adminPanel .anusement-list-item .delete-anusement-btn:focus {
     background-color: #c82333;
     transform: translateY(-3px);
-    box-shadow: 0 0 20px rgba(220, 53, 69, 0.7); /* Red glow */
+    box-shadow: 0 0 20px rgba(220, 53, 69, 0.7);
 }
 /* --- END ADMIN STYLES --- */
-
-/* Keyframes for animations */
-@keyframes fadeInBG {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-@keyframes slideInUp {
-    from { opacity: 0; transform: translateY(30px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-@keyframes listItemFadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
