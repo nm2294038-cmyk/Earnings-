@@ -1,4 +1,6 @@
 
+// --- script.js ---
+
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
 import { getFirestore, collection, doc, onSnapshot, setDoc, addDoc, getDoc, getCountFromServer, Timestamp, query, where, deleteDoc, writeBatch, orderBy, limit, getDocs, updateDoc } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, updateProfile } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
@@ -145,6 +147,10 @@ const anusementDescriptionInput = document.getElementById("anusementDescription"
 const anusementURLInput = document.getElementById("anusementURL");
 const addAnusementBtn = document.getElementById("addAnusementBtn");
 const anusementListContainer = document.getElementById("anusementList");
+
+// --- Elements for Sequence Display ---
+const showSequenceBtn = document.getElementById("showSequenceBtn"); // Assuming you add this button in your HTML
+const sequenceDisplayDiv = document.getElementById("sequenceDisplay"); // Assuming you add a div with this ID in your HTML
 
 
 let editingAnusementId = null; // State to track if we are editing anusement content
@@ -1358,13 +1364,13 @@ const modalContent = {
                     </ul>
                 </li>
             </ul>
-             <p><strong>یاد رکھیں:</strong> آپ کی کمائی کا انحصار آپ کی ایمانداری اور ہدایات پر عمل کرنے پر ہے۔</p>
+             <p><strong>یاد رکھیں:</strong> آپ کی کمائی کا انحصار آپ کی ایمانداری اور ہدایات پر عمل کرنے پر ہیں۔</p>
         `
     },
     withdrawalProfile: {
         title: "Withdrawal Profile & Rules (پیسے نکالنے کے اصول)",
         text: `
-            <h3>1. The Importance of Accuracy (درست معلومات کی اہمیت)</h3>
+            <h3 class="animated-description"> 1. The Importance of Accuracy (درست معلومات کی اہمیت)</h3>
             <p>Your Withdrawal Profile is the most critical part of getting paid. Providing 100% accurate information is your responsibility. Any error in your payment details can lead to significant delays or even the permanent loss of your funds. Double-check every digit and every letter before submitting a withdrawal request.</p>
             <p>Withdrawal request karte waqt, Apna account number, account title (naam), aur mobile number bilkul sahi likhein. Ek choti si ghalti se aapki payment ghalat jagah ja sakti hai ya ruk sakti hai. Ghalat maloomat faraham karne ki soorat mein, hum payment ke nuqsan ke zimmedar nahi honge.</p>
             
@@ -1380,7 +1386,7 @@ const modalContent = {
                         <li><strong>Payment Detail Verification:</strong> We ensure your provided payment details are in the correct format.</li>
                     </ul>
                 </li>
-                <li><strong>Approved / Rejected (منظور / مسترد):</strong> Based on the review, your request is either approved or rejected.
+                <li class="animated-description"><strong>Approved / Rejected (منظور / مسترد):</strong> Based on the review, your request is either approved or rejected.
                     <ul>
                         <li><strong>Approved:</strong> If approved, the funds are sent to your specified account. Please allow 24-72 business hours for the funds to reflect.</li>
                         <li><strong>Rejected:</strong> If rejected, the funds are returned to your app wallet (unless the rejection was due to severe fraud, in which case the account is banned). You will see the "Rejected" status in your history.</li>
@@ -1388,7 +1394,7 @@ const modalContent = {
                 </li>
             </ol>
 
-            <h3>3. Common Reasons for Withdrawal Rejection (مسترد ہونے کی عام وجوہات)</h3>
+            <h3 class="animated-description"> 3. Common Reasons for Withdrawal Rejection (مسترد ہونے کی عام وجوہات)</h3>
             <ul>
                 <li><strong>FAILURE TO FOLLOW TASK INSTRUCTIONS: This is the most common reason.</strong></li>
                 <li>Providing incorrect payment details (wrong account number, name mismatch).</li>
@@ -1396,7 +1402,7 @@ const modalContent = {
                 <li>Not meeting the minimum withdrawal threshold.</li>
                 <li>Requesting withdrawal before any mandatory holding period is over.</li>
             </ul>
-            <p><strong>Final Decision:</strong> The decision made by our review team regarding any withdrawal request is final and not subject to appeal, especially in cases of clear violation of our terms and task rules.</p>
+            <p class="animated-description"> <strong>Final Decision:</strong> The decision made by our review team regarding any withdrawal request is final and not subject to appeal, especially in cases of clear violation of our terms and task rules.</p>
         `
     }
 };
@@ -1891,7 +1897,7 @@ function loadAnusementContent() {
 
       anusementDiv.innerHTML = `
         <h3 class="neon-text">${anusementItem.title || 'Untitled Anusement'}</h3>
-        <p>${anusementItem.description || 'No description provided.'}</p>
+        <p class="animated-description"> ${anusementItem.description || 'No description provided.'}</p>
         <p><a href="${anusementItem.url}" target="_blank">Visit Link</a></p>
         <small>Added: ${anusementItem.createdAt ? anusementItem.createdAt.toDate().toLocaleString() : 'N/A'}</small>
       `;
@@ -2005,7 +2011,136 @@ document.addEventListener('click', async (event) => {
     }
 });
 
-// ---------- Initial Load and Auth State Check ----------
+// ---------- Daily Claim Bounce and Sequence Display Logic ----------
+document.addEventListener('DOMContentLoaded', () => {
+    // --- Daily Claim Bounce Logic ---
+    const dailyClaimBtn = document.getElementById('dailyClaimBtn');
+    const dailyClaimMessage = document.getElementById('dailyClaimMessage');
+    const walletBalanceProfile = document.getElementById('walletBalanceProfile'); // Assuming this displays the user's balance
+    const CLAIM_COOLDOWN_KEY = 'dailyClaimLastClaimed';
+    const CLAIM_AMOUNT = 10; // Amount to be added on daily claim (e.g., 10 units)
+
+    // Function to get current date string for storage
+    function getTodayDateString() {
+        const today = new Date();
+        return today.toISOString().split('T')[0]; // YYYY-MM-DD format
+    }
+
+    // Check if user has claimed today when the page loads
+    function checkDailyClaimStatus() {
+        const lastClaimedDate = localStorage.getItem(CLAIM_COOLDOWN_KEY);
+        const today = getTodayDateString();
+
+        if (lastClaimedDate === today) {
+            if(dailyClaimBtn) dailyClaimBtn.disabled = true;
+            if(dailyClaimBtn) dailyClaimBtn.textContent = 'Claimed Today';
+            if(dailyClaimMessage) dailyClaimMessage.textContent = 'You have already claimed your daily bounce for today.';
+            if(dailyClaimMessage) dailyClaimMessage.style.color = 'lightgreen';
+        } else {
+            if(dailyClaimBtn) dailyClaimBtn.disabled = false;
+            if(dailyClaimBtn) dailyClaimBtn.textContent = 'Claim Daily Bounce';
+            if(dailyClaimMessage) dailyClaimMessage.textContent = '';
+        }
+    }
+
+    // Handle the daily claim button click
+    if (dailyClaimBtn) {
+        dailyClaimBtn.addEventListener('click', () => {
+            const lastClaimedDate = localStorage.getItem(CLAIM_COOLDOWN_KEY);
+            const today = getTodayDateString();
+
+            if (lastClaimedDate === today) {
+                if(dailyClaimMessage) dailyClaimMessage.textContent = 'You have already claimed your daily bounce for today.';
+                if(dailyClaimMessage) dailyClaimMessage.style.color = 'orange';
+                return;
+            }
+
+            // --- Actual Claim Logic ---
+            // This is where you would interact with your backend to add the balance.
+            // For this example, we'll simulate adding to the profile balance display.
+            try {
+                // Get current balance from the display
+                let currentBalance = parseFloat(walletBalanceProfile.textContent.replace('₹', '').trim());
+                if (isNaN(currentBalance)) {
+                    currentBalance = 0; // Default if parsing fails
+                }
+
+                // Add the claim amount
+                currentBalance += CLAIM_AMOUNT;
+
+                // Update the display
+                walletBalanceProfile.textContent = `₹${currentBalance.toFixed(2)}`;
+
+                // Store the claim date in localStorage
+                localStorage.setItem(CLAIM_COOLDOWN_KEY, today);
+
+                // Update button state and message
+                dailyClaimBtn.disabled = true;
+                dailyClaimBtn.textContent = 'Claimed Today';
+                dailyClaimMessage.textContent = `Successfully claimed ${CLAIM_AMOUNT} bonus!`;
+                dailyClaimMessage.style.color = 'lightgreen';
+
+                // Optionally, you can also update the main dashboard balance display if it's different
+                const mainWalletBalance = document.getElementById('walletBalance');
+                if (mainWalletBalance) {
+                    mainWalletBalance.textContent = `₹${currentBalance.toFixed(2)}`;
+                }
+
+            } catch (error) {
+                console.error('Error processing daily claim:', error);
+                if(dailyClaimMessage) dailyClaimMessage.textContent = 'Error claiming daily bounce. Please try again later.';
+                if(dailyClaimMessage) dailyClaimMessage.style.color = 'red';
+            }
+            // --- End of Actual Claim Logic ---
+        });
+    }
+
+    // Initial check when the page loads
+    checkDailyClaimStatus();
+
+    // --- Custom Sequence Generation Logic ---
+    if (showSequenceBtn && sequenceDisplayDiv) {
+        showSequenceBtn.addEventListener('click', () => {
+            const sequence = generateCustomSequence();
+            displaySequence(sequence);
+        });
+    }
+});
+
+// --- Function to generate the custom sequence ---
+function generateCustomSequence() {
+  const sequence = [10, 40]; // Initialize with the first two specific numbers
+
+  // Continue from 60 (40 + 20) with a step of 20 up to 200
+  for (let i = 60; i <= 200; i += 20) {
+    sequence.push(i);
+  }
+
+  return sequence;
+}
+
+// --- Function to display the generated sequence ---
+function displaySequence(sequence) {
+    if (!sequenceDisplayDiv) return; // Exit if the display element is not found
+
+    sequenceDisplayDiv.innerHTML = ''; // Clear previous content
+
+    if (sequence.length === 0) {
+        sequenceDisplayDiv.innerHTML = "<p>No sequence generated.</p>";
+        return;
+    }
+
+    const ul = document.createElement('ul');
+    sequence.forEach(num => {
+        const li = document.createElement('li');
+        li.textContent = num;
+        ul.appendChild(li);
+    });
+    sequenceDisplayDiv.appendChild(ul);
+}
+
+
+// --- Initial Load and Auth State Check ---
 onAuthStateChanged(auth, user => {
     if (user) { // Always show the main content if user is logged in
         authSection.style.display = "none";
@@ -2074,16 +2209,3 @@ function setupAnusementSectionListener() {
     });
   }
 }
-
-// --- Call the setup function on DOMContentLoaded ---
-document.addEventListener('DOMContentLoaded', () => {
-  // If the page loads directly to the anusement section (though unlikely without auth), also load.
-  const currentUser = auth.currentUser;
-  if (currentUser && nav.style.display !== 'none' && document.getElementById('anusement')?.classList.contains('active')) {
-    loadAnusementContent();
-  }
-  // Load admin anusement data if user is admin and admin panel is shown
-  if (currentUser && currentUser.email === adminEmail && nav.style.display !== 'none' && document.getElementById('adminPanel')?.classList.contains('active')) {
-      loadAdminAnusementData();
-  }
-});
