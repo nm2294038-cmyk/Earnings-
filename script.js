@@ -46,6 +46,13 @@ CATEGORIES.forEach(cat => {
 });
 const MAX_USER_LINKS = 80;
 
+// --- Daily Claim Configuration ---
+const CLAIM_TIME_HOUR = 22; // 10 PM
+const CLAIM_TIME_MINUTE = 56;
+const CLAIM_WINDOW_DURATION_MS = 60 * 1000; // 1 minute window for claiming (adjust as needed)
+const DAILY_BOUNCE_AMOUNT = 10; // Amount to add for daily claim
+const DAILY_CLAIM_STORAGE_KEY = 'dailyClaimStatus'; // For localStorage
+
 // --- DOM Elements ---
 const nav = document.querySelector("nav");
 const adminPanelBtn = document.getElementById("adminPanelBtn");
@@ -155,6 +162,7 @@ const sequenceDisplayDiv = document.getElementById("sequenceDisplay"); // Assumi
 
 let editingAnusementId = null; // State to track if we are editing anusement content
 let currentLinkToAdd = null;
+let claimCheckInterval = null; // To manage the interval for checking claim status
 
 // --- Helper Functions ---
 function updateYouTubeVideoDisplay(videoDocs) {
@@ -457,6 +465,12 @@ onAuthStateChanged(auth, async user => {
         document.getElementById("tasksContainer").innerHTML = "";
         balanceAdditionHistoryContainer.innerHTML = "";
         sendBalanceHistoryContainer.innerHTML = "";
+        
+        // Stop the claim check interval when user logs out
+        if (claimCheckInterval) {
+            clearInterval(claimCheckInterval);
+            claimCheckInterval = null;
+        }
     }
 });
 
@@ -1772,6 +1786,9 @@ function loadSendBalanceHistory(userId) {
         });
     }, (error) => {
         console.error("Error loading sent balance history:", error);
+        if (historyContainer) {
+            historyContainer.innerHTML = "<p>Error loading sent balance history.</p>";
+        }
     });
 
     // Listener for received transactions
@@ -1809,6 +1826,9 @@ function loadSendBalanceHistory(userId) {
         });
     }, (error) => {
         console.error("Error loading received balance history:", error);
+        if (historyContainer) {
+            historyContainer.innerHTML = "<p>Error loading received balance history.</p>";
+        }
     });
 
     // Check if the container is empty after loading listeners, to show placeholder
@@ -2017,8 +2037,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const dailyClaimBtn = document.getElementById('dailyClaimBtn');
     const dailyClaimMessage = document.getElementById('dailyClaimMessage');
     const walletBalanceProfile = document.getElementById('walletBalanceProfile'); // Assuming this displays the user's balance
-    const CLAIM_COOLDOWN_KEY = 'dailyClaimLastClaimed';
-    const CLAIM_AMOUNT = 10; // Amount to be added on daily claim (e.g., 10 units)
 
     // Function to get current date string for storage
     function getTodayDateString() {
@@ -2026,28 +2044,62 @@ document.addEventListener('DOMContentLoaded', () => {
         return today.toISOString().split('T')[0]; // YYYY-MM-DD format
     }
 
-    // Check if user has claimed today when the page loads
-    function checkDailyClaimStatus() {
-        const lastClaimedDate = localStorage.getItem(CLAIM_COOLDOWN_KEY);
-        const today = getTodayDateString();
+    // Function to check if the claim window is currently active
+    function isClaimWindowActive() {
+        const now = new Date();
+        const currentHour = now.getHours();
+        const currentMinute = now.getMinutes();
 
-        if (lastClaimedDate === today) {
-            if(dailyClaimBtn) dailyClaimBtn.disabled = true;
-            if(dailyClaimBtn) dailyClaimBtn.textContent = 'Claimed Today';
-            if(dailyClaimMessage) dailyClaimMessage.textContent = 'You have already claimed your daily bounce for today.';
-            if(dailyClaimMessage) dailyClaimMessage.style.color = 'lightgreen';
+        // Check if the current time is within the 10:56 PM to 10:57 PM window
+        if (currentHour === CLAIM_TIME_HOUR && currentMinute >= CLAIM_TIME_MINUTE && currentMinute < CLAIM_TIME_MINUTE + 1) { // Window is 1 minute
+            return true;
+        }
+        return false;
+    }
+
+    // Function to check and update the claim button's state
+    function updateClaimButtonState() {
+        const today = getTodayDateString();
+        const claimStatus = JSON.parse(localStorage.getItem(DAILY_CLAIM_STORAGE_KEY) || '{}');
+        const lastClaimedDate = claimStatus.date;
+        const hasClaimedToday = (lastClaimedDate === today);
+
+        const isActiveWindow = isClaimWindowActive();
+
+        if (isActiveWindow) {
+            if (!hasClaimedToday) {
+                // Window is active and user hasn't claimed today
+                if (dailyClaimBtn) {
+                    dailyClaimBtn.disabled = false;
+                    dailyClaimBtn.textContent = 'Claim Daily Bounce';
+                    if (dailyClaimMessage) dailyClaimMessage.textContent = 'Claim your daily bounce now!';
+                    if (dailyClaimMessage) dailyClaimMessage.style.color = 'yellow';
+                }
+            } else {
+                // Window is active but user already claimed today
+                if (dailyClaimBtn) {
+                    dailyClaimBtn.disabled = true;
+                    dailyClaimBtn.textContent = 'Claimed Today';
+                    if (dailyClaimMessage) dailyClaimMessage.textContent = 'You have already claimed your daily bounce for today.';
+                    if (dailyClaimMessage) dailyClaimMessage.style.color = 'lightgreen';
+                }
+            }
         } else {
-            if(dailyClaimBtn) dailyClaimBtn.disabled = false;
-            if(dailyClaimBtn) dailyClaimBtn.textContent = 'Claim Daily Bounce';
-            if(dailyClaimMessage) dailyClaimMessage.textContent = '';
+            // Window is not active
+            if (dailyClaimBtn) {
+                dailyClaimBtn.disabled = true;
+                dailyClaimBtn.textContent = 'Claim Opens 9:30 pm to 10:56pm';
+                if (dailyClaimMessage) dailyClaimMessage.textContent = ''; // Clear any previous message
+            }
         }
     }
 
     // Handle the daily claim button click
     if (dailyClaimBtn) {
         dailyClaimBtn.addEventListener('click', () => {
-            const lastClaimedDate = localStorage.getItem(CLAIM_COOLDOWN_KEY);
             const today = getTodayDateString();
+            const claimStatus = JSON.parse(localStorage.getItem(DAILY_CLAIM_STORAGE_KEY) || '{}');
+            const lastClaimedDate = claimStatus.date;
 
             if (lastClaimedDate === today) {
                 if(dailyClaimMessage) dailyClaimMessage.textContent = 'You have already claimed your daily bounce for today.';
@@ -2055,32 +2107,31 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
+            if (!isClaimWindowActive()) {
+                if(dailyClaimMessage) dailyClaimMessage.textContent = 'The claim window is not active right now.';
+                if(dailyClaimMessage) dailyClaimMessage.style.color = 'orange';
+                return;
+            }
+
             // --- Actual Claim Logic ---
-            // This is where you would interact with your backend to add the balance.
-            // For this example, we'll simulate adding to the profile balance display.
             try {
-                // Get current balance from the display
                 let currentBalance = parseFloat(walletBalanceProfile.textContent.replace('₹', '').trim());
                 if (isNaN(currentBalance)) {
-                    currentBalance = 0; // Default if parsing fails
+                    currentBalance = 0;
                 }
-
-                // Add the claim amount
-                currentBalance += CLAIM_AMOUNT;
-
-                // Update the display
+                currentBalance += DAILY_BOUNCE_AMOUNT;
                 walletBalanceProfile.textContent = `₹${currentBalance.toFixed(2)}`;
 
-                // Store the claim date in localStorage
-                localStorage.setItem(CLAIM_COOLDOWN_KEY, today);
+                // Update localStorage with claim status
+                localStorage.setItem(DAILY_CLAIM_STORAGE_KEY, JSON.stringify({ date: today }));
 
                 // Update button state and message
                 dailyClaimBtn.disabled = true;
                 dailyClaimBtn.textContent = 'Claimed Today';
-                dailyClaimMessage.textContent = `Successfully claimed ${CLAIM_AMOUNT} bonus!`;
-                dailyClaimMessage.style.color = 'lightgreen';
+                if (dailyClaimMessage) dailyClaimMessage.textContent = `Successfully claimed ₹${DAILY_BOUNCE_AMOUNT} bonus!`;
+                if (dailyClaimMessage) dailyClaimMessage.style.color = 'lightgreen';
 
-                // Optionally, you can also update the main dashboard balance display if it's different
+                // Update main dashboard balance display if it exists
                 const mainWalletBalance = document.getElementById('walletBalance');
                 if (mainWalletBalance) {
                     mainWalletBalance.textContent = `₹${currentBalance.toFixed(2)}`;
@@ -2095,8 +2146,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Initial check when the page loads
-    checkDailyClaimStatus();
+    // Start an interval to check the claim button state periodically
+    // Check every minute to see if the window is active or if the date has changed
+    claimCheckInterval = setInterval(updateClaimButtonState, 60 * 1000); // Check every minute
+    updateClaimButtonState(); // Initial check when the page loads
 
     // --- Custom Sequence Generation Logic ---
     if (showSequenceBtn && sequenceDisplayDiv) {
@@ -2195,6 +2248,12 @@ onAuthStateChanged(auth, user => {
         document.getElementById("tasksContainer").innerHTML = "";
         balanceAdditionHistoryContainer.innerHTML = "";
         sendBalanceHistoryContainer.innerHTML = "";
+        
+        // Stop the claim check interval when user logs out
+        if (claimCheckInterval) {
+            clearInterval(claimCheckInterval);
+            claimCheckInterval = null;
+        }
     }
 });
 
@@ -2209,3 +2268,29 @@ function setupAnusementSectionListener() {
     });
   }
 }
+
+// --- Call the setup function on DOMContentLoaded ---
+document.addEventListener('DOMContentLoaded', () => {
+  // If the page loads directly to the anusement section (though unlikely without auth), also load.
+  const currentUser = auth.currentUser;
+  if (currentUser && nav.style.display !== 'none' && document.getElementById('anusement')?.classList.contains('active')) {
+    loadAnusementContent();
+  }
+  // Load admin anusement data if user is admin and admin panel is shown
+  if (currentUser && currentUser.email === adminEmail && nav.style.display !== 'none' && document.getElementById('adminPanel')?.classList.contains('active')) {
+      loadAdminAnusementData();
+  }
+  
+  // Daily Claim Bounce and Sequence Logic
+  // The logic for daily claim and sequence generation is now handled by the onAuthStateChanged listener 
+  // and the DOMContentLoaded listener that wraps it.
+  // The updateClaimButtonState will be called by the onAuthStateChanged listener and the interval.
+
+  // Ensure the sequence button is set up if it exists
+  if (showSequenceBtn && sequenceDisplayDiv) {
+    showSequenceBtn.addEventListener('click', () => {
+        const sequence = generateCustomSequence();
+        displaySequence(sequence);
+    });
+  }
+});
