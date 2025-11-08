@@ -1,9 +1,13 @@
 
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <title>Free Earnings</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="style.css">
-<title>YoursMed - Free Social Media Promotion & Online Earning in Pakistan</title>
+  <title>YoursMed - Free Social Media Promotion & Online Earning in Pakistan</title>
+
+  <title>YoursMed - Free Social Media Promotion & Online Earning in Pakistan</title>
 
   <meta name="description" content="YoursMed - Free social media promotion, followers, likes, views, and online earning tools for Pakistan users. Earn money, grow your social media, and boost engagement fast.">
   <meta name="keywords" content="yoursmed, social media promotion, free followers, likes, online earning, Pakistan, free tools, YouTube views, TikTok followers, Instagram likes">
@@ -17,7 +21,7 @@
   <meta property="og:description" content="Promote your social media accounts, earn money online, and grow your audience — all free on YoursMed.">
   <meta property="og:url" content="https://www.yoursmed.xyz/">
   <meta property="og:type" content="website">
-  <meta property="og:image" content="https://www.yoursmed.xyz/cover.jpg"> <!-- apni image ka link yahan do -->
+  <meta property="og:image" content="https://www.yoursmed.xyz/cover.jpg"> 
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
@@ -56,91 +60,100 @@
 </head>
 <body>
 
-<header class="animated-description">YoursMed - Free Social Media Promotion & Online Earning in Pakistan</header>
+  <!-- Header Container (MODIFIED) -->
 
-<!-- Auth Section -->
+  <header class="header-container">
+    <!-- Menu icon for sidebar -->
+    <button class="sidebar-toggle" id="menuIcon" aria-label="Toggle Sidebar">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    <div class="header-title">YoursMed - Free Social Media Promotion & Online Earning</div>
+    <!-- Removed the navigation from here -->
+  </header>
 
-<section id="authSection" class="active">
-  <div class="auth-container">
-    <h2>Sign Up / Login</h2>
-    <input type="text" id="signupName" placeholder="Name" required><br>
-    <input type="email" id="signupEmail" placeholder="Email" required><br>
-    <input type="password" id="signupPassword" placeholder="Password" required><br>
-    <input type="text" id="signupReferralCode" placeholder="Referral Code (Optional)"><br>
+  <!-- Sidebar Menu -->
 
-code
-Code
-download
-content_copy
-expand_less
-<!-- Agent Registration Button -->
-<button type="button" id="showAgentFormBtn" class="submitBtn" style="background: #6c757d; color: white;">Agent Registration</button>
+  <aside class="sidebar" id="sidebar">
+    <nav id="mainNav">
+      <!-- Navigation buttons -->
+      <button data-section="dashboard">Dashboard</button>
+      <button data-section="tasks">Tasks</button>
+      <button data-section="profile">Profile</button>
+      <button data-section="referrals">Referral</button>
+      <button data-section="forYouPage">For You</button>
+      <button data-section="withdrawals">Withdrawal</button>
+      <button data-section="deposit">Deposit</button>
+      <button data-section="publicLinksSection">Public Links</button>
+      <button data-section="userLinksSection">Add/Manage My Links</button>
+      <button data-section="youtubeVideoSection">Watch Video</button>
+      <button data-section="anusement">Agents Work</button>
+      <button data-section="sendBalanceSection">Send Balance</button>
+      <button id="adminPanelBtn" data-section="adminPanel" style="display:none;">Admin Panel</button>
+      <button id="logoutBtn">Logout</button>
+  
+    </nav>
+  </aside>
 
-<!-- Agent Form (initially hidden) -->
-<section id="agentFormSection" style="display:none; margin-top: 15px; padding: 15px; border: 1px solid #333; border-radius: 8px; background-color: rgba(25, 25, 25, 0.7);">
-    <h3 style="color: #0ff; margin-bottom: 10px; font-size: 18px;">Agent Information</h3>
-    <input type="text" id="agentName" placeholder="Agent Name"><br>
-    <input type="text" id="agentFatherName" placeholder="Agent Father Name"><br>
-    
-    <!-- Family Member Details Section -->
-    <div id="familyDetailsSection" style="margin-top: 10px;">
-        <h4 style="color: #0ff; font-size: 14px; margin-bottom: 5px;">Family Members (Optional)</h4>
-        <!-- Wrapper for family member inputs -->
-        <div id="familyMembersInputWrapper">
-            <div class="family-member-input-group">
-                <input type="text" placeholder="Family Member 1 Name"><br>
-                <input type="text" placeholder="Family Member 1 Relation"><br>
+  <!-- Overlay for sidebar -->
+
+  <div class="overlay" id="overlay"></div>
+
+  <!-- Main Content Wrapper -->
+
+  <div class="content-wrapper">
+    <!-- Auth Section -->
+    <section id="authSection" class="active">
+      <div class="auth-container">
+        <h2>Sign Up / Login</h2>
+        <input type="text" id="signupName" placeholder="Name" required><br>
+        <input type="email" id="signupEmail" placeholder="Email" required><br>
+        <input type="password" id="signupPassword" placeholder="Password" required><br>
+        <input type="text" id="signupReferralCode" placeholder="Referral Code (Optional)"><br>
+
+        <!-- Agent Registration Button -->
+        <button type="button" id="showAgentFormBtn" class="submitBtn" style="background: #6c757d; color: white;">Agent Registration</button>
+
+        <!-- Agent Form (initially hidden) -->
+        <section id="agentFormSection" style="display:none; margin-top: 15px; padding: 15px; border: 1px solid #333; border-radius: 8px; background-color: rgba(25, 25, 25, 0.7);">
+            <h3 style="color: #0ff; margin-bottom: 10px; font-size: 18px;">Agent Information</h3>
+            <input type="text" id="agentName" placeholder="Agent Name"><br>
+            <input type="text" id="agentFatherName" placeholder="Agent Father Name"><br>
+            
+            <!-- Family Member Details Section -->
+            <div id="familyDetailsSection" style="margin-top: 10px;">
+                <h4 style="color: #0ff; font-size: 14px; margin-bottom: 5px;">Family Members (Optional)</h4>
+                <!-- Wrapper for family member inputs -->
+                <div id="familyMembersInputWrapper">
+                    <div class="family-member-input-group">
+                        <input type="text" placeholder="Family Member 1 Name"><br>
+                        <input type="text" placeholder="Family Member 1 Relation"><br>
+                    </div>
+                </div>
+                <button type="button" id="addFamilyMemberBtn" style="background: #28a745; color: white; padding: 5px 10px; font-size: 12px; margin-top: 5px; border: none; border-radius: 5px;">Add Another Family Member</button>
             </div>
-        </div>
-        <button type="button" id="addFamilyMemberBtn" style="background: #28a745; color: white; padding: 5px 10px; font-size: 12px; margin-top: 5px; border: none; border-radius: 5px;">Add Another Family Member</button>
-    </div>
 
-    <!-- ID Card Number -->
-    <input type="text" id="agentIdCard" placeholder="Agent ID Card Number (Optional)"><br>
-    
-    <!-- WhatsApp Number -->
-    <input type="text" id="agentWhatsApp" placeholder="Agent WhatsApp Number (Optional)"><br>
+            <!-- ID Card Number -->
+            <input type="text" id="agentIdCard" placeholder="Agent ID Card Number (Optional)"><br>
+            
+            <!-- WhatsApp Number -->
+            <input type="text" id="agentWhatsApp" placeholder="Agent WhatsApp Number (Optional)"><br>
 
-    <p style="color: #ccc; font-size: 12px; margin-top: 8px;" >(All fields are optional unless specified)</p>
-</section>
+            <p style="color: #ccc; font-size: 12px; margin-top: 8px;" >(All fields are optional unless specified)</p>
+        </section>
 
-<!-- New button for location -->
-<button type="button" id="useMyLocationBtn" class="location-button">Use My Current Location</button>
-<!-- Hidden input to store location -->
-<input type="hidden" id="userLocationInput">
-<button id="signupBtn" class="submitBtn">Sign Up</button>
-<hr>
-<input type="email" id="loginEmail" placeholder="Email" required><br>
-<input type="password" id="loginPassword" placeholder="Password" required><br>
-<button id="loginBtn" class="submitBtn">Login</button>
-  </div>
-</section>
-
-<!-- Navigation (REORDERED and UPDATED) -->
-
-<nav style="display:none;">
-  <button data-section="dashboard">Dashboard</button>
-  <button data-section="tasks">Tasks</button>
-  <button data-section="profile">Profile</button>
-  <button data-section="referrals">Referral</button>
-  <button data-section="forYouPage">For You</button>
-  <button data-section="withdrawals">Withdrawal</button>
-  <button data-section="deposit">Deposit</button>
-  <button data-section="publicLinksSection">Public Links</button>
-  <button data-section="userLinksSection">Add/Manage My Links</button>
-  <button data-section="youtubeVideo">Watch Video</button>
-  <!-- NEW BUTTON FOR ANUSEMENT -->
-  <button data-section="anusement">Agents Work</button>
-
-  <!-- NEW BUTTON FOR SEND BALANCE -->
-
-
-<button data-section="sendBalanceSection">Send Balance</button>
-
-<button id="adminPanelBtn" data-section="adminPanel" style="display:none;">Admin Panel</button>
-<button id="logoutBtn">Logout</button>
-
-</nav>
+        <!-- New button for location -->
+        <button type="button" id="useMyLocationBtn" class="location-button">Use My Current Location</button>
+        <!-- Hidden input to store location -->
+        <input type="hidden" id="userLocationInput">
+        <button id="signupBtn" class="submitBtn">Sign Up</button>
+        <hr>
+        <input type="email" id="loginEmail" placeholder="Email" required><br>
+        <input type="password" id="loginPassword" placeholder="Password" required><br>
+        <button id="loginBtn" class="submitBtn">Login</button>
+      </div>
+    </section>
 
 <!-- Sections (REORDERED) -->
 
@@ -500,7 +513,7 @@ expand_less
 
 </div>
   <h2 class="animated-description">Share My Links</h2>
-  <p class="animated-description">Share  App 1 Free Add karwa Sakte Hain</p>
+  <p class="animated-description">Share App 1 Free Add karwa Sakte Hain</p>
   <p>1 day k ley</p>
   <p>only website link</p>
   <p><b>Payment Account Name: Mujtbha Hassan</b></p>
@@ -551,7 +564,7 @@ expand_less
 <!-- NEW SECTION: Anusement -->
 
 <section id="anusement">
-<p class="neon-text">Work Details </span></h2>
+<h2 class="neon-text">Work Details </h2>
   <p class="animated-description">Here you can find our latest task details content.</p>
 <div class="important-points">
   <p class="animated-description">1. <strong>Admin pehle aapki link add karta hai (Trust Base System)</strong> — Agar aapke paas foran payment bhejne ka option nahi hai, to admin aapki link <strong>pehle add kar deta hai</strong> taake aapka time waste na ho. Ye system sirf un logon ke liye hai jo genuine promotion karwana chahte hain.</p>
@@ -560,7 +573,7 @@ expand_less
 
   <p class="animated-description">3. <strong>Agar payment na ki gayi to link remove kar di jayegi</strong> — Time par payment na karne ki surat me system automatically aapki link remove kar deta hai. Ye process fair system maintain karne ke liye rakha gaya hai.</p>
 
-  <p class="animated-description">4. <strong>Agent wallet system</strong> — Agents ke wallet me balance diya jata hai jisse wo customers ke liye links add karte hain. Jab customer payment complete karta hai to agent ka wallet auto update ho jata hai.</p>
+  <p class="animated-description">4. <strong>Agent wallet system</strong> — Agents ke wallet me balance diya jata hai jisse wo customers ke liye links add کرتے ہیں. Jab customer payment complete karta hai to agent ka wallet auto update ho jata hai.</p>
 
   <p class="animated-description">5. <strong>Trust &amp; Transparency Policy</strong> — Hamara system 100% fair hai — yahan kisi se pehle paisay nahi mangay jate. Pehle link add hoti hai, phir payment confirm karni hoti hai. Ye system sirf un logon ke liye hai jo sincerely apna social media grow karna chahte hain.</p>
 </div>
@@ -613,11 +626,6 @@ expand_less
         <h3>Current Links:</h3>
         <div id="adminLinksContainer" class="dashboard-container"></div>
 
-code
-Code
-download
-content_copy
-expand_less
 <!-- Admin Anusement Management Section -->
     <div class="admin-anusement-form-section">
         <h3>Manage Anusement Content</h3>
@@ -658,6 +666,7 @@ expand_less
 
 <footer>
   <div class="footer-links">
+  
     <a id="privacyBtn">Privacy Policy</a>
     <a id="termsBtn">Terms of Service</a>
     <a id="aboutBtn">About Us</a>
@@ -666,9 +675,12 @@ expand_less
     <a id="contactEmailLink">Contact via Email</a>
     <a id="contactWhatsappLink">Contact via WhatsApp</a>
   </div>
+ 
   </footer>
+</div> <!-- Close content-wrapper -->
+
+
 
 <script src="script.js" type="module"></script>
-
 </body>
 </html>
