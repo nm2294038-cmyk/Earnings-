@@ -1,5 +1,3 @@
-
-
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
 import { getFirestore, collection, doc, onSnapshot, setDoc, addDoc, getDoc, getCountFromServer, Timestamp, query, where, deleteDoc, writeBatch, orderBy, limit, getDocs, updateDoc } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, updateProfile } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
@@ -19,7 +17,7 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth();
 
-// --- Sidebar Toggling Logic (NEW/MODIFIED) ---
+// --- Sidebar Toggling Logic ---
 const sidebarToggle = document.getElementById('menuIcon'); 
 const sidebar = document.getElementById('sidebar');
 const body = document.body;
@@ -44,7 +42,7 @@ const adminEmail = "mn1691316@gmail.com";
 const whatsappNumber = "+923495144924";
 const MIN_WITHDRAWAL_AMOUNT = 1200;
 const TASK_EARNING_AMOUNT = 0.01;
-const TASK_LINK_COOLDOWN_MS = 1 * 60 * 1000; // 5 minutes cooldown
+const TASK_LINK_COOLDOWN_MS = 1 * 60 * 1000; // 1 minute cooldown
 const REFERRAL_COMMISSION_RATE = 0.05; // 5%
 const DEFAULT_MIN_CLICKS_BEFORE_COOLDOWN = 1; // Default minimum clicks before cooldown activates
 const WEB_CATEGORY_MIN_CLICKS_BEFORE_COOLDOWN = 50; // Minimum clicks for 'Web' category before cooldown activates
@@ -126,7 +124,7 @@ const priceSelectionModal = document.getElementById("priceSelectionModal");
 const priceOptionsContainer = document.getElementById("priceOptionsContainer");
 const confirmPriceSelectionBtn = document.getElementById("confirmPriceSelectionBtn");
 const priceSelectionModalCloseBtn = priceSelectionModal.querySelector(".modal-close-btn");
-const publicLinksContainer = document.getElementById("publicLinksSection"); // NEW
+const publicLinksContainer = document.getElementById("publicLinksContainer"); 
 
 // New elements for location
 const useMyLocationBtn = document.getElementById("useMyLocationBtn");
@@ -137,13 +135,10 @@ const agentFormSection = document.getElementById("agentFormSection");
 const agentNameInput = document.getElementById("agentName");
 const agentFatherNameInput = document.getElementById("agentFatherName");
 const showAgentFormBtn = document.getElementById("showAgentFormBtn");
-const familyMembersInputWrapper = document.getElementById("familyMembersInputWrapper"); // Corrected ID
+const familyMembersInputWrapper = document.getElementById("familyMembersInputWrapper"); 
 const addFamilyMemberBtn = document.getElementById("addFamilyMemberBtn");
 const agentIdCardInput = document.getElementById("agentIdCard");
 const agentWhatsAppInput = document.getElementById("agentWhatsApp");
-
-// --- Define allowed amounts for the "Add Balance" feature ---
-const ALLOWED_ADD_BALANCE_AMOUNTS = [100, 200, 350, 500, 600, 800, 1000, 1100, 1300, 1500, 1800, 2000, 2200, 2500, 8000];
 
 // --- Elements for Send Balance Feature ---
 const sendBalanceForm = document.getElementById("sendBalanceForm");
@@ -151,7 +146,6 @@ const recipientSendEmailInput = document.getElementById("recipientSendEmail");
 const sendAmountInput = document.getElementById("sendAmount");
 const sendBalanceMessage = document.getElementById("sendBalanceMessage");
 const sendBalanceHistoryContainer = document.getElementById("sendBalanceHistory");
-// --- END NEW ---
 
 // --- Elements for Anusement Admin Management ---
 const anusementTitleInput = document.getElementById("anusementTitle");
@@ -161,7 +155,7 @@ const addAnusementBtn = document.getElementById("addAnusementBtn");
 const anusementListContainer = document.getElementById("anusementList");
 
 
-let editingAnusementId = null; // State to track if we are editing anusement content
+let editingAnusementId = null; 
 let currentLinkToAdd = null;
 
 // --- Helper Functions ---
@@ -404,7 +398,6 @@ onAuthStateChanged(auth, async user => {
     clearAllCountdowns();
     if (user) {
         authSection.style.display = "none";
-        // The main navigation is now inside the sidebar, so no need to show/hide the old nav element
         
         showSection('tasks'); // Default view changed to 'tasks'
         if (user.email === adminEmail) {
@@ -422,7 +415,7 @@ onAuthStateChanged(auth, async user => {
         loadUserAddedLinks(user.uid);
         loadPublicLinks();
         loadForYouContent(user.uid);
-        loadSendBalanceHistory(user.uid); // Load send balance history
+        loadSendBalanceHistory(user.uid); 
         
         // Fetch and display user's own withdrawal history with status
         const withdrawalsCol = collection(db, "withdrawals");
