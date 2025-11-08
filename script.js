@@ -1,3 +1,4 @@
+
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
 import { getFirestore, collection, doc, onSnapshot, setDoc, addDoc, getDoc, getCountFromServer, Timestamp, query, where, deleteDoc, writeBatch, orderBy, limit, getDocs, updateDoc } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, updateProfile } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
@@ -17,7 +18,7 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth();
 
-// --- Sidebar Toggling Logic ---
+// --- Sidebar Toggling Logic (NEW/MODIFIED) ---
 const sidebarToggle = document.getElementById('menuIcon'); 
 const sidebar = document.getElementById('sidebar');
 const body = document.body;
@@ -42,7 +43,7 @@ const adminEmail = "mn1691316@gmail.com";
 const whatsappNumber = "+923495144924";
 const MIN_WITHDRAWAL_AMOUNT = 1200;
 const TASK_EARNING_AMOUNT = 0.01;
-const TASK_LINK_COOLDOWN_MS = 1 * 60 * 1000; // 1 minute cooldown
+const TASK_LINK_COOLDOWN_MS = 1 * 60 * 1000; // 5 minutes cooldown
 const REFERRAL_COMMISSION_RATE = 0.05; // 5%
 const DEFAULT_MIN_CLICKS_BEFORE_COOLDOWN = 1; // Default minimum clicks before cooldown activates
 const WEB_CATEGORY_MIN_CLICKS_BEFORE_COOLDOWN = 50; // Minimum clicks for 'Web' category before cooldown activates
@@ -77,6 +78,13 @@ const loginEmailInput = document.getElementById("loginEmail");
 const loginPasswordInput = document.getElementById("loginPassword");
 const loginBtn = document.getElementById("loginBtn");
 const logoutBtn = document.getElementById("logoutBtn");
+
+// NEW HEADER BUTTONS
+const headerSignInBtn = document.getElementById("headerSignInBtn");
+const headerJoinNowBtn = document.getElementById("headerJoinNowBtn");
+const affiliatesSection = document.getElementById("affiliatesSection");
+// END NEW
+
 const refLinkInput = document.getElementById("refLink");
 const depositForm = document.getElementById("depositForm");
 const transactionIdInput = document.getElementById("transactionId");
@@ -124,7 +132,7 @@ const priceSelectionModal = document.getElementById("priceSelectionModal");
 const priceOptionsContainer = document.getElementById("priceOptionsContainer");
 const confirmPriceSelectionBtn = document.getElementById("confirmPriceSelectionBtn");
 const priceSelectionModalCloseBtn = priceSelectionModal.querySelector(".modal-close-btn");
-const publicLinksContainer = document.getElementById("publicLinksContainer"); 
+const publicLinksContainer = document.getElementById("publicLinksSection"); // NEW
 
 // New elements for location
 const useMyLocationBtn = document.getElementById("useMyLocationBtn");
@@ -135,10 +143,13 @@ const agentFormSection = document.getElementById("agentFormSection");
 const agentNameInput = document.getElementById("agentName");
 const agentFatherNameInput = document.getElementById("agentFatherName");
 const showAgentFormBtn = document.getElementById("showAgentFormBtn");
-const familyMembersInputWrapper = document.getElementById("familyMembersInputWrapper"); 
+const familyMembersInputWrapper = document.getElementById("familyMembersInputWrapper"); // Corrected ID
 const addFamilyMemberBtn = document.getElementById("addFamilyMemberBtn");
 const agentIdCardInput = document.getElementById("agentIdCard");
 const agentWhatsAppInput = document.getElementById("agentWhatsApp");
+
+// --- Define allowed amounts for the "Add Balance" feature ---
+const ALLOWED_ADD_BALANCE_AMOUNTS = [100, 200, 350, 500, 600, 800, 1000, 1100, 1300, 1500, 1800, 2000, 2200, 2500, 8000];
 
 // --- Elements for Send Balance Feature ---
 const sendBalanceForm = document.getElementById("sendBalanceForm");
@@ -146,6 +157,7 @@ const recipientSendEmailInput = document.getElementById("recipientSendEmail");
 const sendAmountInput = document.getElementById("sendAmount");
 const sendBalanceMessage = document.getElementById("sendBalanceMessage");
 const sendBalanceHistoryContainer = document.getElementById("sendBalanceHistory");
+// --- END NEW ---
 
 // --- Elements for Anusement Admin Management ---
 const anusementTitleInput = document.getElementById("anusementTitle");
@@ -155,7 +167,7 @@ const addAnusementBtn = document.getElementById("addAnusementBtn");
 const anusementListContainer = document.getElementById("anusementList");
 
 
-let editingAnusementId = null; 
+let editingAnusementId = null; // State to track if we are editing anusement content
 let currentLinkToAdd = null;
 
 // --- Helper Functions ---
@@ -397,7 +409,9 @@ function useCurrentLocation() {
 onAuthStateChanged(auth, async user => {
     clearAllCountdowns();
     if (user) {
+        // Logged In: Hide Auth and Affiliates page, show Dashboard (or tasks)
         authSection.style.display = "none";
+        affiliatesSection.style.display = "none";
         
         showSection('tasks'); // Default view changed to 'tasks'
         if (user.email === adminEmail) {
@@ -415,7 +429,7 @@ onAuthStateChanged(auth, async user => {
         loadUserAddedLinks(user.uid);
         loadPublicLinks();
         loadForYouContent(user.uid);
-        loadSendBalanceHistory(user.uid); 
+        loadSendBalanceHistory(user.uid); // Load send balance history
         
         // Fetch and display user's own withdrawal history with status
         const withdrawalsCol = collection(db, "withdrawals");
@@ -442,10 +456,12 @@ onAuthStateChanged(auth, async user => {
                 container.appendChild(withdrawDiv);
             });
         });
-    } else { // User is not logged in
+    } else { 
+        // User is not logged in: Show Auth section and Affiliates page
         authSection.style.display = "flex";
+        affiliatesSection.style.display = "block";
         
-        showSection('authSection'); // Show login/signup section
+        showSection('affiliatesSection'); // Default to the Affiliates landing page
         adminPanelBtn.style.display = "none";
         // Clear all user-specific data
         userNameDisplay.innerText = ""; userEmailDisplay.innerText = ""; userRefDisplay.innerText = "";
@@ -469,6 +485,25 @@ onAuthStateChanged(auth, async user => {
         overlay.classList.remove('active');
     }
 });
+
+// --- Event Listeners for NEW Header Auth Buttons ---
+headerSignInBtn.addEventListener("click", () => {
+    // Show the auth section overlay
+    authSection.style.display = "flex";
+    // Ensure the affiliates section is behind the auth section (optional, as auth is fixed)
+    affiliatesSection.style.display = "none"; 
+    showSection('authSection');
+});
+
+headerJoinNowBtn.addEventListener("click", () => {
+    // Show the auth section overlay
+    authSection.style.display = "flex";
+    // Ensure the affiliates section is behind the auth section (optional, as auth is fixed)
+    affiliatesSection.style.display = "none"; 
+    showSection('authSection');
+});
+// --- End NEW Header Auth Buttons ---
+
 
 // --- Event Listeners for Authentication ---
 signupBtn.addEventListener("click", async () => {
@@ -796,7 +831,8 @@ function loadUserDepositHistory(userId) {
 function loadPublicLinks() {
     const user = auth.currentUser;
     if (!user) {
-        publicLinksContainer.innerHTML = "<p>Please log in to see public links.</p>";
+        // Since we are now showing affiliates page when logged out, do not display this message
+        // publicLinksContainer.innerHTML = "<p>Please log in to see public links.</p>";
         return;
     }
     const userAddedLinksCol = collection(db, "userAddedLinks");
@@ -1329,7 +1365,7 @@ const modalContent = {
         text: `
             <h3>Our Mission (ہمارا مقصد)</h3>
             <p>At Free Earnings App, our mission is to create a reliable and accessible bridge between individuals seeking supplementary income and businesses looking for genuine online engagement. In a rapidly evolving digital world, we aim to empower people from all walks of life by providing them with a simple, secure, and transparent platform to monetize their free time. We believe in the dignity of work and strive to offer legitimate micro-earning opportunities that are fair and rewarding. We aim to provide a secure platform where users can earn and securely manage their digital assets.</p>
-            <p>Free Earnings App ka maqsad logon ko online extra income hasil karne ke liye ek aasan aur aitemad-mand (reliable) platform faraham karna hai. Hum is safar mein aapki madad karna chahte hain.</p>
+            <p>Free Earnings App ka maqsad logon ko online extra income hasil karne ke liye ek aasan aur aitemad-mand (reliable) platform faraham karna hai. Hum इस safar mein aapki madad karna chahte hain.</p>
             
             <h3>What We Do (ہم کیا کرتے ہیں؟)</h3>
             <p>We partner with businesses, marketers, and content creators who need to promote their products, services, and content online. We break down their requirements into simple, manageable digital tasks. Our users, from across the country, can then choose from a variety of these tasks, complete them according to clear instructions, and earn real money. Whether it's visiting a website, watching a video, engaging with a social media post, or testing an app, our platform provides a constant stream of opportunities. We are committed to ensuring that the earning process is transparent and that user data, including location (if shared), is handled responsibly.</p>
@@ -1516,11 +1552,6 @@ if (sendBalanceForm) {
       sendBalanceMessage.textContent = "Please enter a valid positive amount.";
       return;
     }
-    if (!recipientEmail) {
-      sendBalanceMessage.textContent = "Please enter the recipient's email address.";
-      return;
-    }
-    // Prevent sending to oneself
     if (recipientEmail === senderUser.email) {
         sendBalanceMessage.textContent = "You cannot send balance to yourself.";
         return;
