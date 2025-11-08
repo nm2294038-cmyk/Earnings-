@@ -1,11 +1,10 @@
 
-// --- script.js ---
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
 import { getFirestore, collection, doc, onSnapshot, setDoc, addDoc, getDoc, getCountFromServer, Timestamp, query, where, deleteDoc, writeBatch, orderBy, limit, getDocs, updateDoc } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, updateProfile } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
 
-// Firebase Configuration
+// Firebase Configuration (PLACEHOLDER)
 const firebaseConfig = {
     apiKey: "AIzaSyDNYv9SNUjMAHlaPzfovyYefoBNDgx4Gd4",
     authDomain: "traffic-exchange-62a58.firebaseapp.com",
@@ -19,6 +18,26 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth();
+
+// --- Sidebar Toggling Logic (NEW/MODIFIED) ---
+const sidebarToggle = document.getElementById('menuIcon'); 
+const sidebar = document.getElementById('sidebar');
+const body = document.body;
+const overlay = document.getElementById('overlay');
+
+sidebarToggle.addEventListener('click', () => {
+    sidebar.classList.toggle('open');
+    body.classList.toggle('sidebar-open');
+    overlay.classList.toggle('active'); 
+});
+
+overlay.addEventListener('click', () => {
+    sidebar.classList.remove('open');
+    body.classList.remove('sidebar-open');
+    overlay.classList.remove('active'); 
+});
+// --- END Sidebar Toggling Logic ---
+
 
 // --- Global Constants and Configuration ---
 const adminEmail = "mn1691316@gmail.com";
@@ -46,15 +65,8 @@ CATEGORIES.forEach(cat => {
 });
 const MAX_USER_LINKS = 80;
 
-// --- Daily Claim Configuration ---
-const CLAIM_TIME_HOUR = 22; // 10 PM
-const CLAIM_TIME_MINUTE = 56;
-const CLAIM_WINDOW_DURATION_MS = 60 * 1000; // 1 minute window for claiming (adjust as needed)
-const DAILY_BOUNCE_AMOUNT = 10; // Amount to add for daily claim
-const DAILY_CLAIM_STORAGE_KEY = 'dailyClaimStatus'; // For localStorage
-
 // --- DOM Elements ---
-const nav = document.querySelector("nav");
+const nav = document.querySelector("#mainNav");
 const adminPanelBtn = document.getElementById("adminPanelBtn");
 const adminPanelSection = document.getElementById("adminPanel");
 const authSection = document.getElementById("authSection");
@@ -114,7 +126,7 @@ const priceSelectionModal = document.getElementById("priceSelectionModal");
 const priceOptionsContainer = document.getElementById("priceOptionsContainer");
 const confirmPriceSelectionBtn = document.getElementById("confirmPriceSelectionBtn");
 const priceSelectionModalCloseBtn = priceSelectionModal.querySelector(".modal-close-btn");
-const publicLinksContainer = document.getElementById("publicLinksContainer"); // NEW
+const publicLinksContainer = document.getElementById("publicLinksSection"); // NEW
 
 // New elements for location
 const useMyLocationBtn = document.getElementById("useMyLocationBtn");
@@ -129,13 +141,6 @@ const familyMembersInputWrapper = document.getElementById("familyMembersInputWra
 const addFamilyMemberBtn = document.getElementById("addFamilyMemberBtn");
 const agentIdCardInput = document.getElementById("agentIdCard");
 const agentWhatsAppInput = document.getElementById("agentWhatsApp");
-
-// --- Elements for Add Balance Feature ---
-const addBalanceForm = document.getElementById("addBalanceForm");
-const recipientEmailInput = document.getElementById("recipientEmail");
-const transferAmountInput = document.getElementById("transferAmount");
-const addBalanceMessage = document.getElementById("addBalanceMessage");
-const balanceAdditionHistoryContainer = document.getElementById("balanceAdditionHistory");
 
 // --- Define allowed amounts for the "Add Balance" feature ---
 const ALLOWED_ADD_BALANCE_AMOUNTS = [100, 200, 350, 500, 600, 800, 1000, 1100, 1300, 1500, 1800, 2000, 2200, 2500, 8000];
@@ -155,14 +160,9 @@ const anusementURLInput = document.getElementById("anusementURL");
 const addAnusementBtn = document.getElementById("addAnusementBtn");
 const anusementListContainer = document.getElementById("anusementList");
 
-// --- Elements for Sequence Display ---
-const showSequenceBtn = document.getElementById("showSequenceBtn"); // Assuming you add this button in your HTML
-const sequenceDisplayDiv = document.getElementById("sequenceDisplay"); // Assuming you add a div with this ID in your HTML
-
 
 let editingAnusementId = null; // State to track if we are editing anusement content
 let currentLinkToAdd = null;
-let claimCheckInterval = null; // To manage the interval for checking claim status
 
 // --- Helper Functions ---
 function updateYouTubeVideoDisplay(videoDocs) {
@@ -276,9 +276,14 @@ function updateButtonState(button, itemId, itemType, taskCategory) {
 }
 
 function showSection(id) {
-    document.querySelectorAll('section').forEach(sec => sec.classList.remove('active'));
+    document.querySelectorAll('.content-wrapper section').forEach(sec => sec.classList.remove('active'));
     const sectionToShow = document.getElementById(id);
     if (sectionToShow) sectionToShow.classList.add('active');
+
+    // Close sidebar and overlay whenever a navigation button is clicked
+    sidebar.classList.remove('open');
+    body.classList.remove('sidebar-open');
+    overlay.classList.remove('active');
 }
 
 function showToast(message) { alert(message); }
@@ -328,7 +333,7 @@ function getCategoryFromDescription(description) {
         "YouTube": ["youtube", "ytview", "ytlike", "ytshare", "ytcomment", "ytsaved"],
         "TikTok": ["tiktok", "ttview", "ttlike", "ttcomment", "ttshare"],
         "Instagram": ["instagram", "igview", "iglike", "igfollow", "igcomment"],
-        "Facebook": ["facebook", "fbview", "fblike", "fbshare", "fbcomment"],
+        "Facebook": ["facebook", "fbview", "fbshare", "fbcomment"],
         "App": ["app"], "Products": ["products", "product"], "Channel": ["channel", "subscribe"],
         "Web": ["web", "website", "visit", "click"]
     };
@@ -399,7 +404,8 @@ onAuthStateChanged(auth, async user => {
     clearAllCountdowns();
     if (user) {
         authSection.style.display = "none";
-        nav.style.display = "flex";
+        // The main navigation is now inside the sidebar, so no need to show/hide the old nav element
+        
         showSection('tasks'); // Default view changed to 'tasks'
         if (user.email === adminEmail) {
             adminPanelBtn.style.display = "block";
@@ -416,7 +422,6 @@ onAuthStateChanged(auth, async user => {
         loadUserAddedLinks(user.uid);
         loadPublicLinks();
         loadForYouContent(user.uid);
-        loadBalanceAdditionHistory(user.uid); // Load history for the current user
         loadSendBalanceHistory(user.uid); // Load send balance history
         
         // Fetch and display user's own withdrawal history with status
@@ -445,8 +450,8 @@ onAuthStateChanged(auth, async user => {
             });
         });
     } else { // User is not logged in
-        authSection.style.display = "block";
-        nav.style.display = "none";
+        authSection.style.display = "flex";
+        
         showSection('authSection'); // Show login/signup section
         adminPanelBtn.style.display = "none";
         // Clear all user-specific data
@@ -463,14 +468,12 @@ onAuthStateChanged(auth, async user => {
         publicLinksContainer.innerHTML = "";
         forYouTasksContainer.innerHTML = "";
         document.getElementById("tasksContainer").innerHTML = "";
-        balanceAdditionHistoryContainer.innerHTML = "";
-        sendBalanceHistoryContainer.innerHTML = "";
-        
-        // Stop the claim check interval when user logs out
-        if (claimCheckInterval) {
-            clearInterval(claimCheckInterval);
-            claimCheckInterval = null;
-        }
+        document.getElementById("sendBalanceHistory").innerHTML = "";
+
+        // Hide sidebar elements forcefully
+        sidebar.classList.remove('open');
+        body.classList.remove('sidebar-open');
+        overlay.classList.remove('active');
     }
 });
 
@@ -1264,7 +1267,6 @@ const modalContent = {
             <p> Yeh policy batati hai ke hum aapki maloomat (information) kaise jama karte, istemal karte, aur mehfooz rakhte hain. Is app ko istemal karke, aap is Privacy Policy se ittefaq karte hain.</p>
             
             <h3>2. Information We Collect (معلومات جو ہم جمع کرتے ہیں)</h3>
-            <p>We collect various types of information to provide and improve our Service to you.</p>
             <ul>
                 <li><strong>Personal Identification Information:</strong> When you register, we collect your name, email address, and password. For withdrawals, we may collect your payment details such as Easypaisa/JazzCash number or bank account information. This information is essential for creating and managing your account and processing payments. We also collect your location if you choose to provide it.</li>
                 <li><strong>Usage Data:</strong> We automatically collect information on how the Service is accessed and used. This may include your IP address, browser type, device type, pages visited, time spent on pages, and task completion data. This helps us understand user behavior and improve our platform.</li>
@@ -1292,7 +1294,7 @@ const modalContent = {
     terms: {
         title: "Terms of Service (سروس کی شرائط)",
         text: `
-            <p>Please read these Terms of Service ("Terms") carefully before using the Free Earnings App ("Service"). Your access to and use of the Service is conditioned on your acceptance of and compliance with these Terms. These Terms apply to all visitors, users, and others who access or use the Service.</p>
+            <p>Please read these Terms of Service ("Terms"). Your access to and use of the Service is conditioned on your acceptance of and compliance with these Terms. These Terms apply to all visitors, users, and others who access or use the Service.</p>
             
             <h3>1. Account Eligibility & Responsibilities (اکاؤنٹ کی اہلیت اور ذمہ داریاں)</h3>
             <ul>
@@ -1378,7 +1380,7 @@ const modalContent = {
                     </ul>
                 </li>
             </ul>
-             <p><strong>یاد رکھیں:</strong> آپ کی کمائی کا انحصار آپ کی ایمانداری اور ہدایات پر عمل کرنے پر ہیں۔</p>
+             <p><strong>یاد رکھیں:</strong> آپ کی کمائی کا انحصار آپ کی ایمانداری اور ہدایات پر عمل کرنے پر ہے۔</p>
         `
     },
     withdrawalProfile: {
@@ -1424,7 +1426,7 @@ const modalContent = {
 function openModal(type) {
     modalTitle.innerText = modalContent[type].title;
     modalText.innerHTML = modalContent[type].text;
-    modal.style.display = "block";
+    modal.style.display = "flex";
 }
 
 privacyBtn.onclick = () => openModal('privacy');
@@ -1457,6 +1459,7 @@ priceSelectionModalCloseBtn.onclick = () => {
     });
 };
 
+
 window.onclick = (event) => {
     if (event.target == modal) modal.style.display = "none";
     if (event.target == priceSelectionModal) {
@@ -1470,7 +1473,7 @@ window.onclick = (event) => {
     }
 };
 
-document.querySelectorAll("nav button[data-section]").forEach(button => {
+document.querySelectorAll("#mainNav button[data-section]").forEach(button => {
     button.addEventListener("click", () => {
         const sectionId = button.dataset.section;
         if (sectionId) {
@@ -1480,7 +1483,7 @@ document.querySelectorAll("nav button[data-section]").forEach(button => {
             }
             // --- NEW: Clear messages when switching sections ---
             if (sectionId === 'addBalanceSection') {
-                if (addBalanceMessage) addBalanceMessage.textContent = "";
+                // If you had an addBalance form, clear its messages here
             }
             if (sectionId === 'sendBalanceSection') { // Clear message for send balance form
                 if (sendBalanceMessage) sendBalanceMessage.textContent = "";
@@ -1500,151 +1503,6 @@ document.getElementById("taskCategoryFilters").addEventListener("click", (e) => 
         filterTasks();
     }
 });
-
-// --- Add Balance Feature Logic ---
-if (addBalanceForm) {
-  addBalanceForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const senderUser = auth.currentUser;
-    if (!senderUser) {
-      showToast("Please log in to add balance.");
-      return;
-    }
-
-    const recipientEmail = recipientEmailInput.value.trim().toLowerCase();
-    const amountToAdd = parseFloat(transferAmountInput.value);
-
-    // Basic input validation
-    if (isNaN(amountToAdd) || amountToAdd <= 0) {
-      addBalanceMessage.textContent = "Please enter a valid positive amount.";
-      return;
-    }
-    if (!recipientEmail) {
-      addBalanceMessage.textContent = "Please enter the recipient's email address.";
-      return;
-    }
-    // Prevent sending to oneself
-    if (recipientEmail === senderUser.email) {
-        addBalanceMessage.textContent = "You cannot send balance to yourself.";
-        return;
-    }
-
-    // NEW VALIDATION: Check if amountToAdd is in the allowed list
-    if (!ALLOWED_ADD_BALANCE_AMOUNTS.includes(amountToAdd)) {
-      addBalanceMessage.textContent = `Invalid amount. Please choose from: ${ALLOWED_ADD_BALANCE_AMOUNTS.join(', ')}.`;
-      return;
-    }
-
-    addBalanceMessage.textContent = "Processing transaction...";
-
-    try {
-      const usersCol = collection(db, "users");
-      const senderRef = doc(usersCol, senderUser.uid);
-      const senderSnap = await getDoc(senderRef);
-
-      if (!senderSnap.exists()) {
-        addBalanceMessage.textContent = "Error: Your profile not found.";
-        return;
-      }
-
-      const senderData = senderSnap.data();
-      const senderBalance = senderData.wallet || 0;
-
-      if (senderBalance < amountToAdd) {
-        addBalanceMessage.textContent = "Error: Insufficient balance in your wallet.";
-        return;
-      }
-
-      // Find recipient by email
-      const recipientQuery = query(usersCol, where("email", "==", recipientEmail));
-      const recipientSnapshot = await getDocs(recipientQuery);
-
-      if (recipientSnapshot.empty) {
-        addBalanceMessage.textContent = "Error: Recipient with this email not found.";
-        return;
-      }
-
-      const recipientDoc = recipientSnapshot.docs[0];
-      const recipientId = recipientDoc.id;
-      const recipientData = recipientDoc.data();
-      const recipientBalance = recipientData.wallet || 0;
-
-      // Perform the atomic transaction using a batch write
-      const batch = writeBatch(db);
-      
-      batch.update(senderRef, {
-        wallet: senderBalance - amountToAdd
-      });
-
-      batch.update(doc(usersCol, recipientId), {
-        wallet: recipientBalance + amountToAdd
-      });
-
-      // Record the transaction in a "balanceAdditions" subcollection under the recipient
-      const balanceAdditionsRef = collection(db, "users", recipientId, "balanceAdditions");
-      const newAdditionRef = doc(balanceAdditionsRef);
-      batch.set(newAdditionRef, {
-        addedBy: senderUser.uid,
-        addedByEmail: senderUser.email,
-        amount: amountToAdd,
-        timestamp: Timestamp.now(),
-        company: "Free Earnings App",
-        recipientEmail: recipientEmail
-      });
-
-      await batch.commit(); // Commit the transaction
-
-      addBalanceMessage.textContent = `Successfully added ₹${amountToAdd.toFixed(2)} to ${recipientEmail}'s wallet.`;
-      addBalanceForm.reset();
-      transferAmountInput.value = ""; // Clear amount specifically
-      loadBalanceAdditionHistory(senderUser.uid); // Reload the history to show the new entry
-
-    } catch (error) {
-      console.error("Error adding balance:", error);
-      addBalanceMessage.textContent = `Transaction failed: ${error.message}. Please try again.`;
-    }
-  });
-}
-// --- END Add Balance Feature Logic ---
-
-// --- NEW FUNCTION: Load Balance Addition History ---
-function loadBalanceAdditionHistory(userId) {
-    const userRef = doc(db, "users", userId);
-    const balanceAdditionsCol = collection(userRef, "balanceAdditions");
-    
-    onSnapshot(query(balanceAdditionsCol, orderBy("timestamp", "desc")), (snapshot) => {
-        balanceAdditionHistoryContainer.innerHTML = ""; // Clear previous history
-        if (snapshot.empty) {
-            balanceAdditionHistoryContainer.innerHTML = "<p>No balance additions recorded yet.</p>";
-            return;
-        }
-        snapshot.forEach(doc => {
-            const addition = doc.data();
-            const historyItemDiv = document.createElement("div");
-            historyItemDiv.classList.add("withdrawBox"); // Reusing withdrawBox style for consistency
-            
-            let formattedTimestamp = 'N/A';
-            if (addition.timestamp && typeof addition.timestamp.toDate === 'function') {
-                formattedTimestamp = addition.timestamp.toDate().toLocaleString();
-            } else if (addition.timestamp) {
-                formattedTimestamp = new Date(addition.timestamp).toLocaleString();
-            }
-
-            historyItemDiv.innerHTML = `
-                <p><strong>To Email:</strong> ${addition.recipientEmail || 'N/A'}</p>
-                <p><strong>Amount:</strong> ₹${addition.amount.toFixed(2)}</p>
-                <p><strong>Added By:</strong> ${addition.addedByEmail || 'N/A'}</p>
-                <p><strong>Company:</strong> ${addition.company || 'N/A'}</p>
-                <p><small>Time: ${formattedTimestamp}</small></p>
-            `;
-            balanceAdditionHistoryContainer.appendChild(historyItemDiv);
-        });
-    }, (error) => {
-        console.error("Error loading balance addition history:", error);
-        balanceAdditionHistoryContainer.innerHTML = "<p>Error loading history. Please try again.</p>";
-    });
-}
-// --- END NEW FUNCTION ---
 
 
 // --- NEW: Send Balance Feature Logic ---
@@ -1706,7 +1564,7 @@ if (sendBalanceForm) {
 
       const recipientDoc = recipientSnapshot.docs[0];
       const recipientId = recipientDoc.id;
-      const recipientData = recipientDoc.data();
+      const recipientData = recipientSnapshot.docs[0].data(); // Fetch data correctly
       const recipientBalance = recipientData.wallet || 0;
 
       // Perform the atomic transaction using a batch write
@@ -1747,96 +1605,90 @@ if (sendBalanceForm) {
 // --- NEW FUNCTION: Load Send Balance History ---
 function loadSendBalanceHistory(userId) {
     const transactionsCol = collection(db, "transactions");
+    const historyContainer = document.getElementById("sendBalanceHistory");
+    if (!historyContainer) return; 
+    historyContainer.innerHTML = ""; // Clear existing content
+
     // Query for transactions where the current user is the sender OR recipient
     const sentQuery = query(transactionsCol, where("senderId", "==", userId), orderBy("timestamp", "desc"));
     const receivedQuery = query(transactionsCol, where("recipientId", "==", userId), orderBy("timestamp", "desc"));
 
-    // Listener for sent transactions
-    onSnapshot(sentQuery, (snapshot) => {
-        const historyContainer = document.getElementById("sendBalanceHistory");
-        if (!historyContainer) return; // Exit if container not found
+    const itemsMap = new Map(); // Map to store and manage unique items
 
-        const existingSentItems = historyContainer.querySelectorAll(".sent-transaction");
-        const existingSentIds = new Set(Array.from(existingSentItems).map(item => item.dataset.transactionId));
-        
-        snapshot.forEach(doc => {
-            const transaction = doc.data();
-            const transactionId = doc.id;
-            if (!existingSentIds.has(transactionId)) {
-                const historyItemDiv = document.createElement("div");
-                historyItemDiv.classList.add("withdrawBox"); // Reusing withdrawBox style
-                historyItemDiv.classList.add("sent-transaction"); // Add class for identification
-                historyItemDiv.dataset.transactionId = transactionId;
+    const updateHistoryDisplay = () => {
+        historyContainer.innerHTML = ""; // Clear existing display
+        if (itemsMap.size === 0) {
+            historyContainer.innerHTML = "<p>No balance transfers recorded yet.</p>";
+            return;
+        }
 
-                let formattedTimestamp = 'N/A';
-                if (transaction.timestamp && typeof transaction.timestamp.toDate === 'function') {
-                    formattedTimestamp = transaction.timestamp.toDate().toLocaleString();
-                } else if (transaction.timestamp) {
-                    formattedTimestamp = new Date(transaction.timestamp).toLocaleString();
-                }
+        // Convert map values to array for sorting (by timestamp)
+        const sortedItems = Array.from(itemsMap.values()).sort((a, b) => b.data.timestamp.toMillis() - a.data.timestamp.toMillis());
 
+        sortedItems.forEach(item => {
+            const transaction = item.data;
+            const historyItemDiv = document.createElement("div");
+            
+            let formattedTimestamp = 'N/A';
+            if (transaction.timestamp && typeof transaction.timestamp.toDate === 'function') {
+                formattedTimestamp = transaction.timestamp.toDate().toLocaleString();
+            } else if (transaction.timestamp) {
+                formattedTimestamp = new Date(transaction.timestamp).toLocaleString();
+            }
+
+            if (transaction.senderId === userId) {
+                // Sent Transaction
+                historyItemDiv.classList.add("withdrawBox"); 
                 historyItemDiv.innerHTML = `
                     <p><strong>To:</strong> ${transaction.recipientEmail || 'N/A'}</p>
-                    <p><strong>Amount:</strong> -₹${transaction.amount.toFixed(2)}</p>
-                    <p><strong>Type:</strong> ${transaction.type || 'N/A'}</p>
+                    <p style="color: #dc3545;"><strong>Amount:</strong> -₹${transaction.amount.toFixed(2)}</p>
+                    <p><strong>Type:</strong> Sent Balance</p>
                     <p><small>Time: ${formattedTimestamp}</small></p>
                 `;
-                historyContainer.prepend(historyItemDiv); // Add new items at the top
+            } else {
+                // Received Transaction
+                historyItemDiv.classList.add("depositBox"); 
+                historyItemDiv.innerHTML = `
+                    <p><strong>From:</strong> ${transaction.senderEmail || 'N/A'}</p>
+                    <p style="color: #28a745;"><strong>Amount:</strong> +₹${transaction.amount.toFixed(2)}</p>
+                    <p><strong>Type:</strong> Received Balance</p>
+                    <p><small>Time: ${formattedTimestamp}</small></p>
+                `;
+            }
+            historyContainer.appendChild(historyItemDiv);
+        });
+    };
+
+    // Listener for sent transactions
+    onSnapshot(sentQuery, (snapshot) => {
+        snapshot.docChanges().forEach(change => {
+            if (change.type === "added" || change.type === "modified") {
+                itemsMap.set(change.doc.id, { data: change.doc.data(), type: 'sent' });
+            } else if (change.type === "removed") {
+                itemsMap.delete(change.doc.id);
             }
         });
+        updateHistoryDisplay();
     }, (error) => {
         console.error("Error loading sent balance history:", error);
-        if (historyContainer) {
-            historyContainer.innerHTML = "<p>Error loading sent balance history.</p>";
-        }
     });
 
     // Listener for received transactions
     onSnapshot(receivedQuery, (snapshot) => {
-        const historyContainer = document.getElementById("sendBalanceHistory");
-        if (!historyContainer) return;
-
-        const existingReceivedItems = historyContainer.querySelectorAll(".received-transaction");
-        const existingReceivedIds = new Set(Array.from(existingReceivedItems).map(item => item.dataset.transactionId));
-
-        snapshot.forEach(doc => {
-            const transaction = doc.data();
-            const transactionId = doc.id;
-            if (!existingReceivedIds.has(transactionId)) {
-                const historyItemDiv = document.createElement("div");
-                historyItemDiv.classList.add("depositBox"); // Reusing depositBox style for received
-                historyItemDiv.classList.add("received-transaction"); // Add class for identification
-                historyItemDiv.dataset.transactionId = transactionId;
-
-                let formattedTimestamp = 'N/A';
-                if (transaction.timestamp && typeof transaction.timestamp.toDate === 'function') {
-                    formattedTimestamp = transaction.timestamp.toDate().toLocaleString();
-                } else if (transaction.timestamp) {
-                    formattedTimestamp = new Date(transaction.timestamp).toLocaleString();
-                }
-
-                historyItemDiv.innerHTML = `
-                    <p><strong>From:</strong> ${transaction.senderEmail || 'N/A'}</p>
-                    <p><strong>Amount:</strong> +₹${transaction.amount.toFixed(2)}</p>
-                    <p><strong>Type:</strong> ${transaction.type || 'N/A'}</p>
-                    <p><small>Time: ${formattedTimestamp}</small></p>
-                `;
-                historyContainer.prepend(historyItemDiv); // Add new items at the top
+        snapshot.docChanges().forEach(change => {
+            if (change.type === "added" || change.type === "modified") {
+                itemsMap.set(change.doc.id, { data: change.doc.data(), type: 'received' });
+            } else if (change.type === "removed") {
+                itemsMap.delete(change.doc.id);
             }
         });
+        updateHistoryDisplay();
     }, (error) => {
         console.error("Error loading received balance history:", error);
-        if (historyContainer) {
-            historyContainer.innerHTML = "<p>Error loading received balance history.</p>";
-        }
     });
 
-    // Check if the container is empty after loading listeners, to show placeholder
-    setTimeout(() => {
-        if (historyContainer && historyContainer.innerHTML.trim() === "") {
-            historyContainer.innerHTML = "<p>No balance transfers recorded yet.</p>";
-        }
-    }, 1500);
+    // Initial check (in case no data loads immediately)
+    setTimeout(updateHistoryDisplay, 500);
 }
 // --- END NEW FUNCTION ---
 
@@ -1905,6 +1757,7 @@ function loadAnusementContent() {
   const q = query(anusementCollectionRef, orderBy("createdAt", "desc"));
 
   onSnapshot(q, (snapshot) => {
+    anusementContainer.innerHTML = ""; // Re-clear on update
     if (snapshot.empty) {
       anusementContainer.innerHTML = "<p>No anusement content available at the moment.</p>";
       return;
@@ -1939,7 +1792,7 @@ function loadAdminAnusementData() {
             anusementListContainer.innerHTML = "<p>No anusement content added yet.</p>";
             return;
         }
-        snapshot.forEach((doc) => {
+        snapshot.forEach((doc => {
             const item = doc.data();
             const anusementDiv = document.createElement("div");
             anusementDiv.classList.add("anusement-list-item"); // Use the specific admin list item class
@@ -1954,7 +1807,7 @@ function loadAdminAnusementData() {
                 </div>
             `;
             anusementListContainer.appendChild(anusementDiv);
-        });
+        }));
     });
 }
 
@@ -2029,268 +1882,4 @@ document.addEventListener('click', async (event) => {
             window.scrollTo(0, document.getElementById('adminPanel').offsetTop);
         }
     }
-});
-
-// ---------- Daily Claim Bounce and Sequence Display Logic ----------
-document.addEventListener('DOMContentLoaded', () => {
-    // --- Daily Claim Bounce Logic ---
-    const dailyClaimBtn = document.getElementById('dailyClaimBtn');
-    const dailyClaimMessage = document.getElementById('dailyClaimMessage');
-    const walletBalanceProfile = document.getElementById('walletBalanceProfile'); // Assuming this displays the user's balance
-
-    // Function to get current date string for storage
-    function getTodayDateString() {
-        const today = new Date();
-        return today.toISOString().split('T')[0]; // YYYY-MM-DD format
-    }
-
-    // Function to check if the claim window is currently active
-    function isClaimWindowActive() {
-        const now = new Date();
-        const currentHour = now.getHours();
-        const currentMinute = now.getMinutes();
-
-        // Check if the current time is within the 10:56 PM to 10:57 PM window
-        if (currentHour === CLAIM_TIME_HOUR && currentMinute >= CLAIM_TIME_MINUTE && currentMinute < CLAIM_TIME_MINUTE + 1) { // Window is 1 minute
-            return true;
-        }
-        return false;
-    }
-
-    // Function to check and update the claim button's state
-    function updateClaimButtonState() {
-        const today = getTodayDateString();
-        const claimStatus = JSON.parse(localStorage.getItem(DAILY_CLAIM_STORAGE_KEY) || '{}');
-        const lastClaimedDate = claimStatus.date;
-        const hasClaimedToday = (lastClaimedDate === today);
-
-        const isActiveWindow = isClaimWindowActive();
-
-        if (isActiveWindow) {
-            if (!hasClaimedToday) {
-                // Window is active and user hasn't claimed today
-                if (dailyClaimBtn) {
-                    dailyClaimBtn.disabled = false;
-                    dailyClaimBtn.textContent = 'Claim Daily Bounce';
-                    if (dailyClaimMessage) dailyClaimMessage.textContent = 'Claim your daily bounce now!';
-                    if (dailyClaimMessage) dailyClaimMessage.style.color = 'yellow';
-                }
-            } else {
-                // Window is active but user already claimed today
-                if (dailyClaimBtn) {
-                    dailyClaimBtn.disabled = true;
-                    dailyClaimBtn.textContent = 'Claimed Today';
-                    if (dailyClaimMessage) dailyClaimMessage.textContent = 'You have already claimed your daily bounce for today.';
-                    if (dailyClaimMessage) dailyClaimMessage.style.color = 'lightgreen';
-                }
-            }
-        } else {
-            // Window is not active
-            if (dailyClaimBtn) {
-                dailyClaimBtn.disabled = true;
-                dailyClaimBtn.textContent = 'Claim Opens 9:30 pm to 10:56pm';
-                if (dailyClaimMessage) dailyClaimMessage.textContent = ''; // Clear any previous message
-            }
-        }
-    }
-
-    // Handle the daily claim button click
-    if (dailyClaimBtn) {
-        dailyClaimBtn.addEventListener('click', () => {
-            const today = getTodayDateString();
-            const claimStatus = JSON.parse(localStorage.getItem(DAILY_CLAIM_STORAGE_KEY) || '{}');
-            const lastClaimedDate = claimStatus.date;
-
-            if (lastClaimedDate === today) {
-                if(dailyClaimMessage) dailyClaimMessage.textContent = 'You have already claimed your daily bounce for today.';
-                if(dailyClaimMessage) dailyClaimMessage.style.color = 'orange';
-                return;
-            }
-
-            if (!isClaimWindowActive()) {
-                if(dailyClaimMessage) dailyClaimMessage.textContent = 'The claim window is not active right now.';
-                if(dailyClaimMessage) dailyClaimMessage.style.color = 'orange';
-                return;
-            }
-
-            // --- Actual Claim Logic ---
-            try {
-                let currentBalance = parseFloat(walletBalanceProfile.textContent.replace('₹', '').trim());
-                if (isNaN(currentBalance)) {
-                    currentBalance = 0;
-                }
-                currentBalance += DAILY_BOUNCE_AMOUNT;
-                walletBalanceProfile.textContent = `₹${currentBalance.toFixed(2)}`;
-
-                // Update localStorage with claim status
-                localStorage.setItem(DAILY_CLAIM_STORAGE_KEY, JSON.stringify({ date: today }));
-
-                // Update button state and message
-                dailyClaimBtn.disabled = true;
-                dailyClaimBtn.textContent = 'Claimed Today';
-                if (dailyClaimMessage) dailyClaimMessage.textContent = `Successfully claimed ₹${DAILY_BOUNCE_AMOUNT} bonus!`;
-                if (dailyClaimMessage) dailyClaimMessage.style.color = 'lightgreen';
-
-                // Update main dashboard balance display if it exists
-                const mainWalletBalance = document.getElementById('walletBalance');
-                if (mainWalletBalance) {
-                    mainWalletBalance.textContent = `₹${currentBalance.toFixed(2)}`;
-                }
-
-            } catch (error) {
-                console.error('Error processing daily claim:', error);
-                if(dailyClaimMessage) dailyClaimMessage.textContent = 'Error claiming daily bounce. Please try again later.';
-                if(dailyClaimMessage) dailyClaimMessage.style.color = 'red';
-            }
-            // --- End of Actual Claim Logic ---
-        });
-    }
-
-    // Start an interval to check the claim button state periodically
-    // Check every minute to see if the window is active or if the date has changed
-    claimCheckInterval = setInterval(updateClaimButtonState, 60 * 1000); // Check every minute
-    updateClaimButtonState(); // Initial check when the page loads
-
-    // --- Custom Sequence Generation Logic ---
-    if (showSequenceBtn && sequenceDisplayDiv) {
-        showSequenceBtn.addEventListener('click', () => {
-            const sequence = generateCustomSequence();
-            displaySequence(sequence);
-        });
-    }
-});
-
-// --- Function to generate the custom sequence ---
-function generateCustomSequence() {
-  const sequence = [10, 40]; // Initialize with the first two specific numbers
-
-  // Continue from 60 (40 + 20) with a step of 20 up to 200
-  for (let i = 60; i <= 200; i += 20) {
-    sequence.push(i);
-  }
-
-  return sequence;
-}
-
-// --- Function to display the generated sequence ---
-function displaySequence(sequence) {
-    if (!sequenceDisplayDiv) return; // Exit if the display element is not found
-
-    sequenceDisplayDiv.innerHTML = ''; // Clear previous content
-
-    if (sequence.length === 0) {
-        sequenceDisplayDiv.innerHTML = "<p>No sequence generated.</p>";
-        return;
-    }
-
-    const ul = document.createElement('ul');
-    sequence.forEach(num => {
-        const li = document.createElement('li');
-        li.textContent = num;
-        ul.appendChild(li);
-    });
-    sequenceDisplayDiv.appendChild(ul);
-}
-
-
-// --- Initial Load and Auth State Check ---
-onAuthStateChanged(auth, user => {
-    if (user) { // Always show the main content if user is logged in
-        authSection.style.display = "none";
-        nav.style.display = "flex";
-        
-        // Determine if the user is an admin
-        if (user.email === adminEmail) {
-            adminPanelBtn.style.display = "block";
-            loadAdminDataIfAdmin(user);
-            showSection('adminPanel'); // Default to admin panel if admin
-        } else {
-            adminPanelBtn.style.display = "none";
-            if (adminPanelSection.classList.contains('active')) {
-                showSection('tasks'); // Default to tasks for regular users
-            }
-        }
-        loadUserData(user); // Load user-specific data
-        loadUserDepositHistory(user.uid); // Load deposit history
-        loadUserAddedLinks(user.uid); // Load user's own links
-        loadPublicLinks(); // Load general public links
-        loadForYouContent(user.uid); // Load "For You" content
-        loadBalanceAdditionHistory(user.uid); // Load balance addition history
-        loadSendBalanceHistory(user.uid); // Load send balance history
-
-        // Make dashboard items clickable
-        document.querySelectorAll('.dashboard-item').forEach(item => {
-            item.addEventListener('click', () => {
-                const targetSection = item.dataset.targetSection;
-                if (targetSection) {
-                    showSection(targetSection);
-                }
-            });
-        });
-    } else { // User is not logged in
-        authSection.style.display = "block";
-        nav.style.display = "none";
-        showSection('authSection'); // Show login/signup section
-        adminPanelBtn.style.display = "none";
-        // Clear all user-specific data
-        userNameDisplay.innerText = ""; userEmailDisplay.innerText = ""; userRefDisplay.innerText = "";
-        walletBalanceDisplay.innerText = "0.00"; walletBalanceProfileDisplay.innerText = "0.00";
-        totalReferralsCountDisplay.innerText = "0"; refLinkInput.value = "";
-        if (totalReferralEarningsDisplay) totalReferralEarningsDisplay.innerText = "0.00";
-        userProfilePic.innerText = "?"; userProfilePic.style.backgroundImage = 'none'; userProfilePic.style.backgroundColor = '#333';
-        totalUsersDisplay.innerText = "0"; totalTasksDisplay.innerText = "0";
-        totalWithdrawalsDisplay.innerText = "0"; totalEarningsDisplay.innerText = "₹0.00";
-        document.getElementById("withdrawList").innerHTML = "";
-        depositListContainer.innerHTML = "";
-        userLinksContainer.innerHTML = "";
-        publicLinksContainer.innerHTML = "";
-        forYouTasksContainer.innerHTML = "";
-        document.getElementById("tasksContainer").innerHTML = "";
-        balanceAdditionHistoryContainer.innerHTML = "";
-        sendBalanceHistoryContainer.innerHTML = "";
-        
-        // Stop the claim check interval when user logs out
-        if (claimCheckInterval) {
-            clearInterval(claimCheckInterval);
-            claimCheckInterval = null;
-        }
-    }
-});
-
-// --- Initialize Anusement section loading listener ---
-function setupAnusementSectionListener() { 
-  const anusementNavButton = document.querySelector('nav button[data-section="anusement"]');
-  if (anusementNavButton) {
-    anusementNavButton.addEventListener('click', () => {
-      if (auth.currentUser) {
-        loadAnusementContent();
-      }
-    });
-  }
-}
-
-// --- Call the setup function on DOMContentLoaded ---
-document.addEventListener('DOMContentLoaded', () => {
-  // If the page loads directly to the anusement section (though unlikely without auth), also load.
-  const currentUser = auth.currentUser;
-  if (currentUser && nav.style.display !== 'none' && document.getElementById('anusement')?.classList.contains('active')) {
-    loadAnusementContent();
-  }
-  // Load admin anusement data if user is admin and admin panel is shown
-  if (currentUser && currentUser.email === adminEmail && nav.style.display !== 'none' && document.getElementById('adminPanel')?.classList.contains('active')) {
-      loadAdminAnusementData();
-  }
-  
-  // Daily Claim Bounce and Sequence Logic
-  // The logic for daily claim and sequence generation is now handled by the onAuthStateChanged listener 
-  // and the DOMContentLoaded listener that wraps it.
-  // The updateClaimButtonState will be called by the onAuthStateChanged listener and the interval.
-
-  // Ensure the sequence button is set up if it exists
-  if (showSequenceBtn && sequenceDisplayDiv) {
-    showSequenceBtn.addEventListener('click', () => {
-        const sequence = generateCustomSequence();
-        displaySequence(sequence);
-    });
-  }
 });
