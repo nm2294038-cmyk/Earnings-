@@ -1,1794 +1,1462 @@
-/* --- Base Styles --- */
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    margin: 0;
-    background: #0d0d0d;
-    color: #e0e0e0;
-    line-height: 1.6;
-    padding-bottom: 80px; /* Space for fixed footer */
-    overflow-x: hidden;
-    scroll-behavior: smooth;
-    position: relative; /* For background animations */
-}
-
-/* --- Background Animation --- */
-body::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(circle, rgba(30, 30, 30, 0.5) 0%, rgba(10, 10, 10, 0.8) 70%);
-    z-index: -1;
-    animation: backgroundShift 25s linear infinite alternate;
-}
-
-@keyframes backgroundShift {
-    0% { transform: scale(1); opacity: 0.6; }
-    50% { transform: scale(1.1); opacity: 0.8; }
-    100% { transform: scale(1); opacity: 0.6; }
-}
-
-
-header {
-    background: linear-gradient(to right, #0ff, #0cc);
-    color: #000;
-    padding: 25px 0; /* Slightly more padding */
-    text-align: center;
-    font-size: 40px; /* Larger font for PC */
-    font-weight: bold;
-    text-shadow: 0 0 7px #0ff, 0 0 15px #0ff, 0 0 25px #0ff;
-    box-shadow: 0 5px 20px rgba(0, 255, 255, 0.5);
-    letter-spacing: 2px; /* Increased letter spacing */
-    animation: headerGlow 2s infinite alternate;
-    position: relative;
-    z-index: 10; /* Ensure header is above background animation */
-}
-
-@keyframes headerGlow {
-    from { text-shadow: 0 0 7px #0ff, 0 0 15px #0ff; box-shadow: 0 5px 20px rgba(0, 255, 255, 0.5); }
-    to { text-shadow: 0 0 10px #fff, 0 0 20px #0ff, 0 0 30px #0ff; box-shadow: 0 5px 25px rgba(0, 255, 255, 0.7); }
-}
-
-nav {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    background: rgba(17, 17, 17, 0.95);
-    padding: 18px 0; /* Slightly more padding */
-    border-bottom: 3px solid #0ff;
-    box-shadow: 0 3px 12px rgba(0, 255, 255, 0.3);
-    position: sticky;
-    top: 0;
-    z-index: 100;
-}
-
-nav button {
-    background: linear-gradient(to bottom, #fff, #f0f0f0);
-    border: none;
-    padding: 14px 25px; /* More padding */
-    margin: 10px; /* More margin */
-    color: #000;
-    font-weight: bold;
-    border-radius: 12px;
-    cursor: pointer;
-    transition: all 0.4s ease;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-    font-size: 16px; /* Larger font */
-    position: relative;
-    overflow: hidden;
-    outline: none; /* Remove outline on focus */
-}
-
-nav button::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(120deg, transparent, rgba(0, 255, 255, 0.3), transparent);
-    transition: all 0.6s ease;
-    transform: translateX(-100%);
-}
-
-nav button:hover,
-nav button:focus {
-    box-shadow: 0 0 25px #0ff, 0 8px 15px rgba(0, 0, 0, 0.4), 0 0 15px rgba(0, 255, 255, 0.8);
-    transform: translateY(-4px) scale(1.04);
-    background: #f8f8f8;
-    color: #007bff;
-}
-
-nav button:hover::before,
-nav button:focus::before {
-    transform: translateX(100%);
-}
-
-nav button[data-section="adminPanel"] {
-    background: linear-gradient(to bottom, #ffc107, #e0a800);
-    color: #000;
-    box-shadow: 0 4px 10px rgba(255, 193, 7, 0.5);
-}
-
-nav button[data-section="adminPanel"]:hover,
-nav button[data-section="adminPanel"]:focus {
-    background: #e0a800;
-    box-shadow: 0 0 25px #ffc107, 0 8px 15px rgba(0, 0, 0, 0.4), 0 0 20px rgba(255, 193, 7, 0.8);
-    transform: translateY(-4px) scale(1.04);
-}
-
-section {
-    display: none;
-    padding: 40px;
-    margin-top: 30px;
-    background: rgba(26, 26, 26, 0.85);
-    border-radius: 18px;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6), 0 0 15px rgba(0, 255, 255, 0.2);
-    animation: fadeInSection 0.6s ease-out forwards;
-    opacity: 0;
-    transform: translateY(20px);
-    position: relative; /* For potential inner animations */
-}
-
-section.active {
-    display: block;
-    opacity: 1;
-    transform: translateY(0);
-}
-
-@keyframes fadeInSection {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-/* --- Input and Buttons --- */
-input[type="text"],
-input[type="email"],
-input[type="password"],
-input[type="number"],
-select,
-textarea {
-    padding: 16px; /* Increased padding */
-    margin: 12px 0;
-    border-radius: 12px;
-    border: 1px solid #444;
-    width: 100%;
-    box-sizing: border-box;
-    background-color: #222;
-    color: #fff;
-    font-size: 17px; /* Larger font */
-    transition: all 0.3s ease;
-    box-shadow: inset 0 0 8px rgba(0,0,0,0.4);
-    outline: none; /* Remove default outline */
-}
-
-input:focus,
-select:focus,
-textarea:focus {
-    border-color: #0ff;
-    box-shadow: inset 0 0 8px rgba(0,0,0,0.4), 0 0 15px rgba(0, 255, 255, 0.7);
-}
-
-button.submitBtn {
-    background: linear-gradient(to right, #0ff, #0cc);
-    color: #000;
-    border: none;
-    padding: 18px 40px; /* More padding */
-    border-radius: 12px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: all 0.4s ease;
-    font-size: 19px; /* Larger font */
-    display: inline-block;
-    margin-top: 20px;
-    box-shadow: 0 6px 15px rgba(0, 255, 255, 0.5), 0 0 10px rgba(0, 255, 255, 0.7);
-    position: relative;
-    overflow: hidden;
-    outline: none;
-}
-
-button.submitBtn::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-    transition: all 0.6s ease;
-    transform: translateX(-100%);
-}
-
-button.submitBtn:hover,
-button.submitBtn:focus {
-    box-shadow: 0 0 20px #0ff, 0 8px 15px rgba(0, 255, 255, 0.7), 0 0 15px rgba(0, 255, 255, 0.9);
-    background: linear-gradient(to right, #d6f7ff, #d0f2ff);
-    color: #000;
-    transform: translateY(-4px) scale(1.03);
-}
-button.submitBtn:hover::before,
-button.submitBtn:focus::before {
-    transform: translateX(100%);
-}
-
-button.submitBtn:disabled {
-    background: #444;
-    color: #aaa;
-    cursor: not-allowed;
-    box-shadow: none;
-    transform: none;
-}
-
-/* --- Full Screen Auth Section --- */
-#authSection {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.95);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    z-index: 999;
-    padding: 40px;
-    box-sizing: border-box;
-    backdrop-filter: blur(10px);
-    animation: fadeInBG 0.5s ease-out;
-}
-
-#authSection .auth-container {
-    max-width: 520px; /* Slightly wider for PC */
-    width: 100%;
-    padding: 50px; /* More padding */
-    background: rgba(17, 17, 17, 0.88);
-    border-radius: 18px;
-    box-shadow: 0 10px 30px rgba(0, 255, 255, 0.3), inset 0 0 15px rgba(0, 255, 255, 0.2);
-    text-align: center;
-    border: 1px solid rgba(0, 255, 255, 0.35);
-    animation: zoomInContainer 0.7s ease-out forwards;
-    transform: scale(0.9);
-    opacity: 0;
-}
-
-@keyframes zoomInContainer {
-    from { transform: scale(0.9); opacity: 0; }
-    to { transform: scale(1); opacity: 1; }
-}
-
-#authSection h2 {
-    color: #0ff;
-    margin-bottom: 35px;
-    font-size: 36px;
-    text-shadow: 0 0 10px #0ff, 0 0 18px #0ff;
-}
-
-#authSection hr {
-    border: 0;
-    height: 2px;
-    background-image: linear-gradient(to right, rgba(0, 255, 255, 0), rgba(0, 255, 255, 0.9), rgba(0, 255, 255, 0));
-    margin: 45px 0;
-}
-
-#authSection button.submitBtn {
-    width: 100%;
-    padding: 18px 30px;
-    font-size: 19px;
-}
-
-#authSection .location-button {
-    background: linear-gradient(to bottom, #4CAF50, #45a049);
-    color: white;
-    padding: 16px 25px; /* More padding */
-    border: none;
-    border-radius: 12px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: all 0.4s ease;
-    font-size: 17px; /* Larger font */
-    margin-top: 20px;
-    width: 100%;
-    display: block;
-    box-shadow: 0 6px 15px rgba(76, 175, 80, 0.5);
-    outline: none;
-}
-
-#authSection .location-button:hover,
-#authSection .location-button:focus {
-    background: linear-gradient(to bottom, #45a049, #3e8e41);
-    box-shadow: 0 0 20px rgba(76, 175, 80, 0.7), 0 8px 18px rgba(0, 0, 0, 0.3);
-    transform: translateY(-4px);
-}
-
-#authSection .location-button:disabled {
-    background: #606060;
-    cursor: not-allowed;
-    box-shadow: none;
-    transform: none;
-}
-
-
-/* --- Containers for Boxes --- */
-.dashboard-container,
-#tasksContainer,
-#forYouTasksContainer,
-#withdrawList,
-#adminTasksContainer,
-#adminLinksContainer,
-#depositList,
-#userLinksContainer,
-#publicLinksContainer {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 30px;
-    margin-top: 35px;
-}
-
-/* --- Individual Boxes (Dashboard, Task, Withdraw, Link, Deposit History) --- */
-.dashboard-box,
-.taskBox,
-.withdrawBox,
-.linkBox,
-.depositBox,
-.userLinkBox {
-    background: rgba(26, 26, 26, 0.9);
-    padding: 30px;
-    border-radius: 18px;
-    box-shadow: 0 10px 25px rgba(0, 255, 255, 0.25), inset 0 0 10px rgba(0, 255, 255, 0.1);
-    min-width: 280px; /* Slightly wider */
-    text-align: center;
-    flex-grow: 1;
-    max-width: 320px; /* Keep max width */
-    transition: transform 0.4s ease, box-shadow 0.4s ease;
-    border: 1px solid rgba(0, 255, 255, 0.15);
-    animation: slideInUp 0.7s ease-out forwards;
-    opacity: 0;
-    transform: translateY(30px);
-}
-
-.dashboard-box:hover,
-.taskBox:hover,
-.withdrawBox:hover,
-.linkBox:hover,
-.depositBox:hover,
-.userLinkBox:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 15px 35px rgba(0, 255, 255, 0.45), inset 0 0 15px rgba(0, 255, 255, 0.2);
-}
-
-.taskBox p {
-    margin-bottom: 20px;
-    font-size: 17px;
-    color: #ccc;
-    line-height: 1.8;
-}
-
-/* === NEW: Style for the warning inside each task box === */
-.task-warning {
-    color: #ffc107;
-    font-weight: bold;
-    font-size: 15px;
-    margin-top: 20px;
-    padding: 12px;
-    background-color: rgba(255, 193, 7, 0.12);
-    border-left: 5px solid #ffc107;
-    border-radius: 6px;
-    text-align: left;
-    transition: transform 0.3s ease;
-}
-.task-warning:hover {
-    transform: translateX(5px);
-}
-
-/* --- NEW STYLES FOR ADMIN PANEL --- */
-#adminPanel form {
-    max-width: 700px;
-    margin: 40px auto;
-    background: rgba(26, 26, 26, 0.9);
-    padding: 40px;
-    border-radius: 18px;
-    box-shadow: 0 10px 30px rgba(0, 255, 255, 0.3), inset 0 0 15px rgba(0, 255, 255, 0.2);
-    border: 1px solid rgba(0, 255, 255, 0.35);
-}
-
-#adminPanel h2,
-#publicLinksSection h2,
-#anusement h2 {
-    color: #0ff;
-    text-align: center;
-    margin-bottom: 35px;
-    font-size: 36px;
-    text-shadow: 0 0 10px #0ff, 0 0 18px #0ff;
-}
-
-#adminPanel input,
-#adminPanel select,
-#adminPanel textarea {
-    background-color: #222;
-    color: #fff;
-    border: 1px solid #444;
-    padding: 15px;
-    margin-bottom: 15px;
-    font-size: 17px;
-}
-
-#adminPanel input:focus,
-#adminPanel select:focus,
-#adminPanel textarea:focus {
-    border-color: #0ff;
-    box-shadow: inset 0 0 8px rgba(0,0,0,0.4), 0 0 18px rgba(0, 255, 255, 0.8);
-}
-
-#adminPanel .submitBtn {
-    width: 100%;
-    display: block;
-    margin-top: 35px;
-    padding: 18px 30px;
-    font-size: 19px;
-}
-
-/* Style for dynamically added link fields */
-.dynamic-link-input {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    margin-bottom: 15px;
-}
-
-.dynamic-link-input input {
-    flex-grow: 1;
-    margin-bottom: 0;
-    padding: 14px;
-}
-
-.dynamic-link-input button {
-    background: #dc3545;
-    color: white;
-    border: none;
-    padding: 12px 18px;
-    border-radius: 10px;
-    cursor: pointer;
-    font-size: 15px;
-    transition: all 0.4s ease;
-    flex-shrink: 0;
-    box-shadow: 0 4px 10px rgba(220, 53, 69, 0.4);
-}
-
-.dynamic-link-input button:hover {
-    background: #c82333;
-    transform: translateY(-2px);
-    box-shadow: 0 0 15px rgba(220, 53, 69, 0.6);
-}
-
-#adminPanel p {
-    color: #ccc;
-    margin-bottom: 15px;
-    font-size: 16px;
-}
-
-/* --- Deposit Section Specific Styles --- */
-#deposit .deposit-info-box {
-    background: rgba(26, 26, 26, 0.9);
-    padding: 30px;
-    border-radius: 18px;
-    margin-bottom: 30px;
-    border: 1px solid rgba(0, 255, 255, 0.2);
-    text-align: left;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6), inset 0 0 10px rgba(0, 255, 255, 0.1);
-}
-
-#deposit .deposit-info-box p {
-    color: #ffc107;
-    font-weight: bold;
-    margin-bottom: 14px;
-    font-size: 17px;
-}
-
-#deposit .deposit-info-box ul {
-    padding-left: 28px;
-    color: #ddd;
-}
-
-#deposit .deposit-info-box li {
-    margin-bottom: 12px;
-    line-height: 1.9;
-}
-
-#deposit form {
-    max-width: 580px;
-    margin: 35px auto;
-    padding: 35px;
-    background: rgba(26, 26, 26, 0.9);
-    border-radius: 18px;
-    box-shadow: 0 10px 30px rgba(0, 255, 255, 0.3), inset 0 0 15px rgba(0, 255, 255, 0.2);
-    border: 1px solid rgba(0, 255, 255, 0.35);
-}
-
-#deposit h3 {
-    margin-top: 45px;
-    color: #0ff;
-    text-align: center;
-    font-size: 32px;
-    text-shadow: 0 0 10px #0ff, 0 0 18px #0ff;
-}
-
-/* Withdrawal Warning Box Style */
-.withdrawal-warning-box {
-    background-color: rgba(42, 26, 26, 0.9);
-    border: 1px solid #dc3545;
-    border-radius: 15px;
-    padding: 30px;
-    margin-bottom: 35px;
-    text-align: left;
-    box-shadow: 0 8px 25px rgba(220, 53, 69, 0.4);
-}
-
-.withdrawal-warning-box h3 {
-    color: #ffc107;
-    margin-top: 0;
-    font-size: 24px;
-    border-bottom: 1px solid #555;
-    padding-bottom: 14px;
-    margin-bottom: 20px;
-}
-
-.withdrawal-warning-box p {
-    color: #f0f0f0;
-    font-size: 17px;
-    line-height: 1.9;
-}
-
-/* --- UPDATED FOOTER STYLE (FIXED) --- */
-footer {
-    background: rgba(17, 17, 17, 0.95);
-    padding: 25px 0;
-    text-align: center;
-    border-top: 4px solid #0ff;
-    width: 102%;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    z-index: 100;
-    box-shadow: 0 -3px 15px rgba(0, 255, 255, 0.2);
-}
-
-.footer-links {
-    display: flex;
-    justify-content: center;
-    gap: 35px;
-    flex-wrap: wrap;
-    margin-bottom: 20px;
-}
-
-.footer-links a {
-    color: #0ff;
-    text-decoration: none;
-    font-weight: bold;
-    cursor: pointer;
-    white-space: nowrap;
-    transition: color 0.4s ease, text-shadow 0.4s ease;
-    font-size: 16px;
-}
-
-.footer-links a:hover {
-    text-decoration: underline;
-    color: #fff;
-    text-shadow: 0 0 10px #fff;
-}
-
-footer .copyright {
-    font-size: 15px;
-    color: #aaa;
-    margin: 0;
-}
-
-/* --- Modal Styles --- */
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0, 0, 0, 0.92);
-    backdrop-filter: blur(12px);
-    animation: fadeInBG 0.5s ease-out;
-    justify-content: center;
-    align-items: center;
-}
-
-.modal-content {
-    background-color: #1a1a1a;
-    color: #fff;
-    margin: 5% auto;
-    padding: 40px 50px;
-    border: 1px solid #0ff;
-    border-radius: 18px;
-    box-shadow: 0 0 35px rgba(0, 255, 255, 0.6), inset 0 0 20px rgba(0, 255, 255, 0.2);
-    position: relative;
-    max-width: 650px;
-    width: 90%;
-    animation: zoomInModal 0.7s ease-out forwards;
-    transform: scale(0.95);
-    opacity: 0;
-}
-
-@keyframes zoomInModal {
-    from { transform: scale(0.95); opacity: 0; }
-    to { transform: scale(1); opacity: 1; }
-}
-
-.modal-close-btn {
-    color: #aaa;
-    position: absolute;
-    top: 20px;
-    right: 30px;
-    font-size: 45px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: color 0.4s ease;
-}
-
-.modal-close-btn:hover {
-    color: #0ff;
-    transform: scale(1.1);
-}
-
-.modal-content h2 {
-    color: #0ff;
-    text-align: center;
-    margin-bottom: 30px;
-    font-size: 38px;
-    text-shadow: 0 0 12px #0ff, 0 0 20px #0ff;
-}
-
-.modal-content p {
-    line-height: 1.9;
-    text-align: left;
-    font-size: 17px;
-}
-
-.modal-content ul {
-    text-align: left;
-    list-style-position: inside;
-    padding-left: 20px;
-}
-
-.modal-content li {
-    margin-bottom: 14px;
-}
-
-/* --- Specific Sections --- */
-#tasks { /* ... existing styles ... */ }
-
-/* --- Profile Section --- */
-.profile-card {
-    background: rgba(26, 26, 26, 0.9);
-    padding: 40px;
-    border-radius: 18px;
-    box-shadow: 0 10px 30px rgba(0, 255, 255, 0.3), inset 0 0 15px rgba(0, 255, 255, 0.2);
-    max-width: 520px;
-    width: 90%;
-    margin: 60px auto;
-    text-align: center;
-    border: 1px solid rgba(0, 255, 255, 0.35);
-}
-
-.profile-header {
-    margin-bottom: 35px;
-}
-
-.profile-pic {
-    width: 140px;
-    height: 140px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 6px solid #0ff;
-    box-shadow: 0 0 25px rgba(0, 255, 255, 0.9);
-    background-color: #333;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 55px;
-    font-weight: bold;
-    color: white;
-    animation: pulsePic 2s infinite alternate;
-}
-
-@keyframes pulsePic {
-    from { transform: scale(1); box-shadow: 0 0 25px rgba(0, 255, 255, 0.9); }
-    to { transform: scale(1.05); box-shadow: 0 0 35px rgba(0, 255, 255, 1.2); }
-}
-
-.profile-info h2 {
-    margin: 18px 0 10px 0;
-    color: #0ff;
-    font-size: 38px;
-    text-shadow: 0 0 12px #0ff, 0 0 20px #0ff;
-}
-
-.profile-info p {
-    margin: 10px 0;
-    color: #ccc;
-    font-size: 19px;
-}
-
-.profile-info p.referral-code {
-    font-weight: bold;
-    color: #fff;
-    background: #2a2a2a;
-    padding: 12px 20px;
-    border-radius: 10px;
-    display: inline-block;
-    margin-top: 18px;
-    font-size: 17px;
-    transition: background 0.3s ease;
-}
-.profile-info p.referral-code:hover {
-    background: #333;
-}
-
-.profile-stats {
-    margin: 40px 0;
-    padding: 30px 0;
-    border-top: 1px solid #333;
-    border-bottom: 1px solid #333;
-    display: flex;
-    justify-content: space-around;
-    flex-wrap: wrap;
-    gap: 25px;
-}
-
-.stat-item p {
-    margin: 0;
-    color: #aaa;
-    font-size: 17px;
-}
-
-.stat-item h3 {
-    margin: 10px 0 0 0;
-    color: #fff;
-    font-size: 28px;
-    font-weight: bold;
-}
-
-.profile-actions {
-    margin-top: 40px;
-}
-
-.profile-actions button {
-    background: linear-gradient(to right, #0ff, #0cc);
-    color: #000;
-    border: none;
-    padding: 18px 40px;
-    border-radius: 12px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: all 0.4s ease;
-    font-size: 19px;
-    box-shadow: 0 7px 20px rgba(0, 255, 255, 0.6);
-    position: relative;
-    overflow: hidden;
-}
-
-.profile-actions button::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-    transition: all 0.6s ease;
-    transform: translateX(-100%);
-}
-
-.profile-actions button:hover,
-.profile-actions button:focus {
-    box-shadow: 0 0 25px #0ff, 0 10px 20px rgba(0, 255, 255, 0.8), 0 0 20px rgba(0, 255, 255, 1);
-    background: linear-gradient(to right, #d6f7ff, #d0f2ff);
-    color: #000;
-    transform: translateY(-5px);
-}
-
-/* --- Withdrawal/Deposit Status Styles --- */
-.status-pending,
-.status-pending-verification {
-    color: #ffc107;
-    font-weight: bold;
-    text-shadow: 0 0 5px #ffc107;
-}
-
-.status-approved {
-    color: #28a745;
-    font-weight: bold;
-    text-shadow: 0 0 5px #28a745;
-}
-
-.status-rejected {
-    color: #dc3545;
-    font-weight: bold;
-    text-shadow: 0 0 5px #dc3545;
-}
-
-/* --- YouTube Video Section --- */
-#youtubeVideoSection {
-    text-align: center;
-    margin-top: 40px;
-    padding: 30px;
-    background: rgba(26, 26, 26, 0.9);
-    border-radius: 18px;
-    box-shadow: 0 10px 25px rgba(0, 255, 255, 0.3), inset 0 0 10px rgba(0, 255, 255, 0.1);
-    border: 1px solid rgba(0, 255, 255, 0.2);
-}
-
-#youtubeVideoSection h2 {
-    color: #0ff;
-    margin-bottom: 30px;
-    font-size: 36px;
-    text-shadow: 0 0 10px #0ff, 0 0 18px #0ff;
-}
-
-#youtubeVideoSection p {
-    color: #ccc;
-    font-size: 17px;
-    line-height: 1.8;
-}
-
-/* --- NEW styles for multiple videos --- */
-#videoPlayerContainer {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 30px;
-    margin-top: 30px;
-}
-
-.video-item {
-    width: 100%;
-    max-width: 550px;
-    aspect-ratio: 16 / 9;
-    border-radius: 12px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.7), 0 0 15px rgba(0, 255, 255, 0.2);
-    animation: fadeInVideo 0.8s ease-out forwards;
-    opacity: 0;
-    transform: scale(0.95);
-}
-
-.video-item iframe {
-    width: 100%;
-    height: 100%;
-    border: none;
-    border-radius: 12px;
-}
-
-@keyframes fadeInVideo {
-    from { opacity: 0; transform: scale(0.95); }
-    to { opacity: 1; transform: scale(1); }
-}
-/* --- End of NEW styles --- */
-
-
-/* --- User Added Links Section --- */
-#userLinksSection {
-    margin-top: 40px;
-    padding: 35px;
-    background: rgba(26, 26, 26, 0.9);
-    border-radius: 18px;
-    box-shadow: 0 10px 30px rgba(0, 255, 255, 0.3), inset 0 0 15px rgba(0, 255, 255, 0.2);
-    border: 1px solid rgba(0, 255, 255, 0.35);
-}
-
-#userLinksSection h2 {
-    color: #0ff;
-    text-align: center;
-    margin-bottom: 35px;
-    font-size: 36px;
-    text-shadow: 0 0 10px #0ff, 0 0 18px #0ff;
-}
-
-#userLinksSection form {
-    max-width: 550px;
-    margin: 0 auto 40px auto;
-    background: #222;
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 0 18px rgba(0, 255, 255, 0.35);
-    border: 1px solid #444;
-}
-
-#userLinksSection form label {
-    display: block;
-    margin-bottom: 8px;
-    color: #ccc;
-    font-size: 16px;
-    font-weight: bold;
-}
-
-#userLinksSection form input[type="text"],
-#userLinksSection form input[type="url"] {
-    background-color: #333;
-    border: 1px solid #444;
-    padding: 14px;
-}
-
-#userLinksSection form input[type="text"]:focus,
-#userLinksSection form input[type="url"]:focus {
-    border-color: #0ff;
-    box-shadow: inset 0 0 8px rgba(0,0,0,0.4), 0 0 15px rgba(0, 255, 255, 0.7);
-}
-
-.userLinkBox .edit-delete-buttons button {
-    background: #ffc107;
-    color: #000;
-    margin-right: 10px;
-    padding: 10px 16px;
-    font-size: 14px;
-    border-radius: 9px;
-    transition: all 0.4s ease;
-    box-shadow: 0 4px 10px rgba(255, 193, 7, 0.4);
-}
-
-.userLinkBox .edit-delete-buttons button.delete-btn {
-    background: #dc3545;
-    color: white;
-    box-shadow: 0 4px 10px rgba(220, 53, 69, 0.4);
-}
-
-.userLinkBox .edit-delete-buttons button:hover,
-.userLinkBox .edit-delete-buttons button:focus {
-    transform: translateY(-3px);
-    box-shadow: 0 0 15px rgba(255, 193, 7, 0.7);
-}
-.userLinkBox .edit-delete-buttons button.delete-btn:hover,
-.userLinkBox .edit-delete-buttons button.delete-btn:focus {
-    background: #c82333;
-    box-shadow: 0 0 15px rgba(220, 53, 69, 0.7);
-}
-
-/* --- Category Filter Buttons --- */
-.category-filter-buttons {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 14px;
-    margin-top: 25px;
-    margin-bottom: 35px;
-}
-
-.category-filter-buttons button {
-    background: #333;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 9px;
-    cursor: pointer;
-    font-size: 15px;
-    transition: all 0.4s ease;
-    box-shadow: 0 3px 8px rgba(0,0,0,0.3);
-    outline: none;
-}
-
-.category-filter-buttons button:hover,
-.category-filter-buttons button:focus {
-    background: #444;
-    transform: translateY(-2px);
-}
-
-.category-filter-buttons button.active {
-    background: #0ff;
-    color: #000;
-    font-weight: bold;
-    box-shadow: 0 0 15px #0ff, 0 4px 10px rgba(0, 255, 255, 0.5);
-}
-
-/* --- Price Selection Modal --- */
-#priceSelectionModal {
-    display: none;
-    position: fixed;
-    z-index: 1001;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0, 0, 0, 0.92);
-    backdrop-filter: blur(12px);
-    animation: fadeInBG 0.5s ease-out;
-    justify-content: center;
-    align-items: center;
-}
-
-#priceSelectionModal .modal-content {
-    background-color: #1a1a1a;
-    color: #fff;
-    margin: 0 auto;
-    padding: 40px 50px;
-    border: 1px solid #0ff;
-    border-radius: 18px;
-    width: 85%;
-    max-width: 500px;
-    box-shadow: 0 0 35px rgba(0, 255, 255, 0.6), inset 0 0 20px rgba(0, 255, 255, 0.2);
-    position: relative;
-    text-align: center;
-    animation: zoomInModal 0.7s ease-out forwards;
-    transform: scale(0.95);
-    opacity: 0;
-}
-
-#priceSelectionModal .modal-close-btn {
-    color: #aaa;
-    position: absolute;
-    top: 20px;
-    right: 30px;
-    font-size: 45px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: color 0.4s ease;
-}
-
-#priceSelectionModal .modal-close-btn:hover {
-    color: #0ff;
-    transform: scale(1.1);
-}
-
-#priceSelectionModal h2 {
-    color: #0ff;
-    margin-bottom: 30px;
-    font-size: 38px;
-    text-shadow: 0 0 12px #0ff, 0 0 20px #0ff;
-}
-
-.price-option {
-    background: #222;
-    padding: 18px 25px;
-    margin-bottom: 14px;
-    border-radius: 12px;
-    cursor: pointer;
-    transition: background 0.4s ease, transform 0.3s ease, box-shadow 0.4s ease;
-    border: 1px solid #333;
-}
-
-.price-option:hover,
-.price-option:focus {
-    background: #333;
-    transform: translateY(-4px);
-    box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
-}
-
-.price-option p {
-    margin: 0;
-    font-size: 18px;
-    font-weight: bold;
-}
-
-.price-option span {
-    color: #ffc107;
-    font-size: 16px;
-}
-
-.price-selection-confirm-btn {
-    background: linear-gradient(to right, #0ff, #0cc);
-    color: #000;
-    border: none;
-    padding: 16px 35px;
-    border-radius: 12px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: all 0.4s ease;
-    font-size: 18px;
-    margin-top: 30px;
-    box-shadow: 0 7px 20px rgba(0, 255, 255, 0.6);
-    position: relative;
-    overflow: hidden;
-}
-
-.price-selection-confirm-btn::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-    transition: all 0.6s ease;
-    transform: translateX(-100%);
-}
-
-.price-selection-confirm-btn:hover,
-.price-selection-confirm-btn:focus {
-    box-shadow: 0 0 25px #0ff, 0 10px 20px rgba(0, 255, 255, 0.8), 0 0 20px rgba(0, 255, 255, 1);
-    background: linear-gradient(to right, #d6f7ff, #d0f2ff);
-    color: #000;
-    transform: translateY(-5px);
-}
-
-.price-selection-confirm-btn:disabled {
-    background: #555;
-    color: #aaa;
-    cursor: not-allowed;
-    box-shadow: none;
-    transform: none;
-}
-
-
-/* --- Responsive Adjustments (PC View Focused) --- */
-/* General PC view adjustments */
-body {
-    font-size: 16px; /* Base font size for PC */
-}
-
-header {
-    font-size: 40px; /* Larger header for PC */
-}
-
-nav button {
-    font-size: 16px; /* Larger nav buttons */
-    padding: 14px 25px;
-    margin: 10px;
-}
-
-section {
-    padding: 50px; /* More padding for sections on PC */
-}
-
-.dashboard-box, .taskBox, .withdrawBox, .linkBox, .depositBox, .userLinkBox {
-    min-width: 280px; /* Wider boxes */
-    max-width: 320px; /* Max width for spacing */
-}
-
-.profile-card {
-    padding: 50px; /* More padding */
-}
-
-.profile-pic {
-    width: 160px; /* Larger profile pic */
-    height: 160px;
-    font-size: 60px; /* Larger initial */
-}
-
-.profile-info h2 {
-    font-size: 40px; /* Larger profile name */
-}
-
-.profile-info p {
-    font-size: 20px; /* Larger profile details */
-}
-
-.stat-item h3 {
-    font-size: 32px; /* Larger stats numbers */
-}
-
-.profile-actions button {
-    padding: 20px 45px; /* Larger buttons */
-    font-size: 20px;
-}
-
-#adminPanel h2, #publicLinksSection h2, #anusement h2 {
-    font-size: 38px; /* Larger section titles */
-}
-
-#adminPanel form, #deposit form, #userLinksSection form {
-    padding: 45px; /* More padding in forms */
-}
-
-#adminPanel input, #adminPanel select, #adminPanel textarea {
-    font-size: 17px; /* Larger inputs */
-}
-
-.modal-content {
-    padding: 50px 60px; /* More padding in modals */
-    max-width: 700px; /* Wider modals */
-}
-
-.modal-close-btn {
-    font-size: 50px; /* Larger close button */
-}
-
-.modal-content h2 {
-    font-size: 40px; /* Larger modal titles */
-}
-
-/* Specific adjustments for the screenshot content */
-#authSection .auth-container {
-    max-width: 520px;
-    padding: 50px;
-}
-
-#authSection h2 {
-    font-size: 40px;
-}
-
-#authSection .location-button {
-    padding: 16px 25px;
-    font-size: 17px;
-}
-
-/* --- Text Animation Styles --- */
-
-/* 1. Text Glow Animation */
-.glowing-text {
-    font-size: 40px; /* Adjust size as needed */
-    color: #fff; /* Base text color */
-    text-shadow: 0 0 7px #fff,
-                 0 0 10px #fff,
-                 0 0 20px #0ff, /* Cyan glow */
-                 0 0 30px #0ff,
-                 0 0 40px #0ff,
-                 0 0 55px #0ff,
-                 0 0 75px #0ff;
-    animation: textGlow 1.5s ease-in-out infinite alternate; /* Animation applied */
-}
-
-@keyframes textGlow {
-    from {
-        text-shadow: 0 0 7px #fff,
-                     0 0 10px #fff,
-                     0 0 20px #0ff,
-                     0 0 30px #0ff,
-                     0 0 40px #0ff,
-                     0 0 55px #0ff,
-                     0 0 75px #0ff;
-    }
-    to {
-        text-shadow: 0 0 4px #fff,
-                     0 0 7px #fff,
-                     0 0 12px #0ff,
-                     0 0 20px #0ff,
-                     0 0 30px #0ff,
-                     0 0 40px #0ff,
-                     0 0 50px #0ff;
-    }
-}
-
-/* Example usage for a heading */
-h1.glowing-text {
-    font-size: 3em;
-}
-
-/* 2. Pulsating Text Effect */
-.pulsating-text {
-    animation: pulse 2s infinite ease-in-out; /* Animation applied */
-}
-
-@keyframes pulse {
-    0% { transform: scale(1); opacity: 1; }
-    50% { transform: scale(1.05); opacity: 0.8; }
-    100% { transform: scale(1); opacity: 1; }
-}
-
-/* 3. Color Change Animation */
-.color-changing-text {
-    animation: colorChange 5s linear infinite alternate; /* Animation applied */
-}
-
-@keyframes colorChange {
-    0% { color: #ff0000; } /* Red */
-    25% { color: #ffff00; } /* Yellow */
-    50% { color: #00ff00; } /* Green */
-    75% { color: #00ffff; } /* Cyan */
-    100% { color: #ff00ff; } /* Magenta */
-}
-
-/* 4. Animated Text Shadow (Dancing Shadow) */
-.dancing-shadow-text {
-    color: #fff; /* Base text color */
-    text-shadow: 5px 5px 0px #0ff, /* Initial cyan shadow */
-                 10px 10px 0px #f0f; /* Initial purple shadow */
-    animation: shadowDance 3s infinite alternate; /* Animation applied */
-}
-
-@keyframes shadowDance {
-    0% { text-shadow: 5px 5px 0px #0ff, 10px 10px 0px #f0f; }
-    50% { text-shadow: -5px -5px 0px #0ff, -10px -10px 0px #f0f; }
-    100% { text-shadow: 5px 5px 0px #0ff, 10px 10px 0px #f0f; }
-}
-
-/* 5. Rainbow Text Animation (Animated Gradient) */
-.rainbow-text {
-    font-size: 48px; /* Adjust size as needed */
-    font-weight: bold;
-    letter-spacing: 2px;
-    background: linear-gradient(to right,
-        #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #9400d3
-    );
-    background-size: 200% auto; /* Make the gradient wider than the text */
-    -webkit-background-clip: text; /* Clip the background to the text */
-    background-clip: text;
-    color: transparent; /* Make the text color transparent to show the background */
-    animation: rainbowTextAnimation 6s ease-in-out infinite alternate; /* Animation applied */
-}
-
-@keyframes rainbowTextAnimation {
-    0% { background-position: 0% center; }
-    100% { background-position: 100% center; }
-}
-
-/* Example for multi-line rainbow text */
-.rainbow-text-multiline {
-    font-size: 48px;
-    font-weight: bold;
-    letter-spacing: 2px;
-    background: linear-gradient(to right,
-        #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #9400d3
-    );
-    background-size: 200% auto;
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    animation: rainbowTextAnimation 6s ease-in-out infinite alternate;
-}
-
-/* --- Dashboard Specific Font Colors & Animations --- */
-.dashboard-box .color-primary { color: #0ff; } /* Bright Cyan */
-.dashboard-box .color-secondary { color: #ffc107; } /* Amber/Yellow */
-.dashboard-box .color-accent { color: #e040fb; } /* Bright Purple */
-
-.dashboard-box h3 { /* Titles */
-    font-size: 26px; /* Larger for PC */
-    margin-bottom: 12px; /* More margin */
-}
-
-.dashboard-box p { /* Main numbers/values */
-    font-size: 36px; /* Larger for PC */
-    font-weight: bold;
-    margin-bottom: 18px; /* More margin */
-}
-
-.dashboard-box span { /* Small stats/changes */
-    font-size: 17px; /* Larger */
-    opacity: 0.8;
-}
-
-/* --- NEW: Animated Description Text --- */
-.animated-description {
-    font-size: 17px;
-    color: #ccc;
-    animation: descriptionColorShift 8s linear infinite alternate;
-    transition: color 0.4s ease;
-}
-
-@keyframes descriptionColorShift {
-    0% { color: #ff6b6b; } /* Reddish-orange */
-    25% { color: #48dbfb; } /* Bright Blue */
-    50% { color: #1dd1a1; } /* Green */
-    75% { color: #f6e58d; } /* Yellow */
-    100% { color: #ff6b6b; } /* Back to Reddish-orange */
-}
-
-/* Specific color classes for descriptions */
-.dashboard-box .description-red { color: #ff6b6b; } /* Red */
-.dashboard-box .description-green { color: #1dd1a1; } /* Green */
-.dashboard-box .description-blue { color: #48dbfb; } /* Blue */
-
-/* --- End Dashboard Specific Font Colors & Animations --- */
-
-
-/* --- End Text Animation Styles --- */
-
-
-/* Keyframes for animations */
-@keyframes fadeInBG {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-@keyframes slideInUp {
-    from { opacity: 0; transform: translateY(30px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-@keyframes listItemFadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-/* --- Responsive Adjustments (PC View Focused) --- */
-/* General PC view adjustments */
-body {
-    font-size: 16px; /* Base font size for PC */
-}
-
-header {
-    font-size: 40px; /* Larger header for PC */
-}
-
-nav button {
-    font-size: 16px; /* Larger nav buttons */
-    padding: 14px 25px;
-    margin: 10px;
-}
-
-section {
-    padding: 50px; /* More padding for sections on PC */
-}
-
-.dashboard-box, .taskBox, .withdrawBox, .linkBox, .depositBox, .userLinkBox {
-    min-width: 280px; /* Wider boxes */
-    max-width: 320px; /* Max width for spacing */
-}
-
-.profile-card {
-    padding: 50px; /* More padding */
-}
-
-.profile-pic {
-    width: 160px; /* Larger profile pic */
-    height: 160px;
-    font-size: 60px; /* Larger initial */
-}
-
-.profile-info h2 {
-    font-size: 40px; /* Larger profile name */
-}
-
-.profile-info p {
-    font-size: 20px; /* Larger profile details */
-}
-
-.stat-item h3 {
-    font-size: 32px; /* Larger stats numbers */
-}
-
-.profile-actions button {
-    padding: 20px 45px; /* Larger buttons */
-    font-size: 20px;
-}
-
-#adminPanel h2, #publicLinksSection h2, #anusement h2 {
-    font-size: 38px; /* Larger section titles */
-}
-
-#adminPanel form, #deposit form, #userLinksSection form {
-    padding: 45px; /* More padding in forms */
-}
-
-#adminPanel input, #adminPanel select, #adminPanel textarea {
-    font-size: 17px; /* Larger inputs */
-}
-
-.modal-content {
-    padding: 50px 60px; /* More padding in modals */
-    max-width: 700px; /* Wider modals */
-}
-
-.modal-close-btn {
-    font-size: 50px; /* Larger close button */
-}
-
-.modal-content h2 {
-    font-size: 40px; /* Larger modal titles */
-}
-
-/* Specific adjustments for the screenshot content */
-#authSection .auth-container {
-    max-width: 520px;
-    padding: 50px;
-}
-
-#authSection h2 {
-    font-size: 40px;
-}
-
-#authSection .location-button {
-    padding: 16px 25px;
-    font-size: 17px;
-}
-
-/* --- Media Queries for smaller screens (less emphasis, but still present) --- */
-@media (max-width: 992px) {
-    nav button { padding: 10px 18px; font-size: 14px; }
-    .dashboard-container, #tasksContainer, #forYouTasksContainer, #withdrawList, #adminTasksContainer, #adminLinksContainer, #depositList, #userLinksContainer, #publicLinksContainer {
-        gap: 25px;
-    }
-    .dashboard-box, .taskBox, .withdrawBox, .linkBox, .depositBox, .userLinkBox {
-        min-width: 220px;
-        max-width: 48%;
-    }
-    .modal-content { padding: 35px 40px; }
-    .profile-card { margin: 40px auto; padding: 30px; }
-    #deposit form { width: 90%; padding: 30px; }
-    #authSection .auth-container { padding: 35px; }
-    #userLinksSection form { width: 95%; padding: 25px; }
-    .price-selection-confirm-btn { padding: 14px 30px; font-size: 17px; }
-    header { padding: 18px 0; font-size: 26px; }
-    nav { padding: 12px 0; }
-}
-
-@media (max-width: 768px) {
-    nav button { padding: 9px 14px; font-size: 13px; margin: 6px; }
-    .dashboard-container, #tasksContainer, #forYouTasksContainer, #withdrawList, #adminTasksContainer, #adminLinksContainer, #depositList, #userLinksContainer, #publicLinksContainer {
-        gap: 18px;
-    }
-    .dashboard-box, .taskBox, .withdrawBox, .linkBox, .depositBox, .userLinkBox {
-        min-width: 200px;
-        max-width: 48%;
-    }
-    .modal-content { width: 90%; margin: 5% auto; padding: 30px 35px; }
-    .profile-card { width: 95%; margin: 30px auto; padding: 25px; }
-    #deposit form { width: 90%; padding: 25px; }
-    #authSection .auth-container { margin: 20px auto; padding: 30px; }
-    #userLinksSection form { width: 95%; padding: 20px; }
-    .price-selection-modal .modal-content { width: 90%; padding: 30px 35px; }
-    .video-item { max-width: 90%; }
-    header { padding: 15px 0; font-size: 24px; }
-    nav { padding: 10px 0; }
-    .profile-pic { width: 120px; height: 120px; font-size: 45px; }
-    .profile-info h2 { font-size: 30px; }
-    .profile-info p { font-size: 17px; }
-    .profile-stats { gap: 15px; }
-    .stat-item h3 { font-size: 24px; }
-    .profile-actions button { padding: 15px 30px; font-size: 17px; }
-    #adminPanel h2, #publicLinksSection h2, #anusement h2 { font-size: 28px; }
-    .anusementBox { min-width: 100%; max-width: 100%; padding: 15px; }
-    .anusementBox h3 { font-size: 1.2em; }
-    .anusementBox p { font-size: 0.95em; }
-    footer .copyright { font-size: 13px; }
-    .footer-links { gap: 20px; }
-    .footer-links a { font-size: 14px; }
-}
-
-@media (max-width: 480px) {
-    header { font-size: 20px; padding: 12px 0; }
-    nav { padding: 8px 0; flex-direction: column; align-items: center; }
-    nav button { margin: 5px; padding: 8px 12px; font-size: 12px; width: 80%; max-width: 250px; }
-    .dashboard-box, .taskBox, .withdrawBox, .linkBox, .depositBox, .userLinkBox {
-        min-width: 150px;
-        max-width: 100%;
-    }
-    .modal-content h2 { font-size: 28px; }
-    .modal-close-btn { font-size: 30px; top: 12px; right: 15px; }
-    #authSection .auth-container { padding: 20px; }
-    #userLinksSection form { padding: 20px; }
-    .price-selection-modal .modal-content { padding: 20px; }
-    .video-item { max-width: 100%; }
-    .profile-card { margin: 20px auto; padding: 20px; width: 98%; }
-    .profile-pic { width: 100px; height: 100px; font-size: 35px; }
-    .profile-info h2 { font-size: 26px; }
-    .profile-info p { font-size: 16px; }
-    .profile-stats { margin: 20px 0; padding: 15px 0; gap: 10px; flex-direction: column; align-items: center; }
-    .stat-item { margin-bottom: 15px; }
-    .stat-item h3 { font-size: 22px; }
-    .profile-actions button { padding: 12px 25px; font-size: 16px; width: 90%; }
-    #adminPanel h2, #publicLinksSection h2, #anusement h2 { font-size: 26px; }
-    .anusementBox { min-width: 100%; max-width: 100%; padding: 15px; margin-bottom: 15px; }
-    .anusementBox h3 { font-size: 1.1em; }
-    .anusementBox p { font-size: 0.9em; }
-    footer .copyright { font-size: 13px; }
-    .footer-links { gap: 10px; margin-bottom: 10px; }
-    .footer-links a { font-size: 13px; }
-    .modal-content { padding: 25px 30px; }
-    .modal-content h2 { font-size: 28px; margin-bottom: 20px; }
-}
-
-/* --- NEON STYLES FOR ANUSEMENT SECTION --- */
-.neon-text {
-    color: #fff;
-    text-shadow: 0 0 5px #0ff, 0 0 10px #0ff, 0 0 20px #0ff, 0 0 30px #0ff, 0 0 40px #0ff, 0 0 55px #0ff, 0 0 75px #0ff;
-}
-
-.neon-border {
-    border: 2px solid #0ff;
-    box-shadow: 0 0 8px #0ff, inset 0 0 8px #0ff;
-}
-
-.neon-glow {
-    box-shadow: 0 0 3px rgba(0, 255, 255, 0.8);
-}
-
-.anusementBox {
-    background: rgba(0, 0, 0, 0.75);
-    border: 1px solid #0ff;
-    box-shadow: 0 0 20px rgba(0, 255, 255, 0.4);
-    padding: 25px;
-    border-radius: 18px;
-    min-width: 260px;
-    text-align: center;
-    flex-grow: 1;
-    max-width: 310px;
-    transition: transform 0.4s ease, box-shadow 0.4s ease;
-    margin-bottom: 25px;
-    opacity: 0;
-    transform: translateY(30px);
-    animation: slideInUp 0.7s ease-out forwards;
-}
-
-.anusementBox:hover,
-.anusementBox:focus {
-    transform: translateY(-10px);
-    box-shadow: 0 0 30px rgba(0, 255, 255, 0.6);
-}
-
-.anusementBox h3 {
-    color: #0ff;
-    margin-bottom: 15px;
-    font-size: 1.5em;
-    text-shadow: 0 0 10px #0ff, 0 0 20px #0ff;
-}
-
-.anusementBox p {
-    color: #ccc;
-    font-size: 1.05em;
-    margin-bottom: 20px;
-    line-height: 1.8;
-}
-
-.anusementBox a {
-    color: #0ff;
-    text-decoration: none;
-    font-weight: bold;
-    transition: color 0.4s ease, text-shadow 0.4s ease;
-    font-size: 16px;
-}
-
-.anusementBox a:hover {
-    color: #fff;
-    text-shadow: 0 0 12px #fff;
-}
-
-.anusementBox small {
-    color: #aaa;
-    font-size: 0.9em;
-}
-/* --- END NEON STYLES --- */
-
-/* --- NEW STYLES FOR ADMIN PANEL ANUSEMENT MANAGEMENT --- */
-#adminPanel .admin-anusement-form-section {
-    margin-top: 50px;
-    border-top: 1px solid #333;
-    padding-top: 40px;
-    background: rgba(26, 26, 26, 0.9);
-    padding: 40px;
-    border-radius: 18px;
-    box-shadow: 0 10px 30px rgba(0, 255, 255, 0.3), inset 0 0 15px rgba(0, 255, 255, 0.2);
-    border: 1px solid rgba(0, 255, 255, 0.35);
-}
-
-#adminPanel .admin-anusement-form-section h3 {
-    color: #0ff;
-    text-align: center;
-    margin-bottom: 25px;
-    font-size: 30px;
-    text-shadow: 0 0 10px #0ff, 0 0 18px #0ff;
-}
-
-#adminPanel .admin-anusement-form-section input[type="text"],
-#adminPanel .admin-anusement-form-section textarea {
-    background-color: #222;
-    color: #fff;
-    border: 1px solid #444;
-    padding: 15px;
-    margin-bottom: 20px;
-    font-size: 17px;
-}
-
-#adminPanel .admin-anusement-form-section textarea {
-    min-height: 130px;
-    resize: vertical;
-}
-
-#adminPanel .admin-anusement-form-section .submit-anusement-btn {
-    width: 100%;
-    display: block;
-    margin-top: 35px;
-    background: #ffeb3b;
-    color: #000;
-    padding: 18px 30px;
-    font-size: 19px;
-    box-shadow: 0 7px 20px rgba(255, 235, 59, 0.6);
-    position: relative;
-    overflow: hidden;
-}
-#adminPanel .admin-anusement-form-section .submit-anusement-btn::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-    transition: all 0.6s ease;
-    transform: translateX(-100%);
-}
-
-#adminPanel .admin-anusement-form-section .submit-anusement-btn:hover,
-#adminPanel .admin-anusement-form-section .submit-anusement-btn:focus {
-    background: linear-gradient(to right, #fff4a3, #ffe066);
-    box-shadow: 0 0 25px rgba(255, 235, 59, 0.8);
-    transform: translateY(-4px);
-}
-#adminPanel .admin-anusement-form-section .submit-anusement-btn:hover::before,
-#adminPanel .admin-anusement-form-section .submit-anusement-btn:focus::before {
-    transform: translateX(100%);
-}
-
-
-#adminPanel .anusement-list-container {
-    margin-top: 30px;
-}
-
-#adminPanel .anusement-list-item {
-    background: #2a2a2a;
-    border: 1px solid #444;
-    padding: 20px;
-    margin-bottom: 15px;
-    border-radius: 12px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 15px;
-    animation: listItemFadeIn 0.5s ease-out forwards;
-    opacity: 0;
-    transform: translateY(10px);
-}
-
-#adminPanel .anusement-list-item p {
-    margin: 0;
-    font-size: 16px;
-    color: #ccc;
-    flex-grow: 1;
-    min-width: 180px;
-}
-
-#adminPanel .anusement-list-item p strong {
-    color: #0ff;
-    text-shadow: 0 0 7px #0ff;
-}
-
-#adminPanel .anusement-list-item small {
-    color: #aaa;
-    font-size: 12.5px;
-    display: block;
-    margin-top: 8px;
-    width: 100%;
-}
-
-#adminPanel .anusement-list-item .action-buttons {
-    display: flex;
-    gap: 12px;
-    flex-shrink: 0;
-}
-
-#adminPanel .anusement-list-item .action-buttons button {
-    padding: 10px 15px;
-    font-size: 14px;
-    border-radius: 9px;
-    cursor: pointer;
-    transition: all 0.4s ease;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-}
-
-#adminPanel .anusement-list-item .edit-anusement-btn {
-    background-color: #ffc107;
-    color: #000;
-}
-
-#adminPanel .anusement-list-item .edit-anusement-btn:hover,
-#adminPanel .anusement-list-item .edit-anusement-btn:focus {
-    background-color: #e0a800;
-    transform: translateY(-3px);
-    box-shadow: 0 0 20px rgba(255, 193, 7, 0.7);
-}
-
-#adminPanel .anusement-list-item .delete-anusement-btn {
-    background-color: #dc3545;
-    color: white;
-}
-
-#adminPanel .anusement-list-item .delete-anusement-btn:hover,
-#adminPanel .anusement-list-item .delete-anusement-btn:focus {
-    background-color: #c82333;
-    transform: translateY(-3px);
-    box-shadow: 0 0 20px rgba(220, 53, 69, 0.7);
-}
-/* --- END ADMIN STYLES --- */
+ /* ================================================= */
+        /* == CODE MAIN STYLE - PC/Desktop View (Base Style) == */
+        /* ================================================= */
+        
+        body {
+            background-color: #000; 
+            color: #eee; 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
+            line-height: 1.6; 
+            padding-bottom: 100px; 
+            margin: 0; 
+            transition: margin-left 0.3s ease; 
+        }
+
+        /* --- Header Styles (PC View Base) --- */
+        header {
+            background-color: white; 
+            color: #090;
+            padding: 10px 15px; 
+            text-align: left;
+            width: 100%;
+            position: fixed; 
+            top: 0;
+            left: 0;
+            z-index: 100; 
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            animation: none;
+            display: flex;
+            align-items: center;
+            box-sizing: border-box;
+            font-size: 40px; /* Larger header for PC */
+        }
+
+        .header-title {
+            font-size: 35px;
+            font-weight: bold;
+            color: #000; 
+            padding: 35px 0;
+            flex-grow: 1; 
+        }
+        
+        /* Sidebar Toggle Button Styles */
+        .sidebar-toggle {
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 0.5em;
+            color: #000; 
+            font-size: 1.5em; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: space-between; 
+            height: 1.2em; 
+            margin-right: 1em; 
+            margin-left: 0; 
+            flex-shrink: 0;
+        }
+
+        .sidebar-toggle span {
+            display: block;
+            width: 1em; 
+            height: 0.5em; 
+            background-color: #000; 
+            border-radius: 0.125em; 
+        }
+
+        /* --- Sidebar Styles (PC View) --- */
+        .sidebar {
+            width: 380px; 
+            height: 100vh;
+            background-color: #222;
+            color: white;
+            position: fixed;
+            top: 0;
+            left: -380px; 
+            padding: 2em;
+            transition: left 0.3s ease; 
+            z-index: 100; 
+            overflow-y: auto;
+            padding-top: 80px;
+            box-shadow: 4px 0 8px rgba(0, 255, 255, 0.3);
+            box-sizing: border-box;
+        }
+
+        .sidebar.open {
+            left: 0; 
+        }
+
+        /* Main Content Styles */
+        .content-wrapper {
+            padding: 1em;
+            margin-top: 75px; 
+            transition: margin-left 0.3s ease; 
+        }
+
+         /* Adjust main content when sidebar is open */
+        body.sidebar-open .content-wrapper {
+            margin-left: 280px; 
+        }
+
+        /* --- Overlay for sidebar --- */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7); 
+            z-index: 1000; 
+            display: none; 
+            transition: opacity 0.3s ease;
+        }
+
+        .overlay.active {
+            display: block;
+            opacity: 1;
+        }
+        
+        @keyframes headerGlow {
+            from { text-shadow: none; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); }
+            to { text-shadow: none; box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3); }
+        }
+
+        nav {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            background: rgba(17, 17, 17, 0.95);
+            padding: 18px 0; 
+            border-bottom: 3px solid #0ff;
+            box-shadow: 0 3px 12px rgba(0, 255, 255, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav button {
+            background: linear-gradient(to bottom, #fff, #f0f0f0);
+            border: none;
+            padding: 14px 25px; 
+            margin: 10px; 
+            color: #000;
+            font-weight: bold;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            font-size: 16px; 
+            position: relative;
+            overflow: hidden;
+            outline: none; 
+        }
+
+        nav button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(120deg, transparent, rgba(0, 255, 255, 0.3), transparent);
+            transition: all 0.6s ease;
+            transform: translateX(-100%);
+        }
+
+        nav button:hover,
+        nav button:focus {
+            box-shadow: 0 0 25px #0ff, 0 8px 15px rgba(0, 0, 0, 0.4), 0 0 15px rgba(0, 255, 255, 0.8);
+            transform: translateY(-4px) scale(1.04);
+            background: #f8f8f8;
+            color: #007bff;
+        }
+
+        nav button:hover::before,
+        nav button:focus::before {
+            transform: translateX(100%);
+        }
+
+        nav button[data-section="adminPanel"] {
+            background: linear-gradient(to bottom, #ffc107, #e0a800);
+            color: #000;
+            box-shadow: 0 4px 10px rgba(255, 193, 7, 0.5);
+        }
+
+        nav button[data-section="adminPanel"]:hover,
+        nav button[data-section="adminPanel"]:focus {
+            background: #e0a800;
+            box-shadow: 0 0 25px #ffc107, 0 8px 15px rgba(0, 0, 0, 0.4), 0 0 20px rgba(255, 193, 7, 0.8);
+            transform: translateY(-4px) scale(1.04);
+        }
+
+        section {
+            display: none;
+            padding: 50px; /* PC size */
+            margin-top: 30px;
+            background: rgba(26, 26, 26, 0.85);
+            border-radius: 18px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6), 0 0 15px rgba(0, 255, 255, 0.2);
+            animation: fadeInSection 0.6s ease-out forwards;
+            opacity: 0;
+            transform: translateY(20px);
+            position: relative;
+        }
+
+        section.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @keyframes fadeInSection {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Sidebar Navigation Structure */
+        .sidebar nav {
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+        }
+
+        .sidebar nav button {
+            background: none;
+            border: none;
+            color: #ddd; 
+            padding: 15px 10px;
+            font-size: 16px;
+            text-align: left;
+            cursor: pointer;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            width: 100%; 
+            margin-bottom: 5px;
+            border-radius: 5px;
+        }
+
+        .sidebar nav button:hover {
+            background-color: rgba(0, 255, 255, 0.2);
+            color: #00ffff; 
+        }
+
+        .sidebar nav button#logoutBtn {
+            background-color: #dc3545; 
+            color: white;
+            margin-top: 20px;
+        }
+        .sidebar nav button#logoutBtn:hover {
+            background-color: #c82333;
+        }
+
+        /* --- Input and Buttons --- */
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        input[type="number"],
+        select,
+        textarea {
+            padding: 16px; 
+            margin: 12px 0;
+            border-radius: 12px;
+            border: 1px solid #444;
+            width: 100%;
+            box-sizing: border-box;
+            background-color: #222;
+            color: #fff;
+            font-size: 17px; 
+            transition: all 0.3s ease;
+            box-shadow: inset 0 0 8px rgba(0,0,0,0.4);
+            outline: none; 
+        }
+        
+        /* Specific input styles for Agent Form */
+        #agentFormSection input[type="text"] {
+             padding: 14px;
+             font-size: 16px;
+             margin: 8px 0;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: #0ff;
+            box-shadow: inset 0 0 8px rgba(0,0,0,0.4), 0 0 15px rgba(0, 255, 255, 0.7);
+        }
+
+        button.submitBtn {
+            background: linear-gradient(to right, #0ff, #0cc);
+            color: #000;
+            border: none;
+            padding: 18px 40px; 
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.4s ease;
+            font-size: 19px; 
+            display: inline-block;
+            margin-top: 20px;
+            box-shadow: 0 6px 15px rgba(0, 255, 255, 0.5), 0 0 10px rgba(0, 255, 255, 0.7);
+            position: relative;
+            overflow: hidden;
+            outline: none;
+        }
+
+        button.submitBtn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 300%;
+            background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: all 0.6s ease;
+            transform: translateX(-100%);
+        }
+
+        button.submitBtn:hover,
+        button.submitBtn:focus {
+            box-shadow: 0 0 20px #0ff, 0 8px 15px rgba(0, 255, 255, 0.7), 0 0 15px rgba(0, 255, 255, 0.9);
+            background: linear-gradient(to right, #d6f7ff, #d0f2ff);
+            color: #000;
+            transform: translateY(-4px) scale(1.03);
+        }
+        button.submitBtn:hover::before,
+        button.submitBtn:focus::before {
+            transform: translateX(100%);
+        }
+
+        button.submitBtn:disabled {
+            background: #444;
+            color: #aaa;
+            cursor: not-allowed;
+            box-shadow: none;
+            transform: none;
+        }
+
+        /* --- Full Screen Auth Section --- */
+        #authSection {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
+            padding: 4px;
+            box-sizing: border-box;
+            backdrop-filter: blur(10px);
+            animation: fadeInBG 0.5s ease-out;
+        }
+
+        #authSection .auth-container {
+            max-width: 520px; /* PC size */
+            width: 90%;
+            padding: 50px; 
+            background: rgba(17, 17, 17, 0.88);
+            border-radius: 18px;
+            box-shadow: 0 10px 30px rgba(0, 255, 255, 0.3), inset 0 0 15px rgba(0, 255, 255, 0.2);
+            text-align: center;
+            border: 1px solid rgba(0, 255, 255, 0.35);
+            animation: zoomInContainer 0.7s ease-out forwards;
+            transform: scale(0.9);
+            opacity: 0;
+        }
+
+        @keyframes zoomInContainer {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        #authSection h2 {
+            color: #0ff;
+            margin-bottom: 35px;
+            font-size: 40px; 
+            text-shadow: 0 0 10px #0ff, 0 0 18px #0ff;
+        }
+
+        #authSection hr {
+            border: 0;
+            height: 2px;
+            background-image: linear-gradient(to right, rgba(0, 255, 255, 0), rgba(0, 255, 255, 0.9), rgba(0, 255, 255, 0));
+            margin: 45px 0;
+        }
+
+        #authSection button.submitBtn {
+            width: 100%;
+            padding: 18px 30px;
+            font-size: 19px;
+        }
+
+        #authSection .location-button {
+            background: linear-gradient(to bottom, #4CAF50, #45a049);
+            color: white;
+            padding: 16px 25px; 
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.4s ease;
+            font-size: 17px; 
+            margin-top: 20px;
+            width: 100%;
+            display: block;
+            box-shadow: 0 6px 15px rgba(76, 175, 80, 0.5);
+            outline: none;
+        }
+
+        #authSection .location-button:hover,
+        #authSection .location-button:focus {
+            background: linear-gradient(to bottom, #45a049, #3e8e41);
+            box-shadow: 0 0 20px rgba(76, 175, 80, 0.7), 0 8px 18px rgba(0, 0, 0, 0.3);
+            transform: translateY(-4px);
+        }
+
+        #authSection .location-button:disabled {
+            background: #606060;
+            cursor: not-allowed;
+            box-shadow: none;
+            transform: none;
+        }
+
+
+        /* --- Containers for Boxes --- */
+        .dashboard-container,
+        #tasksContainer,
+        #forYouTasksContainer,
+        #withdrawList,
+        #adminTasksContainer,
+        #adminLinksContainer,
+        #depositList,
+        #userLinksContainer,
+        #publicLinksContainer,
+        #sendBalanceHistory,
+        #refUsers { 
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 35px;
+        }
+
+        /* --- Individual Boxes (Dashboard, Task, Withdraw, Link, Deposit History) --- */
+        .dashboard-box,
+        .taskBox,
+        .withdrawBox,
+        .linkBox,
+        .depositBox,
+        .userLinkBox {
+            background: rgba(26, 26, 26, 0.9);
+            padding: 30px;
+            border-radius: 18px;
+            box-shadow: 0 10px 25px rgba(0, 255, 255, 0.25), inset 0 0 10px rgba(0, 255, 255, 0.1);
+            min-width: 280px; 
+            text-align: center;
+            flex-grow: 1;
+            max-width: 320px; 
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            border: 1px solid rgba(0, 255, 255, 0.15);
+            animation: slideInUp 0.7s ease-out forwards;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        
+        /* Ref Users List Item Style */
+        #refUsers .ref-user-item {
+            background: #2a2a2a;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            border-left: 5px solid #0ff;
+            text-align: left;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        #refUsers .ref-user-item p {
+            margin: 5px 0;
+            font-size: 16px;
+            color: #ddd;
+        }
+        #refUsers .ref-user-item strong {
+            color: #0ff;
+        }
+
+        .dashboard-box:hover,
+        .taskBox:hover,
+        .withdrawBox:hover,
+        .linkBox:hover,
+        .depositBox:hover,
+        .userLinkBox:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0, 255, 255, 0.45), inset 0 0 15px rgba(0, 255, 255, 0.2);
+        }
+
+        .taskBox p {
+            margin-bottom: 20px;
+            font-size: 17px;
+            color: #ccc;
+            line-height: 1.8;
+        }
+
+        /* === Style for the warning inside each task box === */
+        .task-warning {
+            color: #ffc107;
+            font-weight: bold;
+            font-size: 15px;
+            margin-top: 20px;
+            padding: 12px;
+            background-color: rgba(255, 193, 7, 0.12);
+            border-left: 5px solid #ffc107;
+            border-radius: 6px;
+            text-align: left;
+            transition: transform 0.3s ease;
+        }
+        .task-warning:hover {
+            transform: translateX(5px);
+        }
+
+        /* --- NEW STYLES FOR ADMIN PANEL --- */
+        #adminPanel form {
+            max-width: 700px;
+            margin: 40px auto;
+            background: rgba(26, 26, 26, 0.9);
+            padding: 40px;
+            border-radius: 18px;
+            box-shadow: 0 10px 30px rgba(0, 255, 255, 0.3), inset 0 0 15px rgba(0, 255, 255, 0.2);
+            border: 1px solid rgba(0, 255, 255, 0.35);
+        }
+
+        #adminPanel h2,
+        #publicLinksSection h2,
+        #anusement h2 {
+            color: #0ff;
+            text-align: center;
+            margin-bottom: 35px;
+            font-size: 38px; 
+            text-shadow: 0 0 10px #0ff, 0 0 18px #0ff;
+        }
+
+        #adminPanel input,
+        #adminPanel select,
+        #adminPanel textarea {
+            background-color: #222;
+            color: #fff;
+            border: 1px solid #444;
+            padding: 15px;
+            margin-bottom: 15px;
+            font-size: 17px;
+        }
+
+        /* Style for dynamically added link fields */
+        .dynamic-link-input {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .dynamic-link-input input {
+            flex-grow: 1;
+            margin-bottom: 0;
+            padding: 14px;
+        }
+
+
+        /* --- Deposit Section Specific Styles --- */
+        #deposit .deposit-info-box {
+            background: rgba(26, 26, 26, 0.9);
+            padding: 30px;
+            border-radius: 18px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            text-align: left;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6), inset 0 0 10px rgba(0, 255, 255, 0.1);
+        }
+
+        #deposit .deposit-info-box p {
+            color: #ffc107;
+            font-weight: bold;
+            margin-bottom: 14px;
+            font-size: 17px;
+        }
+        
+        /* List styling within sections (Dashboard, Deposit, etc.) */
+        section ul {
+            padding-left: 28px;
+            color: #ddd;
+            list-style: disc;
+        }
+
+        section li {
+            margin-bottom: 12px;
+            line-height: 1.9;
+        }
+        
+        /* Withdrawal Warning Box Style */
+        .withdrawal-warning-box {
+            background-color: rgba(42, 26, 26, 0.9);
+            border: 1px solid #dc3545;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 35px;
+            text-align: left;
+            box-shadow: 0 8px 25px rgba(220, 53, 69, 0.4);
+        }
+
+        .withdrawal-warning-box h3 {
+            color: #ffc107;
+            margin-top: 0;
+            font-size: 24px;
+            border-bottom: 1px solid #555;
+            padding-bottom: 14px;
+            margin-bottom: 20px;
+        }
+
+        .withdrawal-warning-box p {
+            color: #f0f0f0;
+            font-size: 17px;
+            line-height: 1.9;
+        }
+
+        /* --- Modal Styles --- */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.92);
+            backdrop-filter: blur(12px);
+            animation: fadeInBG 0.5s ease-out;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: #1a1a1a;
+            color: #fff;
+            margin: 5% auto;
+            padding: 50px 60px; 
+            border: 1px solid #0ff;
+            border-radius: 18px;
+            box-shadow: 0 0 35px rgba(0, 255, 255, 0.6), inset 0 0 20px rgba(0, 255, 255, 0.2);
+            position: relative;
+            max-width: 700px; 
+            width: 90%;
+            animation: zoomInModal 0.7s ease-out forwards;
+            transform: scale(0.95);
+            opacity: 0;
+        }
+
+        @keyframes zoomInModal {
+            from { transform: scale(0.95); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .modal-close-btn {
+            color: #aaa;
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            font-size: 50px; 
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.4s ease;
+        }
+
+        .modal-close-btn:hover {
+            color: #0ff;
+            transform: scale(1.1);
+        }
+
+        .modal-content h2 {
+            color: #0ff;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 40px; 
+            text-shadow: 0 0 12px #0ff, 0 0 20px #0ff;
+        }
+
+        /* --- Profile Section --- */
+        .profile-card {
+            background: rgba(26, 26, 26, 0.9);
+            padding: 50px; 
+            border-radius: 18px;
+            box-shadow: 0 10px 30px rgba(0, 255, 255, 0.3), inset 0 0 15px rgba(0, 255, 255, 0.2);
+            max-width: 520px;
+            width: 90%;
+            margin: 60px auto;
+            text-align: center;
+            border: 1px solid rgba(0, 255, 255, 0.35);
+        }
+
+        .profile-pic {
+            width: 160px; 
+            height: 160px; 
+            border-radius: 50%;
+            object-fit: cover;
+            border: 6px solid #0ff;
+            box-shadow: 0 0 25px rgba(0, 255, 255, 0.9);
+            background-color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 60px; 
+            font-weight: bold;
+            color: white;
+            animation: pulsePic 2s infinite alternate;
+        }
+
+        @keyframes pulsePic {
+            from { transform: scale(1); box-shadow: 0 0 25px rgba(0, 255, 255, 0.9); }
+            to { transform: scale(1.05); box-shadow: 0 0 35px rgba(0, 255, 255, 1.2); }
+        }
+
+        .profile-info h2 {
+            margin: 18px 0 10px 0;
+            color: #0ff;
+            font-size: 40px; 
+            text-shadow: 0 0 12px #0ff, 0 0 20px #0ff;
+        }
+
+        .profile-info p {
+            margin: 10px 0;
+            color: #ccc;
+            font-size: 20px; 
+        }
+
+        .stat-item h3 {
+            font-size: 32px; 
+        }
+
+        .profile-actions button {
+            padding: 20px 45px; 
+            font-size: 20px; 
+        }
+
+
+        /* --- YouTube Video Section --- */
+        #youtubeVideoSection {
+            text-align: center;
+            margin-top: 40px;
+            padding: 30px;
+            background: rgba(26, 26, 26, 0.9);
+            border-radius: 18px;
+            box-shadow: 0 10px 25px rgba(0, 255, 255, 0.3), inset 0 0 10px rgba(0, 255, 255, 0.1);
+            border: 1px solid rgba(0, 255, 255, 0.2);
+        }
+
+        #youtubeVideoSection h2 {
+            color: #0ff;
+            margin-bottom: 30px;
+            font-size: 36px;
+            text-shadow: 0 0 10px #0ff, 0 0 18px #0ff;
+        }
+
+        #videoPlayerContainer {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .video-item {
+            width: 100%;
+            max-width: 550px;
+            aspect-ratio: 16 / 9;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.7), 0 0 15px rgba(0, 255, 255, 0.2);
+            animation: fadeInVideo 0.8s ease-out forwards;
+            opacity: 0;
+            transform: scale(0.95);
+        }
+
+
+        /* --- User Added Links Section --- */
+        #userLinksSection {
+            margin-top: 40px;
+            padding: 35px;
+            background: rgba(26, 26, 26, 0.9);
+            border-radius: 18px;
+            box-shadow: 0 10px 30px rgba(0, 255, 255, 0.3), inset 0 0 15px rgba(0, 255, 255, 0.2);
+            border: 1px solid rgba(0, 255, 255, 0.35);
+        }
+
+        #userLinksSection form {
+            max-width: 550px;
+            margin: 0 auto 40px auto;
+            background: #222;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 0 18px rgba(0, 255, 255, 0.35);
+            border: 1px solid #444;
+        }
+
+        
+        /* --- Category Filter Buttons --- */
+        .category-filter-buttons button.active {
+            background: #0ff;
+            color: #000;
+            font-weight: bold;
+            box-shadow: 0 0 15px #0ff, 0 4px 10px rgba(0, 255, 255, 0.5);
+        }
+
+        /* --- Price Selection Modal --- */
+        .price-selection-confirm-btn {
+            background: linear-gradient(to right, #0ff, #0cc);
+            color: #000;
+            border: none;
+            padding: 16px 35px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.4s ease;
+            font-size: 18px;
+            margin-top: 30px;
+            box-shadow: 0 7px 20px rgba(0, 255, 255, 0.6);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* --- Send Balance History Boxes --- */
+        #sendBalanceHistory .withdrawBox {
+            border-color: #dc3545;
+            box-shadow: 0 0 10px rgba(220, 53, 69, 0.5);
+        }
+        #sendBalanceHistory .depositBox {
+            border-color: #28a745;
+            box-shadow: 0 0 10px rgba(40, 167, 69, 0.5);
+        }
+        
+        /* --- Anusement Section Styles --- */
+        .anusementBox {
+            background: rgba(0, 0, 0, 0.75);
+            border: 1px solid #0ff;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.4);
+            padding: 25px;
+            border-radius: 18px;
+            min-width: 260px;
+            text-align: center;
+            flex-grow: 1;
+            max-width: 310px;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            margin-bottom: 25px;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: slideInUp 0.7s ease-out forwards;
+        }
+
+        /* --- NEW STYLES FOR ADMIN PANEL ANUSEMENT MANAGEMENT --- */
+        #adminPanel .admin-anusement-form-section {
+            margin-top: 50px;
+            border-top: 1px solid #333;
+            padding-top: 40px;
+            background: rgba(26, 26, 26, 0.9);
+            padding: 40px;
+            border-radius: 18px;
+            box-shadow: 0 10px 30px rgba(0, 255, 255, 0.3), inset 0 0 15px rgba(0, 255, 255, 0.2);
+            border: 1px solid rgba(0, 255, 255, 0.35);
+        }
+        
+        /* --- UPDATED FOOTER STYLE (FIXED & SINGLE LINE) --- */
+        footer {
+            background: rgba(17, 17, 17, 0.95);
+            padding: 20px 0; 
+            text-align: center;
+            border-top: 1px solid #0ff;
+            width: 100%;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: row; 
+            flex-wrap: wrap; 
+            justify-content: center;
+            align-items: center;
+            gap: 30px; 
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            z-index: 100;
+            box-shadow: 0 -3px 15px rgba(0, 255, 255, 0.2);
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 35px;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: #0ff;
+            text-decoration: none;
+            font-weight: bold;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: color 0.4s ease, text-shadow 0.4s ease;
+            font-size: 16px;
+        }
+
+        .footer-links a:hover {
+            text-decoration: underline;
+            color: #fff;
+            text-shadow: 0 0 10px #fff;
+        }
+
+        footer .copyright {
+            font-size: 15px;
+            color: #aaa;
+            margin: 0; 
+        }
+
+        /* --- Text Animation Styles --- */
+
+        .glowing-text {
+            font-size: 40px; 
+            color: #fff; 
+            text-shadow: 0 0 7px #fff, 0 0 10px #fff, 0 0 20px #0ff, 0 0 30px #0ff, 0 0 40px #0ff, 0 0 55px #0ff, 0 0 75px #0ff;
+            animation: textGlow 1.5s ease-in-out infinite alternate; 
+        }
+
+        @keyframes textGlow {
+            from {
+                text-shadow: 0 0 7px #fff, 0 0 10px #fff, 0 0 20px #0ff, 0 0 30px #0ff, 0 0 40px #0ff, 0 0 55px #0ff, 0 0 75px #0ff;
+            }
+            to {
+                text-shadow: 0 0 4px #fff, 0 0 7px #fff, 0 0 12px #0ff, 0 0 20px #0ff, 0 0 30px #0ff, 0 0 40px #0ff, 0 0 50px #0ff;
+            }
+        }
+        
+        .animated-description {
+            font-size: 17px;
+            color: #ccc;
+            animation: descriptionColorShift 8s linear infinite alternate;
+            transition: color 0.4s ease;
+        }
+
+        @keyframes descriptionColorShift {
+            0% { color: #ff6b6b; } 
+            25% { color: #48dbfb; } 
+            50% { color: #1dd1a1; } 
+            75% { color: #f6e58d; } 
+            100% { color: #ff6b6b; } 
+        }
+
+        /* --- Dashboard Specific Font Colors & Animations --- */
+        .dashboard-box .color-primary { color: #0ff; } 
+        .dashboard-box .color-secondary { color: #ffc107; } 
+        .dashboard-box .color-accent { color: #e040fb; } 
+
+        .dashboard-box h3 { 
+            font-size: 26px; 
+            margin-bottom: 12px; 
+        }
+
+        .dashboard-box p { 
+            font-size: 36px; 
+            font-weight: bold;
+            margin-bottom: 18px; 
+        }
+
+        .dashboard-box span { 
+            font-size: 17px; 
+            opacity: 0.8;
+        }
+
+        /* --- Status Styles --- */
+        .status-pending, .status-pending-verification { color: #ffc107; font-weight: bold; text-shadow: 0 0 5px #ffc107; }
+        .status-approved { color: #28a745; font-weight: bold; text-shadow: 0 0 5px #28a745; }
+        .status-rejected { color: #dc3545; font-weight: bold; text-shadow: 0 0 5px #dc3545; }
+
+        /* --- Anusement Neon Styles --- */
+        .neon-text { color: #fff; text-shadow: 0 0 5px #0ff, 0 0 10px #0ff, 0 0 20px #0ff, 0 0 30px #0ff, 0 0 40px #0ff, 0 0 55px #0ff, 0 0 75px #0ff; }
+        .anusementBox h3 { color: #0ff; margin-bottom: 15px; font-size: 1.5em; text-shadow: 0 0 10px #0ff, 0 0 20px #0ff; }
+        .anusementBox p { color: #ccc; font-size: 1.05em; margin-bottom: 20px; line-height: 1.8; }
+
+        /* Keyframes */
+        @keyframes fadeInBG { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes listItemFadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* ================================================= */
+        /* == TABLET VIEW (max 992px) == */
+        /* ================================================= */
+        @media (max-width: 992px) {
+            header { font-size: 28px; }
+            .header-title { font-size: 8px; }
+            .content-wrapper { margin-top: 65px; }
+            nav button { padding: 10px 18px; font-size: 14px; margin: 8px; }
+            section { padding: 40px; }
+            
+            .dashboard-container, #tasksContainer, #forYouTasksContainer, #withdrawList, #adminTasksContainer, #adminLinksContainer, #depositList, #userLinksContainer, #publicLinksContainer, #sendBalanceHistory {
+                gap: 25px;
+            }
+            .dashboard-box, .taskBox, .withdrawBox, .linkBox, .depositBox, .userLinkBox, .anusementBox {
+                min-width: 250px;
+                max-width: 45%; 
+            }
+
+            /* Auth Section Tablet adjustments */
+            #authSection .auth-container {
+                padding: 40px;
+                max-width: 480px;
+            }
+            #authSection h2 { font-size: 34px; }
+            
+            .profile-card { margin: 40px auto; padding: 30px; }
+            .profile-pic { width: 140px; height: 140px; font-size: 50px; }
+            .profile-info h2 { font-size: 34px; }
+            .profile-info p { font-size: 18px; }
+            .stat-item h3 { font-size: 28px; }
+            .profile-actions button { padding: 18px 35px; font-size: 18px; }
+            #adminPanel h2, #publicLinksSection h2, #anusement h2 { font-size: 32px; }
+            footer { padding: 15px 0; gap: 20px; }
+        }
+
+ /* ---------------------------------------------------------------------- */
+        /* --- PRIVACY MODAL/DETAILS MODAL (MODAL) MOBILE OPTIMIZATION --- */
+        /* ---------------------------------------------------------------------- */
+        .modal-content {
+            padding: 25px 20px;
+            width: 95%;
+            margin: 5vh auto; /* Move slightly up */
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        .modal-content h2 {
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+        .modal-content h3 {
+            font-size: 18px;
+            margin-top: 15px;
+            margin-bottom: 8px;
+        }
+        .modal-content p, .modal-content li {
+            font-size: 14px;
+            line-height: 1.7;
+        }
+        .modal-close-btn {
+            font-size: 35px;
+            top: 10px;
+            right: 15px;
+        }
+        
+        /* ---------------------------------------------------------------------- */
+        /* --- WATCH YOUTUBE VIDEO SECTION MOBILE OPTIMIZATION --- */
+        /* ---------------------------------------------------------------------- */
+        #youtubeVideoSection {
+            padding: 15px;
+        }
+        #youtubeVideoSection h2 {
+            font-size: 22px;
+            margin-bottom: 15px;
+        }
+        #videoPlayerContainer {
+            gap: 10px;
+            flex-direction: column; /* Stack videos vertically */
+        }
+        .video-item {
+            width: 100%;
+            max-width: 100%;
+            aspect-ratio: 16 / 9; 
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5); /* Lighter shadow for mobile */
+        }
+
+ /* ================================================= */
+        /* == MOBILE & TABLET VIEW STYLES (Focus on Responsiveness) == */
+        /* ================================================= */
+        
+        /* ---------------------------------------------------------------------- */
+        /* --- CORE THEME STYLES (Adjusted for Mobile/Tablet) --- */
+        /* ---------------------------------------------------------------------- */
+        
+        body {
+            /* Inherited black background/neon theme */
+            margin: 0;
+            padding-bottom: 80px; 
+            min-height: 100vh;
+            font-size: 14px; /* Default smaller font for mobile readability */
+        }
+
+        /* --- Header Styles --- */
+        header {
+            padding: 12px 10px;
+            font-size: 35px; /* Reduced font size */
+            min-height: 35px;
+            height: auto;
+        }
+
+        .header-title {
+            font-size: 7px;
+        }
+
+        /* --- Sidebar Styles --- */
+        .sidebar {
+            width: 25px;
+            height: 200vh; 
+            left: -220px; 
+            padding: 1em;
+            padding-top: 65px; 
+        }
+        
+        /* Main Content Adjustments */
+        .content-wrapper {
+            padding: 0.5em;
+            margin-top: 50px; /* Adjusted margin for slightly smaller header */
+            min-height: calc(100vh - 130px); 
+        }
+
+        /* --- Navigation Buttons (inside sidebar) --- */
+        .sidebar nav button {
+            padding: 12px 8px;
+            font-size: 15px;
+            margin-bottom: 5px;
+            height: auto;
+        }
+
+        /* --- Section Containers --- */
+        section {
+            padding: 15px;
+            margin-top: 15px;
+            min-height: auto;
+        }
+
+        /* --- Input and Buttons General --- */
+        input[type="text"], input[type="email"], input[type="password"], input[type="number"], select, textarea {
+            padding: 12px; 
+            font-size: 15px; 
+            margin: 8px 0;
+            height: auto;
+        }
+        
+        button.submitBtn {
+            padding: 14px 25px; 
+            font-size: 16px;
+            margin-top: 15px;
+            height: auto;
+            width: 100%; /* Default for mobile submission */
+        }
+
+        /* --- Auth Section (Full screen overlay) --- */
+        #authSection {
+            height: 100vh;
+            padding: 0 10px;
+        }
+
+        #authSection .auth-container {
+            padding: 20px; 
+            width: 95%;
+            max-width: 95%;
+            max-height: 95vh; 
+            overflow-y: auto; 
+        }
+        #authSection h2 { font-size: 26px; margin-bottom: 20px; }
+        #authSection .location-button { padding: 12px 15px; font-size: 14px; margin-top: 15px; height: auto; }
+
+        /* --- Box Layout: Two columns default for tablets/large mobiles --- */
+        .dashboard-container, #tasksContainer, #forYouTasksContainer, #withdrawList, #depositList, #userLinksContainer, #publicLinksContainer, #sendBalanceHistory {
+            gap: 15px;
+            justify-content: space-around;
+        }
+        
+        .dashboard-box, .taskBox, .withdrawBox, .depositBox, .userLinkBox, .anusementBox {
+            min-width: 45%;
+            max-width: 48%;
+            padding: 15px;
+            height: auto;
+        }
+        
+        /* Dashboard/Stats Readability */
+        .dashboard-box p, .animated-description, section p, section li {
+            font-size: 14px;
+        }
+        .dashboard-box h3, .stat-item h3 {
+            font-size: 22px;
+        }
+
+        /* --- Profile Section --- */
+        .profile-card { padding: 20px; margin: 20px auto; }
+        .profile-pic { width: 90px; height: 90px; font-size: 35px; }
+        .profile-info h2 { font-size: 24px; }
+        .profile-actions button { padding: 12px 25px; font-size: 15px; }
+
+
+        /* ---------------------------------------------------------------------- */
+        /* --- A D D / M A N A G E L I N K S S E C T I O N (userLinksSection) --- */
+        /* ---------------------------------------------------------------------- */
+        #userLinksSection {
+            padding: 20px;
+        }
+        #userLinksSection h2 {
+            font-size: 24px;
+        }
+        /* Link Adding Form (Floating card style) */
+        #userLinksSection form {
+            max-width: 100%;
+            padding: 15px;
+            margin: 15px auto 30px auto;
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.4);
+        }
+        /* Individual Link Box (Full width list style) */
+        .userLinkBox {
+            max-width: 100%;
+            min-width: 100%;
+            padding: 15px;
+            text-align: left;
+            border-left: 4px solid #0ff;
+        }
+        .userLinkBox p {
+            font-size: 15px;
+        }
+        .userLinkBox .edit-delete-buttons {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 10px;
+        }
+        .userLinkBox .edit-delete-buttons button {
+            padding: 8px 12px;
+            font-size: 13px;
+            margin-right: 5px;
+        }
+        
+        /* ---------------------------------------------------------------------- */
+        /* --- W A T C H Y O U T U B E V I D E O S E C T I O N --- */
+        /* ---------------------------------------------------------------------- */
+        #youtubeVideoSection {
+            padding: 20px;
+        }
+        #youtubeVideoSection h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        #videoPlayerContainer {
+            gap: 15px;
+            flex-direction: column; /* Stack videos vertically */
+        }
+        .video-item {
+            width: 100%;
+            max-width: 100%;
+            aspect-ratio: 16 / 9; /* Maintain video ratio */
+        }
+        
+        /* ---------------------------------------------------------------------- */
+        /* --- P R I C E S E L E C T I O N M O D A L (Add Category) --- */
+        /* ---------------------------------------------------------------------- */
+        #priceSelectionModal .modal-content {
+            padding: 25px;
+            width: 90%;
+            max-width: 90%;
+            margin: 10vh auto;
+        }
+        #priceSelectionModal h2 {
+            font-size: 26px;
+            margin-bottom: 20px;
+        }
+        .price-option {
+            padding: 15px;
+            margin-bottom: 10px;
+        }
+        .price-option p {
+            font-size: 16px;
+        }
+        .price-selection-confirm-btn {
+            padding: 14px 30px;
+            font-size: 16px;
+            width: 100%;
+        }
+  /* --- UPDATED FOOTER STYLE (FIXED & SINGLE LINE) --- */
+        footer {
+            background: rgba(17, 17, 17, 0.95);
+            padding: 20px 0; 
+            text-align: center;
+            border-top: 1px solid #0ff;
+            width: 100%;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: row; 
+            flex-wrap: wrap; 
+            justify-content: center;
+            align-items: center;
+            gap: 30px; /* PC gap */
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            z-index: 100;
+            box-shadow: 0 -3px 15px rgba(0, 255, 255, 0.2);
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 35px;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: #0ff;
+            text-decoration: none;
+            font-weight: bold;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: color 0.4s ease, text-shadow 0.4s ease;
+            font-size: 16px;
+        }
+
+        .footer-links a:hover {
+            text-decoration: underline;
+            color: #fff;
+            text-shadow: 0 0 10px #fff;
+        }
+
+        footer .copyright {
+            font-size: 15px;
+            color: #aaa;
+            margin: 0; 
+        }
+ /* ---------------------------------------------------------------------- */
+        /* --- PRIVACY MODAL/DETAILS MODAL (MODAL) MOBILE OPTIMIZATION --- */
+        /* ---------------------------------------------------------------------- */
+        .modal-content {
+            padding: 25px 20px;
+            width: 95%;
+            margin: 5vh auto; /* Move slightly up */
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        .modal-content h2 {
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+        .modal-content h3 {
+            font-size: 18px;
+            margin-top: 15px;
+            margin-bottom: 8px;
+        }
+        .modal-content p, .modal-content li {
+            font-size: 14px;
+            line-height: 1.7;
+        }
+        .modal-close-btn {
+            font-size: 35px;
+            top: 10px;
+            right: 15px;
+        }
+        
+        /* ---------------------------------------------------------------------- */
+        /* --- WATCH YOUTUBE VIDEO SECTION MOBILE OPTIMIZATION --- */
+        /* ---------------------------------------------------------------------- */
+        #youtubeVideoSection {
+            padding: 15px;
+        }
+        #youtubeVideoSection h2 {
+            font-size: 22px;
+            margin-bottom: 15px;
+        }
+        #videoPlayerContainer {
+            gap: 10px;
+            flex-direction: column; /* Stack videos vertically */
+        }
+        .video-item {
+            width: 100%;
+            max-width: 100%;
+            aspect-ratio: 16 / 9; 
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5); /* Lighter shadow for mobile */
+        }
+        /* ---------------------------------------------------------------------- */
+        /* --- SMALL MOBILE VIEW (max 480px - Single Column) --- */
+        /* ---------------------------------------------------------------------- */
+        @media (max-width: 480px) {
+            header { padding: 10px 5px; min-height: 45px; }
+            .content-wrapper { margin-top: 45px; padding: 0.3em; }
+            
+            .sidebar { width: 95%; left: -95%; padding: 10px; padding-top: 55px; }
+            section { padding: 10px; }
+
+            /* All boxes go to single column */
+            .dashboard-container, #tasksContainer, #forYouTasksContainer, #withdrawList, #depositList, #userLinksContainer, #publicLinksContainer, #sendBalanceHistory {
+                gap: 10px;
+            }
+            .dashboard-box, .taskBox, .withdrawBox, .depositBox, .userLinkBox, .anusementBox {
+                min-width: 100%;
+                max-width: 100%;
+                padding: 12px;
+            }
+
+            /* Auth Section Small Screen */
+            #authSection .auth-container {
+                padding: 15px; 
+            }
+            #authSection h2 { font-size: 22px; margin-bottom: 15px; }
+            #authSection .location-button { padding: 10px 12px; font-size: 13px; margin-top: 10px; }
+            
+            /* Inputs and Buttons */
+            input[type="text"], input[type="email"], input[type="password"], input[type="number"], select, textarea {
+                padding: 10px; 
+                font-size: 14px; 
+                margin: 6px 0;
+            }
+            button.submitBtn {
+                padding: 12px 20px; 
+                font-size: 15px;
+            }
+            
+            /* Profile Adjustments */
+            .profile-pic { width: 70px; height: 70px; font-size: 28px; }
+            .profile-info h2 { font-size: 22px; }
+            .profile-info p { font-size: 13px; }
+           /* --- UPDATED FOOTER STYLE (FIXED & SINGLE LINE) --- */
+        footer {
+            background: rgba(17, 17, 17, 0.95);
+            padding: 20px 0; 
+            text-align: center;
+            border-top: 1px solid #0ff;
+            width: 100%;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: row; 
+            flex-wrap: wrap; 
+            justify-content: center;
+            align-items: center;
+            gap: 10px; /* PC gap */
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            z-index: 100;
+            box-shadow: 0 -3px 15px rgba(0, 255, 255, 0.2);
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: #0ff;
+            text-decoration: none;
+            font-weight: bold;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: color 0.4s ease, text-shadow 0.4s ease;
+            font-size: 10px;
+        }
+
+        .footer-links a:hover {
+            text-decoration: underline;
+            color: #fff;
+            text-shadow: 0 0 10px #fff;
+        }
+
+        footer .copyright {
+            font-size: 15px;
+            color: #aaa;
+            margin: 0; 
+        }
