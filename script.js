@@ -971,7 +971,7 @@ async function loadForYouContent(userId) {
     itemsToDisplay.forEach(item => {
         const itemDiv = document.createElement("div");
         itemDiv.classList.add("taskBox");
-        itemDiv.innerHTML = `<p>${item.description}</p><button class="submitBtn">Win 100$ to 38899$</button>`;
+        itemDiv.innerHTML = `<p>${item.description}</p><button class="submitBtn">Win 100 to 3889</button>`;
         const button = itemDiv.querySelector("button");
         button.addEventListener("click", async () => {
             const urlToOpen = (item.type === 'task' && item.url) ? item.url :
