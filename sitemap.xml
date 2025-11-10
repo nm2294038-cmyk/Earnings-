@@ -1,12 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
-  <!-- Home Page (contains About, Contact, Privacy sections) -->
+  <!-- Homepage -->
   <url>
     <loc>https://www.yoursmed.xyz/</loc>
-    <lastmod>2025-10-23</lastmod>
-    <changefreq>weekly</changefreq>
+    <lastmod>2025-11-10</lastmod>
+    <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
+
+  <!-- Blog Index -->
+  <url>
+    <loc>https://www.yoursmed.xyz/blog/index.html</loc>
+    <lastmod>2025-11-10</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Individual Blog Pages -->
+  <url>
+    <loc>https://www.yoursmed.xyz/blog/how-to-earn.html</loc>
+    <lastmod>2025-11-10</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://www.yoursmed.xyz/blog/promotion-tips.html</loc>
+    <lastmod>2025-11-10</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Future Blog Pages Template -->
+  <!--
+  <url>
+    <loc>https://www.yoursmed.xyz/blog/new-blog-page.html</loc>
+    <lastmod>YYYY-MM-DD</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  -->
 
 </urlset>
