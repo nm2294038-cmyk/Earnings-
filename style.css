@@ -55,6 +55,21 @@
     font-size: 14px;
   }
 }
+.blog-list a {
+  border: 1px solid #ddd;
+  padding: 15px;
+  border-radius: 12px;
+  text-decoration: none;
+  color: red;        /* Link color red */
+  display: block;
+  background-color: #fff;
+  transition: 0.3s;
+}
+
+.blog-list a:hover {
+  background-color: #f8f8f8;
+  transform: translateY(-2px);
+}
         /* == CORE THEME STYLES (Existing YoursMed Dark Theme) == */
         /* ================================================= */
         
