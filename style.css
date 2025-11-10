@@ -1278,26 +1278,32 @@
             right: 15px;
         }
         
-        /* ---------------------------------------------------------------------- */
         /* --- WATCH YOUTUBE VIDEO SECTION MOBILE OPTIMIZATION --- */
-        /* ---------------------------------------------------------------------- */
-        #youtubeVideoSection {
-            padding: 15px;
-        }
-        #youtubeVideoSection h2 {
-            font-size: 22px;
-            margin-bottom: 15px;
-        }
-        #videoPlayerContainer {
-            gap: 10px;
-            flex-direction: column; /* Stack videos vertically */
-        }
-        .video-item {
-            width: 100%;
-            max-width: 100%;
-            aspect-ratio: 16 / 9; 
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5); /* Lighter shadow for mobile */
-        }
+/* ---------------------------------------------------------------------- */
+#youtubeVideoSection {
+    padding: 15px;
+}
+
+#youtubeVideoSection h2 {
+    font-size: 22px;
+    margin-bottom: 15px;
+}
+
+#videoPlayerContainer {
+    gap: 10px;
+    flex-direction: column; /* Stack videos vertically */
+}
+
+.video-item {
+    width: 100%;
+    max-width: 100%;
+    aspect-ratio: 16 / 9; 
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5); /* Lighter shadow for mobile */
+    background-color: #fff; /* Pure white background */
+    border-radius: 12px; /* Rounded corners for mobile */
+    padding: 5px; /* Thodi inner spacing */
+    overflow: hidden; /* Ensure video content fits within rounded corners */
+}
    /* ================================================= */
         /* == CORE THEME STYLES (Existing YoursMed Dark Theme) == */
         /* ================================================= */
