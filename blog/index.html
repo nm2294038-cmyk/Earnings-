@@ -8,7 +8,7 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      background-color: #fff; /* body background white */
+      background-color: #fff; /* white body */
       color: #333;
       margin: 0;
       padding: 0;
@@ -28,14 +28,13 @@
     }
 
     header p {
-      color: #555;
+      color: #0d47a1; /* blue subtext */
       font-size: 1em;
       opacity: 0;
       animation: fadeInUp 1s forwards;
       animation-delay: 0.3s;
     }
 
-    /* Blog List */
     .blog-list {
       display: flex;
       flex-direction: column;
@@ -43,7 +42,7 @@
       padding: 20px;
     }
 
-    /* Clickable Cards */
+    /* Clickable blog cards */
     .blog-list a {
       display: block;
       text-decoration: none;
@@ -51,10 +50,10 @@
       border: 1px solid #0d47a1;
       border-radius: 12px;
       padding: 20px;
-      transition: transform 0.3s, box-shadow 0.3s;
       background-color: #e3f2fd; /* light blue card background */
-      opacity: 0;
+      transition: transform 0.3s, box-shadow 0.3s;
       transform: translateY(20px);
+      opacity: 0;
       animation: fadeInUp 0.8s forwards;
     }
 
@@ -63,7 +62,7 @@
 
     .blog-list a h3 {
       margin: 0 0 10px 0;
-      color: #0d47a1;
+      color: #0d47a1; /* blue heading */
       font-size: 1.5em;
       opacity: 0;
       animation: fadeInUp 0.8s forwards;
@@ -74,7 +73,7 @@
 
     .blog-list a p {
       margin: 0;
-      color: #333;
+      color: #0d47a1; /* blue description */
       opacity: 0;
       animation: fadeIn 0.8s forwards;
     }
@@ -87,7 +86,6 @@
       box-shadow: 0 8px 20px rgba(0,0,0,0.15);
     }
 
-    /* Footer */
     footer {
       text-align: center;
       padding: 20px;
@@ -113,11 +111,17 @@
       .blog-list {
         flex-direction: row;
         flex-wrap: wrap;
+        gap: 20px;
       }
       .blog-list a { flex: 1 1 calc(50% - 20px); }
     }
 
     @media (min-width: 1024px) {
+      .blog-list {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 30px;
+      }
       .blog-list a { flex: 1 1 calc(33.33% - 30px); }
     }
 
