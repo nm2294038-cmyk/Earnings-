@@ -476,6 +476,482 @@
             from { transform: translateY(0); }
             to { transform: translateY(-3px); }
         }
+
+/* ================================================= */
+/* == CORE THEME STYLES (Existing YoursMed Dark Theme) == */
+/* ================================================= */
+
+/* ZONG-Style Colors */
+:root {
+    --zong-green: #4CAF50; /* Primary Green (Similar to Zong's vibrant green) */
+    --zong-light-green: #8BC34A; /* Lighter shade used in gradients/backgrounds */
+    --zong-soft-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+body {
+    background-color: #000; 
+    color: #eee; 
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
+    line-height: 1.6; 
+    padding-bottom: 100px; 
+    margin: 0; 
+    transition: margin-left 0.3s ease; 
+}
+
+/* --- Header Styles --- */
+.ysense-header {
+    background-color: white; 
+    padding: 10px 15px; 
+    width: 100%;
+    position: fixed; 
+    top: 0;
+    left: 0;
+    z-index: 1000; 
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-sizing: border-box;
+    height: 55px; 
+}
+
+/* --- General Theme Styles for Internal Sections --- */
+section {
+    display: none;
+    padding: 50px; 
+    margin-top: 30px;
+    background: rgba(26, 26, 26, 0.85);
+    border-radius: 18px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6), 0 0 15px rgba(0, 255, 255, 0.2);
+    position: relative;
+}
+
+section.active {
+    display: block;
+}
+
+/* Dark Theme Neon Highlights */
+.neon-text { 
+    color: #fff; 
+    text-shadow: 0 0 5px #0ff, 0 0 10px #0ff, 0 0 20px #0ff, 0 0 30px #0ff, 0 0 40px #0ff, 0 0 55px #0ff, 0 0 75px #0ff; 
+}
+
+/* Dashboard Affiliate Block specific styling (Dark Theme overrides applied manually) */
+#dashboardAffiliateBlock {
+    padding: 30px; /* Internal section padding */
+    margin-top: 35px;
+    background: rgba(26, 26, 26, 0.85); /* Dark background */
+    border-radius: 18px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6), 0 0 15px rgba(0, 255, 255, 0.2);
+    /* Override defaults for affiliate section if embedded */
+    max-width: none; 
+    border: none;
+}
+
+#dashboardAffiliateBlock .commission-section {
+    padding-left: 0;
+    padding-right: 0;
+    background: rgba(34, 34, 34, 0.8);
+    border: 1px solid #444;
+    border-radius: 8px;
+    padding: 15px;
+    margin-left: 0;
+    margin-right: 0;
+}
+#dashboardAffiliateBlock .commission-section h2,
+#dashboardAffiliateBlock .commission-icon {
+    color: #0ff; /* Neon highlight */
+}
+#dashboardAffiliateBlock p, 
+#dashboardAffiliateBlock li {
+    color: #ccc;
+}
+
+#dashboardAffiliateBlock .zong-package-section {
+    background-color: rgba(45, 45, 45, 0.9); /* Slightly different dark shade for internal block */
+    border-top: 1px solid #444;
+    border-radius: 12px;
+    padding: 20px 15px;
+}
+
+#dashboardAffiliateBlock .zong-package-section h2 {
+    color: #0ff; /* Neon highlight */
+    padding: 0;
+    margin-bottom: 15px;
+}
+
+#dashboardAffiliateBlock .zong-card {
+    background-color: #333;
+    color: #eee;
+    border: 1px solid #555;
+}
+
+#dashboardAffiliateBlock .zong-card p {
+    color: #ccc;
+}
+
+#dashboardAffiliateBlock .zong-card.card-green { border-left: 5px solid #0ff; }
+#dashboardAffI understand. You want the complete CSS styles for the banners and the carousel, including the necessary responsive and animation styles, isolated from the rest of the application's CSS.
+
+Here are the complete CSS styles for the banners, carousel, and guide sections:
+
+```css
+/* ZONG-Style Colors Definition (for reference) */
+:root {iliateBlock .card-green .zong-card-icon-wrapper { background-color: #113333; color: #0ff; }
+#dashboardAffiliateBlock .card-orange .zong-card-icon-wrapper { background-color: #332211; color: #ffc107; }
+#dashboardAffiliateBlock .card-pink .zong-card-icon-wrapper
+    --zong-green: #4CAF50;
+    --zong-light-green: #8BC34A;
+    --zong-soft-shadow: 0 4px 1 { background-color: #331122; color: #e040fb; }
+#dashboardAffiliateBlock .card-purple .zong-card-icon-wrapper { background-color: #0px rgba(0, 0, 0, 0.05);
+}
+
+/* ------------------------------------------------------------- */
+/* --- GENERAL BANNER STYLES (Used for the main image banner) --- */
+/* 221133; color: #e91e63; }
+
+
+#dashboardAffiliateBlock .zong-streak-banner-wrapper {
+    padding: 15px 0 0 0------------------------------------------------------------- */
+
+.ysense-banner-ad-wrapper {
+    display: block;
+    margin: 25px auto; /* Center the wrapper */
+    border-radius: 12px;;
+}
+#dashboardAffiliateBlock .zong-streak-banner {
+     background: linear-gradient(to right, #00ffff, #009999); /* Bright neon for contrast */
+}
+#dashboardAffiliateBlock .zong-streak-banner-content {
+    color: #000;
+}
+#dashboardAffiliateBlock .discount-btn {
+     color: #000;
+
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    width: calc(100% -      background: #ffc107;
+}
+
+#dashboardAffiliateBlock .zong-carousel-container {
+     padding: 20px 0;
+}
+#dashboardAffiliateBlock .zong50px); /* Adjust width for desktop padding */
+    max-width: 800px;
+    box-sizing: border-box;
+    text-decoration: none; 
+    cursor: pointer;
+}
+-video-section,
+#dashboardAffiliateBlock .social-media-icons-section {
+    border-top: 1px solid #444;
+    padding: 20px 0;
+}
+
+#dashboardAffiliateBlock .zong-video-section h3,
+#dashboardAffiliateBlock .social-media-icons-section h3 {
+    color: #0ff;
+}
+
+#dashboardAffiliateBlock .social-icon {
+    background-color: #333;
+    border: 1px solid #555;
+    color: #ddd;
+}
+#dashboardAffiliateBlock .social-.ysense-banner-ad {
+    width: 100%;
+    display: block;
+    height: auto;
+    transition: transform 0.3s ease;
+}
+.ysense-icon .icon {
+    color: #0ff;
+}
+
+#dashboardAffiliateBlock .ultimate-guide-section {
+     background-color: rgba(30, 30, 30, 0.9);
+     color: #ccc;
+     border-top: 1px solid #444;
+     padding: 25px 0;
+}
+#dashboardAffiliateBlock .ultimate-guide-section h2 {
+    color: #ffc107 !important; /* Gold highlight */
+}
+#dashboardAffiliateBlock .ultimate-guide-section h3 {
+    color: #0ff;
+}
+#dashboardAffiliateBlock .ultimate-guide-section p,
+#dashboardAffiliateBlock .ultimate-guide-section ul,
+#dashboardAffiliateBlock .ultimate-guide-section ol {
+    color: #ccc;
+}banner-ad:hover {
+    transform: scale(1.02);
+}
+
+/* ------------------------------------------------------------- */
+/* --- STREAK BANNER STYLES (The green 'Start Your Streak Now!' button
+#dashboardAffiliateBlock .ultimate-guide-section button {
+    background: linear-gradient(to right, #0ff, #0cc);
+    color: #000;
+    box-shadow:) --- */
+/* ------------------------------------------------------------- */
+
+.zong-streak-banner-wrapper {
+    padding: 20px 0 0 0; 
+    margin-top: 30px;
+ 0 4px 10px rgba(0, 255, 255, 0.5);
+}
+
+
+/* ================================================= */
+/* == AFFILIATE PAGE BANNER/CAROUSEL STYLES}
+
+.zong-streak-banner {
+    background: linear-gradient(to right, var(--zong-light-green), var(--zong-green));
+    padding: 15px 20px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 6px == */
+/* ================================================= */
+
+/* Banner Ad Wrapper (General) */
+.ysense-banner-ad-wrapper {
+    display: block;
+    margin: 25px auto; 
+    border- 15px rgba(0, 0, 0, 0.15);
+}
+
+.zong-streak-banner-content {
+    display: flex;
+    align-items: center;
+radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    width: calc    color: white;
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.zong-streak-banner .gift-icon {
+    font-size:(100% - 50px); 
+    max-width: 800px;
+    box-sizing: border-box;
+    text-decoration: none; 
+    cursor: pointer 24px;
+    margin-right: 15px;
+    position: relative;
+}
+
+.zong-streak-banner .gift-icon::before {
+    content: "🎁"; /* Gift;
+}
+.ysense-banner-ad {
+    width: 100%;
+    display: block;
+    height: auto;
+    transition: transform 0.3s ease;
+}
+ emoji */
+    display: block;
+    animation: bounce 1s infinite alternate;
+}
+
+@keyframes bounce {
+    from { transform: translateY(0); }
+    to { transform: translateY(-3px);.ysense-banner-ad:hover {
+    transform: scale(1.02);
+}
+
+/* Carousel Container */
+.zong-carousel-container {
+    padding: 30px 0;
+    overflow }
+}
+
+.zong-streak-banner .discount-btn {
+    background: white;
+    color: var(--zong-green);
+    border: none;
+    padding: 8px 1: hidden;
+    position: relative;
+    width: 100%;
+}
+
+.zong-carousel-track {
+    display: flex;
+    animation: scrollBanner 15s linear infinite;5px;
+    border-radius: 8px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2 
+    will-change: transform; 
+}
+
+.zong-carousel-item {
+    flex: 0 0 90%; 
+    min-width: 250px;
+    s;
+}
+
+/* ------------------------------------------------------------- */
+/* --- CAROUSEL BANNER STYLES (Auto-Moving Banners) --- */
+/* ------------------------------------------------------------- */
+
+.zong-carousel-container {
+    paddingmargin: 0 10px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    cursor: pointer;
+    transition: transform 0.3s;
+    height: auto;
+}
+
+.zong-carousel-item img {
+    width:: 30px 0;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+}
+
+.zong-carousel-track {
+    display: flex;
+     100%;
+    height: auto;
+    display: block;
+}
+
+/* Keyframe for continuous scrolling (Mobile/Default) */
+@keyframes scrollBanner {
+    0% {
+        transform: translateXanimation: scrollBanner 15s linear infinite;
+    will-change: transform;
+}
+
+.zong-carousel-item {
+    flex: 0 0 90%; /* Default mobile width */
+    min-width: 250px;
+    margin: 0 10px; /* Margin for spacing between items */
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow(0);
+    }
+    /* We have 10 items total (5 duplicates). We scroll 5 items worth of distance. */
+    100% {
+        /* 5 items worth of width + margins */
+        transform: translateX(calc(-50% - 50px)); 
+    }
+}
+
+/* ================================================= */
+/* == RESPONSIVE ADJUSTMENTS == */
+/* ================================================= */
+
+/*: 0 4px 10px rgba(0, 0, 0, 0.15);
+    cursor: pointer;
+    transition: transform 0.3s;
+    height: auto Tablet and PC adjustments for Carousel */
+@media (min-width: 768px) {
+    /* Main banner size adjustment on wider screens */
+    .ysense-banner-ad-wrapper {
+        width:;
+}
+
+.zong-carousel-item img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Keyframe for continuous scrolling (Mobile/Default) */
+@keyframes scrollBanner {
+    0% {
+        transform: translateX(0);
+    }
+    /* Moves exactly 5 items (half the duplicated track) past the viewport */
+    100% {
+        transform: translateX(calc(- calc(100% - 50px);
+        max-width: 800px;
+    }
+    
+    /* Desktop Carousel Item Width (4 columns visible) */
+    .zong-carousel-item {
+        flex: 0 0 calc(20% - 20px); 
+        min-width: 180px;
+    }
+    
+    /* Keyframe for continuous scrolling (Desktop) */
+    @keyframes scrollBanner {
+        0% { 
+            transform: translateX(0); 
+        }
+        /* Scroll exactly half the track width (5 items) */
+        100% { 
+            transform: translateX(calc(-50%)); 
+        }
+    }
+
+    /* General section padding consistency */
+    .zong-package-section, 
+    .ultimate-guide-section,
+    .50% - 50px)); 
+    }
+}
+
+/* ------------------------------------------------------------- */
+/* --- RESPONSIVE ADJUSTMENTS (Tablet & PC) --- */
+/* ------------------------------------------------------------- */
+
+@media (min-width: 768px) {
+    /* Main Banner Adjustment */
+    .ysense-banner-ad-wrapper {
+        width: calc(100% - 50px);
+    }
+
+    social-media-icons-section,
+    .zong-video-section {
+        padding-left: 25px;
+        padding-right: 25px;
+    }
+}
+
+/* Small/* Carousel Adjustments (PC/Tablet view, 4-5 items visible) */
+    .zong-carousel-item {
+        flex: 0 0 calc(20% - 20px); /* Make Mobile Adjustments */
+@media (max-width: 480px) {
+     /* General section padding consistency */
+    .zong-package-section, 
+    .ultimate-guide-section,
+    .social-media-icons-section,
+    .zong-video-section {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+    /* Main banner size adjustment */ space for 5 items plus margins */
+        min-width: 180px;
+    }
+
+    /* Keyframe adjustment for seamless desktop scroll */
+    @keyframes scrollBanner {
+        0% { 
+            transform: translateX(0); 
+        }
+        /* Scrolls exactly half the track width (5 items) */
+        100% { 
+            transform: translateX(calc(-50%)); 
+        }
+
+    .ysense-banner-ad-wrapper {
+        margin: 15px auto;
+        width: calc(100% - 30px);
+    }
+    /* Dashboard specific mobile padding restore */
+    #dashboardAffiliateBlock {
+        padding: 10px;
+    }
+}
 /* ================================================= */
         /* == CORE THEME STYLES (Existing YoursMed Dark Theme) == */
         /* ================================================= */
@@ -1952,6 +2428,164 @@
             color: #aaa;
             margin: 0; 
         }
+ /* ---------------------------------------------------------------------- */
+        /* --- PRIVACY MODAL/DETAILS MODAL (MODAL) MOBILE OPTIMIZATION --- */
+        /* ---------------------------------------------------------------------- */
+        .modal-content {
+            padding: 25px 20px;
+            width: 95%;
+            margin: 5vh auto; /* Move slightly up */
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        .modal-content h2 {
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+        .modal-content h3 {
+            font-size: 18px;
+            margin-top: 15px;
+            margin-bottom: 8px;
+        }
+        .modal-content p, .modal-content li {
+            font-size: 14px;
+            line-height: 1.7;
+        }
+        .modal-close-btn {
+            font-size: 35px;
+            top: 10px;
+            right: 15px;
+        }
+        
+        /* ---------------------------------------------------------------------- */
+        /* --- WATCH YOUTUBE VIDEO SECTION MOBILE OPTIMIZATION --- */
+        /* ---------------------------------------------------------------------- */
+        #youtubeVideoSection {
+            padding: 15px;
+        }
+        #youtubeVideoSection h2 {
+            font-size: 22px;
+            margin-bottom: 15px;
+        }
+        #videoPlayerContainer {
+            gap: 10px;
+            flex-direction: column; /* Stack videos vertically */
+        }
+        .video-item {
+            width: 100%;
+            max-width: 100%;
+            aspect-ratio: 16 / 9; 
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5); /* Lighter shadow for mobile */
+        }
+        /* ---------------------------------------------------------------------- */
+        /* --- SMALL MOBILE VIEW (max 480px - Single Column) --- */
+        /* ---------------------------------------------------------------------- */
+        @media (max-width: 480px) {
+            .ysense-header { padding: 10px 5px; min-height: 45px; }
+            .content-wrapper { margin-top: 50px; padding: 0.3em; }
+            
+            .sidebar { width: 95%; left: -95%; padding: 10px; padding-top: 55px; }
+            section { padding: 10px; }
+
+            /* All boxes go to single column */
+            .dashboard-container, #tasksContainer, #forYouTasksContainer, #withdrawList, #depositList, #userLinksContainer, #publicLinksContainer, #sendBalanceHistory {
+                gap: 10px;
+            }
+            .dashboard-box, .taskBox, .withdrawBox, .depositBox, .userLinkBox, .anusementBox {
+                min-width: 100%;
+                max-width: 100%;
+                padding: 12px;
+            }
+
+            /* Auth Section Small Screen */
+            #authSection .auth-container {
+                padding: 15px; 
+            }
+            #authSection h2 { font-size: 22px; margin-bottom: 15px; }
+            #authSection .location-button { padding: 10px 12px; font-size: 13px; margin-top: 10px; }
+            
+            /* Inputs and Buttons */
+            input[type="text"], input[type="email"], input[type="password"], input[type="number"], select, textarea {
+                padding: 10px; 
+                font-size: 14px; 
+                margin: 6px 0;
+            }
+            button.submitBtn {
+                padding: 12px 20px; 
+                font-size: 15px;
+            }
+            
+            /* Profile Adjustments */
+            .profile-pic { width: 70px; height: 70px; font-size: 28px; }
+            .profile-info h2 { font-size: 22px; }
+            .profile-info p { font-size: 13px; }
+           
+        footer {
+            background: rgba(17, 17, 17, 0.95);
+            padding: 20px 0; 
+            text-align: center;
+            border-top: 1px solid #0ff;
+            width: 100%;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: row; 
+            flex-wrap: wrap; 
+            justify-content: center;
+            align-items: center;
+            gap: 10px; 
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            z-index: 100;
+            box-shadow: 0 -3px 15px rgba(0, 255, 255, 0.2);
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: #0ff;
+            text-decoration: none;
+            font-weight: bold;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: color 0.4s ease, text-shadow 0.4s ease;
+            font-size: 10px;
+        }
+
+        .footer-links a:hover {
+            text-decoration: underline;
+            color: #fff;
+            text-shadow: 0 0 10px #fff;
+        }
+
+        footer .copyright {
+            font-size: 15px;
+            color: #aaa;
+            margin: 0; 
+        }
+
+        .ysense-affiliate-page .content-box {
+            padding: 10px;
+        }
+        .ysense-affiliate-page .breadcrumb {
+            margin-bottom: 15px;
+        }
+        .ysense-affiliate-page h1 {
+            font-size: 20px;
+        }
+        .commission-section {
+            margin-top: 20px;
+        }
+        .commission-section ol li {
+            font-size: 13px;
+        }
+
+
  /* ---------------------------------------------------------------------- */
         /* --- PRIVACY MODAL/DETAILS MODAL (MODAL) MOBILE OPTIMIZATION --- */
         /* ---------------------------------------------------------------------- */
