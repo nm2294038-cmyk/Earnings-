@@ -1,3 +1,481 @@
+  /* ================================================= */
+        /* == CORE THEME STYLES (Existing YoursMed Dark Theme) == */
+        /* ================================================= */
+        
+        /* ZONG-Style Colors */
+        :root {
+            --zong-green: #4CAF50; /* Primary Green (Similar to Zong's vibrant green) */
+            --zong-light-green: #8BC34A; /* Lighter shade used in gradients/backgrounds */
+            --zong-soft-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        body {
+            background-color: #000; 
+            color: #eee; 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
+            line-height: 1.6; 
+            padding-bottom: 100px; 
+            margin: 0; 
+            transition: margin-left 0.3s ease; 
+        }
+
+        /* --- Header Styles (MODIFIED to match ySense screenshot) --- */
+        .ysense-header {
+            background-color: white; 
+            padding: 10px 15px; 
+            width: 100%;
+            position: fixed; 
+            top: 0;
+            left: 0;
+            z-index: 1000; 
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-sizing: border-box;
+            height: 55px; /* Fixed height */
+        }
+
+        .ysense-header .logo-container {
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+        }
+
+        .ysense-header .ysense-logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #000;
+            /* Mimicking ySense logo font/style */
+            font-family: 'Helvetica Neue', sans-serif; 
+            margin-left: 10px;
+        }
+        
+        /* Sidebar Toggle Button Styles */
+        .sidebar-toggle {
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 0.5em;
+            color: #000; 
+            font-size: 1.2em; /* Smaller on mobile */
+            display: flex; 
+            flex-direction: column; 
+            justify-content: space-between; 
+            height: 1.2em; 
+            flex-shrink: 0;
+        }
+
+        .sidebar-toggle span {
+            display: block;
+            width: 1em; 
+            height: 0.15em; 
+            background-color: #000; 
+            border-radius: 0.125em; 
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .ysense-btn {
+            padding: 8px 15px;
+            border-radius: 5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-size: 14px;
+        }
+
+        .sign-in-btn {
+            background: white;
+            color: #007bff;
+            border: 1px solid #007bff;
+        }
+
+        .join-now-btn {
+            background: #007bff;
+            color: white;
+            border: 1px solid #007bff;
+        }
+        
+        .ysense-more-btn {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 20px;
+            color: #007bff;
+            display: flex;
+            align-items: center;
+        }
+        .ysense-more-btn .checklist-icon {
+            display: block;
+            width: 20px;
+            height: 20px;
+            /* Simple custom checklist icon visual */
+            border: 2px solid #007bff;
+            border-radius: 3px;
+            position: relative;
+        }
+        .ysense-more-btn .checklist-icon::before,
+        .ysense-more-btn .checklist-icon::after {
+            content: '';
+            position: absolute;
+            background: #007bff;
+        }
+        .ysense-more-btn .checklist-icon::before {
+            width: 10px;
+            height: 2px;
+            top: 5px;
+            left: 5px;
+        }
+        .ysense-more-btn .checklist-icon::after {
+            width: 10px;
+            height: 2px;
+            top: 11px;
+            left: 5px;
+        }
+        
+        /* --- Sidebar Styles --- */
+        .sidebar {
+            width: 280px; 
+            height: 100vh;
+            background-color: #222;
+            color: white;
+            position: fixed;
+            top: 0;
+            left: -280px; 
+            padding: 2em;
+            transition: left 0.3s ease; 
+            z-index: 1001; 
+            overflow-y: auto;
+            padding-top: 80px;
+            box-shadow: 4px 0 8px rgba(0, 255, 255, 0.3);
+            box-sizing: border-box;
+        }
+
+        .sidebar.open {
+            left: 0; 
+        }
+
+        /* Main Content Styles */
+        .content-wrapper {
+            padding: 1em;
+            margin-top: 55px; /* Adjusted margin for new header height */
+            transition: margin-left 0.3s ease; 
+        }
+
+         /* Adjust main content when sidebar is open */
+        body.sidebar-open .content-wrapper {
+            margin-left: 280px; 
+        }
+
+        /* --- Overlay for sidebar --- */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7); 
+            z-index: 1000; 
+            display: none; 
+            transition: opacity 0.3s ease;
+        }
+
+        .overlay.active {
+            display: block;
+            opacity: 1;
+        }
+        
+        /* Existing theme styles (kept for all internal pages) */
+        section {
+            display: none;
+            padding: 50px; 
+            margin-top: 30px;
+            background: rgba(26, 26, 26, 0.85);
+            border-radius: 18px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6), 0 0 15px rgba(0, 255, 255, 0.2);
+            animation: fadeInSection 0.6s ease-out forwards;
+            opacity: 0;
+            transform: translateY(20px);
+            position: relative;
+        }
+
+        section.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- Full Screen Auth Section (Needed for Auth) --- */
+        #authSection {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
+            padding: 4px;
+            box-sizing: border-box;
+            backdrop-filter: blur(10px);
+            animation: fadeInBG 0.5s ease-out;
+            /* Initially visible but hidden if logged in */
+            display: none; 
+        }
+
+        /* --- Affiliate Page Specific Styles (Matching Screenshot) --- */
+        .ysense-affiliate-page {
+            display: none; 
+            padding: 0;
+            margin: 0 auto;
+            max-width: 850px; 
+            background: #fff; 
+            color: #333; 
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            margin-top: 55px; 
+        }
+
+        .ysense-affiliate-page .content-box {
+            padding: 0;
+        }
+        
+        .ysense-affiliate-page .breadcrumb, 
+        .ysense-affiliate-page h1, 
+        .ysense-affiliate-page p, 
+        .commission-section {
+            padding-left: 25px;
+            padding-right: 25px;
+        }
+
+        .ysense-affiliate-page .breadcrumb {
+            color: #777;
+            font-size: 14px;
+            margin-bottom: 25px;
+            border-bottom: 1px solid #eee;
+            padding-top: 25px;
+            padding-bottom: 10px;
+        }
+        
+        .ysense-affiliate-page h1 {
+            font-size: 32px;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            color: #222;
+        }
+
+        .ysense-affiliate-page p {
+            font-size: 16px;
+            line-height: 1.5;
+            margin-bottom: 20px;
+            color: #555;
+        }
+
+        .commission-section {
+            margin-top: 30px;
+            padding-bottom: 15px;
+        }
+
+        .commission-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .commission-icon {
+            font-size: 28px;
+            color: #007bff; 
+            margin-right: 15px;
+            font-weight: bold;
+        }
+
+        .commission-section h2 {
+            font-size: 20px;
+            font-weight: 700;
+            color: #222;
+            margin: 0;
+        }
+
+        /* Banner Ad Style (NEW) */
+        .ysense-banner-ad-wrapper {
+            display: block;
+            margin: 25px auto; 
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            width: calc(100% - 50px); 
+            max-width: 800px;
+            box-sizing: border-box;
+            text-decoration: none; 
+            cursor: pointer;
+        }
+        .ysense-banner-ad {
+            width: 100%;
+            display: block;
+            height: auto;
+            transition: transform 0.3s ease;
+        }
+        
+        /* Dashboard Affiliate Block specific styling (Dark Theme overrides) */
+        #dashboardAffiliateBlock {
+            padding: 30px; 
+            margin-top: 35px;
+            background: rgba(26, 26, 26, 0.85); 
+            border-radius: 18px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6), 0 0 15px rgba(0, 255, 255, 0.2);
+            max-width: none; 
+            border: none;
+        }
+        #dashboardAffiliateBlock .commission-section {
+            background: rgba(34, 34, 34, 0.8);
+            border: 1px solid #444;
+            padding: 15px;
+        }
+        #dashboardAffiliateBlock .commission-section h2,
+        #dashboardAffiliateBlock .commission-icon {
+            color: #0ff; 
+        }
+        #dashboardAffiliateBlock p, 
+        #dashboardAffiliateBlock li {
+            color: #ccc;
+        }
+        
+        #dashboardAffiliateBlock .zong-package-section {
+            background-color: rgba(45, 45, 45, 0.9); 
+            border-top: 1px solid #444;
+        }
+        #dashboardAffiliateBlock .zong-package-section h2 {
+            color: #0ff; 
+        }
+
+        #dashboardAffiliateBlock .zong-card {
+            background-color: #333;
+            color: #eee;
+            border: 1px solid #555;
+        }
+        #dashboardAffiliateBlock .zong-streak-banner {
+             background: linear-gradient(to right, #00ffff, #009999); 
+        }
+        #dashboardAffiliateBlock .zong-streak-banner-content {
+            color: #000;
+        }
+        #dashboardAffiliateBlock .discount-btn {
+             color: #000;
+             background: #ffc107;
+        }
+        #dashboardAffiliateBlock .social-icon {
+            background-color: #333;
+            border: 1px solid #555;
+            color: #ddd;
+        }
+        #dashboardAffiliateBlock .social-icon .icon {
+            color: #0ff;
+        }
+        
+        #dashboardAffiliateBlock .ultimate-guide-section {
+             background-color: rgba(30, 30, 30, 0.9);
+             color: #ccc;
+             border-top: 1px solid #444;
+        }
+
+        /* ================================================= */
+        /* == ZONG-Style Affiliate Packages Section (NEW) == */
+        /* ================================================= */
+        
+        .zong-package-section {
+            padding: 20px 25px 30px 25px; 
+            background-color: #fff; 
+            color: #333;
+            margin-top: 30px;
+            border-top: 1px solid #eee;
+        }
+
+        .zong-package-section h2 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #222;
+            padding: 0; 
+        }
+        
+        .zong-cards-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            padding: 0; 
+        }
+
+        .zong-card {
+            background-color: #f7f7f7;
+            border-radius: 18px;
+            padding: 15px;
+            flex: 1 1 calc(50% - 15px); 
+            min-width: 150px;
+            box-shadow: var(--zong-soft-shadow);
+            transition: transform 0.3s, box-shadow 0.3s;
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            border: 1px solid #eee;
+        }
+
+        .zong-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .zong-card-icon-wrapper {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 10px;
+            font-size: 24px;
+            position: relative;
+        }
+        /* Card Specific Colors */
+        .card-green .zong-card-icon-wrapper { background-color: #e8f5e9; color: var(--zong-green); }
+        .card-orange .zong-card-icon-wrapper { background-color: #fff3e0; color: #ff9800; }
+        .card-pink .zong-card-icon-wrapper { background-color: #fce4ec; color: #e91e63; }
+        .card-purple .zong-card-icon-wrapper { background-color: #f3e5f5; color: #9c27b0; }
+        .zong-card.card-green { border-left: 5px solid var(--zong-green); }
+
+        /* Icon Styling */
+        .icon-hands::before { content: "👐"; } 
+        /* ... (other icon classes defined in the HTML) ... */
+        
+        /* Green Streak Banner */
+        .zong-streak-banner-wrapper {
+            padding: 20px 0 0 0; 
+            margin-top: 30px;
+        }
+        .zong-streak-banner {
+            background: linear-gradient(to right, var(--zong-light-green), var(--zong-green));
+            padding: 15px 20px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+        }
+        @keyframes bounce {
+            from { transform: translateY(0); }
+            to { transform: translateY(-3px); }
+        }
 /* ================================================= */
         /* == CORE THEME STYLES (Existing YoursMed Dark Theme) == */
         /* ================================================= */
