@@ -6,6 +6,97 @@
   <title>YoursMed Blog</title>
   <link rel="stylesheet" href="../style.css" />
   <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #fff; /* body background white */
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      text-align: center;
+      padding: 30px 20px;
+    }
+
+    header h1 {
+      color: #0d47a1; /* blue heading */
+      font-size: 2em;
+      margin-bottom: 10px;
+      opacity: 0;
+      animation: fadeInUp 1s forwards;
+    }
+
+    header p {
+      color: #555;
+      font-size: 1em;
+      opacity: 0;
+      animation: fadeInUp 1s forwards;
+      animation-delay: 0.3s;
+    }
+
+    /* Blog List */
+    .blog-list {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      padding: 20px;
+    }
+
+    /* Clickable Cards */
+    .blog-list a {
+      display: block;
+      text-decoration: none;
+      color: inherit;
+      border: 1px solid #0d47a1;
+      border-radius: 12px;
+      padding: 20px;
+      transition: transform 0.3s, box-shadow 0.3s;
+      background-color: #e3f2fd; /* light blue card background */
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeInUp 0.8s forwards;
+    }
+
+    .blog-list a:nth-child(1) { animation-delay: 0.3s; }
+    .blog-list a:nth-child(2) { animation-delay: 0.6s; }
+
+    .blog-list a h3 {
+      margin: 0 0 10px 0;
+      color: #0d47a1;
+      font-size: 1.5em;
+      opacity: 0;
+      animation: fadeInUp 0.8s forwards;
+    }
+
+    .blog-list a:nth-child(1) h3 { animation-delay: 0.4s; }
+    .blog-list a:nth-child(2) h3 { animation-delay: 0.7s; }
+
+    .blog-list a p {
+      margin: 0;
+      color: #333;
+      opacity: 0;
+      animation: fadeIn 0.8s forwards;
+    }
+
+    .blog-list a:nth-child(1) p { animation-delay: 0.6s; }
+    .blog-list a:nth-child(2) p { animation-delay: 0.9s; }
+
+    .blog-list a:hover {
+      transform: translateY(-5px) scale(1.02);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 20px;
+      font-size: 0.9em;
+      color: #555;
+      border-top: 1px solid #ddd;
+      margin-top: 40px;
+    }
+
     /* Keyframes */
     @keyframes fadeInUp {
       0% { opacity: 0; transform: translateY(20px); }
@@ -17,88 +108,30 @@
       100% { opacity: 1; }
     }
 
-    header h1, header p {
-      opacity: 0;
-      animation: fadeInUp 1s ease forwards;
-    }
-
-    header p {
-      animation-delay: 0.3s;
-    }
-
-    .blog-list {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-      padding: 20px;
-    }
-
-    .blog-list a {
-      border: 1px solid #ddd;
-      padding: 15px;
-      border-radius: 12px;
-      text-decoration: none;
-      color: red;
-      display: block;
-      background-color: #fff;
-      transition: 0.3s;
-      transform: translateY(20px);
-      opacity: 0;
-      animation: fadeInUp 0.8s ease forwards;
-    }
-
-    .blog-list a:nth-child(1) { animation-delay: 0.3s; }
-    .blog-list a:nth-child(2) { animation-delay: 0.6s; }
-
-    /* H3 and description separate animation */
-    .blog-list a h3 {
-      opacity: 0;
-      animation: fadeInUp 0.8s ease forwards;
-    }
-    .blog-list a:nth-child(1) h3 { animation-delay: 0.4s; }
-    .blog-list a:nth-child(2) h3 { animation-delay: 0.7s; }
-
-    .blog-list a p {
-      opacity: 0;
-      animation: fadeIn 0.8s ease forwards;
-    }
-    .blog-list a:nth-child(1) p { animation-delay: 0.6s; }
-    .blog-list a:nth-child(2) p { animation-delay: 0.9s; }
-
-    .blog-list a:hover {
-      background-color: #f8f8f8;
-      color: darkred;
-      transform: translateY(-2px) scale(1.02);
-    }
-
     /* Responsive */
     @media (min-width: 768px) and (max-width: 1023px) {
       .blog-list {
         flex-direction: row;
         flex-wrap: wrap;
-        gap: 20px;
       }
       .blog-list a { flex: 1 1 calc(50% - 20px); }
     }
 
     @media (min-width: 1024px) {
-      .blog-list {
-        flex-direction: row;
-        flex-wrap: wrap;
-        gap: 30px;
-      }
       .blog-list a { flex: 1 1 calc(33.33% - 30px); }
     }
 
     @media (max-width: 480px) {
-      .blog-list a { padding: 12px; font-size: 14px; }
+      .blog-list a { padding: 15px; font-size: 14px; }
+      header h1 { font-size: 1.6em; }
     }
+
   </style>
 </head>
 <body>
   <header>
     <h1>YoursMed Blog (ہمارا بلاگ)</h1>
-    <p>Online earning aur digital promotion ke bare mein latest tips aur updates.</p>
+    <p>Online earning aur digital promotion ke latest tips aur updates.</p>
   </header>
 
   <section class="blog-list">
