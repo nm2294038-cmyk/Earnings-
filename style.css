@@ -1,4 +1,60 @@
+.blog-list {
+  display: flex;
+  flex-direction: column; /* default vertical for mobile */
+  gap: 20px;
+  padding: 20px;
+}
 
+.blog-list a {
+  border: 1px solid #ddd;
+  padding: 15px;
+  border-radius: 12px;
+  text-decoration: none;
+  color: black;
+  transition: 0.3s;
+  background-color: #fff;
+}
+
+.blog-list a:hover {
+  background-color: #f8f8f8;
+  transform: translateY(-2px);
+}
+
+/* Tablet & iPad landscape */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .blog-list {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  .blog-list a {
+    flex: 1 1 calc(50% - 20px); /* 2 columns on tablet */
+  }
+}
+
+/* PC / Desktop */
+@media (min-width: 1024px) {
+  .blog-list {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 30px;
+  }
+  .blog-list a {
+    flex: 1 1 calc(33.33% - 30px); /* 3 columns on desktop */
+  }
+}
+
+/* iPhone landscape / smaller screens */
+@media (max-width: 480px) {
+  .blog-list {
+    padding: 10px;
+    gap: 15px;
+  }
+  .blog-list a {
+    padding: 12px;
+    font-size: 14px;
+  }
+}
         /* == CORE THEME STYLES (Existing YoursMed Dark Theme) == */
         /* ================================================= */
         
