@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3071493838743593"
+     crossorigin="anonymous"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>YoursMed App - USERS Profile </title>
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    /* -------------------------------------- */
+    /* 1. GENERAL & BASE STYLES               */
+    /* -------------------------------------- */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f8f9fa; 
+      margin: 0;
+      padding: 0;
+      padding-bottom: 60px; /* Space for fixed footer */
+      color: #333;
+    }
+    /* Updated: Links are kept active for clicking */
+    a { text-decoration: none; color: inherit; } 
+    
+    /* Common utility styles for tabbed content */
+    .content-section { display: none; }
+    .content-section.active { display: block; }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    /* -------------------------------------- */
+    /* 2. HEADER & TOP NAVIGATION             */
+    /* -------------------------------------- */
+    .app-header {
+      background-color: #fff;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    
+    /* Default Header Style (for Home, More) - ORIGINAL STYLE */
+    .app-header-top {
+      background-color: #e0e0e0; /* Original color */
+      padding: 15px 15px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between; 
+      border-radius: 0 0 20px 20px; /* Original rounded bottom */
+      position: relative;
+    }
+    .app-header-top .back-arrow { font-size: 1.5em; margin-right: 15px; color: #555; cursor: pointer; display: none; }
+    .app-header-top .title { font-size: 1.2em; font-weight: bold; color: #333; flex-grow: 1; text-align: left; }
+    .header-icons a i { font-size: 1.2em; margin-left: 15px; color: #555; cursor: pointer; }
+
+    /* Specific Header Style for Wallet and Refer & Earn Pages (Flat top, centered title) - NEW STYLE */
+    .app-header.flat-header .app-header-top {
+        background-color: #f0f2f5; 
+        border-radius: 0; 
+        justify-content: flex-start;
+    }
+    .app-header.flat-header .app-header-top .title {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        flex-grow: 0;
+        text-align: center;
+        font-size: 1.2em;
+        color: #333;
+    }
+    .app-header.flat-header .app-header-top .header-icons {
+        display: none; 
+    }
+    .app-header.flat-header .app-header-top .back-arrow {
+        display: block !important; 
+        z-index: 10;
+        color: #000;
+    }
+
+    /* Tab Navigation (Used only in Rewards/Invite view) */
+    .tab-navigation {
+      display: none; 
+      justify-content: space-around;
+      padding: 0 10px;
+      background-color: #f0f2f5; 
+      border-bottom: none;
+    }
+    .tab-navigation a { 
+        padding: 12px 15px; 
+        font-weight: bold; 
+        color: #777; 
+        position: relative; 
+        transition: color 0.3s; 
+        flex: 1; 
+        text-align: center; 
+        font-size: 0.9em;
+        letter-spacing: 0.5px;
+    }
+    .tab-navigation a.active { color: #000; }
+    .tab-navigation a.active::after { 
+        content: ''; position: absolute; bottom: 0; left: 20%; width: 60%; 
+        height: 3px; background-color: #000; border-radius: 2px;
+    }
+
+    /* -------------------------------------- */
+    /* 3. FIXED MOBILE FOOTER NAVIGATION      */
+    /* -------------------------------------- */
+    .mobile-footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 60px;
+      background-color: #fff;
+      box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      z-index: 200;
+    }
+    .mobile-footer a {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-size: 0.75em;
+      color: #777;
+      padding: 5px;
+      flex: 1;
+    }
+    .mobile-footer a.active { color: #000; }
+    .mobile-footer a i { font-size: 1.5em; margin-bottom: 3px; }
+
+    /* -------------------------------------- */
+    /* 4. HOME CONTENT (Daily Task & Carousel)*/
+    /* -------------------------------------- */
+    #home-content { padding-top: 0; }
+    
+    /* Carousel */
+    .carousel-wrapper { width: 100%; height: 220px; overflow: hidden; position: relative; }
+    .carousel-track { display: flex; width: 1000%; height: 100%; animation: slide-show 50s infinite; }
+    .carousel-slide {
+      width: 10%; height: 100%; flex-shrink: 0; display: block; 
+      background-image: url('https://i.ibb.co/4RzTfVh4/IMG-20251110-WA0008.jpg');
+      background-size: cover; background-position: center; background-repeat: no-repeat;
+      position: relative;
+    }
+    @keyframes slide-show {
+      0% { transform: translateX(0%); } 9% { transform: translateX(0%); }
+      10% { transform: translateX(-10%); } 19% { transform: translateX(-10%); }
+      20% { transform: translateX(-20%); } 29% { transform: translateX(-20%); }
+      30% { transform: translateX(-30%); } 39% { transform: translateX(-30%); }
+      40% { transform: translateX(-40%); } 49% { transform: translateX(-40%); }
+      50% { transform: translateX(-50%); } 59% { transform: translateX(-50%); }
+      60% { transform: translateX(-60%); } 69% { transform: translateX(-60%); }
+      70% { transform: translateX(-70%); } 79% { transform: translateX(-70%); }
+      80% { transform: translateX(-80%); } 89% { transform: translateX(-80%); }
+      90% { transform: translateX(-90%); } 99% { transform: translateX(-90%); }
+      100% { transform: translateX(0%); } 
+    }
+    .task-heading { font-size: 1.5em; font-weight: bold; margin: 20px 20px 15px; color: #333; }
+    .task-grid { display: grid; gap: 15px; padding: 0 20px; grid-template-columns: repeat(2, 1fr); margin: 0 auto; }
+    .task-item { 
+        display: flex; flex-direction: column; justify-content: flex-end; align-items: flex-start; height: 140px; padding: 10px; padding-top: 60px; 
+        border-radius: 40px 40px 10px 10px; font-weight: 600; font-size: 14px; position: relative; overflow: hidden; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05); 
+    }
+    .task-icon-area { position: absolute; top: 0; left: 0; right: 0; height: 80px; display: flex; justify-content: center; align-items: flex-start; }
+    .task-name { font-size: 1.1em; line-height: 1.2; padding-left: 5px; padding-bottom: 5px; font-weight: 700; }
+    
+    .task-daily-check { background: linear-gradient(to bottom, #d2eafb, #f0f8ff); } .task-daily-check .task-icon-area::before { content: '⭐'; font-size: 30px; position: absolute; top: 25px; }
+    .task-scratch-card { background: linear-gradient(to bottom, #ffe8b5, #fff8e1); } .task-scratch-card .task-icon-area::before { content: '💳'; font-size: 30px; position: absolute; top: 25px; }
+    .task-captcha { background: linear-gradient(to bottom, #e4d7ff, #f3e5f5); } .task-captcha .task-icon-area::before { content: '🔄'; font-size: 30px; position: absolute; top: 25px; }
+    .task-spin-wheel { background: linear-gradient(to bottom, #ffdae9, #ffebee); } .task-spin-wheel .task-icon-area::before { content: '🎡'; font-size: 30px; position: absolute; top: 25px; }
+    .task-magic-box { background: linear-gradient(to bottom, #ffd9c0, #fff8e1); } .task-magic-box .task-icon-area::before { content: '🎁'; font-size: 30px; position: absolute; top: 25px; }
+    .task-silver-box { background: linear-gradient(to bottom, #c9ffcf, #e8f5e9); } .task-silver-box .task-icon-area::before { content: '🥈'; font-size: 30px; position: absolute; top: 25px; }
+    .task-gold-box { background: linear-gradient(to bottom, #e6e0d0, #f5f5f5); } .task-gold-box .task-icon-area::before { content: '🥇'; font-size: 30px; position: absolute; top: 25px; }
+    .task-bronze-box { background: linear-gradient(to bottom, #d1c4e9, #f3e5f5); } .task-bronze-box .task-icon-area::before { content: '🥉'; font-size: 30px; position: absolute; top: 25px; }
+    .task-bonus { background: linear-gradient(to bottom, #ffe9b5, #fffde7); } .task-bonus .task-icon-area::before { content: '💰'; font-size: 30px; position: absolute; top: 25px; }
+    .task-survey { background: linear-gradient(to bottom, #b3e5fc, #e1f5fe); } .task-survey .task-icon-area::before { content: '📺'; font-size: 30px; position: absolute; top: 25px; }
+    /* -------------------------------------- */
+    /* 5. REWARDS CONTENT (Refer & Earn)      */
+    /* -------------------------------------- */
+    #rewards-content { padding: 0 0 20px 0; } 
+    
+    /* INVITE TAB styles */
+    #invite-tab-content { padding: 20px; }
+    .referral-card { background-color: #1e2a38; color: white; border-radius: 20px; padding: 20px; text-align: center; box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); }
+    .illustration-placeholder {
+      height: 120px;
+      background: url('https://i.ibb.co/4RzTfVh4/IMG-20251110-WA0008.jpg') no-repeat center center;
+      background-size: cover;
+      border-radius: 15px 15px 0 0;
+      margin: -20px -20px 0;
+    }
+    .referral-card h3 { font-size: 1.1em; margin-top: 10px; margin-bottom: 5px; }
+    .referral-card .bonus { font-size: 1.8em; font-weight: 900; color: #ffc107; margin-bottom: 20px; }
+    .referral-link-box { border: 2px dashed rgba(255, 255, 255, 0.5); border-radius: 10px; padding: 15px 10px; margin-bottom: 25px; font-size: 0.9em; word-break: break-all; position: relative; }
+    .referral-link-box .social-icons { position: absolute; top: 10px; right: 10px; width: 30px; height: 30px; background-color: rgba(255, 255, 255, 0.2); border-radius: 5px; }
+    .invite-button { display: block; width: 80%; margin: 0 auto; padding: 12px; background-color: white; color: #1e2a38; font-weight: bold; border-radius: 8px; cursor: pointer; }
+
+    .how-to-get { padding: 20px 0; }
+    .how-to-get h2 { font-size: 1.4em; margin-bottom: 20px; }
+    .rule-item { display: flex; align-items: flex-start; margin-bottom: 25px; }
+    .rule-item .icon-container { width: 60px; height: 60px; border-radius: 50%; background-color: #e0f7fa; display: flex; justify-content: center; align-items: center; margin-right: 15px; flex-shrink: 0; }
+    .rule-item .text-content { font-size: 0.95em; }
+    .rule-item .text-content strong { display: block; font-size: 1.1em; margin-bottom: 5px; }
+
+
+    /* REWARDS TAB (Screenshot 2 Style) */
+    #rewards-tab-content { padding: 20px; }
+    .rewards-stats-box {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        background-color: white;
+        padding: 25px 0;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+        margin-bottom: 15px;
+    }
+    .rewards-stats-item {
+        text-align: center;
+        flex: 1;
+        padding: 0 10px;
+    }
+    .rewards-stats-item .count {
+        font-size: 2em;
+        font-weight: 900;
+        color: #000;
+    }
+    .rewards-stats-item .label {
+        font-size: 0.9em;
+        color: #555;
+        font-weight: 600;
+    }
+    .rewards-stats-separator {
+        width: 1px;
+        height: 50px;
+        background-color: #ccc;
+    }
+    .active-invite-note {
+        font-size: 0.9em;
+        color: #777;
+        margin-bottom: 30px;
+        padding: 0 20px;
+    }
+
+    /* Reward Timeline Styling */
+    .reward-timeline {
+        padding-left: 20px;
+        position: relative;
+    }
+    .reward-timeline::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 4px;
+        background-color: #ddd;
+        border-radius: 2px;
+    }
+    .timeline-item {
+        margin-bottom: 30px;
+        padding-left: 30px;
+        position: relative;
+    }
+    .timeline-item-icon {
+        position: absolute;
+        left: -12px;
+        top: 5px;
+        width: 28px;
+        height: 28px;
+        background-color: white;
+        border: 4px solid #ddd;
+        border-radius: 50%;
+        z-index: 2;
+    }
+    .timeline-title {
+        font-weight: bold;
+        margin-bottom: 15px;
+        color: #333;
+    }
+    .timeline-card {
+        background-color: white;
+        border-radius: 10px;
+        padding: 15px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        display: flex;
+        align-items: center;
+        width: 100%;
+    }
+
+    /* Specific card styles based on screenshot */
+    .card-coins {
+        background: linear-gradient(135deg, #4d8aff, #2a6bf2);
+        color: white;
+    }
+    .card-bluetooth {
+        background: linear-gradient(135deg, #7ad399, #4CAF50);
+        color: white;
+    }
+    .card-coins .reward-icon,
+    .card-bluetooth .reward-icon {
+        font-size: 2em;
+        margin-right: 15px;
+    }
+    .card-text strong {
+        font-size: 1.1em;
+        display: block;
+        font-weight: bold;
+    }
+    .card-text span {
+        font-size: 0.9em;
+    }
+    
+    /* LEADERBOARD TAB (Screenshot 1 Style) */
+    #leaderboard-tab-content { padding: 0; }
+    
+    .leaderboard-banner-custom {
+        background-color: #1a237e; /* Deep blue/purple */
+        border-radius: 10px;
+        margin: 0 20px 0 20px; 
+        padding: 0;
+        height: 250px; 
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-end;
+        overflow: hidden;
+        position: relative;
+    }
+
+    /* Podium Illustration Approximation */
+    .leaderboard-banner-custom::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 100%;
+        background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 250" preserveAspectRatio="none"><defs><linearGradient id="g1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="%23673ab7"/><stop offset="100%" stop-color="%231a237e"/></linearGradient></defs><rect x="0" y="0" width="400" height="250" fill="url(%23g1)"/><path d="M 0 100 Q 200 -50, 400 100 L 400 250 L 0 250 Z" fill="%23101757"/><g transform="translate(200, 70)"><rect x="-50" y="15" width="100" height="40" fill="%23e53935" rx="5"/><rect x="-105" y="30" width="50" height="25" fill="%23c0ca33" rx="5"/><rect x="55" y="40" width="50" height="15" fill="%2342a5f5" rx="5"/><text x="0" y="45" font-size="18" font-weight="bold" fill="white" text-anchor="middle">1</text><text x="-80" y="45" font-size="18" font-weight="bold" fill="white" text-anchor="middle">2</text><text x="80" y="45" font-size="18" font-weight="bold" fill="white" text-anchor="middle">3</text><text x="0" y="-10" font-size="40" font-weight="bold" fill="%23ffc107" text-anchor="middle">🏆</text></g></svg>');
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+    .leaderboard-banner-custom .podium-text-overlay {
+        position: relative;
+        z-index: 10;
+        padding: 15px 0;
+        width: 100%;
+        text-align: center;
+        background-color: rgba(26, 35, 126, 0.7); 
+    }
+    .leaderboard-banner-custom h2 {
+        color: white;
+        font-size: 1.4em;
+        font-weight: 700;
+        margin: 0;
+    }
+
+    /* Leaderboard Table Specific Styles */
+    .leaderboard-table-custom {
+        width: 90%;
+        max-width: 500px;
+        border-collapse: collapse;
+        background-color: white;
+        border-radius: 10px;
+        overflow: hidden;
+        margin: 20px auto 20px auto; 
+        box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    }
+    .leaderboard-table-custom th, .leaderboard-table-custom td {
+        padding: 15px 15px;
+        text-align: left;
+        border-bottom: 1px solid #eee;
+    }
+    .leaderboard-table-custom th {
+        background-color: #f8f8f8;
+        color: #555;
+        font-size: 0.9em;
+        font-weight: 600;
+    }
+    .leaderboard-table-custom tr:last-child td { border-bottom: none; }
+    .leaderboard-table-custom .rank-cell {
+        width: 15%;
+        font-weight: 600;
+    }
+    .leaderboard-table-custom .user-cell {
+        width: 55%;
+    }
+    .leaderboard-table-custom .coins-cell {
+        width: 30%;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        font-weight: bold;
+        color: #333;
+        font-size: 0.95em;
+    }
+    .leaderboard-table-custom .coin-icon {
+        color: #ffc107;
+        margin-left: 5px;
+        font-size: 1em;
+    }
+    
+    /* Ad Placeholder Style */
+    .ad-placeholder {
+        background-color: #f44336; 
+        color: white; 
+        margin: 0 20px 20px 20px; 
+        padding: 10px; 
+        border-radius: 5px; 
+        font-size: 0.8em; 
+        display: flex; 
+        justify-content: space-between; 
+        align-items: center;
+        max-width: 500px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+
+
+    /* -------------------------------------- */
+    /* 5. WALLET CONTENT                      */
+    /* -------------------------------------- */
+    #wallet-content {
+        padding: 20px 20px 80px 20px;
+    }
+    .withdrawal-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+        margin-bottom: 30px;
+        max-width: 500px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .withdrawal-item {
+        background-color: white;
+        border-radius: 15px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        overflow: hidden;
+        text-align: center;
+        padding: 10px 10px 0 10px;
+        position: relative;
+        cursor: pointer;
+        min-height: 190px;
+    }
+    .withdrawal-image {
+        height: 100px; 
+        width: 100%;
+        margin-bottom: 10px;
+        background-size: contain;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+    .withdrawal-name {
+        font-weight: bold;
+        font-size: 1.1em;
+        margin-bottom: 15px;
+    }
+    
+    /* Specific Image Placeholders (Logo URLs) */
+    .upi-logo { background-image: url('https://i.ibb.co/ZRspN3jG/UPI-Logo.png'); height: 80px; margin-top: 15px; }
+    .bank-logo { background-image: url('https://i.ibb.co/bM7zSR2G/download-38.png'); }
+    .paypal-logo { background-image: url('https://i.ibb.co/8n7SMNXv/download-39.png'); }
+    .binance-logo { background-image: url('https://i.ibb.co/Zp3SzD29/download-37.png'); }
+    .googleplay-logo { background-image: url('https://i.ibb.co/BF6wRhZ/google-pay-logo-png-seeklogo-324563.png'); }
+    .amazon-logo { background-image: url('https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg'); }
+    .easypaisa-logo { background-image: url('https://i.ibb.co/tPz8VcqP/download-36.png'); }
+
+    /* Custom coin band at the bottom */
+    .withdrawal-item .coin-band {
+        background-color: #f0f0f0;
+        padding: 10px 0;
+        width: 100%;
+        margin-top: 10px;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+    }
+    .withdrawal-item .coin-band span {
+        font-weight: bold;
+        color: #333;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .withdrawal-item .coin-band i {
+        color: #ffc107;
+        margin-right: 5px;
+    }
+    .withdrawal-item { padding-bottom: 45px; }
+
+
+    .disclaimer {
+        padding: 0 20px;
+        font-size: 0.85em;
+        color: #777;
+        margin-top: 20px;
+        text-align: justify;
+        max-width: 500px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+
+    /* -------------------------------------- */
+    /* 6. REWARDS/LEADERBOARD CONTENT         */
+    /* -------------------------------------- */
+    #rewards-content { padding: 0 0 20px 0; } 
+    #invite-tab-content { padding: 20px; }
+    #rewards-tab-content { padding: 20px; }
+    #leaderboard-tab-content { padding: 0; }
+    .rewards-stats-box { max-width: 500px; margin: 0 auto 15px auto; }
+    .active-invite-note { max-width: 500px; margin: 0 auto 30px auto; padding: 0 20px; }
+    .reward-timeline { max-width: 500px; margin: 0 auto; padding: 0 20px 0 35px; }
+    .leaderboard-banner-custom { max-width: 500px; margin: 0 auto; }
+    .leaderboard-table-custom {
+        width: 90%;
+        max-width: 500px;
+        margin: 20px auto 20px auto; 
+    }
+    .ad-placeholder { max-width: 500px; margin: 0 auto 20px auto; }
+    /* (Rewards/Leaderboard Specific styles are defined higher up) */
+
+
+    /* -------------------------------------- */
+    /* 7. MORE CONTENT (Settings Menu)        */
+    /* -------------------------------------- */
+    #more-content { padding: 20px 20px 80px 20px; }
+    .menu-list {
+        background-color: white;
+        margin: 0 0 30px 0;
+        border-radius: 10px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    }
+    .menu-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 20px;
+        border-bottom: 1px solid #eee;
+        color: #333;
+        font-size: 1.1em;
+        cursor: pointer;
+    }
+    .menu-item:last-child {
+        border-bottom: none;
+        color: #f44336; 
+        font-weight: bold;
+    }
+    .menu-item i { color: #777; }
+    .menu-item .icon-left { margin-right: 15px; color: #1e88e5; width: 25px; text-align: center; }
+
+    /* Social Community Styles */
+    .social-proof {
+        text-align: center;
+        padding: 0 20px;
+    }
+    .social-proof p {
+        font-size: 0.95em;
+        color: #555;
+        margin-bottom: 20px;
+    }
+    .social-icons-group a {
+        display: inline-block;
+        margin: 0 8px;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        line-height: 50px;
+        color: white;
+        font-size: 1.5em;
+        text-align: center;
+        transition: transform 0.2s;
+    }
+    .social-icons-group .instagram { background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%); }
+    .social-icons-group .facebook { background-color: #3b5998; }
+    .social-icons-group .youtube { background-color: #ff0000; }
+    .social-icons-group .telegram { background-color: #0088cc; }
+
+
+    /* -------------------------------------- */
+    /* 8. RESPONSIVE STYLES                   */
+    /* -------------------------------------- */
+    @media (min-width: 768px) {
+      .app-header-top { padding: 20px 30px; }
+      .app-header-top .title { font-size: 1.4em; }
+      .task-grid { grid-template-columns: repeat(3, 1fr); gap: 20px; max-width: 900px; }
+      .mobile-footer { display: none; } 
+      body { padding-bottom: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 1. Mobile App Header -->
+  <header class="app-header">
+    <div class="app-header-top" id="app-header-top">
+      <i class="back-arrow fas fa-arrow-left"></i>
+      <span class="title" id="header-title">Daily Tasks</span>
+      <div class="header-icons">
+          <!-- Profile Icon with link -->
+          <a href="how-to-earn-Profile.html"><i class="fas fa-user"></i></a> 
+          <!-- Notification Icon with link -->
+          <a href="how-to-earn.html"><i class="fas fa-bell"></i></a> 
+      </div>
+    </div>
+    
+    <!-- Tab Navigation (Only visible on Rewards/Invite page) -->
+    <nav class="tab-navigation" id="rewards-tabs">
+      <a href="#" class="tab-link active" data-tab="invite-tab">INVITE</a>
+      <a href="#" class="tab-link" data-tab="rewards-tab">REWARDS</a>
+      <a href="#" class="tab-link" data-tab="leaderboard-tab">LEADERBOARD</a>
+    </nav>
+  </header>
+
+  <!-- 2. Main Content Area -->
+  <main>
+    
+    <!-- HOME CONTENT (Daily Task & Carousel) -->
+    <section id="home-content" class="content-section active">
+        <div class="carousel-wrapper">
+            <div class="carousel-track">
+                <a href="Daliy Task.html" class="carousel-slide"></a>
+                <a href="how-to-earn.html" class="carousel-slide"></a>
+                <a href="how-to-earn.html" class="carousel-slide"></a>
+                <a href="how-to-earn.html" class="carousel-slide"></a>
+                <a href="how-to-earn.html" class="carousel-slide"></a>
+                <a href="how-to-earn.html" class="carousel-slide"></a>
+                <a href="how-to-earn.html" class="carousel-slide"></a>
+                <a href="how-to-earn.html" class="carousel-slide"></a>
+                <a href="how-to-earn.html" class="carousel-slide"></a>
+                <a href="how-to-earn.html" class="carousel-slide"></a>
+            </div>
+        </div>
+  <h2 class="task-heading">Download App</h2>
+          <div class="ad-placeholder">
+                <div>Free Earnings <br>Download the app and win Rs.10k</div>
+                <a href="https://d.apkpure.com/b/APK/com.jmscde.blogspot?version=latest" style="padding: 8px 15px; background-color: black; color: white; border-radius: 5px; font-weight: bold;">INSTALL</a>
+            </div>  
+   <h2 class="task-heading">Daily Task</h2>
+        <div class="task-grid">
+            <a href="Daliy Task.html" class="task-item task-daily-check"><div class="task-icon-area"></div><span class="task-name">Daily Tasks</span></a>
+            <a href="how-to-earn-deposit.html" class="task-item task-scratch-card"><div class="task-icon-area"></div><span class="task-name">Deposit Card </span></a>
+            <a href="How to withdrawal.html" class="task-item task-captcha"><div class="task-icon-area"></div><span class="task-name">Withdrawal</span></a>
+            <a href="Add Manage Link.html" class="task-item task-spin-wheel"><div class="task-icon-area"></div><span class="task-name">Add/Manage My Links</span></a>
+            <a href="For You.html" class="task-item task-magic-box"><div class="task-icon-area"></div><span class="task-name">Magic Box</span></a>
+            <a href="Send Blance Another User.html" class="task-item task-silver-box"><div class="task-icon-area"></div><span class="task-name">Send Blance Another User</span></a>
+            <a href="how-to-earn.html" class="task-item task-gold-box"><div class="task-icon-area"></div><span class="task-name">Gold Box</span></a>
+            <a href="how-to-earn.html" class="task-item task-bronze-box"><div class="task-icon-area"></div><span class="task-name">Bronze Box</span></a>
+            <a href="how-to-earn.html" class="task-item task-bonus"><div class="task-icon-area"></div><span class="task-name">Extra Bonus</span></a>
+            <a href="how-to-earn.html" class="task-item task-survey"><div class="task-icon-area"></div><span class="task-name">Video Offer</span></a>
+        </div>
+    </section>
+
+    <!-- REWARDS CONTENT (Refer & Earn) -->
+    <section id="rewards-content" class="content-section">
+        <div id="invite-tab-content" class="tab-content active">
+            <div class="referral-card">
+                <div class="illustration-placeholder"></div>
+                <h3>Invite your friend and family and get</h3>
+                <div class="bonus">2500 Coins + 5% Extra</div>
+                <div class="referral-link-box">
+                    https://www.yoursmed.xyz/?ref=RZCS-Y8ZJ
+                    <div class="social-icons"></div>
+                </div>
+                <a href="https://www.yoursmed.xyz/?ref=RZCS-Y8ZJ" class="invite-button">Invite Now</a>
+            </div>
+            <div class="how-to-get">
+                <h2>How you will get coins ?</h2>
+                <div class="rule-item">
+                    <div class="icon-container"><i class="fas fa-user-plus" style="color: #ffc107;"></i></div>
+                    <div class="text-content">
+                        <strong>1. You will get 100 Coins + 5% earning comission</strong>
+                        when your friend sign-up with your link. you will get 5% comission of your friends earnings for life time.
+                    </div>
+                </div>
+                <div class="rule-item">
+                    <div class="icon-container"><i class="fas fa-sack-dollar" style="color: #4caf50;"></i></div>
+                    <div class="text-content">
+                        <strong>2. You will get 500 Coins</strong>
+                        when your friend make 1st withdrawal
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="rewards-tab-content" class="tab-content">
+            <div class="rewards-stats-box">
+                <div class="rewards-stats-item"><div class="count">0</div><div class="label">Total Invite</div></div>
+                <div class="rewards-stats-separator"></div>
+                <div class="rewards-stats-item"><div class="count">0</div><div class="label">Active Invite</div></div>
+            </div>
+            <p class="active-invite-note">*Active invite means when your friend get first withdrawal</p>
+
+            <h2 class="task-heading" style="margin: 0 20px 20px 20px;">Reward Timeline</h2>
+            
+            <div class="reward-timeline">
+                <div class="timeline-item">
+                    <div class="timeline-item-icon"></div>
+                    <div class="timeline-title">Unlock on 100 Invites</div>
+                    <div class="timeline-card card-coins">
+                        <i class="fas fa-trophy reward-icon"></i>
+                        <div class="card-text">
+                            <strong>Win 10,000 Coins Bonus</strong>
+                        </div>
+                    </div>
+                </div>
+     
+                <div class="timeline-item">
+                    <div class="timeline-item-icon"></div>
+                    <div class="timeline-title">Unlock on 500 Total Invites</div>
+                    <div class="timeline-card card-bluetooth">
+                        <i class="fas fa-headphones-alt reward-icon"></i> 
+                        <div class="card-text">
+                            <strong>Win Bluetooth</strong>
+                            <span>invite 500 friends and win Bluetooth</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="leaderboard-tab-content" class="tab-content">
+            
+            <div class="leaderboard-banner-custom">
+                <div class="podium-text-overlay">
+                    <h2>Top 50 User Rank!</h2>
+                </div>
+            </div>
+            
+            <table class="leaderboard-table-custom">
+                <thead>
+                    <tr>
+                        <th class="rank-cell">Rank</th>
+                        <th class="user-cell">User Name</th>
+                        <th class="coins-cell" style="justify-content: flex-end;">Coins</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td class="rank-cell">1</td><td class="user-cell">Nazim</td><td class="coins-cell">1369219.45 <i class="fas fa-coins coin-icon"></i></td></tr>
+                    <tr><td class="rank-cell">2</td><td class="user-cell">Zaheer </td><td class="coins-cell">917451.10 <i class="fas fa-coins coin-icon"></i></td></tr>
+                    <tr><td class="rank-cell">3</td><td class="user-cell">Usha </td><td class="coins-cell">310126.95 <i class="fas fa-coins coin-icon"></i></td></tr>
+                    <tr><td class="rank-cell">4</td><td class="user-cell">Khushbu </td><td class="coins-cell">198560.25 <i class="fas fa-coins coin-icon"></i></td></tr>
+                    <tr><td class="rank-cell">5</td><td class="user-cell">Anvi </td><td class="coins-cell">196966.55 <i class="fas fa-coins coin-icon"></i></td></tr>
+                    <tr><td class="rank-cell">6</td><td class="user-cell">Devrai</td><td class="coins-cell">185612.75 <i class="fas fa-coins coin-icon"></i></td></tr>
+                    
+
+                    <tr><td class="rank-cell">7</td><td class="user-cell">Zaheer</td><td class="coins-cell">917451.10 <i class="fas fa-coins coin-icon"></i></td></tr>
+                    <tr><td class="rank-cell">8</td><td class="user-cell">Brahma</td><td class="coins-cell">310126.95 <i class="fas fa-coins coin-icon"></i></td></tr>
+                    <tr><td class="rank-cell">9</td><td class="user-cell">Gour</td><td class="coins-cell">198560.25 <i class="fas fa-coins coin-icon"></i></td></tr>
+                    <tr><td class="rank-cell">10</td><td class="user-cell">Raj</td><td class="coins-cell">196966.55 <i class="fas fa-coins coin-icon"></i></td></tr>
+                    <tr><td class="rank-cell">11</td><td class="user-cell">Devra</td><td class="coins-cell">185612.75 <i class="fas fa-coins coin-icon"></i></td></tr>
+                   
+                
+                </tbody>
+            </table>
+            
+            <div class="ad-placeholder">
+                <div>C444<br>Download the app and receive Rs...</div>
+                <a href="https://d.apkpure.com/b/APK/com.jmscde.blogspot?version=latest" style="padding: 8px 15px; background-color: black; color: white; border-radius: 5px; font-weight: bold;">INSTALL</a>
+            </div>
+
+        </div>
+
+    </section>
+    
+    <!-- WALLET CONTENT -->
+    <section id="wallet-content" class="content-section">
+        <div class="withdrawal-grid">
+            
+            <!-- UPI -->
+            <a href="How to withdrawal.html" class="withdrawal-item">
+                <div class="withdrawal-image upi-logo"></div>
+                <div class="withdrawal-name">Upi</div>
+                <div class="coin-band">
+                    <span><i class="fas fa-coins"></i> 2500$</span>
+                </div>
+            </a>
+
+            <!-- Bank -->
+            <a href="How to withdrawal.html" class="withdrawal-item">
+                <div class="withdrawal-image bank-logo"></div>
+                <div class="withdrawal-name">Bank</div>
+                <div class="coin-band">
+                    <span><i class="fas fa-coins"></i> 5000$</span>
+                </div>
+            </a>
+
+            <!-- PayPal -->
+            <a href="How to withdrawal.html" class="withdrawal-item">
+                <div class="withdrawal-image paypal-logo"></div>
+                <div class="withdrawal-name">Bitget</div>
+                <div class="coin-band">
+                    <span><i class="fas fa-coins"></i> 8000$</span>
+                </div>
+            </a>
+
+            <!-- Binance -->
+            <a href="How to withdrawal.html" class="withdrawal-item">
+                <div class="withdrawal-image binance-logo"></div>
+                <div class="withdrawal-name">Jazz Cash </div>
+                <div class="coin-band">
+                    <span><i class="fas fa-coins"></i> 8000$</span>
+                </div>
+            </a>
+            
+            <!-- Google Play -->
+            <a href="How to withdrawal.html" class="withdrawal-item">
+                <div class="withdrawal-image googleplay-logo"></div>
+                <div class="withdrawal-name">Google Play</div>
+                <div class="coin-band">
+                    <span><i class="fas fa-coins"></i> 4000$</span>
+                </div>
+            </a>
+            
+            <!-- Amazon -->
+            <a href="#How to withdrawal.html" class="withdrawal-item">
+                <div class="withdrawal-image amazon-logo"></div>
+                <div class="withdrawal-name">Amazon</div>
+                <div class="coin-band">
+                    <span><i class="fas fa-coins"></i> 5000$</span>
+                </div>
+            </a>
+
+            <!-- EasyPaisa -->
+            <a href="How to withdrawal.html" class="withdrawal-item">
+                <div class="withdrawal-image easypaisa-logo"></div>
+                <div class="withdrawal-name">EasyPaisa</div>
+                <div class="coin-band">
+                    <span><i class="fas fa-coins"></i> 2000$</span>
+                </div>
+            </a>
+
+        </div>
+
+      <div style="max-width: 800px; margin: 40px auto; padding: 30px; background-color: #f9f9f9; border-radius: 12px; box-shadow: 0 6px 12px rgba(0,0,0,0.1); font-family: Arial, sans-serif; color: #333; text-align: center;">
+
+    <!-- Coming Soon Section -->
+    <div style="margin-bottom: 30px;">
+        <h2 style="font-size: 28px; color: #333; margin-bottom: 10px;">Coming Soon</h2>
+        <p style="font-size: 16px; color: #666;">Stay tuned! Exciting features are on the way.</p>
+    </div>
+
+    <!-- Disclaimers Section -->
+    <div>
+        <h2 style="font-size: 24px; color: #333; margin-bottom: 10px;">Disclaimers</h2>
+        <p style="font-size: 16px; line-height: 1.6; color: #555;">
+            The merchants represented are not sponsors of the rewards or otherwise affiliated with Reward King. 
+            All logos and other identifying marks are trademarks of their respective companies. 
+            Please visit each brand's official website for their terms, conditions, and policies.
+        </p>
+    </div>
+
+</div>
+
+    </section>
+
+    
+    <!-- MORE CONTENT (Settings, Profile, Social) -->
+    <section id="more-content" class="content-section">
+        <h2 class="task-heading" style="margin-top: 0;">Settings & Support</h2>
+        <div class="menu-list">
+         <a href="How to withdrawal.html" class="menu-item"><span style="display: flex; align-items: center;"><i class="fas fa-wallet icon-left"></i> My Wallet</span><i class="fas fa-chevron-right"></i></a>
+         <a href="How to make.html" class="menu-item"><span style="display: flex; align-items: center;"><i class="fas fa-file-contract icon-left"></i> Privacy Policy</span><i class="fas fa-chevron-right"></i></a>
+         <a href="FAQ.html" class="menu-item"><span style="display: flex; align-items: center;"><i class="fas fa-question-circle icon-left"></i> FAQ</span><i class="fas fa-chevron-right"></i></a>
+          <a href="how-to-earn.html" class="menu-item"><span style="display: flex; align-items: center;"><i class="fas fa-headset icon-left"></i> Contact Us</span><i class="fas fa-chevron-right"></i></a>
+         <a href="how-to-earn.html" class="menu-item logout">Logout</a>
+        </div>
+        
+        <div class="social-proof">
+            <h2 class="task-heading">Join Our Community</h2>
+            <p>Stay updated and interact with other users on our official social media channels.</p>
+            <div class="social-icons-group">
+                <a href="https://www.instagram.com/gmnetworking9?igsh=ejV6MjUzcTVyMGxz" class="instagram"><i class="fab fa-instagram"></i></a>
+                <a href="https://www.facebook.com/share/g/17sxdUs6R4/" class="facebook"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://youtube.com/@gmnetworking9?si=IYcb16i1RQ_iazxJ" class="youtube"><i class="fab fa-youtube"></i></a>
+                <a href="https://t.me/gmnetworkings" class="telegram"><i class="fab fa-telegram-plane"></i></a>
+            </div>
+        </div>
+
+    </section>
+
+  </main>
+
+  <!-- 3. Fixed Mobile Footer Navigation -->
+  <footer class="mobile-footer">
+    <a href="#" class="nav-link active" data-page="home-content"><i class="fas fa-home"></i>Home</a>
+    <a href="#" class="nav-link" data-page="rewards-content"><i class="fas fa-gift"></i>Rewards</a>
+    <a href="#" class="nav-link" data-page="wallet-content"><i class="fas fa-wallet"></i>Wallet</a>
+    <a href="#" class="nav-link" data-page="more-content"><i class="fas fa-bars"></i>More</a>
+  </footer>
+
+  <!-- 4. Javascript for Navigation Functionality -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const navLinks = document.querySelectorAll('.mobile-footer .nav-link');
+      const contentSections = document.querySelectorAll('.content-section');
+      const rewardsTabs = document.getElementById('rewards-tabs');
+      const headerTitle = document.getElementById('header-title');
+      const appHeader = document.querySelector('.app-header');
+
+      // Function to handle main page switching
+      function switchPage(targetPageId, title) {
+        // Deactivate all sections
+        contentSections.forEach(section => section.classList.remove('active'));
+        // Activate target section
+        const targetSection = document.getElementById(targetPageId);
+        if (targetSection) {
+          targetSection.classList.add('active');
+          headerTitle.textContent = title;
+        }
+
+        // --- Header Style Control ---
+        // flat-header class is used for the Wallet and Refer & Earn screens
+        const needsFlatHeader = (targetPageId === 'rewards-content' || targetPageId === 'wallet-content');
+        
+        if (needsFlatHeader) {
+          appHeader.classList.add('flat-header'); 
+          // Show rewards tabs only on rewards page
+          rewardsTabs.style.display = (targetPageId === 'rewards-content') ? 'flex' : 'none';
+        } else {
+          appHeader.classList.remove('flat-header'); // Default header style (Home/More)
+          rewardsTabs.style.display = 'none';
+        }
+        
+        // --- Title Control ---
+        if (targetPageId === 'rewards-content') {
+             headerTitle.textContent = 'Refer & Earn';
+             // Re-initialize rewards sub-tabs when entering rewards page
+             const defaultTabLink = rewardsTabs.querySelector('.tab-link.active');
+             if (defaultTabLink) {
+                 const defaultTabId = defaultTabLink.getAttribute('data-tab');
+                 switchTab(defaultTabId);
+             }
+        } else if (targetPageId === 'wallet-content') {
+             headerTitle.textContent = 'Wallet';
+        }
+
+      }
+
+      // Function to handle Rewards sub-tab switching
+      function switchTab(targetTabId) {
+        document.querySelectorAll('#rewards-content .tab-content').forEach(tab => {
+          tab.classList.remove('active');
+        });
+        document.getElementById(targetTabId + '-content').classList.add('active');
+        
+        // Update active class on tab links
+        rewardsTabs.querySelectorAll('.tab-link').forEach(link => {
+            link.classList.remove('active');
+        });
+        rewardsTabs.querySelector(`[data-tab="${targetTabId}"]`).classList.add('active');
+      }
+
+      // Event Listeners for Footer Navigation
+      navLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          const targetPageId = link.getAttribute('data-page');
+          
+          // Update active class on footer links
+          navLinks.forEach(l => l.classList.remove('active'));
+          link.classList.add('active');
+
+          let title = '';
+          switch(targetPageId) {
+            case 'home-content': title = 'Daily Tasks'; break;
+            case 'rewards-content': title = 'Invite & Earn'; break;
+            case 'wallet-content': title = 'Wallet'; break;
+            case 'more-content': title = 'More'; break;
+            default: title = 'YoursMed App';
+          }
+          
+          switchPage(targetPageId, title);
+        });
+      });
+
+      // Event Listeners for Rewards Tab Links
+      document.querySelectorAll('#rewards-tabs .tab-link').forEach(tabLink => {
+        tabLink.addEventListener('click', (e) => {
+          e.preventDefault();
+          const targetTabId = tabLink.getAttribute('data-tab');
+          switchTab(targetTabId);
+        });
+      });
+
+      // Initialize: Start on the Home page
+      switchPage('home-content', 'Daily Tasks');
+
+    });
+  </script>
+</body>
+</html>
