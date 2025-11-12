@@ -93,9 +93,12 @@
   <aside class="sidebar" id="sidebar">
     <nav id="mainNav">
       <!-- Navigation buttons -->
-      <button data-section="forYouPage">For You</button> <!-- Moved up for priority if needed -->
- 
    
+         <button data-section="forYouPage">For You</button>
+      
+      <button data-section="referrals">Referral</button>
+
+      
       <button id="adminPanelBtn" data-section="adminPanel" style="display:none;">Admin Panel</button>
       <button id="logoutBtn">Logout</button>
   
@@ -114,28 +117,8 @@
     <section id="affiliatesSection" class="ysense-affiliate-page active">
         <div class="content-box">
             <div class="breadcrumb">
-                <i class="fa fa-home"></i> Home › For You <span class="refresh-icon">↻</span>
+                <i class="fa fa-home"></i> Home › Affiliates <span class="refresh-icon">↻</span>
             </div>
-<!-- For You Page Section (MODIFIED WITH NEW ARTICLE) -->
-
-  <h2>Mega Wine  😍</h2>
-<p>Click the header button Join Now to go to 'In Your Account'</p>
-  <p class="animated-description"> Here are some recommended tasks and links For You.</p>
-
-  <!-- === YAHAN NAYA CODE ADD KIYA GAYA HAI === -->
-  <div class="special-offer-box" style="border: 1px solid #ffc107; padding: 15px; margin-top: 20px; border-radius: 8px; background-color: rgba(255, 193, 7, 0.1);">
-      <p class="animated-description" style="margin: 0; font-size: 16px; line-height: 1.6;">
-          <strong>Khas Offer!</strong> Abhi hamare special contest mein hissa lein aur aapko moqa mil sakta hai 
-          <a href="#" target="_blank" style="color: #00ffdd; font-weight: bold; text-decoration: underline;">
-              win 1000 rupees to 10000 tak
-          </a>!
-          Yeh offer mehdood muddat ke liye hai. Link par click karein aur apni qismat aazmayen.
-      </p>
-  </div>
-  <!-- === NAYA CODE YAHAN KHATAM HOTA HAI === -->
-
-  <div id="forYouTasksContainer" class="dashboard-container"></div>
-
             <h1>Become a gMnetworking Affiliate and start earning today!</h1>
             <p>Share gMnetworking with your friends and watch your earnings grow. Earn up to 10% recurring commissions on what your referrals make. Take advantage of our simple linking tools and eye-catching banners. The more you promote, the more you earn!</p>
 
@@ -211,14 +194,8 @@
 
 <!-- Sections (REORDERED) - These are hidden until logged in -->
 
-<!-- For You Page Section (MOVED HERE TO BE THE FIRST PAGE AFTER LOGIN) -->
-<section id="forYouPage">
-  <h2>For You</h2>
-  <p  class="animated-description"> Here are some recommended tasks and links For You.</p>
-  <div id="forYouTasksContainer" class="dashboard-container"></div>
-</section>
-
 <!-- Dashboard Section -->
+
 <section id="dashboard">
   <h2>Dashboard</h2>
   <div class="dashboard-container">
@@ -243,9 +220,12 @@
       <h3>₹<span id="walletBalance">0.00</span></h3>
     </div>
   </div>
+
+
 </section>
 
-<!-- Tasks Section -->
+<!-- Tasks Section (Moved to be the first functional section after Dashboard) -->
+
 <section id="tasks">
   <h2>Tasks to Complete</h2>
   <p class="animated-description">Complete tasks to earn rewards. Cooldown: 1 minutes between completions.</p>
@@ -257,6 +237,7 @@
 </section>
 
 <!-- Profile Section -->
+
 <section id="profile">
   <h2>My Profile</h2>
   <div class="profile-card">
@@ -289,6 +270,7 @@
 </section>
 
 <!-- Referrals Section -->
+
 <section id="referrals">
   <h2>Referral Earnings</h2>
   <p class="animated-description">Share your referral link to earn rewards when new users join through your link!</p>
@@ -298,7 +280,16 @@
   <div id="refUsers"></div>
 </section>
 
+<!-- For You Page Section -->
+
+<section id="forYouPage">
+  <h2>For You</h2>
+  <p  class="animated-description"> Here are some recommended tasks and links For You.</p>
+  <div id="forYouTasksContainer" class="dashboard-container"></div>
+</section>
+
 <!-- Withdrawals Section -->
+
 <section id="withdrawals">
   <h2 class="animated-description">Request Withdrawal</h2>
   <div class="withdrawal-warning-box">
@@ -337,6 +328,7 @@
 </section>
 
 <!-- Deposit Section -->
+
 <section id="deposit">
   <h2 class="animated-description">Deposit Funds</h2>
   <p class="animated-description">Apne account mein funds add karne ke liye, neeche di gai hidayat follow karen:</p>
@@ -365,6 +357,7 @@
 </section>
 
 <!-- NEW SECTION: Send Balance -->
+
 <section id="sendBalanceSection">
   <h2 class="animated-description">Send Balance to Another User</h2>
   <form id="sendBalanceForm">
@@ -391,6 +384,7 @@
 </section>
 
 <!-- Public Links Section (NEW) -->
+
 <section id="publicLinksSection">
   <h2 class="animated-description">Public Links</h2>
   <p class="animated-description">Share Explore links added by our community. You can only edit or delete the links you've added yourself.</p>
@@ -398,6 +392,7 @@
 </section>
 
 <!-- User Added Links Section -->
+
 <section id="userLinksSection">
 <div class="important-points">
 <div class="important-points">
@@ -475,6 +470,7 @@
 </section>
 
 <!-- Price Selection Modal -->
+
 <div id="priceSelectionModal" class="modal">
     <div class="modal-content">
         <span class="modal-close-btn">&times;</span>
@@ -485,6 +481,7 @@
 </div>
 
 <!-- NEW SECTION: Anusement -->
+
 <section id="anusement">
 <h2 class="neon-text">Work Details </h2>
   <p class="animated-description">Here you can find our latest task details content.</p>
@@ -506,6 +503,7 @@
 <!-- END NEW SECTION -->
 
 <!-- Admin Panel Section -->
+
 <section id="adminPanel">
     <h2>Admin Panel</h2>
     <form id="adminAddForm">
@@ -565,6 +563,7 @@
 </section>
 
 <!-- YouTube Video Section (MOVED TO THE END) -->
+
 <section id="youtubeVideoSection">
   <h2>Watch Videos to Earn</h2>
   <p class="animated-description">watch Video full earn 0.005$</p>
@@ -573,6 +572,7 @@
 </section>
 
 <!-- Modal for Details -->
+
 <div id="detailsModal" class="modal">
   <div class="modal-content">
     <span class="modal-close-btn">&times;</span>
@@ -582,6 +582,7 @@
 </div>
 
 <!-- Footer -->
+
 <footer>
   <div class="footer-links">
   
