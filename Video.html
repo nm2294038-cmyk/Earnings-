@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="ur">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firebase Video Rewards App (Iframe Fixed)</title>
+    
+    <!-- Firebase SDKs (Version 8.10.0) -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+
+    <style>
+        /* --- 1. MODERN CSS STYLING --- */
+        :root {
+            --primary-color: #007bff;
+            --secondary-color: #28a745;
+            --dark-bg: #2c3e50;
+            --light-bg: #ffffff;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f2f5;
+            color: #333;
+        }
+
+        header {
+            background-color: var(--dark-bg);
+            color: white;
+            padding: 20px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 1.8em;
+        }
+
+        /* --- Profile Icon and Wallet --- */
+        .profile-area {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .profile-icon {
+            cursor: pointer;
+            font-size: 2em;
+            color: white;
+            padding: 5px;
+            border-radius: 50%;
+            transition: background 0.3s;
+        }
+        
+        .profile-icon:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .wallet-display {
+            background-color: var(--secondary-color);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 1.1em;
+            display: none; /* Hidden until logged in */
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 30px auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .section {
+            background-color: var(--light-bg);
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease;
+            overflow: hidden;
+        }
+        
+        .section:hover {
+            transform: translateY(-5px);
+        }
+
+        .section h2 {
+            color: var(--primary-color);
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+
+        /* --- Video Wrapper and Overlay --- */
+        .video-wrapper {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            margin-top: 15px;
+            border-radius: 6px;
+        }
+
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .video-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            z-index: 10;
+            transition: opacity 0.3s;
+        }
+
+        .video-overlay-text {
+            color: white;
+            font-size: 1.5em;
+            font-weight: bold;
+            padding: 10px 20px;
+            border: 2px solid white;
+            border-radius: 5px;
+        }
+        
+        .video-overlay.disabled {
+            background: rgba(0, 0, 0, 0.8);
+            cursor: not-allowed;
+        }
+
+        /* --- Timer Display --- */
+        .timer-display {
+            margin-top: 10px;
+            padding: 8px;
+            background-color: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeeba;
+            border-radius: 4px;
+            text-align: center;
+            font-weight: bold;
+            display: none;
+        }
+
+        /* --- MODAL STYLING --- */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 100; 
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(3px);
+        }
+
+        .modal-content {
+            background-color: var(--light-bg);
+            margin: 10% auto;
+            padding: 30px;
+            border-radius: 10px;
+            width: 90%; 
+            max-width: 450px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            animation: fadeIn 0.5s;
+        }
+
+        .close-btn {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .auth-form input {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0 15px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        .auth-form button {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 1.1em;
+            margin-top: 10px;
+        }
+
+        .auth-toggle {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 0.9em;
+        }
+        
+        .auth-toggle a {
+            color: var(--primary-color);
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        @keyframes fadeIn {
+            from {opacity: 0; transform: scale(0.9);}
+            to {opacity: 1; transform: scale(1);}
+        }
+        
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Video Rewards App</h1>
+        
+        <div class="profile-area">
+            <!-- Wallet Display -->
+            <div class="wallet-display" id="walletDisplay">
+                Coins: 0
+            </div>
+            
+            <!-- Profile Icon -->
+            <div class="profile-icon" id="profileIcon">
+                👤
+            </div>
+        </div>
+    </header>
+
+    <div class="container" id="mainContainer">
+        <!-- Video Sections will be generated here -->
+    </div>
+
+    <!-- --- MODALS --- -->
+
+    <!-- 1. Auth Modal (Login/Signup) -->
+    <div id="authModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="document.getElementById('authModal').style.display='none'">&times;</span>
+            <h3 id="authTitle">Login Karen</h3>
+            
+            <form class="auth-form" id="authForm">
+                <input type="email" id="authEmail" placeholder="Email Address" required>
+                <input type="password" id="authPassword" placeholder="Password" required>
+                <button type="submit" id="authButton">Login</button>
+            </form>
+            
+            <div class="auth-toggle">
+                <p id="toggleText">Account nahi hai? <a onclick="toggleAuthMode()">Signup Karen</a></p>
+                <button id="logoutButton" style="display: none; background-color: #dc3545; margin-top: 15px;">Logout</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. Reward Modal -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="document.getElementById('rewardModal').style.display='none'">&times;</span>
+            <h3>Mubarak Ho! 🎉</h3>
+            <p style="font-size: 1.2em;">Aapko <strong>10 Coins</strong> mil gaye hain!</p>
+            <p>Aapka naya balance hai: <strong id="newBalanceDisplay">0</strong> Coins.</p>
+        </div>
+    </div>
+
+    <script>
+        // --- FIREBASE CONFIGURATION AND INITIALIZATION ---
+        const firebaseConfig = {
+            apiKey: "AIzaSyDH34rABE5IUzW_emhpShbzAyKtPsxrJ-w",
+            authDomain: "kids-40986.firebaseapp.com",
+            projectId: "kids-40986",
+            storageBucket: "kids-40986.firebasestorage.app",
+            messagingSenderId: "25167373930",
+            appId: "1:25167373930:web:fe17eb015b7796a7c90c13",
+            measurementId: "G-FPF4WPTG4C"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        // --- GLOBAL STATE AND CONSTANTS ---
+        let isSignupMode = false;
+        let currentUser = null;
+        const REWARD_TIME_SECONDS = 180;
+        const REWARD_COINS = 10;
+        
+        // Track which videos have given rewards (per session)
+        const rewardedVideos = {}; 
+
+        // Aapke diye gaye links (10 sections ke liye)
+        const sectionLinks = [
+            "https://youtu.be/fjHXG7brtso?si=JCqnjpNiCagLIj42", 
+            "https://youtu.be/fjHXG7brtso?si=JCqnjpNiCagLIj42", 
+            "https://youtu.be/fjHXG7brtso?si=JCqnjpNiCagLIj42", 
+            "https://youtu.be/fjHXG7brtso?si=JCqnjpNiCagLIj42", 
+            "https://youtu.be/fjHXG7brtso?si=JCqnjpNiCagLIj42", 
+            "https://youtu.be/fjHXG7brtso?si=JCqnjpNiCagLIj42", 
+            "https://youtu.be/fjHXG7brtso?si=JCqnjpNiCagLIj42", 
+            "https://youtu.be/fjHXG7brtso?si=JCqnjpNiCagLIj42", 
+            "https://youtu.be/fjHXG7brtso?si=JCqnjpNiCagLIj42", 
+            "https://youtu.be/fjHXG7brtso?si=JCqnjpNiCagLIj42"
+        ];
+
+        // --- DOM ELEMENTS ---
+        const authModal = document.getElementById('authModal');
+        const authTitle = document.getElementById('authTitle');
+        const authButton = document.getElementById('authButton');
+        const toggleText = document.getElementById('toggleText');
+        const logoutButton = document.getElementById('logoutButton');
+        const walletDisplay = document.getElementById('walletDisplay');
+        const newBalanceDisplay = document.getElementById('newBalanceDisplay');
+        const container = document.getElementById('mainContainer');
+
+        // --- FIREBASE AUTH FUNCTIONS ---
+
+        function toggleAuthMode() {
+            isSignupMode = !isSignupMode;
+            if (isSignupMode) {
+                authTitle.textContent = "Signup Karen";
+                authButton.textContent = "Signup";
+                toggleText.innerHTML = 'Account hai? <a onclick="toggleAuthMode()">Login Karen</a>';
+            } else {
+                authTitle.textContent = "Login Karen";
+                authButton.textContent = "Login";
+                toggleText.innerHTML = 'Account nahi hai? <a onclick="toggleAuthMode()">Signup Karen</a>';
+            }
+        }
+
+        document.getElementById('authForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('authEmail').value;
+            const password = document.getElementById('authPassword').value;
+
+            try {
+                if (isSignupMode) {
+                    const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+                    await db.collection('users').doc(userCredential.user.uid).set({
+                        coins: 0,
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                    alert("Signup Successful! Welcome.");
+                } else {
+                    await auth.signInWithEmailAndPassword(email, password);
+                    alert("Login Successful!");
+                }
+                authModal.style.display = 'none';
+            } catch (error) {
+                alert(`Authentication Failed: ${error.message}`);
+            }
+        });
+
+        logoutButton.addEventListener('click', async () => {
+            await auth.signOut();
+            Object.keys(rewardedVideos).forEach(key => rewardedVideos[key] = false);
+            alert("Logout Successful.");
+        });
+
+        // Real-time Auth State Listener
+        auth.onAuthStateChanged(user => {
+            currentUser = user;
+            if (user) {
+                document.getElementById('profileIcon').textContent = '✅';
+                walletDisplay.style.display = 'block';
+                logoutButton.style.display = 'block';
+                toggleText.style.display = 'none';
+                
+                listenToWallet(user.uid);
+                updateVideoOverlays(true);
+
+            } else {
+                document.getElementById('profileIcon').textContent = '👤';
+                walletDisplay.style.display = 'none';
+                logoutButton.style.display = 'none';
+                toggleText.style.display = 'block';
+                
+                updateVideoOverlays(false);
+            }
+        });
+
+        // --- WALLET AND FIRESTORE FUNCTIONS ---
+
+        function listenToWallet(uid) {
+            db.collection('users').doc(uid).onSnapshot(doc => {
+                if (doc.exists) {
+                    const data = doc.data();
+                    const coins = data.coins ? Number(data.coins) : 0; 
+                    walletDisplay.textContent = `Coins: ${coins}`;
+                    // Update popup balance display immediately
+                    newBalanceDisplay.textContent = coins; 
+                } else {
+                    db.collection('users').doc(uid).set({ coins: 0 });
+                }
+            }, error => {
+                console.error("Error listening to wallet:", error);
+            });
+        }
+
+        async function addCoinsToWallet(uid, amount) {
+            const userRef = db.collection('users').doc(uid);
+            try {
+                await userRef.update({
+                    coins: firebase.firestore.FieldValue.increment(amount) 
+                });
+            } catch (error) {
+                console.error("Error updating wallet:", error);
+                alert("Coins add nahi ho paye. Database connection ya permissions check karen.");
+            }
+        }
+
+        // --- VIDEO AND TIMER LOGIC ---
+
+        function getYouTubeId(url) {
+            let match = url.match(/[?&]v=([^&]+)/);
+            if (match) return match[1];
+            match = url.match(/youtu\.be\/([^?]+)/);
+            if (match) return match[1];
+            return 'fjHXG7brtso';
+        }
+        
+        function updateVideoOverlays(isLoggedIn) {
+            document.querySelectorAll('.video-overlay').forEach(overlay => {
+                if (isLoggedIn) {
+                    overlay.classList.remove('disabled');
+                    overlay.querySelector('.video-overlay-text').textContent = 'Video Play Karen Aur Coins Kamaen';
+                } else {
+                    overlay.classList.add('disabled');
+                    overlay.querySelector('.video-overlay-text').textContent = 'Login Karen Coins Kamane Ke Liye';
+                }
+            });
+        }
+
+        function showRewardPopup() {
+            document.getElementById('rewardModal').style.display = "block";
+        }
+
+        function startTimer(sectionId, overlayElement) {
+            if (!currentUser || rewardedVideos[sectionId]) return; 
+
+            const timerDisplay = document.getElementById(`timer-${sectionId}`);
+            timerDisplay.style.display = 'block';
+            let timeLeft = REWARD_TIME_SECONDS;
+            
+            timerDisplay.textContent = `Timer: ${timeLeft} seconds remaining...`;
+
+            const timerInterval = setInterval(async () => {
+                timeLeft--;
+                timerDisplay.textContent = `Timer: ${timeLeft} seconds remaining...`;
+
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    
+                    rewardedVideos[sectionId] = true; 
+                    
+                    // 1. Coins add karna
+                    await addCoinsToWallet(currentUser.uid, REWARD_COINS);
+                    
+                    // 2. UI update
+                    timerDisplay.textContent = `Mubarak! ${REWARD_COINS} Coins Mil Gaye!`;
+                    timerDisplay.style.backgroundColor = '#d4edda';
+                    timerDisplay.style.color = '#155724';
+                    
+                    // 3. Popup dikhana (Wallet listener khud hi newBalanceDisplay update kar dega)
+                    showRewardPopup();
+                    
+                    // 4. Overlay ko wapas lana
+                    overlayElement.style.display = 'flex';
+                    overlayElement.style.opacity = '1';
+                    overlayElement.querySelector('.video-overlay-text').textContent = 'Reward Mil Chuka Hai!';
+                    overlayElement.classList.add('disabled');
+                }
+            }, 1000);
+        }
+
+        // Function to handle the click on the overlay
+        function handleVideoClick(event, sectionId) {
+            const overlay = event.currentTarget;
+            
+            if (!currentUser) {
+                alert("Coins kamane ke liye pehle Login ya Signup karen.");
+                authModal.style.display = 'block';
+                return;
+            }
+            
+            if (rewardedVideos[sectionId]) {
+                alert("Aap is video ka reward pehle hi le chuke hain.");
+                return;
+            }
+            
+            if (overlay.classList.contains('disabled')) {
+                 alert("Login Karen Coins Kamane Ke Liye.");
+                 return;
+            }
+
+            const iframe = overlay.nextElementSibling;
+            
+            // 1. Overlay remove karna
+            overlay.style.opacity = '0';
+            setTimeout(() => {
+                overlay.style.display = 'none';
+            }, 300);
+
+            // 2. Video ko autoplay karna (FIXED: Setting src correctly with autoplay)
+            const videoId = getYouTubeId(sectionLinks[sectionId - 1]);
+            // Hum yahan iframe ka src dobara set kar rahe hain, is baar autoplay ke saath
+            iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&enablejsapi=1&rel=0`;
+
+            // 3. Timer shuru karna
+            startTimer(sectionId, overlay);
+        }
+
+
+        // --- INITIAL SECTION GENERATION ---
+        function generateSections() {
+            for (let i = 1; i <= 10; i++) {
+                const currentLink = sectionLinks[i - 1]; 
+                const videoId = getYouTubeId(currentLink);
+                // Initial embed URL without autoplay, just for loading the thumbnail
+                const embedUrl = `https://www.youtube.com/embed/${videoId}?enablejsapi=1&rel=0`;
+                
+                const section = document.createElement('div');
+                section.classList.add('section');
+                section.id = `section${i}`;
+                
+                section.innerHTML = `
+                    <h2>Section ${i}: Video Playback</h2>
+                    <div class="video-wrapper">
+                        
+                        <!-- Overlay for click detection -->
+                        <div class="video-overlay" id="overlay-${i}">
+                            <span class="video-overlay-text">Login Karen Coins Kamane Ke Liye</span>
+                        </div>
+
+                        <!-- Iframe (Initial src for loading) -->
+                        <iframe 
+                            src="${embedUrl}" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen>
+                        </iframe>
+                    </div>
+                    
+                    <!-- Timer Display -->
+                    <div class="timer-display" id="timer-${i}">
+                        Timer will start when you play the video.
+                    </div>
+                `;
+                
+                container.appendChild(section);
+                rewardedVideos[i] = false; // Initialize reward status
+
+                // Event Listener for the overlay
+                const overlayElement = document.getElementById(`overlay-${i}`);
+                overlayElement.addEventListener('click', (e) => handleVideoClick(e, i));
+            }
+            updateVideoOverlays(false);
+        }
+
+        // --- EVENT LISTENERS ---
+        document.getElementById('profileIcon').addEventListener('click', () => {
+            authModal.style.display = 'block';
+        });
+
+        // Start the app
+        generateSections();
+        
+    </script>
+</body>
+</html>
