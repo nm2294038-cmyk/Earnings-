@@ -141,10 +141,20 @@
     .carousel-track { display: flex; width: 1000%; height: 100%; animation: slide-show 50s infinite; }
     .carousel-slide {
       width: 10%; height: 100%; flex-shrink: 0; display: block; 
-      background-image: url('https://i.ibb.co/4RzTfVh4/IMG-20251110-WA0008.jpg');
+      /* Default fallback image (used for slides 7-10) */
+      background-image: url('https://i.ibb.co/4RzTfVh4/IMG-20251110-WA0008.jpg'); 
       background-size: cover; background-position: center; background-repeat: no-repeat;
       position: relative;
     }
+
+    /* Specific Banner Images */
+    .carousel-slide.slide-1 { background-image: url('https://i.ibb.co/tpF2LTyB/FB-IMG-1763006054777.jpg'); }
+    .carousel-slide.slide-2 { background-image: url('https://i.ibb.co/hFdpRnXR/FB-IMG-1763006052781.jpg'); }
+    .carousel-slide.slide-3 { background-image: url('https://i.ibb.co/bj9cnS2m/FB-IMG-1763006049127.jpg'); }
+    .carousel-slide.slide-4 { background-image: url('https://i.ibb.co/jvgxx2gF/FB-IMG-1763006046346.jpg'); }
+    .carousel-slide.slide-5 { background-image: url('https://i.ibb.co/Fkqz9FXT/FB-IMG-1763006044569.jpg'); }
+    .carousel-slide.slide-6 { background-image: url('https://i.ibb.co/SwGJrVTV/FB-IMG-1763006042540.jpg'); }
+    
     @keyframes slide-show {
       0% { transform: translateX(0%); } 9% { transform: translateX(0%); }
       10% { transform: translateX(-10%); } 19% { transform: translateX(-10%); }
@@ -163,6 +173,7 @@
     .task-item { 
         display: flex; flex-direction: column; justify-content: flex-end; align-items: flex-start; height: 140px; padding: 10px; padding-top: 60px; 
         border-radius: 40px 40px 10px 10px; font-weight: 600; font-size: 14px; position: relative; overflow: hidden; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05); 
+        cursor: pointer; /* Added cursor pointer for all task items */
     }
     .task-icon-area { position: absolute; top: 0; left: 0; right: 0; height: 80px; display: flex; justify-content: center; align-items: flex-start; }
     .task-name { font-size: 1.1em; line-height: 1.2; padding-left: 5px; padding-bottom: 5px; font-weight: 700; }
@@ -599,7 +610,7 @@
   <!-- 1. Mobile App Header -->
   <header class="app-header">
     <div class="app-header-top" id="app-header-top">
-      <i class="back-arrow fas fa-arrow-left"></i>
+      <i class="back-arrow fas fa-arrow-left" id="back-button"></i>
       <span class="title" id="header-title">Daily Tasks</span>
       <div class="header-icons">
           <!-- Profile Icon with link -->
@@ -624,26 +635,38 @@
     <section id="home-content" class="content-section active">
         <div class="carousel-wrapper">
             <div class="carousel-track">
-                <a href="Daliy Task.html" class="carousel-slide"></a>
-                <a href="how-to-earn.html" class="carousel-slide"></a>
-                <a href="how-to-earn.html" class="carousel-slide"></a>
-                <a href="how-to-earn.html" class="carousel-slide"></a>
-                <a href="how-to-earn.html" class="carousel-slide"></a>
-                <a href="how-to-earn.html" class="carousel-slide"></a>
-                <a href="how-to-earn.html" class="carousel-slide"></a>
-                <a href="how-to-earn.html" class="carousel-slide"></a>
-                <a href="how-to-earn.html" class="carousel-slide"></a>
-                <a href="how-to-earn.html" class="carousel-slide"></a>
+                <!-- Slide 1 -->
+                <a href="Add Manage Link.html""how-to-earn-deposit.html""https://i.ibb.co/tpF2LTyB/FB-IMG-1763006054777.jpg" class="carousel-slide slide-1"></a>
+                <!-- Slide 2 -->
+                <a href="Add Manage Link.html""how-to-earn-deposit.html" "https://i.ibb.co/hFdpRnXR/FB-IMG-1763006052781.jpg" class="carousel-slide slide-2"></a>
+                <!-- Slide 3 -->
+                <a href="Add Manage Link.html""how-to-earn-deposit.html" "https://i.ibb.co/bj9cnS2m/FB-IMG-1763006049127.jpg" class="carousel-slide slide-3"></a>
+                <!-- Slide 4 -->
+                <a href="Add Manage Link.html""how-to-earn-deposit.html" "https://i.ibb.co/jvgxx2gF/FB-IMG-1763006046346.jpg" class="carousel-slide slide-4"></a>
+                <!-- Slide 5 -->
+                <a href="Add Manage Link.html""how-to-earn-deposit.html" "https://i.ibb.co/Fkqz9FXT/FB-IMG-1763006044569.jpg" class="carousel-slide slide-5"></a>
+                <!-- Slide 6 -->
+                <a href="Add Manage Link.html""how-to-earn-deposit.html""Add Manage Link.html" "https://i.ibb.co/SwGJrVTV/FB-IMG-1763006042540.jpg" class="carousel-slide slide-6"></a>
+                <!-- Slide 7 (Placeholder) -->
+                <a href="Add Manage Link.html""how-to-earn-deposit.html" "#" class="carousel-slide"></a> 
+                <!-- Slide 8 (Placeholder) -->
+                <a href="Add Manage Link.html""how-to-earn-deposit.html" "#" class="carousel-slide"></a> 
+                <!-- Slide 9 (Placeholder) -->
+                <a href="Add Manage Link.html""how-to-earn-deposit.html" "#" class="carousel-slide"></a> 
+                <!-- Slide 10 (Placeholder) -->
+                <a href="Add Manage Link.html""how-to-earn-deposit.html" "#" class="carousel-slide"></a>
             </div>
         </div>
-  <h2 class="task-heading">Download App</h2>
+        <h2 class="task-heading">Download App</h2>
           <div class="ad-placeholder">
                 <div>Free Earnings <br>Download the app and win Rs.10k</div>
                 <a href="https://d.apkpure.com/b/APK/com.jmscde.blogspot?version=latest" style="padding: 8px 15px; background-color: black; color: white; border-radius: 5px; font-weight: bold;">INSTALL</a>
             </div>  
-   <h2 class="task-heading">Daily Task</h2>
+        <h2 class="task-heading">Daily Task</h2>
         <div class="task-grid">
-            <a href="Daliy Task.html" class="task-item task-daily-check"><div class="task-icon-area"></div><span class="task-name">Daily Tasks</span></a>
+            <!-- Daily Tasks link modified to switch to new section -->
+           <a href="Daliy Task.html" class="task-item task-daily-check"><div class="task-icon-area"></div><span class="task-name">Daily Tasks</span></a>
+            
             <a href="how-to-earn-deposit.html" class="task-item task-scratch-card"><div class="task-icon-area"></div><span class="task-name">Deposit Card </span></a>
             <a href="How to withdrawal.html" class="task-item task-captcha"><div class="task-icon-area"></div><span class="task-name">Withdrawal</span></a>
             <a href="Add Manage Link.html" class="task-item task-spin-wheel"><div class="task-icon-area"></div><span class="task-name">Add/Manage My Links</span></a>
@@ -655,6 +678,39 @@
             <a href="how-to-earn.html" class="task-item task-survey"><div class="task-icon-area"></div><span class="task-name">Video Offer</span></a>
         </div>
     </section>
+    
+    <!-- NEW SECTION: Daily Task View -->
+    <section id="daily-task-view" class="content-section">
+        <div style="padding: 20px; text-align: center; max-width: 600px; margin: 0 auto;">
+            <h2 class="task-heading" style="margin-top: 0;">Daily Tasks Dashboard</h2>
+            <p style="color: #555; margin-bottom: 30px;">Complete your daily activities to earn coins!</p>
+            
+            <!-- Example Daily Task Block 1 -->
+            <div style="background-color: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.05); margin-bottom: 15px;">
+                <h3 style="color: #2a6bf2;">Check-in Bonus</h3>
+                <p>Login daily and collect 50 coins instantly.</p>
+                <button style="padding: 10px 20px; background-color: #2a6bf2; color: white; border: none; border-radius: 5px; cursor: pointer; margin-top: 10px;">Claim Now</button>
+            </div>
+
+            <!-- Example Daily Task Block 2 -->
+            <div style="background-color: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.05); margin-bottom: 15px;">
+                <h3 style="color: #4CAF50;">Watch Video Ad</h3>
+                <p>Watch 1 video ad to receive 20 coins.</p>
+                <button style="padding: 10px 20px; background-color: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer; margin-top: 10px;">Watch & Earn</button>
+            </div>
+            
+             <!-- Example Daily Task Block 3 -->
+            <div style="background-color: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.05); margin-bottom: 15px;">
+                <h3 style="color: #ffc107;">Spin Wheel</h3>
+                <p>Use your daily free spin and win up to 1000 coins.</p>
+                <a href="#" style="padding: 10px 20px; background-color: #ffc107; color: #333; border: none; border-radius: 5px; cursor: pointer; margin-top: 10px; display: inline-block;">Spin Now</a>
+            </div>
+
+            <p style="margin-top: 30px; font-size: 0.85em; color: #999;">Tasks reset every 24 hours.</p>
+
+        </div>
+    </section>
+
 
     <!-- REWARDS CONTENT (Refer & Earn) -->
     <section id="rewards-content" class="content-section">
@@ -663,11 +719,15 @@
                 <div class="illustration-placeholder"></div>
                 <h3>Invite your friend and family and get</h3>
                 <div class="bonus">2500 Coins + 5% Extra</div>
-                <div class="referral-link-box">
-                    https://www.yoursmed.xyz/?ref=RZCS-Y8ZJ
+                
+                <!-- dynamic referral link display area -->
+                <div class="referral-link-box" id="referral-link-display">
+                    [Generating Referral Link...] 
                     <div class="social-icons"></div>
                 </div>
-                <a href="https://www.yoursmed.xyz/?ref=RZCS-Y8ZJ" class="invite-button">Invite Now</a>
+                
+                <!-- dynamic invite button -->
+                <a href="#" class="invite-button" id="invite-button-link">Invite Now</a>
             </div>
             <div class="how-to-get">
                 <h2>How you will get coins ?</h2>
@@ -870,7 +930,7 @@
           <a href="about.html" class="menu-item"><span style="display: flex; align-items: center;"><i class="fas fa-headset icon-left"></i> About Us </span><i class="fas fa-chevron-right"></i></a>
   <a href="withdrawal.html" class="menu-item"><span style="display: flex; align-items: center;"><i class="fas fa-wallet icon-left"></i> Withdrawal Policy  </span><i class="fas fa-chevron-right"></i></a>
          <a href="How to make.html" class="menu-item"><span style="display: flex; align-items: center;"><i class="fas fa-file-contract icon-left"></i> Tasks </span><i class="fas fa-chevron-right"></i></a>
-         <a href="FAQ.html" class="menu-item"><span style="display: flex; align-items: center;"><i class="fas fa-question-circle icon-left"></i> Terms And Condition </span><i class="fas fa-chevron-right"></i></a>
+         <a href="Terms of Service .html" class="menu-item"><span style="display: flex; align-items: center;"><i class="fas fa-question-circle icon-left"></i> Terms Of Service </span><i class="fas fa-chevron-right"></i></a>
           <a href="contact.html" class="menu-item"><span style="display: flex; align-items: center;"><i class="fas fa-headset icon-left"></i> Contact Us</span><i class="fas fa-chevron-right"></i></a>
    
         </div>
@@ -900,18 +960,35 @@
 
   <!-- 4. Javascript for Navigation Functionality -->
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const navLinks = document.querySelectorAll('.mobile-footer .nav-link');
-      const contentSections = document.querySelectorAll('.content-section');
-      const rewardsTabs = document.getElementById('rewards-tabs');
-      const headerTitle = document.getElementById('header-title');
-      const appHeader = document.querySelector('.app-header');
+    
+    let currentPageId = 'home-content'; // Track the current page for back button logic
 
-      // Function to handle main page switching
-      function switchPage(targetPageId, title) {
-        // Deactivate all sections
+    function generateReferralLink() {
+        const BASE_REFERRAL_URL = "https://www.yoursmed.xyz/?ref=";
+        const USER_REFERRAL_CODE = "JOLAB-" + Math.random().toString(36).substring(2, 8).toUpperCase(); 
+        const FULL_REFERRAL_LINK = BASE_REFERRAL_URL + USER_REFERRAL_CODE;
+        
+        const linkDisplayBox = document.getElementById('referral-link-display');
+        const inviteButton = document.getElementById('invite-button-link');
+
+        if (linkDisplayBox && inviteButton) {
+            linkDisplayBox.innerHTML = FULL_REFERRAL_LINK + '<div class="social-icons"></div>';
+            inviteButton.href = FULL_REFERRAL_LINK;
+        }
+    }
+
+    // Function to switch main content sections
+    function switchPage(targetPageId, title) {
+        const contentSections = document.querySelectorAll('.content-section');
+        const rewardsTabs = document.getElementById('rewards-tabs');
+        const headerTitle = document.getElementById('header-title');
+        const appHeader = document.querySelector('.app-header');
+        const backButton = document.getElementById('back-button');
+
+        // Update tracking
+        currentPageId = targetPageId;
+
         contentSections.forEach(section => section.classList.remove('active'));
-        // Activate target section
         const targetSection = document.getElementById(targetPageId);
         if (targetSection) {
           targetSection.classList.add('active');
@@ -919,22 +996,22 @@
         }
 
         // --- Header Style Control ---
-        // flat-header class is used for the Wallet and Refer & Earn screens
-        const needsFlatHeader = (targetPageId === 'rewards-content' || targetPageId === 'wallet-content');
+        const needsFlatHeader = (targetPageId === 'rewards-content' || targetPageId === 'wallet-content' || targetPageId === 'daily-task-view');
         
         if (needsFlatHeader) {
           appHeader.classList.add('flat-header'); 
-          // Show rewards tabs only on rewards page
+          backButton.style.display = 'block'; // Show back button on sub-pages
+          
           rewardsTabs.style.display = (targetPageId === 'rewards-content') ? 'flex' : 'none';
         } else {
-          appHeader.classList.remove('flat-header'); // Default header style (Home/More)
+          appHeader.classList.remove('flat-header'); 
+          backButton.style.display = 'none'; // Hide back button on main pages (Home, More)
           rewardsTabs.style.display = 'none';
         }
         
         // --- Title Control ---
         if (targetPageId === 'rewards-content') {
              headerTitle.textContent = 'Refer & Earn';
-             // Re-initialize rewards sub-tabs when entering rewards page
              const defaultTabLink = rewardsTabs.querySelector('.tab-link.active');
              if (defaultTabLink) {
                  const defaultTabId = defaultTabLink.getAttribute('data-tab');
@@ -942,23 +1019,43 @@
              }
         } else if (targetPageId === 'wallet-content') {
              headerTitle.textContent = 'Wallet';
+        } else if (targetPageId === 'daily-task-view') {
+             headerTitle.textContent = 'Daily Tasks';
         }
 
-      }
+    }
 
-      // Function to handle Rewards sub-tab switching
-      function switchTab(targetTabId) {
+    // Function to handle Rewards sub-tab switching
+    function switchTab(targetTabId) {
+        const rewardsTabs = document.getElementById('rewards-tabs');
         document.querySelectorAll('#rewards-content .tab-content').forEach(tab => {
           tab.classList.remove('active');
         });
         document.getElementById(targetTabId + '-content').classList.add('active');
         
-        // Update active class on tab links
         rewardsTabs.querySelectorAll('.tab-link').forEach(link => {
             link.classList.remove('active');
         });
         rewardsTabs.querySelector(`[data-tab="${targetTabId}"]`).classList.add('active');
-      }
+    }
+    
+    // Functionality for the back button
+    function handleBack() {
+        // Simple logic: If we are on a sub-page, go back to home.
+        // In a complex SPA, this would use history.pushState or track a stack of pages.
+        if (currentPageId === 'daily-task-view' || currentPageId === 'wallet-content' || currentPageId === 'rewards-content' || currentPageId === 'more-content') {
+            switchPage('home-content', 'Daily Tasks');
+            document.querySelectorAll('.mobile-footer .nav-link').forEach(l => l.classList.remove('active'));
+            document.querySelector('.mobile-footer [data-page="home-content"]').classList.add('active');
+        }
+    }
+
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const navLinks = document.querySelectorAll('.mobile-footer .nav-link');
+      const backButton = document.getElementById('back-button');
+      
+      generateReferralLink();
 
       // Event Listeners for Footer Navigation
       navLinks.forEach(link => {
@@ -983,6 +1080,28 @@
         });
       });
 
+      // Event Listener for Daily Tasks and other internal links
+      document.querySelectorAll('.internal-link').forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const targetPageId = link.getAttribute('data-page');
+            let title = '';
+            
+            // Determine title based on target
+            if (targetPageId === 'daily-task-view') {
+                 title = 'Daily Tasks'; 
+            } else {
+                 // Fallback for other potential internal links if added later
+                 title = link.querySelector('.task-name')?.textContent || 'Details';
+            }
+            
+            // Deactivate all footer tabs when navigating internally away from home
+            navLinks.forEach(l => l.classList.remove('active'));
+
+            switchPage(targetPageId, title);
+        });
+      });
+
       // Event Listeners for Rewards Tab Links
       document.querySelectorAll('#rewards-tabs .tab-link').forEach(tabLink => {
         tabLink.addEventListener('click', (e) => {
@@ -991,6 +1110,10 @@
           switchTab(targetTabId);
         });
       });
+      
+      // Back button click handler
+      backButton.addEventListener('click', handleBack);
+
 
       // Initialize: Start on the Home page
       switchPage('home-content', 'Daily Tasks');
