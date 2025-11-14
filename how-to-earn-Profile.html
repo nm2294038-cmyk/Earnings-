@@ -3,12 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Dashboard & Auth</title>
+    <title>User Dashboard & Wallet</title>
     
     <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <!-- Font Awesome for Lock Icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
     <style>
         :root {
@@ -18,7 +20,14 @@
             --light-bg: #ffffff;
             --danger-color: #dc3545;
             --shadow-deep: 0 10px 25px rgba(0, 0, 0, 0.2);
-            --profile-color: #ff9800; /* Attractive color for profile icon */
+            --profile-color: #ff9800;
+            --tiktok-color: #00f2ea;
+            --youtube-color: #ff0000;
+            --instagram-color: #e1306c;
+            --usd-color: #008000;
+            --eur-color: #003399;
+            --gbp-color: #800080;
+            --locked-overlay: rgba(0, 0, 0, 0.7);
         }
 
         body {
@@ -50,7 +59,7 @@
 
         .container {
             width: 90%;
-            max-width: 800px;
+            max-width: 1200px;
             margin: 40px auto;
             background-color: var(--light-bg);
             padding: 30px;
@@ -58,154 +67,103 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
 
-        /* --- AUTH STYLES (Login/Signup) --- */
-        #authContainer {
-            display: none; /* Controlled by JS */
-            max-width: 400px;
-            width: 100%;
-            padding: 40px;
-            background: var(--light-bg);
-            border-radius: 12px;
-            box-shadow: var(--shadow-deep);
-            text-align: center;
-        }
-        #authContainer h2 { color: var(--primary-color); margin-bottom: 25px; font-size: 1.8em; }
-        .auth-form input {
-            width: 100%;
-            padding: 12px;
-            margin: 10px 0;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            box-sizing: border-box;
-        }
-        .auth-form button {
-            background-color: var(--primary-color);
-            color: white;
-            padding: 12px;
-            border: none;
-            border-radius: 6px;
-            width: 100%;
-            cursor: pointer;
-            font-size: 1.1em;
-            margin-top: 15px;
-        }
-        .auth-toggle { margin-top: 20px; }
-        .auth-toggle a { font-weight: bold; color: var(--primary-color); cursor: pointer; text-decoration: none; }
+        /* --- AUTH STYLES --- */
+        #authContainer { display: none; max-width: 400px; width: 100%; padding: 40px; background: var(--light-bg); border-radius: 12px; box-shadow: var(--shadow-deep); text-align: center; }
+        .auth-form input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; }
+        .auth-form button { background-color: var(--primary-color); color: white; padding: 12px; border: none; border-radius: 6px; width: 100%; cursor: pointer; font-size: 1.1em; margin-top: 15px; }
 
         /* --- DASHBOARD & PROFILE STYLES --- */
-        #dashboardContainer {
-            display: none; /* Controlled by JS */
-        }
+        #dashboardContainer { display: none; }
         
-        .profile-card {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            margin-bottom: 30px;
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            background: #fcfcfc;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-        }
-
-        .profile-pic-container {
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-            background-color: var(--profile-color);
-            color: white;
-            font-size: 24px;
-            font-weight: bold;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-right: 20px;
-            flex-shrink: 0;
-        }
-
-        .profile-details {
-            text-align: left;
-        }
-        .profile-details h2 {
-            color: var(--primary-color);
-            margin: 0 0 5px 0;
-            font-size: 1.8em;
-        }
-        .profile-details p {
-            color: #666;
-            margin: 0;
-        }
+        .profile-card { display: flex; align-items: center; justify-content: center; padding: 20px; margin-bottom: 30px; border: 1px solid #ddd; border-radius: 10px; background: #fcfcfc; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05); }
+        .profile-pic-container { width: 70px; height: 70px; border-radius: 50%; background-color: var(--profile-color); color: white; font-size: 24px; font-weight: bold; display: flex; justify-content: center; align-items: center; margin-right: 20px; flex-shrink: 0; }
+        .profile-details h2 { color: var(--primary-color); margin: 0 0 5px 0; font-size: 1.8em; }
 
         .wallet-display {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
             margin-bottom: 30px;
             text-align: center;
         }
-        .balance-box { padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); }
+        .balance-box { padding: 15px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); }
+        
+        /* Specific Wallet Colors */
         .coins-box { background-color: #e6f7ff; border: 1px solid var(--primary-color); }
         .pkr-box { background-color: #e6ffe6; border: 1px solid var(--secondary-color); }
-        .balance-box h3 { margin: 0 0 10px 0; font-size: 1.2em; }
-        .balance-box p { font-size: 2em; font-weight: bold; }
+        .tiktok-box { background-color: #ffe6f7; border: 1px solid var(--tiktok-color); }
+        .youtube-box { background-color: #ffe6e6; border: 1px solid var(--youtube-color); }
+        .instagram-box { background-color: #f0e6ff; border: 1px solid var(--instagram-color); }
+        .usd-box { background-color: #e6f0e6; border: 1px solid var(--usd-color); }
+        .eur-box { background-color: #e6e6ff; border: 1px solid var(--eur-color); }
+        .gbp-box { background-color: #f0e6ff; border: 1px solid var(--gbp-color); }
+        .aed-box { background-color: #fff0e6; border: 1px solid #ff8c00; }
+        .sar-box { background-color: #e6f0f0; border: 1px solid #006400; }
+        .jpy-box { background-color: #ffffcc; border: 1px solid #cc0000; }
+
+        .balance-box h3 { margin: 0 0 5px 0; font-size: 1em; }
+        .balance-box p { font-size: 1.6em; font-weight: bold; }
 
         /* --- Exchange Section --- */
+        .exchange-master-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
         .exchange-section {
             padding: 20px;
             border: 1px solid #ccc;
             border-radius: 8px;
-            margin-bottom: 30px;
             background-color: #f9f9f9;
+            position: relative; /* For lock overlay */
         }
-        .exchange-section h3 { color: var(--danger-color); margin-top: 0; }
-        .exchange-section p.rate { font-weight: bold; color: #555; margin-bottom: 15px; }
-        .exchange-form input {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
-        }
-        .exchange-form button {
-            background-color: var(--danger-color);
+        
+        /* LOCK OVERLAY STYLES */
+        .exchange-section.locked::before {
+            content: '🔒 Locked';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--locked-overlay);
             color: white;
-            padding: 10px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            width: 100%;
-            transition: background-color 0.3s;
-        }
-
-        /* --- Quick Links --- */
-        .quick-links { display: flex; justify-content: space-around; gap: 15px; }
-        .quick-links a {
-            flex-grow: 1;
-            text-align: center;
-            padding: 15px;
-            background-color: var(--primary-color);
-            color: white;
-            text-decoration: none;
-            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5em;
             font-weight: bold;
-            transition: background-color 0.3s;
+            border-radius: 8px;
+            cursor: not-allowed;
+            z-index: 10;
         }
+        
+        .exchange-section h3 { color: var(--danger-color); margin-top: 0; font-size: 1.2em; }
+        .exchange-section p.rate { font-weight: bold; color: #555; margin-bottom: 15px; font-size: 0.9em; }
+        .exchange-form input { width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+        
+        /* Button Styles */
+        .exchange-form button { background-color: var(--danger-color); color: white; padding: 10px; border: none; border-radius: 4px; cursor: pointer; width: 100%; transition: background-color 0.3s; }
+        #pkrToCoinButton { background-color: var(--secondary-color); }
+        #pkrToTiktokButton { background-color: var(--tiktok-color); color: var(--dark-bg); font-weight: bold; }
+        
+        /* International Currency Buttons */
+        .int-exchange-btn { background-color: var(--primary-color); }
+        .reverse-exchange-btn { background-color: #808080; }
 
-        @media (max-width: 600px) {
-            .profile-card {
-                flex-direction: column;
-                text-align: center;
+        @media (max-width: 1200px) {
+            .exchange-master-container {
+                grid-template-columns: repeat(2, 1fr);
             }
-            .profile-pic-container {
-                margin-right: 0;
-                margin-bottom: 15px;
+        }
+        @media (max-width: 700px) {
+            .wallet-display, .exchange-master-container {
+                grid-template-columns: 1fr;
             }
-            .profile-details {
-                text-align: center;
-            }
-            .wallet-display { grid-template-columns: 1fr; }
+            .profile-card { flex-direction: column; text-align: center; }
+            .profile-pic-container { margin-right: 0; margin-bottom: 15px; }
+            .profile-details { text-align: center; }
             .quick-links { flex-direction: column; }
         }
     </style>
@@ -238,7 +196,7 @@
         <!-- 2. DASHBOARD SECTION -->
         <div id="dashboardContainer" class="container">
             
-            <!-- Profile Card (Updated) -->
+            <!-- Profile Card -->
             <div class="profile-card">
                 <div class="profile-pic-container">
                     <span id="profileInitials">U</span>
@@ -253,35 +211,316 @@
             <!-- Wallet Display -->
             <div class="wallet-display">
                 <div class="balance-box coins-box">
-                    <h3>Coins Wallet</h3>
+                    <h3>Coins Wallet (Main)</h3>
                     <p id="coinsBalance">0</p>
                 </div>
                 <div class="balance-box pkr-box">
-                    <h3>PKR Balance (Ready to Withdraw)</h3>
+                    <h3>PKR Balance (Withdrawal)</h3>
                     <p id="pkrBalance">0.00 PKR</p>
+                </div>
+                <div class="balance-box tiktok-box">
+                    <h3>TikTok Coins</h3>
+                    <p id="tiktokCoinsBalance">0</p>
+                </div>
+                <div class="balance-box youtube-box">
+                    <h3>YouTube Coins</h3>
+                    <p id="youtubeCoinsBalance">0</p>
+                </div>
+                <div class="balance-box instagram-box">
+                    <h3>Instagram Coins</h3>
+                    <p id="instagramCoinsBalance">0</p>
+                </div>
+                <div class="balance-box usd-box">
+                    <h3>USD Balance</h3>
+                    <p id="usdBalance">0.00 USD</p>
+                </div>
+                <div class="balance-box eur-box">
+                    <h3>EUR Balance</h3>
+                    <p id="eurBalance">0.00 EUR</p>
+                </div>
+                <div class="balance-box gbp-box">
+                    <h3>GBP Balance</h3>
+                    <p id="gbpBalance">0.00 GBP</p>
+                </div>
+                <div class="balance-box aed-box">
+                    <h3>AED Balance</h3>
+                    <p id="aedBalance">0.00 AED</p>
+                </div>
+                <div class="balance-box sar-box">
+                    <h3>SAR Balance</h3>
+                    <p id="sarBalance">0.00 SAR</p>
+                </div>
+                <div class="balance-box jpy-box">
+                    <h3>JPY Balance</h3>
+                    <p id="jpyBalance">0.00 JPY</p>
                 </div>
             </div>
             
-            <!-- Exchange Section -->
-            <div class="exchange-section">
-                <h3>Coins Ko PKR Mein Convert Karen</h3>
-                <p class="rate">Exchange Rate: 4 Coins = 1 PKR</p>
+            <!-- Exchange Section Container -->
+            <div class="exchange-master-container">
                 
-                <form id="exchangeForm">
-                    <label for="exchangeCoins">Coins Ki Miqdar (Convert Karne Ke Liye)</label>
-                    <input type="number" id="exchangeCoins" placeholder="Minimum 4 Coins" required min="4">
+                <!-- A. Coins to PKR Exchange (UNLOCKED) -->
+                <div class="exchange-section" id="coinsToPkrSection">
+                    <h3>Coins → PKR (Withdrawal Prep)</h3>
+                    <p class="rate">Rate: 4 Coins = 1 PKR</p>
                     
-                    <p id="exchangeResult" style="color: var(--primary-color); font-weight: bold;">0 Coins = 0.00 PKR</p>
+                    <form id="coinsToPkrForm" class="exchange-form">
+                        <label for="exchangeCoins">Coins Ki Miqdar</label>
+                        <input type="number" id="exchangeCoins" placeholder="Minimum 4 Coins" required min="4">
+                        
+                        <p id="exchangeResultCoinsToPkr" style="color: var(--primary-color); font-weight: bold;">0 Coins = 0.00 PKR</p>
+                        
+                        <button type="submit" id="exchangeButton">Convert to PKR</button>
+                    </form>
+                </div>
+                
+                <!-- B. PKR to Main Coins Exchange (UNLOCKED) -->
+                <div class="exchange-section" id="pkrToCoinSection">
+                    <h3>PKR → Main Coins</h3>
+                    <p class="rate">Rate: 10 PKR = 1 Coin</p>
                     
-                    <button type="submit" id="exchangeButton">Convert Karen</button>
-                </form>
+                    <form id="pkrToCoinForm" class="exchange-form">
+                        <label for="pkrAmount">PKR Ki Miqdar</label>
+                        <input type="number" id="pkrAmount" placeholder="Minimum 100 PKR" required min="100">
+                        
+                        <p id="exchangeResultPkrToCoins" style="color: var(--secondary-color); font-weight: bold;">0 PKR = 0 Coins</p>
+                        
+                        <button type="submit" id="pkrToCoinButton">Convert to Coins</button>
+                    </form>
+                </div>
+                
+                <!-- C. PKR to TikTok Coins Exchange (UNLOCKED) -->
+                <div class="exchange-section locked" id="pkrToTiktokSection">
+                    <h3 style="color: var(--tiktok-color);">PKR → TikTok Coins</h3>
+                    <p class="rate">Rate: 10 PKR = 1 TikTok Coin</p>
+                    
+                    <form id="pkrToTiktokForm" class="exchange-form">
+                        <label for="pkrAmountTiktok">PKR Ki Miqdar</label>
+                        <input type="number" id="pkrAmountTiktok" placeholder="Minimum 10 PKR" required min="10" disabled>
+                        
+                        <p id="exchangeResultPkrToTiktok" style="color: var(--tiktok-color); font-weight: bold;">0 PKR = 0 TikTok Coins</p>
+                        
+                        <button type="submit" id="pkrToTiktokButton" disabled>Convert to TikTok Coins</button>
+                    </form>
+                </div>
+                
+                <!-- D. PKR to YouTube Coins Exchange (LOCKED) -->
+                <div class="exchange-section locked" id="pkrToYoutubeSection">
+                    <h3 style="color: var(--youtube-color);">PKR → YouTube Coins</h3>
+                    <p class="rate">Rate: 8 PKR = 1 YouTube Coin</p>
+                    
+                    <form id="pkrToYoutubeForm" class="exchange-form">
+                        <label for="pkrAmountYoutube">PKR Ki Miqdar</label>
+                        <input type="number" id="pkrAmountYoutube" placeholder="Minimum 8 PKR" required min="8" disabled>
+                        
+                        <p id="exchangeResultPkrToYoutube" style="color: var(--youtube-color); font-weight: bold;">0 PKR = 0 YouTube Coins</p>
+                        
+                        <button type="submit" id="pkrToYoutubeButton" disabled>Convert to YouTube Coins</button>
+                    </form>
+                </div>
+                
+                <!-- E. PKR to Instagram Coins Exchange (LOCKED) -->
+                <div class="exchange-section locked" id="pkrToInstagramSection">
+                    <h3 style="color: var(--instagram-color);">PKR → Instagram Coins</h3>
+                    <p class="rate">Rate: 7 PKR = 1 Instagram Coin</p>
+                    
+                    <form id="pkrToInstagramForm" class="exchange-form">
+                        <label for="pkrAmountInstagram">PKR Ki Miqdar</label>
+                        <input type="number" id="pkrAmountInstagram" placeholder="Minimum 7 PKR" required min="7" disabled>
+                        
+                        <p id="exchangeResultPkrToInstagram" style="color: var(--instagram-color); font-weight: bold;">0 PKR = 0 Instagram Coins</p>
+                        
+                        <button type="submit" id="pkrToInstagramButton" disabled>Convert to Instagram Coins</button>
+                    </form>
+                </div>
+                
+                <!-- F. PKR to USD Exchange (LOCKED) -->
+                <div class="exchange-section locked" id="pkrToUsdSection">
+                    <h3 style="color: var(--usd-color);">PKR → USD (US Dollar)</h3>
+                    <p class="rate">Rate: 280 PKR = 1 USD</p>
+                    
+                    <form id="pkrToUsdForm" class="exchange-form">
+                        <label for="pkrAmountUsd">PKR Ki Miqdar</label>
+                        <input type="number" id="pkrAmountUsd" placeholder="Minimum 280 PKR" required min="280" disabled>
+                        
+                        <p id="exchangeResultPkrToUsd" style="color: var(--usd-color); font-weight: bold;">0 PKR = 0.00 USD</p>
+                        
+                        <button type="submit" class="int-exchange-btn" disabled>Convert to USD</button>
+                    </form>
+                </div>
+                
+                <!-- G. USD to PKR Reverse Exchange (LOCKED) -->
+                <div class="exchange-section locked" id="usdToPkrSection">
+                    <h3 style="color: var(--usd-color);">USD → PKR (Reverse)</h3>
+                    <p class="rate">Rate: 12 USD = 1 PKR</p>
+                    
+                    <form id="usdToPkrForm" class="exchange-form">
+                        <label for="usdAmountToPkr">USD Ki Miqdar</label>
+                        <input type="number" id="usdAmountToPkr" placeholder="Minimum 12 USD" required min="12" disabled>
+                        
+                        <p id="exchangeResultUsdToPkr" style="color: var(--secondary-color); font-weight: bold;">0 USD = 0.00 PKR</p>
+                        
+                        <button type="submit" class="reverse-exchange-btn" disabled>Convert to PKR</button>
+                    </form>
+                </div>
+                
+                <!-- H. PKR to EUR Exchange (LOCKED) -->
+                <div class="exchange-section locked" id="pkrToEurSection">
+                    <h3 style="color: var(--eur-color);">PKR → EUR (Euro)</h3>
+                    <p class="rate">Rate: 300 PKR = 1 EUR</p>
+                    
+                    <form id="pkrToEurForm" class="exchange-form">
+                        <label for="pkrAmountEur">PKR Ki Miqdar</label>
+                        <input type="number" id="pkrAmountEur" placeholder="Minimum 300 PKR" required min="300" disabled>
+                        
+                        <p id="exchangeResultPkrToEur" style="color: var(--eur-color); font-weight: bold;">0 PKR = 0.00 EUR</p>
+                        
+                        <button type="submit" class="int-exchange-btn" disabled>Convert to EUR</button>
+                    </form>
+                </div>
+                
+                <!-- I. EUR to PKR Reverse Exchange (LOCKED) -->
+                <div class="exchange-section locked" id="eurToPkrSection">
+                    <h3 style="color: var(--eur-color);">EUR → PKR (Reverse)</h3>
+                    <p class="rate">Rate: 15 EUR = 1 PKR</p>
+                    
+                    <form id="eurToPkrForm" class="exchange-form">
+                        <label for="eurAmountToPkr">EUR Ki Miqdar</label>
+                        <input type="number" id="eurAmountToPkr" placeholder="Minimum 15 EUR" required min="15" disabled>
+                        
+                        <p id="exchangeResultEurToPkr" style="color: var(--secondary-color); font-weight: bold;">0 EUR = 0.00 PKR</p>
+                        
+                        <button type="submit" class="reverse-exchange-btn" disabled>Convert to PKR</button>
+                    </form>
+                </div>
+                
+                <!-- J. PKR to GBP Exchange (LOCKED) -->
+                <div class="exchange-section locked" id="pkrAmountGbpSection">
+                    <h3 style="color: var(--gbp-color);">PKR → GBP (Pound)</h3>
+                    <p class="rate">Rate: 350 PKR = 1 GBP</p>
+                    
+                    <form id="pkrAmountGbpForm" class="exchange-form">
+                        <label for="pkrAmountGbp">PKR Ki Miqdar</label>
+                        <input type="number" id="pkrAmountGbp" placeholder="Minimum 350 PKR" required min="350" disabled>
+                        
+                        <p id="exchangeResultPkrToGbp" style="color: var(--gbp-color); font-weight: bold;">0 PKR = 0.00 GBP</p>
+                        
+                        <button type="submit" class="int-exchange-btn" disabled>Convert to GBP</button>
+                    </form>
+                </div>
+                
+                <!-- K. GBP to PKR Reverse Exchange (LOCKED) -->
+                <div class="exchange-section locked" id="gbpToPkrSection">
+                    <h3 style="color: var(--gbp-color);">GBP → PKR (Reverse)</h3>
+                    <p class="rate">Rate: 20 GBP = 1 PKR</p>
+                    
+                    <form id="gbpToPkrForm" class="exchange-form">
+                        <label for="gbpAmountToPkr">GBP Ki Miqdar</label>
+                        <input type="number" id="gbpAmountToPkr" placeholder="Minimum 20 GBP" required min="20" disabled>
+                        
+                        <p id="exchangeResultGbpToPkr" style="color: var(--secondary-color); font-weight: bold;">0 GBP = 0.00 PKR</p>
+                        
+                        <button type="submit" class="reverse-exchange-btn" disabled>Convert to PKR</button>
+                    </form>
+                </div>
+                
+                <!-- L. PKR to AED Exchange (LOCKED) -->
+                <div class="exchange-section locked" id="pkrToAedSection">
+                    <h3 style="color: #ff8c00;">PKR → AED (Dirham)</h3>
+                    <p class="rate">Rate: 75 PKR = 1 AED</p>
+                    
+                    <form id="pkrAmountAedForm" class="exchange-form">
+                        <label for="pkrAmountAed">PKR Ki Miqdar</label>
+                        <input type="number" id="pkrAmountAed" placeholder="Minimum 75 PKR" required min="75" disabled>
+                        
+                        <p id="exchangeResultPkrToAed" style="color: #ff8c00; font-weight: bold;">0 PKR = 0.00 AED</p>
+                        
+                        <button type="submit" class="int-exchange-btn" disabled>Convert to AED</button>
+                    </form>
+                </div>
+                
+                <!-- M. AED to PKR Reverse Exchange (LOCKED) -->
+                <div class="exchange-section locked" id="aedToPkrSection">
+                    <h3 style="color: #ff8c00;">AED → PKR (Reverse)</h3>
+                    <p class="rate">Rate: 3 AED = 1 PKR</p>
+                    
+                    <form id="aedToPkrForm" class="exchange-form">
+                        <label for="aedAmountToPkr">AED Ki Miqdar</label>
+                        <input type="number" id="aedAmountToPkr" placeholder="Minimum 3 AED" required min="3" disabled>
+                        
+                        <p id="exchangeResultAedToPkr" style="color: var(--secondary-color); font-weight: bold;">0 AED = 0.00 PKR</p>
+                        
+                        <button type="submit" class="reverse-exchange-btn" disabled>Convert to PKR</button>
+                    </form>
+                </div>
+                
+                <!-- N. PKR to SAR Exchange (LOCKED) -->
+                <div class="exchange-section locked" id="pkrToSarSection">
+                    <h3 style="color: #006400;">PKR → SAR (Riyal)</h3>
+                    <p class="rate">Rate: 70 PKR = 1 SAR</p>
+                    
+                    <form id="pkrAmountSarForm" class="exchange-form">
+                        <label for="pkrAmountSar">PKR Ki Miqdar</label>
+                        <input type="number" id="pkrAmountSar" placeholder="Minimum 70 PKR" required min="70" disabled>
+                        
+                        <p id="exchangeResultPkrToSar" style="color: #006400; font-weight: bold;">0 PKR = 0.00 SAR</p>
+                        
+                        <button type="submit" class="int-exchange-btn" disabled>Convert to SAR</button>
+                    </form>
+                </div>
+                
+                <!-- O. SAR to PKR Reverse Exchange (LOCKED) -->
+                <div class="exchange-section locked" id="sarToPkrSection">
+                    <h3 style="color: #006400;">SAR → PKR (Reverse)</h3>
+                    <p class="rate">Rate: 3 SAR = 1 PKR</p>
+                    
+                    <form id="sarToPkrForm" class="exchange-form">
+                        <label for="sarAmountToPkr">SAR Ki Miqdar</label>
+                        <input type="number" id="sarAmountToPkr" placeholder="Minimum 3 SAR" required min="3" disabled>
+                        
+                        <p id="exchangeResultSarToPkr" style="color: var(--secondary-color); font-weight: bold;">0 SAR = 0.00 PKR</p>
+                        
+                        <button type="submit" class="reverse-exchange-btn" disabled>Convert to PKR</button>
+                    </form>
+                </div>
+                
+                <!-- P. PKR to JPY Exchange (LOCKED) -->
+                <div class="exchange-section locked" id="pkrToJpySection">
+                    <h3 style="color: #cc0000;">PKR → JPY (Yen)</h3>
+                    <p class="rate">Rate: 2 PKR = 1 JPY</p>
+                    
+                    <form id="pkrAmountJpyForm" class="exchange-form">
+                        <label for="pkrAmountJpy">PKR Ki Miqdar</label>
+                        <input type="number" id="pkrAmountJpy" placeholder="Minimum 2 PKR" required min="2" disabled>
+                        
+                        <p id="exchangeResultPkrToJpy" style="color: #cc0000; font-weight: bold;">0 PKR = 0 JPY</p>
+                        
+                        <button type="submit" class="int-exchange-btn" disabled>Convert to JPY</button>
+                    </form>
+                </div>
+                
+                <!-- Q. JPY to PKR Reverse Exchange (LOCKED) -->
+                <div class="exchange-section locked" id="jpyToPkrSection">
+                    <h3 style="color: #cc0000;">JPY → PKR (Reverse)</h3>
+                    <p class="rate">Rate: 0.5 JPY = 1 PKR</p>
+                    
+                    <form id="jpyToPkrForm" class="exchange-form">
+                        <label for="jpyAmountToPkr">JPY Ki Miqdar</label>
+                        <input type="number" id="jpyAmountToPkr" placeholder="Minimum 0.5 JPY" required min="0.5" disabled>
+                        
+                        <p id="exchangeResultJpyToPkr" style="color: var(--secondary-color); font-weight: bold;">0 JPY = 0.00 PKR</p>
+                        
+                        <button type="submit" class="reverse-exchange-btn" disabled>Convert to PKR</button>
+                    </form>
+                </div>
+                
             </div>
 
             <!-- Quick Links -->
             <div class="quick-links">
-                <a href="Add Manage Link.html">Task Submission Center</a>
-                <a href="how-to-earn-deposit.html">Deposit Coins</a>
-                <a href="How to withdrawal.html">Withdrawal Center</a>
+                <a href="tasks.html">Task Submission Center</a>
+                <a href="deposit.html">Deposit Coins</a>
+                <a href="withdrawal.html">Withdrawal Center</a>
             </div>
         </div>
 
@@ -304,7 +543,22 @@
         const db = firebase.firestore();
 
         // --- CONSTANTS ---
-        const COIN_TO_PKR_RATE = 4; // 4 Coins = 1 PKR
+        const COIN_TO_PKR_RATE = 5; 
+        const PKR_TO_COIN_RATE = 10; 
+        const PKR_TO_TIKTOK_RATE = 20; 
+        const PKR_TO_YOUTUBE_RATE =50 ; 
+        const PKR_TO_INSTAGRAM_RATE = 45; 
+        
+        // International Currency Rates (PKR required per 1 unit)
+        const INT_RATES = {
+            USD: { rate: 280, unit: 'USD', balanceField: 'usdBalance', reverseRate: 12 },
+            EUR: { rate: 300, unit: 'EUR', balanceField: 'eurBalance', reverseRate: 15 },
+            GBP: { rate: 350, unit: 'GBP', balanceField: 'gbpBalance', reverseRate: 20 },
+            AED: { rate: 75, unit: 'AED', balanceField: 'aedBalance', reverseRate: 3 },
+            SAR: { rate: 70, unit: 'SAR', balanceField: 'sarBalance', reverseRate: 3 },
+            JPY: { rate: 2, unit: 'JPY', balanceField: 'jpyBalance', reverseRate: 0.5 }
+        };
+
 
         // --- DOM ELEMENTS ---
         const authContainer = document.getElementById('authContainer');
@@ -325,14 +579,72 @@
         const profileInitials = document.getElementById('profileInitials');
         const coinsBalance = document.getElementById('coinsBalance');
         const pkrBalance = document.getElementById('pkrBalance');
-        const exchangeForm = document.getElementById('exchangeForm');
-        const exchangeCoinsInput = document.getElementById('exchangeCoins');
-        const exchangeResult = document.getElementById('exchangeResult');
-        const exchangeButton = document.getElementById('exchangeButton');
+        const tiktokCoinsBalance = document.getElementById('tiktokCoinsBalance');
+        const youtubeCoinsBalance = document.getElementById('youtubeCoinsBalance');
+        const instagramCoinsBalance = document.getElementById('instagramCoinsBalance');
+        const usdBalance = document.getElementById('usdBalance');
+        const eurBalance = document.getElementById('eurBalance');
+        const gbpBalance = document.getElementById('gbpBalance');
+        const aedBalance = document.getElementById('aedBalance');
+        const sarBalance = document.getElementById('sarBalance');
+        const jpyBalance = document.getElementById('jpyBalance');
         const logoutButton = document.getElementById('logoutButton');
+        
+        // Exchange elements (Coins to PKR)
+        const coinsToPkrForm = document.getElementById('coinsToPkrForm');
+        const exchangeCoinsInput = document.getElementById('exchangeCoins');
+        const exchangeResultCoinsToPkr = document.getElementById('exchangeResultCoinsToPkr');
+        const exchangeButton = document.getElementById('exchangeButton');
+
+        // Exchange elements (PKR to Coins)
+        const pkrToCoinForm = document.getElementById('pkrToCoinForm');
+        const pkrAmountInput = document.getElementById('pkrAmount');
+        const exchangeResultPkrToCoins = document.getElementById('exchangeResultPkrToCoins');
+        const pkrToCoinButton = document.getElementById('pkrToCoinButton');
+        
+        // Exchange elements (PKR to TikTok Coins)
+        const pkrToTiktokForm = document.getElementById('pkrToTiktokForm');
+        const pkrAmountTiktokInput = document.getElementById('pkrAmountTiktok');
+        const exchangeResultPkrToTiktok = document.getElementById('exchangeResultPkrToTiktok');
+        const pkrToTiktokButton = document.getElementById('pkrToTiktokButton');
+        
+        // Exchange elements (PKR to YouTube Coins)
+        const pkrToYoutubeForm = document.getElementById('pkrToYoutubeForm');
+        const pkrAmountYoutubeInput = document.getElementById('pkrAmountYoutube');
+        const exchangeResultPkrToYoutube = document.getElementById('exchangeResultPkrToYoutube');
+        const pkrToYoutubeButton = document.getElementById('pkrToYoutubeButton');
+        
+        // Exchange elements (PKR to Instagram Coins)
+        const pkrToInstagramForm = document.getElementById('pkrToInstagramForm');
+        const pkrAmountInstagramInput = document.getElementById('pkrAmountInstagram');
+        const exchangeResultPkrToInstagram = document.getElementById('exchangeResultPkrToInstagram');
+        const pkrToInstagramButton = document.getElementById('pkrToInstagramButton');
+        
+        // International Exchange Inputs (PKR -> INT)
+        const pkrToUsdForm = document.getElementById('pkrToUsdForm');
+        const pkrAmountUsdInput = document.getElementById('pkrAmountUsd');
+        const exchangeResultPkrToUsd = document.getElementById('exchangeResultPkrToUsd');
+        
+        // International Exchange Inputs (INT -> PKR REVERSE)
+        const usdToPkrForm = document.getElementById('usdToPkrForm');
+        const usdAmountToPkrInput = document.getElementById('usdAmountToPkr');
+        const exchangeResultUsdToPkr = document.getElementById('exchangeResultUsdToPkr');
+        
+        // All other international exchange forms/inputs are also defined here...
+
 
         let isSignupMode = false;
         let currentCoins = 0;
+        let currentPkr = 0;
+        let currentTiktokCoins = 0;
+        let currentYoutubeCoins = 0;
+        let currentInstagramCoins = 0;
+        let currentUsd = 0;
+        let currentEur = 0;
+        let currentGbp = 0;
+        let currentAed = 0;
+        let currentSar = 0;
+        let currentJpy = 0;
         let currentUser = null;
 
         // --- PROFILE HELPER ---
@@ -358,11 +670,9 @@
             if (viewId === 'dashboard') {
                 dashboardContainer.style.display = 'block';
                 appHeader.style.display = 'flex';
-                // Center the dashboard content vertically if needed
                 document.querySelector('.main-content').style.alignItems = 'flex-start'; 
             } else {
                 authContainer.style.display = 'block';
-                // Center the auth form vertically
                 document.querySelector('.main-content').style.alignItems = 'center';
             }
         }
@@ -399,26 +709,32 @@
                     }
                     const userCredential = await auth.createUserWithEmailAndPassword(email, password);
                     
-                    // 1. Update Firebase Auth Profile (for name)
                     await userCredential.user.updateProfile({ displayName: name });
 
-                    // 2. Initialize Firestore Wallet
+                    // Initialize all balances including new currencies
                     await db.collection('users').doc(userCredential.user.uid).set({ 
                         name: name,
                         email: email,
                         coins: 0,
                         pkrBalance: 0,
+                        tiktokCoins: 0,
+                        youtubeCoins: 0,
+                        instagramCoins: 0,
+                        usdBalance: 0,
+                        eurBalance: 0,
+                        gbpBalance: 0,
+                        aedBalance: 0,
+                        sarBalance: 0,
+                        jpyBalance: 0,
                         uid: userCredential.user.uid
                     });
 
                     alert("Signup Successful!");
 
                 } else {
-                    // Login
                     await auth.signInWithEmailAndPassword(email, password);
                     alert("Login Successful!");
                 }
-                // AuthStateChanged listener will handle view change
             } catch (error) {
                 alert(`Authentication Failed: ${error.message}`);
             }
@@ -435,14 +751,36 @@
                 if (doc.exists) {
                     const data = doc.data();
                     currentCoins = Number(data.coins) || 0;
-                    const currentPkr = Number(data.pkrBalance) || 0;
+                    currentPkr = Number(data.pkrBalance) || 0;
+                    currentTiktokCoins = Number(data.tiktokCoins) || 0;
+                    currentYoutubeCoins = Number(data.youtubeCoins) || 0;
+                    currentInstagramCoins = Number(data.instagramCoins) || 0;
+                    currentUsd = Number(data.usdBalance) || 0;
+                    currentEur = Number(data.eurBalance) || 0;
+                    currentGbp = Number(data.gbpBalance) || 0;
+                    currentAed = Number(data.aedBalance) || 0;
+                    currentSar = Number(data.sarBalance) || 0;
+                    currentJpy = Number(data.jpyBalance) || 0;
 
                     coinsBalance.textContent = currentCoins.toLocaleString();
                     pkrBalance.textContent = `${currentPkr.toFixed(2)} PKR`;
+                    tiktokCoinsBalance.textContent = currentTiktokCoins.toLocaleString();
+                    youtubeCoinsBalance.textContent = currentYoutubeCoins.toLocaleString();
+                    instagramCoinsBalance.textContent = currentInstagramCoins.toLocaleString();
+                    usdBalance.textContent = `${currentUsd.toFixed(2)} USD`;
+                    eurBalance.textContent = `${currentEur.toFixed(2)} EUR`;
+                    gbpBalance.textContent = `${currentGbp.toFixed(2)} GBP`;
+                    aedBalance.textContent = `${currentAed.toFixed(2)} AED`;
+                    sarBalance.textContent = `${currentSar.toFixed(2)} SAR`;
+                    jpyBalance.textContent = `${currentJpy.toFixed(2)} JPY`;
                 } else {
-                    coinsBalance.textContent = '0';
-                    pkrBalance.textContent = '0.00 PKR';
-                    currentCoins = 0;
+                    // Reset all balances if document is missing
+                    coinsBalance.textContent = '0'; pkrBalance.textContent = '0.00 PKR'; tiktokCoinsBalance.textContent = '0';
+                    youtubeCoinsBalance.textContent = '0'; instagramCoinsBalance.textContent = '0';
+                    usdBalance.textContent = '0.00 USD'; eurBalance.textContent = '0.00 EUR'; gbpBalance.textContent = '0.00 GBP';
+                    aedBalance.textContent = '0.00 AED'; sarBalance.textContent = '0.00 SAR'; jpyBalance.textContent = '0.00 JPY';
+                    currentCoins = currentPkr = currentTiktokCoins = currentYoutubeCoins = currentInstagramCoins = 0;
+                    currentUsd = currentEur = currentGbp = currentAed = currentSar = currentJpy = 0;
                 }
             }, error => {
                 console.error("Error listening to wallet:", error);
@@ -453,7 +791,6 @@
         auth.onAuthStateChanged(user => {
             currentUser = user;
             if (user) {
-                // Logged in: Show Dashboard
                 const displayName = user.displayName || 'N/A';
                 
                 profileName.textContent = displayName;
@@ -464,12 +801,169 @@
                 listenToWallet(user.uid);
                 showView('dashboard');
             } else {
-                // Logged out: Show Auth
                 showView('auth');
             }
         });
 
-        // --- EXCHANGE LOGIC (Coins to PKR) ---
+        // ===================================================
+        // --- GENERIC EXCHANGE LOGIC ---
+        // ===================================================
+
+        // Generic PKR to Specific Currency Converter
+        function setupPkrToCurrencyExchange(formId, inputId, resultId, targetRate, targetField, targetUnit) {
+            const form = document.getElementById(formId);
+            const input = document.getElementById(inputId);
+            const resultDisplay = document.getElementById(resultId);
+            const button = form.querySelector('button');
+
+            input.addEventListener('input', () => {
+                const pkrToConvert = Number(input.value);
+                const isDivisible = pkrToConvert % targetRate === 0;
+
+                if (pkrToConvert >= targetRate && isDivisible) {
+                    const receivedAmount = pkrToConvert / targetRate;
+                    const displayAmount = targetUnit === 'JPY' || targetUnit === 'Coins' || targetUnit.includes('Coins') ? receivedAmount.toFixed(0) : receivedAmount.toFixed(2);
+                    resultDisplay.textContent = `${pkrToConvert.toFixed(2)} PKR = ${displayAmount} ${targetUnit}`;
+                    button.disabled = false;
+                } else {
+                    resultDisplay.textContent = `Minimum ${targetRate} PKR Required (Divisible by ${targetRate})`;
+                    button.disabled = true;
+                }
+            });
+
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const pkrToConvert = Number(input.value);
+                const user = auth.currentUser;
+
+                if (!user || pkrToConvert > currentPkr) {
+                    alert("Aapke paas itna PKR balance nahi hai.");
+                    return;
+                }
+                
+                const receivedAmount = pkrToConvert / targetRate;
+
+                if (receivedAmount === 0) {
+                    alert(`PKR ki miqdar ${targetRate} se kam hai. Koi ${targetUnit} nahi milenge.`);
+                    return;
+                }
+
+                if (confirm(`Kya aap ${pkrToConvert.toFixed(2)} PKR kharch karke ${receivedAmount.toFixed(2)} ${targetUnit} banana chahte hain?`)) {
+                    
+                    const userRef = db.collection('users').doc(user.uid);
+
+                    try {
+                        await db.runTransaction(async (transaction) => {
+                            const userDoc = await transaction.get(userRef);
+                            const data = userDoc.data();
+                            
+                            const newPkrBalance = (data.pkrBalance || 0) - pkrToConvert;
+                            const newTargetBalance = (data[targetField] || 0) + receivedAmount;
+
+                            if (newPkrBalance < 0) {
+                                throw new Error("Insufficient PKR balance during transaction.");
+                            }
+
+                            transaction.update(userRef, {
+                                [targetField]: newTargetBalance,
+                                pkrBalance: newPkrBalance
+                            });
+                        });
+
+                        alert(`Conversion Successful! ${receivedAmount.toFixed(2)} ${targetUnit} aapke wallet mein add ho gaye.`);
+                        form.reset();
+                        resultDisplay.textContent = `0 PKR = 0 ${targetUnit}`;
+
+                    } catch (error) {
+                        console.error("Transaction failed:", error);
+                        alert(`Conversion failed: ${error.message}.`);
+                    }
+                }
+            });
+        }
+        
+        // Generic International Currency to PKR Converter (Reverse Exchange)
+        function setupIntToPkrExchange(formId, inputId, resultId, sourceRate, sourceField, sourceUnit) {
+            const form = document.getElementById(formId);
+            const input = document.getElementById(inputId);
+            const resultDisplay = document.getElementById(resultId);
+            const button = form.querySelector('button');
+
+            input.addEventListener('input', () => {
+                const sourceAmount = Number(input.value);
+                
+                // Calculate PKR received: Source Amount / Reverse Rate (PKR per unit)
+                const pkrReceived = sourceAmount / sourceRate; 
+
+                if (sourceAmount >= sourceRate) {
+                    resultDisplay.textContent = `${sourceAmount.toFixed(2)} ${sourceUnit} = ${pkrReceived.toFixed(2)} PKR`;
+                    button.disabled = false;
+                } else {
+                    resultDisplay.textContent = `Minimum ${sourceRate} ${sourceUnit} Required`;
+                    button.disabled = true;
+                }
+            });
+
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const sourceAmount = Number(input.value);
+                const user = auth.currentUser;
+                
+                // Get current balance of the source currency dynamically
+                const currentSourceBalance = eval(`current${sourceField.charAt(0).toUpperCase() + sourceField.slice(1)}`);
+
+                if (!user || sourceAmount > currentSourceBalance) {
+                    alert(`Aapke paas itna ${sourceUnit} balance nahi hai.`);
+                    return;
+                }
+                
+                const pkrToReceive = sourceAmount / sourceRate;
+
+                if (pkrToReceive === 0) {
+                    alert(`Miqdar ${sourceRate} se kam hai. Koi PKR nahi milenge.`);
+                    return;
+                }
+
+                if (confirm(`Kya aap ${sourceAmount.toFixed(2)} ${sourceUnit} kharch karke ${pkrToReceive.toFixed(2)} PKR banana chahte hain?`)) {
+                    
+                    const userRef = db.collection('users').doc(user.uid);
+
+                    try {
+                        await db.runTransaction(async (transaction) => {
+                            const userDoc = await transaction.get(userRef);
+                            const data = userDoc.data();
+                            
+                            const newSourceBalance = (data[sourceField] || 0) - sourceAmount;
+                            const newPkrBalance = (data.pkrBalance || 0) + pkrToReceive;
+
+                            if (newSourceBalance < 0) {
+                                throw new Error(`Insufficient ${sourceUnit} balance during transaction.`);
+                            }
+
+                            transaction.update(userRef, {
+                                [sourceField]: newSourceBalance,
+                                pkrBalance: newPkrBalance
+                            });
+                        });
+
+                        alert(`Conversion Successful! ${pkrToReceive.toFixed(2)} PKR aapke balance mein add ho gaye.`);
+                        form.reset();
+                        resultDisplay.textContent = `0 ${sourceUnit} = 0.00 PKR`;
+
+                    } catch (error) {
+                        console.error("Transaction failed:", error);
+                        alert(`Conversion failed: ${error.message}.`);
+                    }
+                }
+            });
+        }
+
+
+        // ===================================================
+        // --- INITIALIZE EXCHANGES ---
+        // ===================================================
+
+        // --- A. Coins to PKR Exchange ---
         
         exchangeCoinsInput.addEventListener('input', () => {
             const coinsToConvert = Number(exchangeCoinsInput.value);
@@ -477,61 +971,41 @@
 
             if (coinsToConvert >= COIN_TO_PKR_RATE && isDivisible) {
                 const pkr = coinsToConvert / COIN_TO_PKR_RATE;
-                exchangeResult.textContent = `${coinsToConvert} Coins = ${pkr.toFixed(2)} PKR`;
+                exchangeResultCoinsToPkr.textContent = `${coinsToConvert.toLocaleString()} Coins = ${pkr.toFixed(2)} PKR`;
                 exchangeButton.disabled = false;
             } else {
-                exchangeResult.textContent = `Minimum ${COIN_TO_PKR_RATE} Coins Required (Must be divisible by ${COIN_TO_PKR_RATE})`;
+                exchangeResultCoinsToPkr.textContent = `Minimum ${COIN_TO_PKR_RATE} Coins Required (Must be divisible by ${COIN_TO_PKR_RATE})`;
                 exchangeButton.disabled = true;
             }
         });
 
-        exchangeForm.addEventListener('submit', async (e) => {
+        coinsToPkrForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             const coinsToConvert = Number(exchangeCoinsInput.value);
             const user = auth.currentUser;
 
-            if (!user) return;
-
-            if (coinsToConvert < COIN_TO_PKR_RATE || coinsToConvert % COIN_TO_PKR_RATE !== 0) {
-                alert(`Conversion ke liye Coins ki miqdar kam az kam ${COIN_TO_PKR_RATE} honi chahiye aur ${COIN_TO_PKR_RATE} se taqseem honi chahiye.`);
-                return;
-            }
-
-            if (coinsToConvert > currentCoins) {
+            if (!user || coinsToConvert > currentCoins) {
                 alert("Aapke paas itne coins nahi hain.");
                 return;
             }
 
             const pkrToReceive = coinsToConvert / COIN_TO_PKR_RATE;
+            const userRef = db.collection('users').doc(user.uid);
 
-            if (confirm(`Kya aap ${coinsToConvert} Coins kharch karke ${pkrToReceive.toFixed(2)} PKR banana chahte hain?`)) {
-                
-                const userRef = db.collection('users').doc(user.uid);
-
+            if (confirm(`Kya aap ${coinsToConvert.toLocaleString()} Coins kharch karke ${pkrToReceive.toFixed(2)} PKR banana chahte hain?`)) {
                 try {
                     await db.runTransaction(async (transaction) => {
                         const userDoc = await transaction.get(userRef);
-                        if (!userDoc.exists) {
-                            throw new Error("User data not found!");
-                        }
-                        
                         const data = userDoc.data();
                         const newCoins = (data.coins || 0) - coinsToConvert;
                         const newPkrBalance = (data.pkrBalance || 0) + pkrToReceive;
-
-                        if (newCoins < 0) {
-                            throw new Error("Insufficient coins during transaction.");
-                        }
-
-                        transaction.update(userRef, {
-                            coins: newCoins,
-                            pkrBalance: newPkrBalance
-                        });
+                        if (newCoins < 0) throw new Error("Insufficient coins during transaction.");
+                        transaction.update(userRef, { coins: newCoins, pkrBalance: newPkrBalance });
                     });
 
-                    alert(`Conversion Successful! ${pkrToReceive.toFixed(2)} PKR aapke balance mein add ho gaye.`);
-                    exchangeForm.reset();
-                    exchangeResult.textContent = '0 Coins = 0.00 PKR';
+                    alert(`Conversion Successful! ${pkrToReceive.toFixed(2)} PKR aapke withdrawal balance mein add ho gaye.`);
+                    coinsToPkrForm.reset();
+                    exchangeResultCoinsToPkr.textContent = '0 Coins = 0.00 PKR';
 
                 } catch (error) {
                     console.error("Transaction failed:", error);
@@ -539,6 +1013,55 @@
                 }
             }
         });
+        
+        // --- B. PKR to Main Coins Exchange ---
+        setupPkrToCurrencyExchange('pkrToCoinForm', 'pkrAmount', 'exchangeResultPkrToCoins', PKR_TO_COIN_RATE, 'coins', 'Coins');
+        
+        // --- C. PKR to TikTok Coins Exchange Logic ---
+        setupPkrToCurrencyExchange('pkrToTiktokForm', 'pkrAmountTiktok', 'exchangeResultPkrToTiktok', PKR_TO_TIKTOK_RATE, 'tiktokCoins', 'TikTok Coins');
+        
+        // --- D. PKR to YouTube Coins Exchange Logic ---
+        setupPkrToCurrencyExchange('pkrToYoutubeForm', 'pkrAmountYoutube', 'exchangeResultPkrToYoutube', PKR_TO_YOUTUBE_RATE, 'youtubeCoins', 'YouTube Coins');
+        
+        // --- E. PKR to Instagram Coins Exchange Logic ---
+        setupPkrToCurrencyExchange('pkrToInstagramForm', 'pkrAmountInstagram', 'exchangeResultPkrToInstagram', PKR_TO_INSTAGRAM_RATE, 'instagramCoins', 'Instagram Coins');
+        
+        // --- F. PKR to USD Exchange Logic ---
+        setupPkrToCurrencyExchange('pkrToUsdForm', 'pkrAmountUsd', 'exchangeResultPkrToUsd', INT_RATES.USD.rate, INT_RATES.USD.balanceField, INT_RATES.USD.unit);
+        
+        // --- G. USD to PKR Reverse Exchange Logic ---
+        setupIntToPkrExchange('usdToPkrForm', 'usdAmountToPkr', 'exchangeResultUsdToPkr', INT_RATES.USD.reverseRate, INT_RATES.USD.balanceField, INT_RATES.USD.unit);
+        
+        // --- H. PKR to EUR Exchange Logic ---
+        setupPkrToCurrencyExchange('pkrToEurForm', 'pkrAmountEur', 'exchangeResultPkrToEur', INT_RATES.EUR.rate, INT_RATES.EUR.balanceField, INT_RATES.EUR.unit);
+        
+        // --- I. EUR to PKR Reverse Exchange Logic ---
+        setupIntToPkrExchange('eurToPkrForm', 'eurAmountToPkr', 'exchangeResultEurToPkr', INT_RATES.EUR.reverseRate, INT_RATES.EUR.balanceField, INT_RATES.EUR.unit);
+        
+        // --- J. PKR to GBP Exchange Logic ---
+        setupPkrToCurrencyExchange('pkrAmountGbpForm', 'pkrAmountGbp', 'exchangeResultPkrToGbp', INT_RATES.GBP.rate, INT_RATES.GBP.balanceField, INT_RATES.GBP.unit);
+        
+        // --- K. GBP to PKR Reverse Exchange Logic ---
+        setupIntToPkrExchange('gbpToPkrForm', 'gbpAmountToPkr', 'exchangeResultGbpToPkr', INT_RATES.GBP.reverseRate, INT_RATES.GBP.balanceField, INT_RATES.GBP.unit);
+        
+        // --- L. PKR to AED Exchange Logic ---
+        setupPkrToCurrencyExchange('pkrAmountAedForm', 'pkrAmountAed', 'exchangeResultPkrToAed', INT_RATES.AED.rate, INT_RATES.AED.balanceField, INT_RATES.AED.unit);
+        
+        // --- M. AED to PKR Reverse Exchange Logic ---
+        setupIntToPkrExchange('aedToPkrForm', 'aedAmountToPkr', 'exchangeResultAedToPkr', INT_RATES.AED.reverseRate, INT_RATES.AED.balanceField, INT_RATES.AED.unit);
+        
+        // --- N. PKR to SAR Exchange Logic ---
+        setupPkrToCurrencyExchange('pkrAmountSarForm', 'pkrAmountSar', 'exchangeResultPkrToSar', INT_RATES.SAR.rate, INT_RATES.SAR.balanceField, INT_RATES.SAR.unit);
+        
+        // --- O. SAR to PKR Reverse Exchange Logic ---
+        setupIntToPkrExchange('sarToPkrForm', 'sarAmountToPkr', 'exchangeResultSarToPkr', INT_RATES.SAR.reverseRate, INT_RATES.SAR.balanceField, INT_RATES.SAR.unit);
+        
+        // --- P. PKR to JPY Exchange Logic ---
+        setupPkrToCurrencyExchange('pkrAmountJpyForm', 'pkrAmountJpy', 'exchangeResultPkrToJpy', INT_RATES.JPY.rate, INT_RATES.JPY.balanceField, INT_RATES.JPY.unit);
+        
+        // --- Q. JPY to PKR Reverse Exchange Logic ---
+        setupIntToPkrExchange('jpyToPkrForm', 'jpyAmountToPkr', 'exchangeResultJpyToPkr', INT_RATES.JPY.reverseRate, INT_RATES.JPY.balanceField, INT_RATES.JPY.unit);
+        
     </script>
 </body>
 </html>
