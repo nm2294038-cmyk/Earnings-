@@ -28,22 +28,45 @@
             margin: 0;
             padding: 0;
             background-color: #f0f2f5;
-            color: #333;
+            line-height: 1.6;
         }
 
+        /* --- HEADER STYLES --- */
         header {
             background-color: var(--dark-bg);
             color: white;
-            padding: 15px 20px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 10px 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
         
         header h1 {
-            font-size: 1.8em;
+            font-size: 1.5em;
             margin: 0;
+            text-align: left;
+        }
+
+        /* Profile Icon */
+        #profileIconButton {
+            background: none;
+            border: 2px solid white;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            padding: 0;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            line-height: 1;
+            transition: background-color 0.3s;
+        }
+        #profileIconButton:hover {
+            background-color: rgba(255, 255, 255, 0.15);
         }
 
         /* --- Wallet Display in Header --- */
@@ -53,7 +76,13 @@
             border-radius: 20px;
             font-weight: bold;
             font-size: 1.1em;
-            display: none; /* Hidden until logged in */
+            display: none;
+            margin-right: 15px;
+        }
+        
+        .header-right {
+            display: flex;
+            align-items: center;
         }
 
         .container {
@@ -64,6 +93,41 @@
             padding: 30px;
             border-radius: 10px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        /* --- ARTICLE/GUIDE STYLES --- */
+        .article {
+            padding: 10px;
+        }
+        .article h2 {
+            color: var(--danger-color);
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .article h3 {
+            color: var(--primary-color);
+            border-bottom: 1px solid #eee;
+            padding-bottom: 5px;
+            margin-top: 25px;
+        }
+        
+        #loginPrompt {
+            text-align: center;
+            padding: 20px;
+            background-color: #fff3cd;
+            border: 1px solid #ffeeba;
+            color: #856404;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        /* --- DEPOSIT CONTENT (Hidden until login) --- */
+        #depositContent { 
+            display: none; 
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 2px dashed #ccc;
         }
 
         /* --- Payment Details & Guide --- */
@@ -86,10 +150,6 @@
             border: 2px solid #ccc;
             border-radius: 8px;
             background-color: #fff;
-            transition: border-color 0.3s;
-        }
-        .payment-details:hover {
-            border-color: var(--primary-color);
         }
         .payment-details h4 {
             color: var(--primary-color);
@@ -186,7 +246,6 @@
             height: 100%;
             background-color: rgba(0, 0, 0, 0.6);
             backdrop-filter: blur(3px);
-            display: flex;
             justify-content: center;
             align-items: center;
         }
@@ -220,37 +279,14 @@
         .auth-toggle { text-align: center; margin-top: 15px; font-size: 0.9em; }
         .auth-toggle a { color: var(--primary-color); cursor: pointer; text-decoration: none; }
         
-        /* Hide main content until logged in */
-        #depositContent { display: none; }
-
         /* --- RESPONSIVE DESIGN (Media Queries) --- */
-
-        /* Tablet View (max-width: 768px) */
-        @media (max-width: 768px) {
-            .container {
-                margin: 20px auto;
-                padding: 20px;
-            }
-            .coin-packages {
-                grid-template-columns: repeat(4, 1fr); /* 4 columns on tablet */
-            }
-        }
-
-        /* Mobile View (max-width: 480px) */
         @media (max-width: 480px) {
-            header h1 {
-                font-size: 1.5em;
-            }
             .coin-packages {
-                grid-template-columns: repeat(3, 1fr); /* 3 columns on mobile */
+                grid-template-columns: repeat(3, 1fr);
             }
             .coin-package-btn {
                 font-size: 12px;
                 padding: 8px 3px;
-            }
-            .deposit-history-table th, .deposit-history-table td {
-                padding: 6px;
-                font-size: 0.75em;
             }
         }
     </style>
@@ -259,88 +295,152 @@
 
     <header>
         <h1>Coins Deposit Center</h1>
-        <!-- Wallet Display in Header -->
-        <div class="wallet-display" id="currentBalanceDisplay">
-            0 Coins
+        <div class="header-right">
+            <!-- Wallet Display in Header -->
+            <div class="wallet-display" id="currentBalanceDisplay">
+                0 Coins
+            </div>
+            <button id="profileIconButton" title="Login or View Profile">👤</button>
         </div>
     </header>
 
-    <!-- Main Deposit Content (Hidden until login) -->
-    <div class="container" id="depositContent">
+    <div class="container">
         
-        <!-- Deposit Guide -->
-        <div class="deposit-guide">
-            <h4>Deposit Karne Ka Tareeqa (Guide)</h4>
+        <!-- Article/Guide Section (Visible when logged out) -->
+        <div class="article" id="depositArticle">
+            <h2>Coins Deposit Karne Ka Mukammal Guide</h2>
+            
+            <p>Coins Deposit Center mein aapka khushamdeed! Yahan aap Pakistani Rupees (PKR) ke zariye fori taur par coins khareed sakte hain. **Naya Rate:** Ab **6 PKR** ke badle aapko **1 Coin** milega. Yeh rate aapki earning activities ko zyada value deta hai.</p>
+
+            <div id="loginPrompt">
+                Deposit Form aur History dekhne ke liye, barah-e-meherbani Profile Icon (👤) par click karke Login/Signup karen.
+            </div>
+
+            <h3>1. Coins Khareedne Ka Tareeqa</h3>
+            <p>Coins khareedne ka amal bahut seedha hai:</p>
+            <ul>
+                <li><strong>Package Chunein:</strong> Neeche diye gaye packages mein se apni marzi ki miqdar chunein. Yaad rakhen, agar aap 600 PKR deposit karte hain, to aapko 100 Coins milenge.</li>
+                <li><strong>Raqam Transfer Karen:</strong> Payment Methods section mein diye gaye EasyPaisa, JazzCash, ya SadaPay accounts par utni hi raqam (PKR) transfer karen jitne coins aap khareedna chahte hain (Coins ki miqdar x 6).</li>
+                <li><strong>Transaction Details:</strong> Raqam transfer karne ke baad, aapko **Transaction ID (TID)** ke saath, **jis account se raqam bheji gayi hai uski tafseelat (naam, number, CNIC)** bhi form mein darj karni hogi.</li>
+            </ul>
+
+            <h3>2. Deposit Request Submit Karna</h3>
+            <p>Login karne ke baad, aapko Deposit Form nazar aayega. Is form ko dhyan se fill karen:</p>
             <ol>
-                <li>Neeche diye gaye packages mein se Coins ki miqdar chunein.</li>
-                <li>Chune hue method (EasyPaisa/JazzCash/SadaPay) par utni hi raqam (PKR) transfer karen.</li>
-                <li>Transfer ke baad mili hui **Transaction ID (TID)** aur bheji gayi **Raqam** form mein bhar kar submit karen.</li>
-                <li>Admin verification ke baad aapke Coins foran add ho jayenge.</li>
+                <li><strong>Deposit Method:</strong> Woh method chunein jiske zariye aapne raqam bheji hai.</li>
+                <li><strong>Bheji Gayi Raqam:</strong> Woh sahi raqam darj karen jo aapne transfer ki hai.</li>
+                <li><strong>Sender Details:</strong> Raqam bhejney walay ka naam, account number, aur CNIC number darj karen.</li>
+                <li><strong>Transaction ID:</strong> Woh TID ya Hash code darj karen jo aapko transfer ke baad mila tha.</li>
+                <li><strong>Submit:</strong> Request submit karen.</li>
             </ol>
+
+            <h3>3. Verification Aur Coins Ka Milna</h3>
+            <p>Aapki request submit hone ke baad, woh 'Pending' status mein chali jayegi. Humari team fori taur par aapki Transaction ID aur Sender Details ko verify karegi. Verification mukammal hone par:</p>
+            <ul>
+                <li>Aapki request ka status 'Approved' ho jayega.</li>
+                <li>Coins (Bheji gayi Raqam / 6) ke hisab se aapke wallet mein add kar diye jayenge.</li>
+                <li>Aap Deposit History section mein apni tamam requests ka status track kar sakte hain.</li>
+            </ul>
+            
+            <p style="font-weight: bold; color: var(--secondary-color); margin-top: 20px;">Coins khareedne aur Deposit Center tak rasai ke liye, Profile Icon (👤) par click karke Login karen!</p>
         </div>
 
-        <!-- Coin Packages -->
-        <h4 style="margin-top: 30px;">Coins Package Chunein (1 Coin = 1 PKR)</h4>
-        <div class="coin-packages" id="coinPackages">
-            <!-- Buttons will be generated by JavaScript -->
-        </div>
+        <!-- Main Deposit Content (Hidden until login) -->
+        <div id="depositContent">
+            
+            <h2 style="color: var(--dark-bg); text-align: center;">Coins Deposit Form (Authorized Access)</h2>
 
-        <!-- Payment Details -->
-        <h4 style="margin-top: 30px;">Payment Methods</h4>
-        <div class="payment-methods">
-            <div class="payment-details">
-                <h4>EasyPaisa</h4>
-                <p>Name: Ghulam Mustafa</p>
-                <p>Number: <strong>03453252637</strong></p>
-            </div>
-            <div class="payment-details">
-                <h4>JazzCash</h4>
-                <p>Name: Nazim Mustafa</p>
-                <p>Number: <strong>03105784772</strong></p>
-            </div>
-            <div class="payment-details">
-                <h4>SadaPay</h4>
-                <p>Name: Nazim Mustafa</p>
-                <p>Number: <strong>03435641151</strong></p>
-            </div>
-        </div>
-
-        <!-- Deposit Form -->
-        <form id="depositForm">
-            <div class="form-group">
-                <label for="depositMethod">Deposit Method Chunein</label>
-                <select id="depositMethod" required>
-                    <option value="">--- Chunein ---</option>
-                    <option value="EasyPaisa">EasyPaisa</option>
-                    <option value="JazzCash">JazzCash</option>
-                    <option value="SadaPay">SadaPay</option>
-                    <option value="Bank">Pakistani Bank</option>
-                </select>
+            <!-- Deposit Guide (Short version for logged-in users) -->
+            <div class="deposit-guide">
+                <h4>Deposit Karne Ka Tareeqa (Summary)</h4>
+                <p style="font-weight: bold; color: var(--danger-color);">Current Rate: 6 PKR = 1 Coin</p>
+                <ol>
+                    <li>Coins Package chunein (PKR amount ke liye 6 se zarb karen).</li>
+                    <li>Payment Methods par required PKR transfer karen.</li>
+                    <li>Form mein **Transaction ID** aur **Sender ki mukammal tafseelat** darj karen.</li>
+                </ol>
             </div>
 
-            <div class="form-group">
-                <label for="depositAmount">Bheji Gayi Raqam (Amount Sent in PKR)</label>
-                <input type="number" id="depositAmount" placeholder="Kitni raqam bheji? (Coins ke barabar)" required min="1">
+            <!-- Coin Packages -->
+            <h4 style="margin-top: 30px;">Coins Package Chunein (Coins Ki Miqdar)</h4>
+            <div class="coin-packages" id="coinPackages">
+                <!-- Buttons will be generated by JavaScript -->
             </div>
 
-            <div class="form-group">
-                <label for="transactionId">Transaction ID (TID / Hash)</label>
-                <input type="text" id="transactionId" placeholder="Transaction ID yahan likhen" required>
+            <!-- Payment Details -->
+            <h4 style="margin-top: 30px;">Payment Methods</h4>
+            <div class="payment-methods">
+                <div class="payment-details">
+                    <h4>EasyPaisa</h4>
+                    <p>Name: Ghulam Mustafa</p>
+                    <p>Number: <strong>03453252637</strong></p>
+                </div>
+                <div class="payment-details">
+                    <h4>JazzCash</h4>
+                    <p>Name: Nazim Mustafa</p>
+                    <p>Number: <strong>03105784772</strong></p>
+                </div>
+                <div class="payment-details">
+                    <h4>SadaPay</h4>
+                    <p>Name: Nazim Mustafa</p>
+                    <p>Number: <strong>03435641151</strong></p>
+                </div>
+            </div>
+
+            <!-- Deposit Form -->
+            <form id="depositForm">
+                <div class="form-group">
+                    <label for="depositMethod">Deposit Method Chunein</label>
+                    <select id="depositMethod" required>
+                        <option value="">--- Chunein ---</option>
+                        <option value="EasyPaisa">EasyPaisa</option>
+                        <option value="JazzCash">JazzCash</option>
+                        <option value="SadaPay">SadaPay</option>
+                        <option value="Bank">Pakistani Bank</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="depositAmount">Bheji Gayi Raqam (Amount Sent in PKR)</label>
+                    <input type="number" id="depositAmount" placeholder="Kitni raqam bheji? (PKR)" required min="6">
+                </div>
+                
+                <!-- NEW FIELDS ADDED HERE -->
+                <div class="form-group">
+                    <label for="senderName">Sender Account Holder Ka Naam</label>
+                    <input type="text" id="senderName" placeholder="Jis account se raqam bheji" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="senderAccount">Sender Account Number / Phone Number</label>
+                    <input type="text" id="senderAccount" placeholder="Sender ka phone number ya account number" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="senderCnic">Sender ID Card Number (CNIC)</label>
+                    <input type="text" id="senderCnic" placeholder="Sender ka CNIC number (Optional, but recommended)" >
+                </div>
+                <!-- END NEW FIELDS -->
+
+                <div class="form-group">
+                    <label for="transactionId">Transaction ID (TID / Hash)</label>
+                    <input type="text" id="transactionId" placeholder="Transaction ID yahan likhen" required>
+                </div>
+                
+                <button type="submit" class="submitBtn">Deposit Request Submit Karen</button>
+            </form>
+
+            <!-- Deposit History -->
+            <h4 style="margin-top: 30px; border-top: 1px solid #eee; padding-top: 15px;">Deposit History</h4>
+            <div id="depositHistoryList">
+                <p>History load ho rahi hai...</p>
             </div>
             
-            <button type="submit" class="submitBtn">Deposit Request Submit Karen</button>
-        </form>
-
-        <!-- Deposit History -->
-        <h4 style="margin-top: 30px; border-top: 1px solid #eee; padding-top: 15px;">Deposit History</h4>
-        <div id="depositHistoryList">
-            <p>History load ho rahi hai...</p>
+            <a href="#" style="display: block; text-align: center; margin-top: 20px; color: var(--primary-color);">← Wapas Home Page Par Jaen</a>
         </div>
-        
-        <a href="#" style="display: block; text-align: center; margin-top: 20px; color: var(--primary-color);">← Wapas Home Page Par Jaen</a>
     </div>
 
-    <!-- Auth Modal (Always visible if not logged in) -->
+    <!-- Auth Modal (Login/Signup) -->
     <div id="authModal" class="modal">
         <div class="modal-content">
             <h3 id="authTitle">Login Karen</h3>
@@ -362,46 +462,56 @@
     <script>
         // --- FIREBASE CONFIGURATION AND INITIALIZATION ---
         const firebaseConfig = {
-    apiKey: "AIzaSyDNYv9SNUjMAHlaPzfovyYefoBNDgx4Gd4",
-    authDomain: "traffic-exchange-62a58.firebaseapp.com",
-    projectId: "traffic-exchange-62a58",
-    storageBucket: "traffic-exchange-62a58.appspot.com",
-    messagingSenderId: "474999317287",
-    appId: "1:474999317287:web:8e28a2f5f1a959d8ce3f02",
-    measurementId: "G-HJQ46RQNZS"
-};
+            apiKey: "AIzaSyDNYv9SNUjMAHlaPzfovyYefoBNDgx4Gd4",
+            authDomain: "traffic-exchange-62a58.firebaseapp.com",
+            projectId: "traffic-exchange-62a58",
+            storageBucket: "traffic-exchange-62a58.appspot.com",
+            messagingSenderId: "474999317287",
+            appId: "1:474999317287:web:8e28a2f5f1a959d8ce3f02",
+            measurementId: "G-HJQ46RQNZS"
+        };
 
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.firestore();
 
-        // --- GLOBAL STATE ---
+        // --- GLOBAL STATE AND CONSTANTS ---
         let isSignupMode = false;
         let currentUser = null;
-        const COIN_PACKAGES = [100, 200, 399, 499, 500, 599, 1200, 2400, 5000]; // Coins = PKR Amount
+        const COIN_RATE_PKR = 6; // 6 PKR = 1 Coin
+        const COIN_PACKAGES = [100, 200, 300, 500, 1000, 2000, 5000]; 
 
         // --- DOM ELEMENTS ---
         const authModal = document.getElementById('authModal');
         const depositContent = document.getElementById('depositContent');
+        const depositArticle = document.getElementById('depositArticle');
         const depositForm = document.getElementById('depositForm');
         const depositHistoryList = document.getElementById('depositHistoryList');
-        const currentBalanceDisplay = document.getElementById('currentBalanceDisplay'); // Target in Header
+        const currentBalanceDisplay = document.getElementById('currentBalanceDisplay');
         const depositAmountInput = document.getElementById('depositAmount');
         const coinPackagesContainer = document.getElementById('coinPackages');
         const authTitle = document.getElementById('authTitle');
         const authButton = document.getElementById('authButton');
         const toggleText = document.getElementById('toggleText');
         const logoutButton = document.getElementById('logoutButton');
+        const profileIconButton = document.getElementById('profileIconButton');
+        
+        // New Form Fields
+        const senderNameInput = document.getElementById('senderName');
+        const senderAccountInput = document.getElementById('senderAccount');
+        const senderCnicInput = document.getElementById('senderCnic');
+        const transactionIdInput = document.getElementById('transactionId');
 
 
         // --- INITIAL SETUP: RENDER COIN PACKAGES ---
         function renderCoinPackages() {
             coinPackagesContainer.innerHTML = '';
             COIN_PACKAGES.forEach(coins => {
+                const pkrAmount = coins * COIN_RATE_PKR;
                 const button = document.createElement('button');
                 button.className = 'coin-package-btn';
-                button.setAttribute('data-coins', coins);
-                button.textContent = `${coins} Coins`;
+                button.setAttribute('data-pkr', pkrAmount); 
+                button.textContent = `${coins} Coins (${pkrAmount} PKR)`;
                 coinPackagesContainer.appendChild(button);
             });
         }
@@ -410,10 +520,10 @@
         // --- COIN PACKAGE SELECTION LOGIC ---
         coinPackagesContainer.addEventListener('click', (e) => {
             if (e.target.classList.contains('coin-package-btn')) {
-                const selectedCoins = Number(e.target.getAttribute('data-coins'));
+                const selectedPkr = Number(e.target.getAttribute('data-pkr'));
                 
-                // 1. Update Input Field
-                depositAmountInput.value = selectedCoins;
+                // 1. Update Input Field with PKR amount
+                depositAmountInput.value = selectedPkr;
                 
                 // 2. Update Visual Selection
                 document.querySelectorAll('.coin-package-btn').forEach(btn => {
@@ -423,8 +533,17 @@
             }
         });
 
+        // --- EVENT LISTENER TO OPEN MODAL VIA ICON ---
+        profileIconButton.addEventListener('click', () => {
+            authModal.style.display = 'flex';
+            if (!auth.currentUser) {
+                isSignupMode = false;
+                toggleAuthMode();
+            }
+        });
 
-        // --- AUTH LOGIC ---
+
+        // --- AUTH MODAL LOGIC ---
 
         function toggleAuthMode() {
             isSignupMode = !isSignupMode;
@@ -453,6 +572,7 @@
                     await auth.signInWithEmailAndPassword(email, password);
                     alert("Login Successful!");
                 }
+                authModal.style.display = 'none';
             } catch (error) {
                 alert(`Authentication Failed: ${error.message}`);
             }
@@ -467,35 +587,34 @@
         auth.onAuthStateChanged(user => {
             currentUser = user;
             if (user) {
-                // Logged In
-                authModal.style.display = 'none';
+                // Logged In: Show Deposit Section, Hide Article Guide
+                depositArticle.style.display = 'none';
                 depositContent.style.display = 'block';
-                currentBalanceDisplay.style.display = 'block'; // Show wallet in header
+                currentBalanceDisplay.style.display = 'block';
                 logoutButton.style.display = 'block';
                 toggleText.style.display = 'none';
                 
-                listenToWallet(user.uid); // Starts the real-time listener
+                listenToWallet(user.uid);
                 listenToDepositHistory(user.uid);
 
             } else {
-                // Logged Out
-                authModal.style.display = 'flex';
+                // Logged Out: Show Article Guide, Hide Deposit Section
+                depositArticle.style.display = 'block';
                 depositContent.style.display = 'none';
-                currentBalanceDisplay.style.display = 'none'; // Hide wallet in header
+                currentBalanceDisplay.style.display = 'none';
                 logoutButton.style.display = 'none';
                 toggleText.style.display = 'block';
+                authModal.style.display = 'none';
             }
         });
 
         // --- WALLET LOGIC (Real-Time Listener) ---
 
         function listenToWallet(uid) {
-            // This function sets up the real-time listener
             db.collection('users').doc(uid).onSnapshot(doc => {
                 if (doc.exists) {
                     const data = doc.data();
                     const coins = data.coins ? Number(data.coins) : 0; 
-                    // Update the header display immediately when Firestore changes
                     currentBalanceDisplay.textContent = `${coins} Coins`;
                 } else {
                     currentBalanceDisplay.textContent = `0 Coins`;
@@ -511,10 +630,16 @@
 
             const method = document.getElementById('depositMethod').value;
             const amount = Number(depositAmountInput.value); // PKR Amount
-            const txId = document.getElementById('transactionId').value.trim();
+            const txId = transactionIdInput.value.trim();
+            const senderName = senderNameInput.value.trim();
+            const senderAccount = senderAccountInput.value.trim();
+            const senderCnic = senderCnicInput.value.trim(); // CNIC is optional but collected
+            
+            // Calculate coins based on the new rate
+            const coinsToReceive = Math.floor(amount / COIN_RATE_PKR); 
 
-            if (amount <= 0 || !method || !txId) {
-                alert("Bheji gayi raqam aur Transaction ID zaroori hain.");
+            if (amount < COIN_RATE_PKR || !method || !txId || !senderName || !senderAccount) {
+                alert(`Deposit ke liye kam az kam ${COIN_RATE_PKR} PKR, Deposit Method, Transaction ID, Sender ka Naam, aur Sender ka Account Number darj karna zaroori hai.`);
                 return;
             }
 
@@ -523,14 +648,17 @@
                     userId: currentUser.uid,
                     email: currentUser.email,
                     method: method,
-                    amount: amount, // Storing PKR amount
-                    coinsEquivalent: amount, // Storing Coins (1:1 rate)
+                    amount: amount, // PKR amount sent
+                    coinsEquivalent: coinsToReceive, // Calculated coins
                     transactionId: txId,
+                    senderName: senderName, // New Field
+                    senderAccount: senderAccount, // New Field
+                    senderCnic: senderCnic, // New Field
                     status: 'Pending',
                     timestamp: firebase.firestore.FieldValue.serverTimestamp()
                 });
 
-                alert("Deposit Request Submit ho gayi. Admin verification ke baad coins add ho jayenge.");
+                alert(`Deposit Request Submit ho gayi. Aapko ${coinsToReceive} Coins milenge. Admin verification ke baad coins add ho jayenge.`);
                 depositForm.reset();
                 document.querySelectorAll('.coin-package-btn').forEach(btn => btn.classList.remove('selected'));
             } catch (error) {
@@ -579,7 +707,7 @@
                     const d = doc.data();
                     const statusClass = 'status-' + (d.status || "Pending").toLowerCase();
                     const date = formatTimestamp(d.timestamp);
-                    const coins = d.coinsEquivalent || d.amount || 0;
+                    const coins = d.coinsEquivalent || 0;
 
                     html += `
                         <tr>
