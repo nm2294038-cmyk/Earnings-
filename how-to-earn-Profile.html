@@ -1,608 +1,544 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ur">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>YoursMed - Become a  Affiliate</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard & Auth</title>
+    
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
 
-  <meta name="description" content="YoursMed - Free social media promotion, followers, likes, views, and online earning tools for Pakistan users. Earn money, grow your social media, and boost engagement fast.">
-  <meta name="keywords" content="yoursmed, social media promotion, free followers, likes, online earning, Pakistan, free tools, YouTube views, TikTok followers, Instagram likes">
-  <meta name="author" content="YoursMed Team">
-  <meta name="robots" content="index, follow">
+    <style>
+        :root {
+            --primary-color: #007bff;
+            --secondary-color: #28a745;
+            --dark-bg: #2c3e50;
+            --light-bg: #ffffff;
+            --danger-color: #dc3545;
+            --shadow-deep: 0 10px 25px rgba(0, 0, 0, 0.2);
+            --profile-color: #ff9800; /* Attractive color for profile icon */
+        }
 
-  <link rel="canonical" href="https://www.yoursmed.xyz/">
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f2f5;
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
 
-  <!-- Open Graph (Facebook / WhatsApp) -->
-  <meta property="og:title" content="YoursMed - Free Social Media Promotion & Online Earning">
-  <meta property="og:description" content="Promote your social media accounts, earn money online, and grow your audience — all free on YoursMed.">
-  <meta property="og:url" content="https://www.yoursmed.xyz/">
-  <meta property="og:type" content="website">
-  <meta property="og:image" content="https://www.yoursmed.xyz/cover.jpg"> 
-<!-- Home Page Meta Tags -->
-<title>Earn Money Online Pakistan – Complete Guide | gMnetworking</title>
-<meta name="description" content="Discover the ultimate way to earn money online in Pakistan with gMnetworking. Complete tasks, watch videos, engage on social media, and get paid instantly via Easypaisa, JazzCash, and Bitget. Beginner-friendly step-by-step guidance, referral commissions, and secure withdrawals. Turn free time into real income from home.">
-<meta name="keywords" content="online earning Pakistan, earn money online, task earning site, referral commission, gMnetworking, paid tasks website, work from home Pakistan, how to earn online, online earning 2025, earn via referrals, micro tasks Pakistan, online income, make money online, step by step guide, online jobs Pakistan">
-  <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="YoursMed - Free Social Media Promotion & Online Earning">
-  <meta name="twitter:description" content="Free online earning tools and social media boost platform for Pakistan users.">
-  <meta name="twitter:image" content="https://www.yoursmed.xyz/cover.jpg">
+        header {
+            background-color: var(--dark-bg);
+            color: white;
+            padding: 15px 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .main-content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
 
-  <!-- Favicon -->
-  <link rel="icon" type="image/png" href="https://www.yoursmed.xyz/favicon.png">
+        .container {
+            width: 90%;
+            max-width: 800px;
+            margin: 40px auto;
+            background-color: var(--light-bg);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
 
-  <!-- Structured Data (JSON-LD) -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    "name": "YoursMed",
-    "url": "https://www.yoursmed.xyz/",
-    "description": "Free social media promotion and online earning tools in Pakistan.",
-    "publisher": {
-      "@type": "Organization",
-      "name": "YoursMed",
-      "url": "https://www.yoursmed.xyz/",
-      "logo": {
-        "@type": "ImageObject",
-        "url": "https://www.yoursmed.xyz/logo.png"
-      }
-    },
-    "potentialAction": {
-      "@type": "SearchAction",
-      "target": "https://www.yoursmed.xyz/search?q={search_term_string}",
-      "query-input": "required name=search_term_string"
-    }
-  }
-  </script>
+        /* --- AUTH STYLES (Login/Signup) --- */
+        #authContainer {
+            display: none; /* Controlled by JS */
+            max-width: 400px;
+            width: 100%;
+            padding: 40px;
+            background: var(--light-bg);
+            border-radius: 12px;
+            box-shadow: var(--shadow-deep);
+            text-align: center;
+        }
+        #authContainer h2 { color: var(--primary-color); margin-bottom: 25px; font-size: 1.8em; }
+        .auth-form input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            box-sizing: border-box;
+        }
+        .auth-form button {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            width: 100%;
+            cursor: pointer;
+            font-size: 1.1em;
+            margin-top: 15px;
+        }
+        .auth-toggle { margin-top: 20px; }
+        .auth-toggle a { font-weight: bold; color: var(--primary-color); cursor: pointer; text-decoration: none; }
 
-  <!-- External CSS Link -->
-  <link rel="stylesheet" href="style.css"> 
+        /* --- DASHBOARD & PROFILE STYLES --- */
+        #dashboardContainer {
+            display: none; /* Controlled by JS */
+        }
+        
+        .profile-card {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            margin-bottom: 30px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            background: #fcfcfc;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        }
 
+        .profile-pic-container {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background-color: var(--profile-color);
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 20px;
+            flex-shrink: 0;
+        }
+
+        .profile-details {
+            text-align: left;
+        }
+        .profile-details h2 {
+            color: var(--primary-color);
+            margin: 0 0 5px 0;
+            font-size: 1.8em;
+        }
+        .profile-details p {
+            color: #666;
+            margin: 0;
+        }
+
+        .wallet-display {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .balance-box { padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); }
+        .coins-box { background-color: #e6f7ff; border: 1px solid var(--primary-color); }
+        .pkr-box { background-color: #e6ffe6; border: 1px solid var(--secondary-color); }
+        .balance-box h3 { margin: 0 0 10px 0; font-size: 1.2em; }
+        .balance-box p { font-size: 2em; font-weight: bold; }
+
+        /* --- Exchange Section --- */
+        .exchange-section {
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            background-color: #f9f9f9;
+        }
+        .exchange-section h3 { color: var(--danger-color); margin-top: 0; }
+        .exchange-section p.rate { font-weight: bold; color: #555; margin-bottom: 15px; }
+        .exchange-form input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .exchange-form button {
+            background-color: var(--danger-color);
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.3s;
+        }
+
+        /* --- Quick Links --- */
+        .quick-links { display: flex; justify-content: space-around; gap: 15px; }
+        .quick-links a {
+            flex-grow: 1;
+            text-align: center;
+            padding: 15px;
+            background-color: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        @media (max-width: 600px) {
+            .profile-card {
+                flex-direction: column;
+                text-align: center;
+            }
+            .profile-pic-container {
+                margin-right: 0;
+                margin-bottom: 15px;
+            }
+            .profile-details {
+                text-align: center;
+            }
+            .wallet-display { grid-template-columns: 1fr; }
+            .quick-links { flex-direction: column; }
+        }
+    </style>
 </head>
 <body>
 
-  <!-- Header Container (MODIFIED TO MATCH SCREENSHOT) -->
-
-  <header class="ysense-header">
-    <!-- Menu icon for sidebar -->
-    <button class="sidebar-toggle" id="menuIcon" aria-label="Toggle Sidebar">
-      <span></span>
-      <span></span>
-      <span></span>
-    </button>
+    <header id="appHeader" style="display: none;">
+        <h2 id="headerTitle">Dashboard</h2>
+        <button id="logoutButton">Logout</button>
+    </header>
     
-    <div class="logo-container">
-        <!-- Replaced generic title with gMnetworking style logo -->
-        <span class="ysense-logo">GMN<span style="color:#28a745; margin-left: 2px;">&#9789;</span></span>
-    </div>
-
-    <div class="header-actions">
-        <!-- Auth buttons linked to existing Firebase logic -->
-        <button id="headerSignInBtn" class="ysense-btn sign-in-btn">Sign In</button>
-        <button id="headerJoinNowBtn" class="ysense-btn join-now-btn">Join Now</button>
-      
-            <!-- Simple visual indicator for the checkmark list icon -->
-            <div class="checklist-icon"></div>
-        </button>
-    </div>
-  </header>
-
-  <!-- Sidebar Menu -->
-
-  <aside class="sidebar" id="sidebar">
-    <nav id="mainNav">
-      <!-- Navigation buttons -->
-    <button data-section="deposit">Deposit</button>
-      <button data-section="dashboard">Dashboard</button>
-  
-  
-   
-      <button id="adminPanelBtn" data-section="adminPanel" style="display:none;">Admin Panel</button>
-      <button id="logoutBtn">Logout</button>
-  
-    </nav>
-  </aside>
-
-  <!-- Overlay for sidebar -->
-
-  <div class="overlay" id="overlay"></div>
-
-  <!-- Main Content Wrapper -->
-
-  <div class="content-wrapper">
-    
-    <!-- AFFILIATE LANDING PAGE CONTENT (FROM SCREENSHOT) -->
-    <section id="affiliatesSection" class="ysense-affiliate-page active">
-        <div class="content-box">
-            <div class="breadcrumb">
-                <i class="fa fa-home"></i> Home › Affiliates <span class="refresh-icon">↻</span>
-            </div>
-            <h1>Become a gMnetworking Affiliate and start earning today!</h1>
-            <p>Share gMnetworking with your friends and watch your earnings grow. Earn up to 10% recurring commissions on what your referrals make. Take advantage of our simple linking tools and eye-catching banners. The more you promote, the more you earn!</p>
-
-            <!-- Signup Commissions -->
-            <div class="commission-section">
-                <div class="commission-header">
-                    <span class="commission-icon" style="font-family: Arial, sans-serif; font-size: 28px;">&#x2714;</span>
-                    <h2>Signup Commissions</h2>
-                </div>
-                <ol>
-                    <li>1) For each referral that becomes active you will earn a signup commission of $0.10 or $0.30 from select countries (<a href="#">see details</a>).</li>
-                    <li>2) Once your referrals earn their first $5.00 (excluding commissions and bonuses) you will also earn an extra $2.00* bonus!</li>
-                </ol>
-            </div>
-
-            <!-- Activity Commissions -->
-            <div class="commission-section">
-                <div class="commission-header">
-                    <span class="commission-icon" style="font-family: Arial, sans-serif; font-size: 28px;">&#x2714;</span>
-                    <h2>Activity Commissions</h2>
-                </div>
-                <p>For every approved <a href="#">task</a>, <a href="#">Offer</a> your referrals complete you earn a whopping 10% commission of that they earn.</p>
-
-    </section>
-    
-    <!-- Auth Section (Hidden by default, shown via header buttons or if JS fails) -->
-    <section id="authSection" class="">
-      <div class="auth-container">
-        <h2>Sign Up / Login</h2>
-    
-        <!-- Agent Registration Button -->
-        <button type="button" id="showAgentFormBtn" class="submitBtn" style="background: #6c757d; color: white;"></button>
-
-        <!-- Agent Form (initially hidden) -->
-        <section id="agentFormSection" style="display:none; margin-top: 15px; padding: 15px; border: 1px solid #333; border-radius: 8px; background-color: rgba(25, 25, 25, 0.7);">
-            <h3 style="color: #0ff; margin-bottom: 10px; font-size: 18px;"></h3>
-            <input type="text" id="agentName" placeholder="Agent Name"><br>
-            <input type="text" id="agentFatherName" placeholder="Agent Father Name"><br>
+    <div class="main-content">
+        
+        <!-- 1. AUTH SECTION -->
+        <div id="authContainer">
+            <h2 id="authTitle">Login Karen</h2>
             
-            <!-- Family Member Details Section -->
-            <div id="familyDetailsSection" style="margin-top: 10px;">
-                <h4 style="color: #0ff; font-size: 14px; margin-bottom: 5px;">Family Members (Optional)</h4>
-                <!-- Wrapper for family member inputs -->
-                <div id="familyMembersInputWrapper">
-                    <div class="family-member-input-group">
-                        <input type="text" placeholder="Family Member 1 Name"><br>
-                        <input type="text" placeholder="Family Member 1 Relation"><br>
-                    </div>
+            <form class="auth-form" id="authForm">
+                <input type="text" id="authName" placeholder="Aapka Pura Naam" style="display: none;">
+                <input type="email" id="authEmail" placeholder="Email Address" required>
+                <input type="password" id="authPassword" placeholder="Password" required>
+                <button type="submit" id="authButton">Login</button>
+            </form>
+            
+            <div class="auth-toggle">
+                <p id="toggleText">Account nahi hai? <a onclick="toggleAuthMode()">Signup Karen</a></p>
+            </div>
+        </div>
+
+        <!-- 2. DASHBOARD SECTION -->
+        <div id="dashboardContainer" class="container">
+            
+            <!-- Profile Card (Updated) -->
+            <div class="profile-card">
+                <div class="profile-pic-container">
+                    <span id="profileInitials">U</span>
                 </div>
-                <button type="button" id="addFamilyMemberBtn" style="background: #28a745; color: white; padding: 5px 10px; font-size: 12px; margin-top: 5px; border: none; border-radius: 5px;">Add Another Family Member</button>
+                <div class="profile-details">
+                    <h2 id="profileName">Loading...</h2>
+                    <p id="profileEmail">Loading...</p>
+                    <p><small>User ID: <span id="profileUid">Loading...</span></small></p>
+                </div>
             </div>
 
-            <!-- ID Card Number -->
-            <input type="text" id="agentIdCard" placeholder="Agent ID Card Number (Optional)"><br>
+            <!-- Wallet Display -->
+            <div class="wallet-display">
+                <div class="balance-box coins-box">
+                    <h3>Coins Wallet</h3>
+                    <p id="coinsBalance">0</p>
+                </div>
+                <div class="balance-box pkr-box">
+                    <h3>PKR Balance (Ready to Withdraw)</h3>
+                    <p id="pkrBalance">0.00 PKR</p>
+                </div>
+            </div>
             
-            <!-- WhatsApp Number -->
-            <input type="text" id="agentWhatsApp" placeholder="Agent WhatsApp Number (Optional)"><br>
+            <!-- Exchange Section -->
+            <div class="exchange-section">
+                <h3>Coins Ko PKR Mein Convert Karen</h3>
+                <p class="rate">Exchange Rate: 4 Coins = 1 PKR</p>
+                
+                <form id="exchangeForm">
+                    <label for="exchangeCoins">Coins Ki Miqdar (Convert Karne Ke Liye)</label>
+                    <input type="number" id="exchangeCoins" placeholder="Minimum 4 Coins" required min="4">
+                    
+                    <p id="exchangeResult" style="color: var(--primary-color); font-weight: bold;">0 Coins = 0.00 PKR</p>
+                    
+                    <button type="submit" id="exchangeButton">Convert Karen</button>
+                </form>
+            </div>
 
-            <p style="color: #ccc; font-size: 12px; margin-top: 8px;" >(All fields are optional unless specified)</p>
-        </section>
-
-        <!-- New button for location -->
-        <button type="button" id="useMyLocationBtn" class="location-button">Use My Current Location</button>
-        <!-- Hidden input to store location -->
-        <input type="hidden" id="userLocationInput">
-        <button id="signupBtn" class="submitBtn">Login 👇</button>
-        <hr>
-        <input type="email" id="loginEmail" placeholder="Email" required><br>
-        <input type="password" id="loginPassword" placeholder="Password" required><br>
-        <button id="loginBtn" class="submitBtn">Login</button>
-      </div>
-    </section>
-
-<!-- Sections (REORDERED) - These are hidden until logged in -->
-
-<!-- Dashboard Section -->
-
-<section id="dashboard">
-  <h2>Dashboard</h2>
-  <div class="dashboard-container">
-    <div class="dashboard-box">
-    <p class="animated-description">Agents</p>
-
-        <h3 id="totalUsers">0</h3>
-    </div>
-    <div class="dashboard-box">
-      <p class="animated-description">Active Tasks</p>
-      <h3 id="totalTasks">0</h3>
-    </div>
-    <div class="dashboard-box">
-      <p class="animated-description">Total Withdrawals</p>
-      <h3 id="totalWithdrawals">0</h3>
-    </div>
-    <div class="dashboard-box">
-      <p class="animated-description">Total Earnings</p>
-      <h3 id="totalEarnings">₹0.00</h3>
-    </div>
-    <div class="dashboard-box">
-      <p class="animated-description">Wallet Balance</p>
-      <h3>₹<span id="walletBalance">0.00</span></h3>
-    </div>
-  </div>
-
-
-</section>
-
-<!-- Tasks Section (Moved to be the first functional section after Dashboard) -->
-
-<section id="tasks">
-  <h2>Tasks to Complete</h2>
-  <p class="animated-description">Complete tasks to earn rewards. Cooldown: 1 minutes between completions.</p>
-  <div class="category-filter-buttons" id="taskCategoryFilters">
-      <button data-filter="all" class="active">All Categories</button>
-  
- 
-  </div>
-  <div id="tasksContainer"></div>
-</section>
-
-<!-- Profile Section -->
-
-<section id="profile">
-  <h2>My Profile</h2>
-  <div class="profile-card">
-    <div class="profile-header">
-      <div id="userProfilePic" class="profile-pic"></div>
-      <div class="profile-info">
-        <h2 id="userName"></h2>
-        <p id="userEmail"></p>
-        <p>Referral Code: <span id="userRef" class="referral-code"></span></p>
-      </div>
-    </div>
-    <div class="profile-stats">
-      <div class="stat-item">
-        <p>Account Balance</p>
-        <h3>₹<span id="walletBalanceProfile">0.00</span></h3>
-      </div>
-      <div class="stat-item">
-        <p>Total Referrals</p>
-        <h3 id="totalReferralsCount">0</h3>
-      </div>
-      <div class="stat-item">
-        <p>Referral Earnings</p>
-        <h3>₹<span id="totalReferralEarnings">0.00</span></h3>
-      </div>
-    </div>
-    <div class="profile-actions">
-      <button id="editProfileBtn">Edit Profile</button>
-    </div>
-  </div>
-</section>
-
-<!-- Referrals Section -->
-
-<section id="referrals">
-  <h2>Referral Earnings</h2>
-  <p class="animated-description">Share your referral link to earn rewards when new users join through your link!</p>
-  <p class="animated-description"><strong>You will earn a 5% commission for life on all tasks completed by your referred users.</strong></p>
-  <input type="text" id="refLink" readonly style="cursor: copy; background: #2a2a2a;">
-  <h3>Referred Users:</h3>
-  <div id="refUsers"></div>
-</section>
-
-<!-- For You Page Section -->
-
-<section id="forYouPage">
-  <h2>For You</h2>
-  <p  class="animated-description"> Here are some recommended tasks and links For You.</p>
-  <div id="forYouTasksContainer" class="dashboard-container"></div>
-</section>
-
-<!-- Withdrawals Section -->
-
-<section id="withdrawals">
-  <h2 class="animated-description">Request Withdrawal</h2>
-  <div class="withdrawal-warning-box">
-      <h3>انتہائی اہم انتباہ - Warning</h3>
-      <p>
-          آپ کا Withdrawal اسی صورت میں منظور (Approve) کیا جائے گا جب آپ نے تمام Tasks بالکل اُسی طرح مکمل کیے ہوں گے جیسا کہ Task کی Description میں لکھا ہے۔ اگر آپ نے کوئی بھی ہدایت (Instruction) نظر انداز کی، ٹائمر پورا نہیں کیا، یا غلط کام کیا تو آپ کی Withdrawal Request بغیر کسی اطلاع کے مسترد (Reject) کر دی جائے گی اور اس فیصلے پر کوئی اپیل نہیں ہوگی.
-          <br><br>
-          <strong class="animated-description">Your withdrawal will ONLY be approved if you have completed ALL tasks EXACTLY as instructed in the task description. If you ignore any instruction, do not wait for the full timer, or perform the task incorrectly, your withdrawal request will be REJECTED without notice, and this decision will be final.</strong>
-      </p>
-  </div>
-
-  <div style="background: #1a1a1a; padding: 15px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #333;">
-    <p style="color: #ffc107;"><strong>Important Withdrawal Information:</strong></p>
-    <ul>
-        <li class="animated-description">Payment dates are 19-22 and 28-31 of each month.</li>
-        <li>If these dates fall on weekends or holidays, payments will be processed on the nearest business day.</li>
-        <li class="animated-description">A two-week hold period applies after reaching the minimum payout amount.</li>
-        <li>Minimum withdrawal: ₹1200 for Easypaisa/JazzCash/Bank, 12 USDT for Bitget.</li>
-        <li class="animated-description">All withdrawal requests are manually reviewed.</li>
-    </ul>
-  </div>
-  <form id="withdrawForm">
-    <label for="withdrawMethod">Select Method:</label>
-    <select id="withdrawMethod" required>
-      <option value="Easypaisa">Easypaisa (03435640880 - Mujtaba Hassan)</option>
-      <option value="JazzCash">JazzCash</option>
-      <option value="Bank">Allied Bank</option>
-      <option value="Bitget">Bitget USDT (Min 12 USDT)</option>
-    </select><br>
-    <input type="text" id="withdrawAccount" placeholder="Enter Your Account/Wallet Details" required><br>
-    <input type="number" id="withdrawAmount" placeholder="Enter Amount (Min ₹1200)" required><br>
-    <button type="submit" class="submitBtn">Request Withdrawal</button>
-  </form>
-  <h3 class="animated-description">Your Withdrawal History:</h3>
-  <div id="withdrawList"></div>
-</section>
-
-<!-- Deposit Section -->
-
-<section id="deposit">
-
-  <h2 class="animated-description">Deposit Funds</h2>
-  <p class="animated-description">Apne account mein funds add karne ke liye, neeche di gai hidayat follow karen:</p>
-  <form id="depositForm">
-    <input type="text" id="transactionId" placeholder="Enter Transaction ID" required><br>
-    <input type="number" id="depositAmount" placeholder="Enter Amount to Deposit" required><br>
-    <button type="submit" class="submitBtn">Submit Deposit Request</button>
-  </form>
-  <div class="deposit-info-box">
-    <p class="animated-description"><strong>Payment Details:</strong></p>
-    <ul>
-      <li><strong>Method:</strong> Easypaisa</li>
-      <li class="animated-description"><strong>Account Number:</strong> 03435640880</li>
-      <li><strong>Account Name:</strong> Mujtaba Hassan</li>
-    </ul>
-    <p><strong>Instructions:</strong></p>
-    <ul>
-      <li class="animated-description">Apnay Easypaisa account se oper diye gaye number par raqam send karen.</li>
-      <li>Raqam send karne ke baad, transaction ID ko copy karen.</li>
-      <li>Neeche diye gaye form mein transaction ID aur amount enter karen aur Submit karen.</li>
-      <li class="animated-description">Admin apki payment verify karega aur kuch dair mein aapka balance update ho jayega.</li>
-    </ul>
-  </div>
-
-  <h3>Your Deposit History:</h3>
-  <div id="depositList"></div>
-</section>
-
-<!-- NEW SECTION: Send Balance -->
-
-<section id="sendBalanceSection">
-  <h2 class="animated-description">Send Balance to Another User</h2>
-  <form id="sendBalanceForm">
-    <input type="email" id="recipientSendEmail" placeholder="Recipient's Email" required><br>
-    <input type="number" id="sendAmount" placeholder="Amount to Send" required step="0.01"><br>
-    <button type="submit" class="submitBtn">Send Balance</button>
-  </form>
-  <!-- NEW WARNING MESSAGES -->
-  <div class="balance-warning" style="margin-top: 15px; color: #ffc107; border-left: 3px solid #ffc107; padding-left: 10px; background-color: rgba(255, 193, 7, 0.1); border-radius: 4px;">
-    <p style="margin-bottom: 5px; font-weight: bold;">
-      <strong>انتباہ:</strong> آپ جو بیلنسایڈ کر رہے ہیں، وہ صرف لنک ایڈ کرنے کے لیے استعمال کیا جا سکتا ہے۔<br>
-      <strong>Warning:</strong> The balance you are send can only be used to add links.
-    </p>
-    <p style="margin-top: 0; font-weight: bold;">
-      <strong>نوٹ:</strong> بھیجا گیا بیلنس ودھراؤ نہیں کیا جا سکتا۔<br>
-      <strong>Note:</strong> Sent balance cannot be withdrawn.
-    </p>
-  </div>
-  <p id="sendBalanceMessage" style="color: yellow; margin-top: 15px;"></p>
-  <!-- NEW: History Display -->
-  <h3>Your Send Balance History:</h3>
-  <div id="sendBalanceHistory" class="dashboard-container"></div>
-  <!-- END NEW -->
-</section>
-
-<!-- Public Links Section (NEW) -->
-
-<section id="publicLinksSection">
-  <h2 class="animated-description">Public Links</h2>
-  <p class="animated-description">Share Explore links added by our community. You can only edit or delete the links you've added yourself.</p>
-  <div id="publicLinksContainer" class="dashboard-container"></div>
-</section>
-
-<!-- User Added Links Section -->
-
-<section id="userLinksSection">
-<div class="important-points">
-<div class="important-points">
-
-  <p class="animated-description">
-    1. <strong>Admin pehle aapki link add karta hai (Trust Base System)</strong> — Agar aapke paas foran payment bhejne ka option nahi hai, to admin aapki link <strong>pehle add kar deta hai</strong> taake aapka time waste na ho.  
-    Ye system sirf un logon ke liye hai jo genuine promotion karwana chahte hain.
-  </p>
-
-  <p class="animated-description">
-    2. <strong>Payment baad me karni hoti hai (Per Link Rs.200)</strong> — Link add hone ke baad aapko payment details di jaati hain.  
-    Payment EasyPaisa ya JazzCash par send karni hoti hai.  
-    Payment ka screenshot aur transaction ID <strong>mn1691316@gmail.com</strong> par email karein.
-  </p>
-
-  <p class="animated-description">
-    3. <strong>Agar payment na ki gayi to link remove kar di jayegi</strong> — Time par payment na karne ki surat me system automatically aapki link remove kar deta hai.  
-    Ye process fair system maintain karne ke liye rakha gaya hai.
-  </p>
-
-  <p class="animated-description">
-    4. <strong>Agent wallet system</strong> — Agents ke wallet me balance diya jata hai jisse wo customers ke liye links add کرتے ہیں.  
-    Jab customer payment complete karta hai to agent ka wallet auto update ho jata hai.
-  </p>
-
-  <p class="animated-description">
-    5. <strong>Trust & Transparency Policy</strong> — Hamara system 100% fair hai — yahan kisi se pehle paisay nahi mangay jate.  
-    Pehle link add hoti hai, phir payment confirm karni hoti hai.  
-    Ye system sirf un logon ke liye hai jo sincerely apna social media grow karna chahte hain.
-  </p>
-
-  <p class="animated-description">
-    6. Agent Bonus Balance (₨1,000 – ₨5,000) — Har active agent ko system ki taraf se <p> ₨1,000 se ₨5,000 tak balance</p> diya jata hai taake wo apni working start kar sakein.  
-    Ye balance sirf un agents ke liye hota hai jo promotion aur link adding ka kaam sincerity ke sath karte hain.  
-    System un par trust karta hai — bas zarurat hai aapke ek honest start ki 💪
-  </p>
-
-</div>
-  <h2 class="animated-description">Share My Links</h2>
-  <p class="animated-description">Share App 1 Free Add karwa Sakte Hain</p>
-  <p>1 day k ley</p>
-  <p>only website link</p>
-  <p><b>Payment Account Name: Mujtbha Hassan</b></p>
-  <p class="animated-description">Easypaisa Number: <b>03435640880</b></p>
-  <p>1. 1st payment karein (per link charges: 200 PKR).</p>
-  <p class="animated-description">2. Payment ka screenshot <b>mn1691316@gmail.com</b> par email karein.</p>
-  <p>3. Transaction ID send karein.</p>
-  <p>4. Apna naam bhejein.</p>
-  <p>5. Apna WhatsApp number bhejein.</p>
-  <p class="animated-description">Share 6. Jo link add karwana chahte hain wo bhi <b>mn1691316@gmail.com</b> par email karein.</p>
-  <p>7. Aap maximum 80 links add karwa sakte hain.</p>
-  <p>8. Aur baki sab kuch bhi (agar koi additional information ya details hain) <b>mn1691316@gmail.com</b> par email karna hai.</p>
-  <p class="animated-description">Share Add your own links here and earn rewards when others visit them. Select a category below to see its cost and add your link:</p>
-  <ul>
-    <li><strong>YouTube:</strong>Rs.2200</li>
-    <li><strong>Instagram:</strong> Rs.1300</li>
-    <li><strong>Facebook:</strong> Rs.1600</li>
-    <li><strong>TikTok:</strong> Rs.600</li>
-    <li><strong>Web:</strong> Rs.350</li>
-    <li><strong>App:</strong> Rs.500 (Default if not specified)</li>
-    <li><strong>Products:</strong> Rs.1000 (Default if not specified)</li>
-    <li><strong>Channel:</strong> Rs.500 (Default if not specified)</li>
-    <li><strong>For You Page Promotion Life time k ley :</strong> Rs.7000</li>
-  </ul>
-  <p class="animated-description">This Is Working</p>
-  <form id="addUserLinkForm">
-    <label for="userLinkUrl">Link URL:</label>
-    <input type="url" id="userLinkUrl" placeholder="Enter URL (e.g., https://yourwebsite.com)" required><br>
-    <label for="userLinkDescription">Link Description:</label>
-    <input type="text" id="userLinkDescription" placeholder="Brief description for your link" required><br>
-    <button type="submit" class="submitBtn">Add Link (Select Category & Cost)</button>
-  </form>
-  <h3>Your Added Links:</h3>
-  <div id="userLinksContainer" class="dashboard-container"></div>
-</section>
-
-<!-- Price Selection Modal -->
-
-<div id="priceSelectionModal" class="modal">
-    <div class="modal-content">
-        <span class="modal-close-btn">&times;</span>
-        <h2>Select Category & Price</h2>
-        <div id="priceOptionsContainer"></div>
-        <button id="confirmPriceSelectionBtn" class="submitBtn price-selection-confirm-btn" disabled>Confirm & Add Link</button>
-    </div>
-</div>
-
-<!-- NEW SECTION: Anusement -->
-
-<section id="anusement">
-<h2 class="neon-text">Work Details </h2>
-  <p class="animated-description">Here you can find our latest task details content.</p>
-<div class="important-points">
-  <p class="animated-description">1. <strong>Admin pehle aapki link add karta hai (Trust Base System)</strong> — Agar aapke paas foran payment bhejne ka option nahi hai, to admin aapki link <strong>pehle add kar deta hai</strong> taake aapka time waste na ho. Ye system sirf un logon ke liye hai jo genuine promotion karwana chahte hain.</p>
-
-  <p class="animated-description">2. <strong>Payment baad me karni hoti hai (Per Link Rs.200)</strong> — Link add hone ke baad aapko payment details di jaati hain. Payment EasyPaisa ya JazzCash par send karni hoti hai. Payment ka screenshot aur transaction ID <strong>mn1691316@gmail.com</strong> par email karein.</p>
-
-  <p class="animated-description">3. <strong>Agar payment na ki gayi to link remove kar di jayegi</strong> — Time par payment na karne ki surat me system automatically aapki link remove kar deta hai. Ye process fair system maintain karne ke liye rakha gaya hai.</p>
-
-  <p class="animated-description">4. <strong>Agent wallet system</strong> — Agents ke wallet me balance diya jata hai jisse wo customers ke liye links add کرتے ہیں. Jab customer payment complete karta hai to agent ka wallet auto update ho jata hai.</p>
-
-  <p class="animated-description">5. <strong>Trust &amp; Transparency Policy</strong> — Hamara system 100% fair hai — yahan kisi se pehle paisay nahi mangay jate. Pehle link add hoti hai, phir payment confirm karni hoti hai. Ye system sirf un logon ke liye hai jo sincerely apna social media grow karna chahte hain.</p>
-</div>
-  <div id="anusementContainer" class="dashboard-container">
-    <!-- Anusement items will be loaded here by JavaScript -->
-  </div>
-</section>
-<!-- END NEW SECTION -->
-
-<!-- Admin Panel Section -->
-
-<section id="adminPanel">
-    <h2>Admin Panel</h2>
-    <form id="adminAddForm">
-        <label for="adminItemType">Item Type:</label>
-        <select id="adminItemType" required>
-            <option value="task">Task</option>
-            <option value="link">Link</option>
-            <option value="youtubeVideo">YouTube Video</option>
-        </select><br>
-        <label for="adminCategory">Category (for Tasks/Links):</label>
-        <select id="adminCategory" required>
-            <option value="YouTube">YouTube</option>
-            <option value="TikTok">TikTok</option>
-            <option value="Instagram">Instagram</option>
-            <option value="Facebook">Facebook</option>
-            <option value="App">App</option>
-            <option value="Products">Products</option>
-            <option value="Channel">Channel</option>
-            <option value="Web">Web</option>
-        </select><br>
-        <label for="adminDescription">Description (for Tasks/Links):</label>
-        <input type="text" id="adminDescription" placeholder="e.g., Visit this website for 30 seconds"><br>
-        <label for="adminBaseUrl">Main URL (for Tasks or YouTube Video):</label>
-        <input type="text" id="adminBaseUrl" placeholder="e.g., https://example.com or YouTube URL"><br>
-        <div id="dynamicLinkInputs">
-            <p>Additional Links (for Link type only, up to 4):</p>
-            <div class="dynamic-link-input"><input type="text" name="links[]" placeholder="Link 1 URL"></div>
-            <div class="dynamic-link-input"><input type="text" name="links[]" placeholder="Link 2 URL"></div>
-            <div class="dynamic-link-input"><input type="text" name="links[]" placeholder="Link 3 URL"></div>
-            <div class="dynamic-link-input"><input type="text" name="links[]" placeholder="Link 4 URL"></div>
+            <!-- Quick Links -->
+            <div class="quick-links">
+                <a href="Add Manage Link.html">Task Submission Center</a>
+                <a href="how-to-earn-deposit.html">Deposit Coins</a>
+                <a href="How to withdrawal.html">Withdrawal Center</a>
+            </div>
         </div>
-        <label for="adminReward">Reward Amount (₹) - Optional for Tasks:</label>
-        <input type="number" id="adminReward" placeholder="e.g., 0.07 (Overrides category default)" step="0.01"><br>
-        <button type="submit" class="submitBtn">Add Earning Item</button>
-    </form>
-    <div style="margin-top: 40px;">
-        <h3>Current Tasks:</h3>
-        <div id="adminTasksContainer" class="dashboard-container"></div>
-        <h3>Current Links:</h3>
-        <div id="adminLinksContainer" class="dashboard-container"></div>
 
-<!-- Admin Anusement Management Section -->
-    <div class="admin-anusement-form-section">
-        <h3>Manage Anusement Content</h3>
-        <input type="text" id="anusementTitle" placeholder="Anusement Title" required>
-        <textarea id="anusementDescription" placeholder="Anusement Description" required></textarea>
-        <input type="url" id="anusementURL" placeholder="Link URL" required>
-        <button id="addAnusementBtn" class="submitBtn submit-anusement-btn">Add Anusement</button>
-
-        <h4>Current Anusement Items:</h4>
-        <div id="anusementList" class="anusement-list-container">
-            <!-- Anusement list will be loaded here by admin script -->
-        </div>
     </div>
-    <!-- End Admin Anusement Management Section -->
-</div>
-</section>
 
-<!-- YouTube Video Section (MOVED TO THE END) -->
+    <script>
+        // --- FIREBASE CONFIGURATION AND INITIALIZATION ---
+        const firebaseConfig = {
+            apiKey: "AIzaSyDNYv9SNUjMAHlaPzfovyYefoBNDgx4Gd4",
+            authDomain: "traffic-exchange-62a58.firebaseapp.com",
+            projectId: "traffic-exchange-62a58",
+            storageBucket: "traffic-exchange-62a58.appspot.com",
+            messagingSenderId: "474999317287",
+            appId: "1:474999317287:web:8e28a2f5f1a959d8ce3f02",
+            measurementId: "G-HJQ46RQNZS"
+        };
 
-<section id="youtubeVideoSection">
-  <h2>Watch Videos to Earn</h2>
-  <p class="animated-description">watch Video full earn 0.005$</p>
-  <div id="videoPlayerContainer"></div>
-  <p class="animated-description">Stay updated with our latest earning tips!</p>
-</section>
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
 
-<!-- Modal for Details -->
+        // --- CONSTANTS ---
+        const COIN_TO_PKR_RATE = 4; // 4 Coins = 1 PKR
 
-<div id="detailsModal" class="modal">
-  <div class="modal-content">
-    <span class="modal-close-btn">&times;</span>
-    <h2 id="modalTitle"></h2>
-    <div id="modalText"></div>
-  </div>
-</div>
+        // --- DOM ELEMENTS ---
+        const authContainer = document.getElementById('authContainer');
+        const dashboardContainer = document.getElementById('dashboardContainer');
+        const appHeader = document.getElementById('appHeader');
+        
+        // Auth elements
+        const authTitle = document.getElementById('authTitle');
+        const authButton = document.getElementById('authButton');
+        const toggleText = document.getElementById('toggleText');
+        const authNameInput = document.getElementById('authName');
+        const authForm = document.getElementById('authForm');
+        
+        // Dashboard elements
+        const profileName = document.getElementById('profileName');
+        const profileEmail = document.getElementById('profileEmail');
+        const profileUid = document.getElementById('profileUid');
+        const profileInitials = document.getElementById('profileInitials');
+        const coinsBalance = document.getElementById('coinsBalance');
+        const pkrBalance = document.getElementById('pkrBalance');
+        const exchangeForm = document.getElementById('exchangeForm');
+        const exchangeCoinsInput = document.getElementById('exchangeCoins');
+        const exchangeResult = document.getElementById('exchangeResult');
+        const exchangeButton = document.getElementById('exchangeButton');
+        const logoutButton = document.getElementById('logoutButton');
 
-<!-- Footer -->
+        let isSignupMode = false;
+        let currentCoins = 0;
+        let currentUser = null;
 
-<footer>
-  <div class="footer-links">
-  
-    <a id="privacyBtn"></a>
-    <a id="termsBtn"></a>
-    <a id="aboutBtn"></a>
-    <a id="taskDetailsBtn"></a>
-    <a id="withdrawalProfileBtn"></a>
-    <a id="contactEmailLink">Contact via Email</a>
-    <a id="contactWhatsappLink">Contact via WhatsApp</a>
-  </div>
- 
-  </footer>
-</div> <!-- Close content-wrapper -->
+        // --- PROFILE HELPER ---
+        function generateInitials(fullName) {
+            if (!fullName) return 'U';
+            const parts = fullName.trim().split(/\s+/);
+            
+            if (parts.length === 1) {
+                return parts[0].charAt(0).toUpperCase();
+            }
+            
+            const firstInitial = parts[0].charAt(0).toUpperCase();
+            const lastInitial = parts[parts.length - 1].charAt(0).toUpperCase();
+            return firstInitial + lastInitial;
+        }
 
-<!-- External JavaScript Module Link -->
-<script type="module" src="script.js"></script>
+        // --- VIEW MANAGEMENT ---
+        function showView(viewId) {
+            authContainer.style.display = 'none';
+            dashboardContainer.style.display = 'none';
+            appHeader.style.display = 'none';
 
+            if (viewId === 'dashboard') {
+                dashboardContainer.style.display = 'block';
+                appHeader.style.display = 'flex';
+                // Center the dashboard content vertically if needed
+                document.querySelector('.main-content').style.alignItems = 'flex-start'; 
+            } else {
+                authContainer.style.display = 'block';
+                // Center the auth form vertically
+                document.querySelector('.main-content').style.alignItems = 'center';
+            }
+        }
+
+        // --- AUTH LOGIC ---
+        function toggleAuthMode() {
+            isSignupMode = !isSignupMode;
+            if (isSignupMode) {
+                authTitle.textContent = "Signup Karen";
+                authButton.textContent = "Signup";
+                toggleText.innerHTML = 'Account hai? <a onclick="toggleAuthMode()">Login Karen</a>';
+                authNameInput.style.display = 'block';
+                authNameInput.required = true;
+            } else {
+                authTitle.textContent = "Login Karen";
+                authButton.textContent = "Login";
+                toggleText.innerHTML = 'Account nahi hai? <a onclick="toggleAuthMode()">Signup Karen</a>';
+                authNameInput.style.display = 'none';
+                authNameInput.required = false;
+            }
+        }
+
+        authForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const name = authNameInput.value.trim();
+            const email = document.getElementById('authEmail').value.trim();
+            const password = document.getElementById('authPassword').value;
+
+            try {
+                if (isSignupMode) {
+                    if (!name) {
+                        alert("Barah-e-meherbani apna naam darj karen.");
+                        return;
+                    }
+                    const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+                    
+                    // 1. Update Firebase Auth Profile (for name)
+                    await userCredential.user.updateProfile({ displayName: name });
+
+                    // 2. Initialize Firestore Wallet
+                    await db.collection('users').doc(userCredential.user.uid).set({ 
+                        name: name,
+                        email: email,
+                        coins: 0,
+                        pkrBalance: 0,
+                        uid: userCredential.user.uid
+                    });
+
+                    alert("Signup Successful!");
+
+                } else {
+                    // Login
+                    await auth.signInWithEmailAndPassword(email, password);
+                    alert("Login Successful!");
+                }
+                // AuthStateChanged listener will handle view change
+            } catch (error) {
+                alert(`Authentication Failed: ${error.message}`);
+            }
+        });
+
+        logoutButton.addEventListener('click', async () => {
+            await auth.signOut();
+            alert("Logout Successful.");
+        });
+
+        // --- WALLET LISTENER (Real-time) ---
+        function listenToWallet(uid) {
+            db.collection('users').doc(uid).onSnapshot(doc => {
+                if (doc.exists) {
+                    const data = doc.data();
+                    currentCoins = Number(data.coins) || 0;
+                    const currentPkr = Number(data.pkrBalance) || 0;
+
+                    coinsBalance.textContent = currentCoins.toLocaleString();
+                    pkrBalance.textContent = `${currentPkr.toFixed(2)} PKR`;
+                } else {
+                    coinsBalance.textContent = '0';
+                    pkrBalance.textContent = '0.00 PKR';
+                    currentCoins = 0;
+                }
+            }, error => {
+                console.error("Error listening to wallet:", error);
+            });
+        }
+
+        // --- AUTH CHECK & VIEW RENDER ---
+        auth.onAuthStateChanged(user => {
+            currentUser = user;
+            if (user) {
+                // Logged in: Show Dashboard
+                const displayName = user.displayName || 'N/A';
+                
+                profileName.textContent = displayName;
+                profileEmail.textContent = user.email;
+                profileUid.textContent = user.uid.substring(0, 10) + '...';
+                profileInitials.textContent = generateInitials(displayName);
+
+                listenToWallet(user.uid);
+                showView('dashboard');
+            } else {
+                // Logged out: Show Auth
+                showView('auth');
+            }
+        });
+
+        // --- EXCHANGE LOGIC (Coins to PKR) ---
+        
+        exchangeCoinsInput.addEventListener('input', () => {
+            const coinsToConvert = Number(exchangeCoinsInput.value);
+            const isDivisible = coinsToConvert % COIN_TO_PKR_RATE === 0;
+
+            if (coinsToConvert >= COIN_TO_PKR_RATE && isDivisible) {
+                const pkr = coinsToConvert / COIN_TO_PKR_RATE;
+                exchangeResult.textContent = `${coinsToConvert} Coins = ${pkr.toFixed(2)} PKR`;
+                exchangeButton.disabled = false;
+            } else {
+                exchangeResult.textContent = `Minimum ${COIN_TO_PKR_RATE} Coins Required (Must be divisible by ${COIN_TO_PKR_RATE})`;
+                exchangeButton.disabled = true;
+            }
+        });
+
+        exchangeForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const coinsToConvert = Number(exchangeCoinsInput.value);
+            const user = auth.currentUser;
+
+            if (!user) return;
+
+            if (coinsToConvert < COIN_TO_PKR_RATE || coinsToConvert % COIN_TO_PKR_RATE !== 0) {
+                alert(`Conversion ke liye Coins ki miqdar kam az kam ${COIN_TO_PKR_RATE} honi chahiye aur ${COIN_TO_PKR_RATE} se taqseem honi chahiye.`);
+                return;
+            }
+
+            if (coinsToConvert > currentCoins) {
+                alert("Aapke paas itne coins nahi hain.");
+                return;
+            }
+
+            const pkrToReceive = coinsToConvert / COIN_TO_PKR_RATE;
+
+            if (confirm(`Kya aap ${coinsToConvert} Coins kharch karke ${pkrToReceive.toFixed(2)} PKR banana chahte hain?`)) {
+                
+                const userRef = db.collection('users').doc(user.uid);
+
+                try {
+                    await db.runTransaction(async (transaction) => {
+                        const userDoc = await transaction.get(userRef);
+                        if (!userDoc.exists) {
+                            throw new Error("User data not found!");
+                        }
+                        
+                        const data = userDoc.data();
+                        const newCoins = (data.coins || 0) - coinsToConvert;
+                        const newPkrBalance = (data.pkrBalance || 0) + pkrToReceive;
+
+                        if (newCoins < 0) {
+                            throw new Error("Insufficient coins during transaction.");
+                        }
+
+                        transaction.update(userRef, {
+                            coins: newCoins,
+                            pkrBalance: newPkrBalance
+                        });
+                    });
+
+                    alert(`Conversion Successful! ${pkrToReceive.toFixed(2)} PKR aapke balance mein add ho gaye.`);
+                    exchangeForm.reset();
+                    exchangeResult.textContent = '0 Coins = 0.00 PKR';
+
+                } catch (error) {
+                    console.error("Transaction failed:", error);
+                    alert(`Conversion failed: ${error.message}.`);
+                }
+            }
+        });
+    </script>
 </body>
 </html>
