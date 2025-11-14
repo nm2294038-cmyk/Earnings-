@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Withdrawal Section & History</title>
+    <title>Withdrawal Section & Guide</title>
     
     <!-- Firebase SDKs (Version 8.10.0) -->
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
@@ -28,16 +28,47 @@
             padding: 0;
             background-color: #f0f2f5;
             color: #333;
+            line-height: 1.6;
         }
 
+        /* --- HEADER STYLES --- */
         header {
             background-color: var(--dark-bg);
             color: white;
-            padding: 20px;
-            text-align: center;
+            padding: 10px 20px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        header h1 {
+            font-size: 1.5em;
+            margin: 0;
+            text-align: left;
         }
 
+        #profileIconButton {
+            background: none;
+            border: 2px solid white;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            padding: 0;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            line-height: 1;
+            transition: background-color 0.3s;
+        }
+        #profileIconButton:hover {
+            background-color: rgba(255, 255, 255, 0.15);
+        }
+
+        /* --- MAIN CONTAINER & ARTICLE STYLES --- */
         .container {
             width: 90%;
             max-width: 800px;
@@ -46,6 +77,32 @@
             padding: 30px;
             border-radius: 10px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Article Styling */
+        .article h2 {
+            color: var(--primary-color);
+            border-bottom: 2px solid #eee;
+            padding-bottom: 5px;
+            margin-top: 25px;
+        }
+        
+        .article p {
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+
+        .article ul, .article ol {
+            margin-left: 20px;
+            padding-left: 0;
+        }
+
+        /* --- WITHDRAWAL SECTION STYLES (Hidden by default) --- */
+        #withdrawalSection {
+            display: none; /* Hidden until logged in */
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 2px dashed #ccc;
         }
 
         .balance-info {
@@ -56,7 +113,7 @@
             border-radius: 5px;
         }
 
-        /* --- Form Styling --- */
+        /* Form and History styles remain the same */
         .form-group label {
             display: block;
             margin-top: 15px;
@@ -84,19 +141,7 @@
             margin-top: 20px;
             transition: background-color 0.3s;
         }
-        #withdrawalButton:hover {
-            background-color: #c82333;
-        }
         
-        #backButton {
-            display: block;
-            margin-top: 20px;
-            text-align: center;
-            color: var(--primary-color);
-            text-decoration: none;
-        }
-        
-        /* --- HISTORY STYLING --- */
         .history-section {
             margin-top: 40px;
             padding-top: 20px;
@@ -116,32 +161,21 @@
             font-size: 0.9em;
         }
 
-        .history-table th {
-            background-color: #f4f4f4;
-            font-weight: bold;
-        }
-
         .status-pending { color: var(--pending-color); font-weight: bold; }
         .status-completed { color: var(--completed-color); font-weight: bold; }
         .status-rejected { color: var(--danger-color); font-weight: bold; }
         
-        /* Hide form until logged in */
-        #withdrawalSection {
-            display: none;
-        }
-
-        /* --- MODERN AUTH MODAL STYLING --- */
+        /* --- AUTH MODAL STYLES --- */
         .modal {
-            display: none;
+            display: none; 
             position: fixed;
             z-index: 100; 
             left: 0;
             top: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.7); /* Darker overlay */
+            background-color: rgba(0, 0, 0, 0.7);
             backdrop-filter: blur(5px);
-            display: flex;
             justify-content: center;
             align-items: center;
         }
@@ -152,7 +186,7 @@
             border-radius: 12px;
             width: 90%; 
             max-width: 400px;
-            box-shadow: var(--shadow-deep); /* Deeper shadow */
+            box-shadow: var(--shadow-deep);
             position: relative;
             animation: modalopen 0.5s;
         }
@@ -170,10 +204,6 @@
             font-size: 30px;
             font-weight: bold;
             cursor: pointer;
-            transition: color 0.3s;
-        }
-        .close-btn:hover {
-            color: #333;
         }
 
         #authTitle {
@@ -186,27 +216,41 @@
         .auth-form input {
             border: 1px solid #ddd;
             border-radius: 6px;
-            transition: border-color 0.3s;
-        }
-        .auth-form input:focus {
-            border-color: var(--primary-color);
-            box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
-            outline: none;
+            margin-bottom: 15px;
+            padding: 10px;
+            width: 100%;
+            box-sizing: border-box;
         }
 
         .auth-form button {
             background-color: var(--primary-color);
-            transition: background-color 0.3s;
-        }
-        .auth-form button:hover {
-            background-color: #0056b3;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            width: 100%;
+            cursor: pointer;
         }
 
         .auth-toggle {
             margin-top: 20px;
+            text-align: center;
         }
         
         .auth-toggle a {
+            font-weight: bold;
+            color: var(--primary-color);
+            cursor: pointer;
+        }
+        
+        #loginPrompt {
+            text-align: center;
+            padding: 20px;
+            background-color: #fff3cd;
+            border: 1px solid #ffeeba;
+            color: #856404;
+            border-radius: 5px;
+            margin-bottom: 20px;
             font-weight: bold;
         }
     </style>
@@ -215,69 +259,128 @@
 
     <header>
         <h1>Coins Withdrawal Center</h1>
+        <button id="profileIconButton" title="Login or View Profile">👤</button>
     </header>
 
-    <div class="container" id="withdrawalSection">
+    <div class="container">
         
-        <!-- Current Balance -->
-        <div class="balance-info">
-            <p>Aapka Maujooda Balance:</p>
-            <h2 id="currentWithdrawalBalance">Loading...</h2>
-            <p style="color: var(--danger-color); font-weight: bold;">Minimum Withdrawal: 100 Coins</p>
+        <!-- Article/Guide Section (Visible by default) -->
+        <div class="article">
+            <h2 style="text-align: center; color: var(--danger-color);">Aasan Tareeqon Se Online Paise Kamaen: Mukammal Guide</h2>
+            
+            <p>Humari platform par aapka khushamdeed! Yeh woh page hai jahan aap apni kamai hui coins ko haqeeqi raqam mein tabdeel kar sakte hain. Withdrawal ka amal shuru karne se pehle, yeh mukammal guide parhen taake aap earning aur withdrawal ke tareeqon ko samajh saken.</p>
+
+            <div id="loginPrompt">
+                Withdrawal Section dekhne aur istemal karne ke liye, barah-e-meherbani Profile Icon (👤) par click karke Login/Signup karen.
+            </div>
+
+            <h2>1. Shuruat Kaise Karen: Sign Up Aur Login</h2>
+            
+            <p>Platform par shamil hona nihayat aasan hai:</p>
+            
+            <ul>
+                <li><strong>Sign Up:</strong> Header mein maujood **Profile Icon (👤)** par click karen. Modal khulne par 'Signup Karen' par click karke naya account banaen.</li>
+                <li><strong>Login:</strong> Account banane ke baad, ya agar aapka account pehle se hai, to **Profile Icon (👤)** par click karke apni credentials daal kar login karen.</li>
+                <li><strong>Access:</strong> Login karte hi, yeh guide article chhip jayega aur aapko fori taur par Withdrawal Form aur History nazar aana shuru ho jayegi.</li>
+            </ul>
+
+            <h2>2. Coins Kamane Ke Aasan Tareeqe</h2>
+            
+            <p>Humari platform par coins kamana bahut mazedar aur seedha hai:</p>
+            
+            <ul>
+                <li><strong>Video Watch Kar Ke:</strong> Mukhtalif brands aur creators ki videos dekhen. Har mukammal video dekhne par aapke account mein fori coins jama ho jayenge.</li>
+                <li><strong>Like, Comment, Aur Share Kar Ke:</strong> Content ko like karen, achhe comments karen, aur social media par share karen. Har engagement ke badle aapko bonus coins milenge.</li>
+            </ul>
+
+            <h2>3. Bari Earning Ke Liye Bonus Tareeqe</h2>
+            
+            <p>Agar aap apni aamdani tez karna chahte hain, to yeh do tareeqe aapke liye sabse behtar hain:</p>
+            
+            <ul>
+                <li><strong>App Download Aur Istemal:</strong> Humare partners ki taraf se di gayi apps ko download karen aur unhein kuch waqt ke liye istemal karen.</li>
+                <li><strong>Products Kharid Kar:</strong> Humare platform ke zariye products kharidne par aapko bara cashback (coins ki shakal mein) milta hai.</li>
+            </ul>
+
+            <h2>4. Real-Time Withdrawal Ka Mukammal Guide</h2>
+            
+            <p>Coins kamane ke baad, unhein nikalwana (withdrawal) sabse aasan amal hai. Hum real-time withdrawal request processing faraham karte hain:</p>
+            
+            <ol>
+                <li><strong>Minimum Limit:</strong> Withdrawal ke liye kam az kam <strong>100 Coins</strong> zaroori hain.</li>
+                <li><strong>Payment Methods:</strong> Aap EasyPaisa, JazzCash, ya Pakistani Banks ke zariye raqam nikalwa sakte hain.</li>
+                <li><strong>Request Process:</strong> Login karne ke baad, Withdrawal Form mein miqdar aur account details darj karen. Request submit karte hi, coins aapke balance se kaat liye jayenge.</li>
+                <li><strong>Status Tracking:</strong> Aapki request 'Pending' status mein chali jayegi. Aap History section mein apni request ka status track kar sakte hain.</li>
+            </ol>
+            
+            <p style="font-weight: bold; color: var(--secondary-color); margin-top: 20px;">Withdrawal shuru karne ke liye, Profile Icon (👤) par click karke Login karen!</p>
         </div>
-
-        <!-- Withdrawal Form -->
-        <form id="withdrawalForm">
-            <div class="form-group">
-                <label for="withdrawalAmount">Coins Ki Miqdar (Amount in Coins)</label>
-                <input type="number" id="withdrawalAmount" placeholder="Minimum 1200 Coins" required min="1200">
+        
+        <!-- Withdrawal Form and History (Hidden until login) -->
+        <div id="withdrawalSection">
+            
+            <h2 style="color: var(--dark-bg); text-align: center;">Withdrawal Center (Authorized Access)</h2>
+            
+            <!-- Current Balance -->
+            <div class="balance-info">
+                <p>Aapka Maujooda Balance:</p>
+                <h2 id="currentWithdrawalBalance">Loading...</h2>
+                <p style="color: var(--danger-color); font-weight: bold;">Minimum Withdrawal: 100 Coins</p>
             </div>
 
-            <div class="form-group">
-                <label for="paymentMethod">Payment Method Chunein</label>
-                <select id="paymentMethod" required>
-                    <option value="">--- Chunein ---</option>
-                    <optgroup label="Mobile Wallets">
-                        <option value="EasyPaisa">EasyPaisa</option>
-                        <option value="JazzCash">JazzCash</option>
-                    </optgroup>
-                    <optgroup label="Pakistani Banks">
-                        <option value="HBL">Habib Bank Limited (HBL)</option>
-                        <option value="UBL">United Bank Limited (UBL)</option>
-                        <option value="MCB">MCB Bank Limited</option>
-                        <option value="ABL">Allied Bank Limited (ABL)</option>
-                        <option value="Meezan">Meezan Bank</option>
-                        <option value="BankAlfalah">Bank Alfalah</option>
-                        <option value="Askari">Askari Bank</option>
-                        <option value="Faysal">Faysal Bank</option>
-                        <option value="StandardChartered">Standard Chartered</option>
-                    </optgroup>
-                    <option value="Other">Doosra Bank</option>
-                </select>
-            </div>
+            <!-- Withdrawal Form -->
+            <form id="withdrawalForm">
+                <div class="form-group">
+                    <label for="withdrawalAmount">Coins Ki Miqdar (Amount in Coins)</label>
+                    <input type="number" id="withdrawalAmount" placeholder="Minimum 100 Coins" required min="100">
+                </div>
 
-            <div class="form-group">
-                <label for="accountNumber">Account Number / Phone Number</label>
-                <input type="text" id="accountNumber" placeholder="Account Number ya Phone Number" required>
+                <div class="form-group">
+                    <label for="paymentMethod">Payment Method Chunein</label>
+                    <select id="paymentMethod" required>
+                        <option value="">--- Chunein ---</option>
+                        <optgroup label="Mobile Wallets">
+                            <option value="EasyPaisa">EasyPaisa</option>
+                            <option value="JazzCash">JazzCash</option>
+                        </optgroup>
+                        <optgroup label="Pakistani Banks">
+                            <option value="HBL">Habib Bank Limited (HBL)</option>
+                            <option value="UBL">United Bank Limited (UBL)</option>
+                            <option value="MCB">MCB Bank Limited</option>
+                            <option value="ABL">Allied Bank Limited (ABL)</option>
+                            <option value="Meezan">Meezan Bank</option>
+                            <option value="BankAlfalah">Bank Alfalah</option>
+                            <option value="Askari">Askari Bank</option>
+                            <option value="Faysal">Faysal Bank</option>
+                            <option value="StandardChartered">Standard Chartered</option>
+                        </optgroup>
+                        <option value="Other">Doosra Bank</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="accountNumber">Account Number / Phone Number</label>
+                    <input type="text" id="accountNumber" placeholder="Account Number ya Phone Number" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="accountHolderName">Account Holder Ka Naam</label>
+                    <input type="text" id="accountHolderName" placeholder="Aapka Pura Naam" required>
+                </div>
+
+                <button type="submit" id="withdrawalButton">Withdrawal Request Bhejein</button>
+            </form>
+            
+            <!-- Withdrawal History Section -->
+            <div class="history-section">
+                <h3>Withdrawal History</h3>
+                <div id="historyList">
+                    <p>Aapki requests load ho rahi hain...</p>
+                </div>
             </div>
             
-            <div class="form-group">
-                <label for="accountHolderName">Account Holder Ka Naam</label>
-                <input type="text" id="accountHolderName" placeholder="Aapka Pura Naam" required>
-            </div>
-
-            <button type="submit" id="withdrawalButton">Withdrawal Request Bhejein</button>
-        </form>
-        
-        <!-- Withdrawal History Section -->
-        <div class="history-section">
-            <h3>Withdrawal History</h3>
-            <div id="historyList">
-                <p>Aapki requests load ho rahi hain...</p>
-            </div>
+            <a href="index.html" id="backButton">← Wapas Home Page Par Jaen</a>
         </div>
-        
-        <a href="index.html" id="backButton">← Wapas Home Page Par Jaen</a>
     </div>
     
     <!-- 1. Auth Modal (Login/Signup) -->
@@ -318,7 +421,7 @@
         // --- GLOBAL STATE AND CONSTANTS ---
         let currentUser = null;
         let currentCoinBalance = 0;
-        const MIN_WITHDRAWAL_COINS = 1200;
+        const MIN_WITHDRAWAL_COINS = 100;
         let isSignupMode = false;
 
         // --- DOM ELEMENTS ---
@@ -331,6 +434,20 @@
         const authButton = document.getElementById('authButton');
         const toggleText = document.getElementById('toggleText');
         const logoutButton = document.getElementById('logoutButton');
+        const profileIconButton = document.getElementById('profileIconButton');
+        const articleSection = document.querySelector('.article');
+        const loginPrompt = document.getElementById('loginPrompt');
+
+
+        // --- EVENT LISTENER TO OPEN MODAL VIA ICON ---
+        profileIconButton.addEventListener('click', () => {
+            authModal.style.display = 'flex';
+            // Ensure it defaults to Login mode if user is logged out
+            if (!auth.currentUser) {
+                isSignupMode = false;
+                toggleAuthMode(); // Reset to Login view
+            }
+        });
 
 
         // --- AUTH MODAL LOGIC ---
@@ -377,6 +494,8 @@
         auth.onAuthStateChanged(user => {
             currentUser = user;
             if (user) {
+                // Logged In: Show Withdrawal Section, Hide Article Guide
+                articleSection.style.display = 'none';
                 withdrawalSection.style.display = 'block';
                 authModal.style.display = 'none';
                 logoutButton.style.display = 'block';
@@ -386,8 +505,9 @@
                 listenToWithdrawalHistory(user.uid);
 
             } else {
+                // Logged Out: Show Article Guide, Hide Withdrawal Section
+                articleSection.style.display = 'block';
                 withdrawalSection.style.display = 'none';
-                authModal.style.display = 'flex'; // Show modal centered
                 logoutButton.style.display = 'none';
                 toggleText.style.display = 'block';
                 currentCoinBalance = 0;
