@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TikTok Coins Rewards App (Iframe Fixed)</title>
+    <title>Firebase Video Rewards App</title>
     
     <!-- Firebase SDKs (Version 8.10.0) -->
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
@@ -38,10 +38,7 @@
             box-shadow: var(--shadow);
         }
 
-        header h1 {
-            margin: 0;
-            font-size: 1.8em;
-        }
+        header h1 { margin: 0; font-size: 1.8em; }
 
         /* --- Profile Icon and Wallet --- */
         .profile-area {
@@ -175,11 +172,13 @@
             height: 100%;
             background-color: rgba(0, 0, 0, 0.6);
             backdrop-filter: blur(3px);
+            display: flex; /* Use flex for centering */
+            justify-content: center;
+            align-items: center;
         }
 
         .modal-content {
             background-color: var(--light-bg);
-            margin: 10% auto;
             padding: 30px;
             border-radius: 10px;
             width: 90%; 
@@ -190,7 +189,9 @@
 
         .close-btn {
             color: #aaa;
-            float: right;
+            position: absolute;
+            top: 10px;
+            right: 20px;
             font-size: 28px;
             font-weight: bold;
             cursor: pointer;
@@ -200,7 +201,6 @@
             width: 100%;
             padding: 10px;
             margin: 8px 0 15px 0;
-            display: inline-block;
             border: 1px solid #ccc;
             border-radius: 4px;
             box-sizing: border-box;
@@ -240,7 +240,7 @@
 <body>
 
     <header>
-        <h1>TikTok Coins Rewards App</h1>
+        <h1>Video Rewards App</h1>
         
         <div class="profile-area">
             <!-- Wallet Display -->
@@ -262,12 +262,13 @@
     <!-- --- MODALS --- -->
 
     <!-- 1. Auth Modal (Login/Signup) -->
-    <div id="authModal" class="modal">
+    <div id="authModal" class="modal" style="display: none;">
         <div class="modal-content">
             <span class="close-btn" onclick="document.getElementById('authModal').style.display='none'">&times;</span>
             <h3 id="authTitle">Login Karen</h3>
             
             <form class="auth-form" id="authForm">
+                <input type="text" id="authName" placeholder="Aapka Pura Naam" style="display: none;">
                 <input type="email" id="authEmail" placeholder="Email Address" required>
                 <input type="password" id="authPassword" placeholder="Password" required>
                 <button type="submit" id="authButton">Login</button>
@@ -281,11 +282,11 @@
     </div>
 
     <!-- 2. Reward Modal -->
-    <div id="rewardModal" class="modal">
+    <div id="rewardModal" class="modal" style="display: none;">
         <div class="modal-content">
             <span class="close-btn" onclick="document.getElementById('rewardModal').style.display='none'">&times;</span>
             <h3>Mubarak Ho! 🎉</h3>
-            <p style="font-size: 1.2em;">Aapko <strong>10 Coins</strong> mil gaye hain!</p>
+            <p style="font-size: 1.2em;">Aapko <strong id="rewardCoinsDisplay">0</strong> Coins mil gaye hain!</p>
             <p>Aapka naya balance hai: <strong id="newBalanceDisplay">0</strong> Coins.</p>
         </div>
     </div>
@@ -293,14 +294,14 @@
     <script>
         // --- FIREBASE CONFIGURATION AND INITIALIZATION ---
         const firebaseConfig = {
-    apiKey: "AIzaSyDNYv9SNUjMAHlaPzfovyYefoBNDgx4Gd4",
-    authDomain: "traffic-exchange-62a58.firebaseapp.com",
-    projectId: "traffic-exchange-62a58",
-    storageBucket: "traffic-exchange-62a58.appspot.com",
-    messagingSenderId: "474999317287",
-    appId: "1:474999317287:web:8e28a2f5f1a959d8ce3f02",
-    measurementId: "G-HJQ46RQNZS"
-};
+            apiKey: "AIzaSyDNYv9SNUjMAHlaPzfovyYefoBNDgx4Gd4",
+            authDomain: "traffic-exchange-62a58.firebaseapp.com",
+            projectId: "traffic-exchange-62a58",
+            storageBucket: "traffic-exchange-62a58.appspot.com",
+            messagingSenderId: "474999317287",
+            appId: "1:474999317287:web:8e28a2f5f1a959d8ce3f02",
+            measurementId: "G-HJQ46RQNZS"
+        };
 
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
@@ -309,10 +310,9 @@
         // --- GLOBAL STATE AND CONSTANTS ---
         let isSignupMode = false;
         let currentUser = null;
-        const REWARD_TIME_SECONDS = 240;
-        const REWARD_COINS = 10;
+        const REWARD_TIME_SECONDS = 250;
+        const REWARD_COINS = 10; 
         
-        // Track which videos have given rewards (per session)
         const rewardedVideos = {}; 
 
         // Aapke diye gaye links (10 sections ke liye)
@@ -337,9 +337,12 @@
         const logoutButton = document.getElementById('logoutButton');
         const walletDisplay = document.getElementById('walletDisplay');
         const newBalanceDisplay = document.getElementById('newBalanceDisplay');
+        const rewardCoinsDisplay = document.getElementById('rewardCoinsDisplay');
         const container = document.getElementById('mainContainer');
+        const authNameInput = document.getElementById('authName');
 
-        // --- FIREBASE AUTH FUNCTIONS ---
+
+        // --- AUTH MODAL FUNCTIONS ---
 
         function toggleAuthMode() {
             isSignupMode = !isSignupMode;
@@ -347,10 +350,14 @@
                 authTitle.textContent = "Signup Karen";
                 authButton.textContent = "Signup";
                 toggleText.innerHTML = 'Account hai? <a onclick="toggleAuthMode()">Login Karen</a>';
+                authNameInput.style.display = 'block';
+                authNameInput.required = true;
             } else {
                 authTitle.textContent = "Login Karen";
                 authButton.textContent = "Login";
                 toggleText.innerHTML = 'Account nahi hai? <a onclick="toggleAuthMode()">Signup Karen</a>';
+                authNameInput.style.display = 'none';
+                authNameInput.required = false;
             }
         }
 
@@ -358,12 +365,21 @@
             e.preventDefault();
             const email = document.getElementById('authEmail').value;
             const password = document.getElementById('authPassword').value;
+            const name = document.getElementById('authName').value;
+
 
             try {
                 if (isSignupMode) {
                     const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+                    
+                    // Update Auth Profile
+                    await userCredential.user.updateProfile({ displayName: name });
+                    
+                    // Initialize Firestore Wallet
                     await db.collection('users').doc(userCredential.user.uid).set({
                         coins: 0,
+                        email: email,
+                        name: name,
                         createdAt: firebase.firestore.FieldValue.serverTimestamp()
                     });
                     alert("Signup Successful! Welcome.");
@@ -412,9 +428,8 @@
                 if (doc.exists) {
                     const data = doc.data();
                     const coins = data.coins ? Number(data.coins) : 0; 
-                    walletDisplay.textContent = `Coins: ${coins}`;
-                    // Update popup balance display immediately
-                    newBalanceDisplay.textContent = coins; 
+                    walletDisplay.textContent = `Coins: ${coins.toLocaleString()}`;
+                    newBalanceDisplay.textContent = coins.toLocaleString(); 
                 } else {
                     db.collection('users').doc(uid).set({ coins: 0 });
                 }
@@ -423,14 +438,28 @@
             });
         }
 
-        async function addCoinsToWallet(uid, amount) {
+        async function addCoinsToWallet(uid, amount, sourceDetails) {
             const userRef = db.collection('users').doc(uid);
+            const userEmail = currentUser.email;
+
             try {
+                // 1. Update Wallet
                 await userRef.update({
                     coins: firebase.firestore.FieldValue.increment(amount) 
                 });
+
+                // 2. Log Earning for Admin Panel (NEW LOGGING)
+                await db.collection('worker_earnings').add({
+                    userId: uid,
+                    email: userEmail,
+                    amount: amount,
+                    source: sourceDetails.source,
+                    reference: sourceDetails.reference,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
             } catch (error) {
-                console.error("Error updating wallet:", error);
+                console.error("Error updating wallet/logging earning:", error);
                 alert("Coins add nahi ho paye. Database connection ya permissions check karen.");
             }
         }
@@ -457,11 +486,12 @@
             });
         }
 
-        function showRewardPopup() {
-            document.getElementById('rewardModal').style.display = "block";
+        function showRewardPopup(coins) {
+            document.getElementById('rewardModal').style.display = "flex"; // Use flex for centering
+            rewardCoinsDisplay.textContent = coins.toLocaleString();
         }
 
-        function startTimer(sectionId, overlayElement) {
+        function startTimer(sectionId, overlayElement, videoLink) {
             if (!currentUser || rewardedVideos[sectionId]) return; 
 
             const timerDisplay = document.getElementById(`timer-${sectionId}`);
@@ -479,18 +509,22 @@
                     
                     rewardedVideos[sectionId] = true; 
                     
-                    // 1. Coins add karna
-                    await addCoinsToWallet(currentUser.uid, REWARD_COINS);
+                    // --- 1. Coins add karna ---
+                    const sourceDetails = {
+                        source: "Video Reward",
+                        reference: `Section ${sectionId} (${videoLink})`
+                    };
+                    await addCoinsToWallet(currentUser.uid, REWARD_COINS, sourceDetails);
                     
-                    // 2. UI update
-                    timerDisplay.textContent = `Mubarak! ${REWARD_COINS} Coins Mil Gaye!`;
+                    // --- 2. UI update ---
+                    timerDisplay.textContent = `Mubarak! ${REWARD_COINS.toLocaleString()} Coins Mil Gaye!`;
                     timerDisplay.style.backgroundColor = '#d4edda';
                     timerDisplay.style.color = '#155724';
                     
-                    // 3. Popup dikhana (Wallet listener khud hi newBalanceDisplay update kar dega)
-                    showRewardPopup();
+                    // --- 3. Popup dikhana ---
+                    showRewardPopup(REWARD_COINS);
                     
-                    // 4. Overlay ko wapas lana
+                    // --- 4. Overlay ko wapas lana ---
                     overlayElement.style.display = 'flex';
                     overlayElement.style.opacity = '1';
                     overlayElement.querySelector('.video-overlay-text').textContent = 'Reward Mil Chuka Hai!';
@@ -505,7 +539,7 @@
             
             if (!currentUser) {
                 alert("Coins kamane ke liye pehle Login ya Signup karen.");
-                authModal.style.display = 'block';
+                document.getElementById('authModal').style.display = 'flex';
                 return;
             }
             
@@ -515,7 +549,6 @@
             }
             
             if (overlay.classList.contains('disabled')) {
-                 alert("Login Karen Coins Kamane Ke Liye.");
                  return;
             }
 
@@ -527,22 +560,22 @@
                 overlay.style.display = 'none';
             }, 300);
 
-            // 2. Video ko autoplay karna (FIXED: Setting src correctly with autoplay)
-            const videoId = getYouTubeId(sectionLinks[sectionId - 1]);
-            // Hum yahan iframe ka src dobara set kar rahe hain, is baar autoplay ke saath
+            // 2. Video ko autoplay karna
+            const videoLink = sectionLinks[sectionId - 1];
+            const videoId = getYouTubeId(videoLink);
             iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&enablejsapi=1&rel=0`;
 
             // 3. Timer shuru karna
-            startTimer(sectionId, overlay);
+            startTimer(sectionId, overlay, videoLink);
         }
 
 
         // --- INITIAL SECTION GENERATION ---
         function generateSections() {
+            container.innerHTML = '';
             for (let i = 1; i <= 10; i++) {
                 const currentLink = sectionLinks[i - 1]; 
                 const videoId = getYouTubeId(currentLink);
-                // Initial embed URL without autoplay, just for loading the thumbnail
                 const embedUrl = `https://www.youtube.com/embed/${videoId}?enablejsapi=1&rel=0`;
                 
                 const section = document.createElement('div');
@@ -550,15 +583,15 @@
                 section.id = `section${i}`;
                 
                 section.innerHTML = `
-                    <h2>Section ${i}: Video Playback</h2>
+                    <h2>Section ${i}: Watch & Earn ${REWARD_COINS.toLocaleString()} Coins</h2>
                     <div class="video-wrapper">
                         
                         <!-- Overlay for click detection -->
                         <div class="video-overlay" id="overlay-${i}">
-                            <span class="video-overlay-text">Login Karen Coins Kamane Ke Liye</span>
+                            <span class="video-overlay-text">Video Play Karen Aur Coins Kamaen</span>
                         </div>
 
-                        <!-- Iframe (Initial src for loading) -->
+                        <!-- Iframe -->
                         <iframe 
                             src="${embedUrl}" 
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
@@ -568,14 +601,13 @@
                     
                     <!-- Timer Display -->
                     <div class="timer-display" id="timer-${i}">
-                        Timer will start when you play the video.
+                        Timer: ${REWARD_TIME_SECONDS} seconds remaining...
                     </div>
                 `;
                 
                 container.appendChild(section);
-                rewardedVideos[i] = false; // Initialize reward status
+                rewardedVideos[i] = false; 
 
-                // Event Listener for the overlay
                 const overlayElement = document.getElementById(`overlay-${i}`);
                 overlayElement.addEventListener('click', (e) => handleVideoClick(e, i));
             }
@@ -584,7 +616,7 @@
 
         // --- EVENT LISTENERS ---
         document.getElementById('profileIcon').addEventListener('click', () => {
-            authModal.style.display = 'block';
+            document.getElementById('authModal').style.display = 'flex';
         });
 
         // Start the app
