@@ -97,6 +97,7 @@
             overflow: hidden;
             cursor: pointer;
             transition: transform 0.3s;
+            position: relative; /* For lock overlay */
         }
         .product-card:hover {
             transform: translateY(-5px);
@@ -146,6 +147,29 @@
             margin-top: 10px;
             font-weight: bold;
             display: block;
+        }
+        
+        .lock-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.2em;
+            font-weight: bold;
+            z-index: 5;
+            border-radius: 10px;
+            cursor: not-allowed;
+        }
+        .lock-overlay i {
+            font-size: 2em;
+            margin-bottom: 10px;
         }
 
         /* --- AUTH MODAL STYLING --- */
@@ -252,6 +276,9 @@
         const auth = firebase.auth();
         const db = firebase.firestore();
 
+        // --- CONSTANTS ---
+        const LOCK_DURATION_MS = 3600000; // 1 hour
+
         // --- DOM ELEMENTS ---
         const guideSection = document.getElementById('guideSection');
         const productListSection = document.getElementById('productListSection');
@@ -262,6 +289,9 @@
         const successPopup = document.getElementById('successPopup');
 
         let currentUser = null;
+        let userLockStatus = {};
+        let lockIntervals = {};
+
 
         // --- WALLET & LOGGING FUNCTION ---
         async function addCoinsToWallet(uid, amount, productName, productLink) {
@@ -332,7 +362,7 @@
                 productListSection.style.display = 'block';
                 walletDisplay.style.display = 'block';
                 listenToWallet(user.uid);
-                fetchProducts();
+                fetchProductsAndLocks(user.uid); // Fetch products and locks
             } else {
                 guideSection.style.display = 'block';
                 productListSection.style.display = 'none';
@@ -352,38 +382,87 @@
                 }
             });
         }
-
-        // --- PRODUCT FETCHING ---
-        function fetchProducts() {
-            productList.innerHTML = '<p style="text-align: center;">Products load ho rahe hain...</p>';
+        
+        // --- LOCK TIMER LOGIC ---
+        function startLockTimer(productId, unlockTime) {
+            const timerElement = document.getElementById(`timer-${productId}`);
+            const cardElement = document.getElementById(`card-${productId}`);
             
-            // Fetch products (Assuming Admin adds them to a 'products' collection)
-            db.collection('products').onSnapshot(snapshot => {
+            if (!timerElement || !cardElement) return; 
+
+            if (lockIntervals[productId]) {
+                clearInterval(lockIntervals[productId]);
+            }
+
+            lockIntervals[productId] = setInterval(() => {
+                const remainingTimeMs = unlockTime - Date.now();
                 
-                if (snapshot.empty) {
-                    productList.innerHTML = `<p style="text-align: center;">Abhi koi product maujood nahi hai.</p>`;
+                if (remainingTimeMs <= 0) {
+                    clearInterval(lockIntervals[productId]);
+                    
+                    // Remove lock overlay and timer
+                    const overlay = document.getElementById(`overlay-${productId}`);
+                    if (overlay) overlay.remove();
+                    timerElement.textContent = '';
+                    
+                    delete userLockStatus[productId];
+                    fetchProductsAndLocks(currentUser.uid); // Re-render to ensure clean state
                     return;
                 }
-                
-                productList.innerHTML = '';
-                snapshot.forEach(doc => {
-                    const product = doc.data();
-                    renderProductCard(product);
-                });
 
-            }, error => {
-                console.error("Error fetching products:", error);
-                productList.innerHTML = `<p style="color: var(--danger-color);">Products load nahi ho sake. Database connection check karen.</p>`;
+                const seconds = Math.floor((remainingTimeMs / 1000) % 60);
+                const minutes = Math.floor((remainingTimeMs / (1000 * 60)) % 60);
+                const hours = Math.floor((remainingTimeMs / (1000 * 60 * 60)));
+
+                timerElement.textContent = `Lock: ${hours}h ${minutes}m ${seconds}s`;
+            }, 1000);
+        }
+
+
+        // --- PRODUCT FETCHING (Real-time) ---
+        async function fetchProductsAndLocks(uid) {
+            productList.innerHTML = '<p style="text-align: center;">Products load ho rahe hain...</p>';
+            
+            // 1. Fetch Products
+            const productsPromise = db.collection('products').orderBy('createdAt', 'desc').get();
+            
+            // 2. Fetch User Locks
+            const lockPromise = db.collection('user_locks').doc(uid).get();
+            
+            const [productsSnapshot, lockDoc] = await Promise.all([productsPromise, lockPromise]);
+            
+            if (lockDoc.exists) {
+                userLockStatus = lockDoc.data();
+            } else {
+                userLockStatus = {};
+            }
+
+            if (productsSnapshot.empty) {
+                productList.innerHTML = `<p style="text-align: center;">Abhi koi product maujood nahi hai.</p>`;
+                return;
+            }
+            
+            productList.innerHTML = '';
+            productsSnapshot.forEach(doc => {
+                const product = doc.data();
+                product.id = doc.id;
+                renderProductCard(product);
             });
         }
 
         // --- PRODUCT RENDERING ---
         function renderProductCard(product) {
+            const productId = product.id;
+            const lockTime = userLockStatus[productId] || 0;
+            const isLocked = lockTime > Date.now();
+            
             const card = document.createElement('div');
             card.className = 'product-card';
-            card.setAttribute('onclick', `handleProductClick(this, '${product.link}', '${product.name}', ${product.rewardCoins})`);
-
-            card.innerHTML = `
+            card.id = `card-${productId}`;
+            
+            // Use a wrapper div for the details and button
+            const detailsWrapper = document.createElement('div');
+            detailsWrapper.innerHTML = `
                 <div class="product-image">
                     ${product.imageUrl ? `<img src="${product.imageUrl}" alt="${product.name}">` : '🖼️ Image Missing'}
                 </div>
@@ -391,13 +470,30 @@
                     <h3>${product.name}</h3>
                     <p class="price-tag">Price: ${product.price || 'N/A'} PKR</p>
                     <span class="earn-coins">Click & Earn ${product.rewardCoins.toLocaleString()} Coins</span>
+                    <div id="timer-${productId}" style="color: var(--danger-color); margin-top: 5px;"></div>
                 </div>
             `;
+            
+            card.appendChild(detailsWrapper);
+
+            if (isLocked) {
+                const overlay = document.createElement('div');
+                overlay.className = 'lock-overlay';
+                overlay.id = `overlay-${productId}`;
+                overlay.innerHTML = `<i class="fas fa-lock"></i> Locked`;
+                card.appendChild(overlay);
+                
+                startLockTimer(productId, lockTime);
+            } else {
+                // Attach click handler only if unlocked
+                card.setAttribute('onclick', `handleProductClick(this, '${product.link}', '${product.name}', ${product.rewardCoins}, '${productId}')`);
+            }
+
             productList.appendChild(card);
         }
         
         // --- HANDLE PRODUCT CLICK (Earning Logic - INSTANT) ---
-        window.handleProductClick = async function(cardElement, link, productName, coinsToEarn) {
+        window.handleProductClick = async function(cardElement, link, productName, coinsToEarn, productId) {
             if (!currentUser) {
                 alert("Product reward lene ke liye pehle login karen.");
                 profileIconButton.click();
@@ -409,31 +505,37 @@
                  return;
             }
             
-            // Disable card temporarily
+            // 1. Disable card and show processing
             cardElement.style.pointerEvents = 'none';
             cardElement.style.opacity = '0.7';
             
-            // 1. Open the product link in a new tab
+            // 2. Open the product link in a new tab
             window.open(link, '_blank');
             
-            // 2. INSTANT COIN ADDITION & LOGGING
+            // 3. INSTANT COIN ADDITION & LOGGING
             const success = await addCoinsToWallet(currentUser.uid, coinsToEarn, productName, link);
             
             if (success) {
                 showSuccessPopup(`✅ ${coinsToEarn.toLocaleString()} Coins aapke Wallet mein fori taur par add kar diye gaye hain!`);
                 
-                // 3. Show Warning
+                // 4. Apply 1-hour lock
+                const unlockTime = Date.now() + LOCK_DURATION_MS;
+                await db.collection('user_locks').doc(currentUser.uid).set({
+                    [productId]: unlockTime
+                }, { merge: true });
+                
+                // 5. Re-fetch to update UI with lock status
+                fetchProductsAndLocks(currentUser.uid);
+                
+                // 6. Show Warning
                 alert(`IMPORTANT WARNING: Aapko ${coinsToEarn.toLocaleString()} Coins mil chuke hain. Agar aap 24 ghante ke andar yeh product nahi kharidte, to aapka account suspended ho jayega.`);
                 
             } else {
                 alert("Coins add karne mein masla hua.");
-            }
-
-            // Re-enable card after a short delay (or permanently disable if needed)
-            setTimeout(() => {
+                // If transaction failed, re-enable card
                 cardElement.style.pointerEvents = 'auto';
                 cardElement.style.opacity = '1';
-            }, 5000);
+            }
         }
     </script>
 </body>
