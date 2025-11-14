@@ -142,6 +142,9 @@
             text-align: center;
             color: white;
         }
+        .task-card:hover {
+            transform: translateY(-3px);
+        }
 
         .task-title { font-size: 1.4em; font-weight: bold; color: white; margin-bottom: 5px; }
         .task-platform { color: #aaa; margin-bottom: 15px; }
@@ -377,7 +380,7 @@
 
             if (viewName === 'categories') {
                 categoryMainSection.style.display = 'block';
-                mainHeaderTitle.textContent = 'Earning Categories';
+                mainHeaderTitle.textContent = 'Tasks Categories';
                 currentView = 'categories';
             } else if (viewName === 'tasks') {
                 taskMainSection.style.display = 'block';
@@ -397,21 +400,36 @@
             renderTasks(platform);
         }
 
-        // --- WALLET FUNCTION ---
-        async function addCoinsToWallet(uid, amount) {
+        // --- WALLET & LOGGING FUNCTION ---
+        async function addCoinsToWallet(uid, amount, platform, link, type) {
             if (!uid) return false;
             const userRef = db.collection('users').doc(uid);
+            const userEmail = currentUser.email;
+
             try {
+                // 1. Update Wallet
                 await userRef.update({
                     coins: firebase.firestore.FieldValue.increment(amount) 
                 });
+
+                // 2. Log Earning for Admin Panel (worker_earnings collection)
+                await db.collection('worker_earnings').add({
+                    userId: uid,
+                    email: userEmail,
+                    amount: amount,
+                    source: platform,
+                    type: type,
+                    reference: link,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                
                 return true;
             } catch (error) {
                 if (error.code === 'not-found') {
                      await userRef.set({ coins: amount, email: currentUser.email }, { merge: true });
                      return true;
                 }
-                console.error("Error updating wallet:", error);
+                console.error("Error updating wallet/logging earning:", error);
                 return false;
             }
         }
@@ -451,11 +469,14 @@
         auth.onAuthStateChanged(user => {
             currentUser = user;
             if (user) {
-                fetchTasks(); // Fetch all tasks once on login
-                listenToWallet(user.uid);
-                showView('categories'); // Show categories immediately after login
+                showView('categories');
+                userInfoDiv.style.display = 'flex';
+                userEmailDisplay.textContent = user.email; 
+                
+                fetchTasks();
+                listenToWallet(user.uid); 
             } else {
-                showView('article'); // Show guide/article when logged out
+                showView('article');
             }
         });
 
@@ -500,7 +521,6 @@
             if (platform !== 'All' && platform !== 'General') {
                 filteredTasks = allTasks.filter(task => task.platform === platform);
             } else if (platform === 'General') {
-                // Filter tasks that don't match standard social media platforms (if needed, currently all are listed)
                 filteredTasks = allTasks.filter(task => !['YouTube', 'TikTok', 'Instagram', 'Facebook', 'WhatsApp', 'App Download'].includes(task.platform));
             }
             
@@ -513,7 +533,7 @@
                 const title = task.linkTitle || task.type || 'New Task'; 
                 const platformName = task.platform || 'General';
                 const coinsToEarn = task.coinsRate || 0;
-                const earnAmountDisplay = (coinsToEarn / 1000).toFixed(2); // Example display rate (PKR equivalent)
+                const earnAmountDisplay = (coinsToEarn / 1000).toFixed(2); 
                 
                 const clicksRemaining = task.maxClicks - (task.currentClicks || 0);
                 const clicksCompleted = task.currentClicks || 0;
@@ -533,7 +553,9 @@
                     <button class="earn-button" 
                             data-link="${task.link}" 
                             data-task-id="${task.id}"
+                            data-platform="${platformName}"
                             data-coins="${coinsToEarn}"
+                            data-type="${task.type || 'Click'}"
                             onclick="handleTaskClick(this)">
                         Open & Earn ₹${earnAmountDisplay} (Clicks: ${clicksCompleted}/${clicksRemaining})
                     </button>
@@ -552,6 +574,8 @@
 
             const link = button.dataset.link;
             const coinsToEarn = Number(button.dataset.coins);
+            const platform = button.dataset.platform;
+            const type = button.dataset.type;
             
             if (coinsToEarn <= 0) {
                  alert("Is task ki earning 0 hai.");
@@ -564,8 +588,8 @@
             // 1. Open the link in a new tab (Simulates viewing the task)
             window.open(link, '_blank');
             
-            // 2. INSTANT COIN ADDITION
-            const success = await addCoinsToWallet(currentUser.uid, coinsToEarn);
+            // 2. INSTANT COIN ADDITION & LOGGING
+            const success = await addCoinsToWallet(currentUser.uid, coinsToEarn, platform, link, type);
             
             if (success) {
                 showSuccessPopup(`✅ ${coinsToEarn.toLocaleString()} Coins aapke Wallet mein fori taur par add kar diye gaye hain!`);
@@ -573,9 +597,24 @@
                 alert("Coins add karne mein masla hua.");
             }
 
-            // Reset button state (The onSnapshot listener handles the wallet update)
+            // Reset button state
             button.textContent = "Task Completed (Earning Done)";
         }
+        
+        // --- INITIAL LOAD ---
+        auth.onAuthStateChanged(user => {
+            currentUser = user;
+            if (user) {
+                showView('categories');
+                userInfoDiv.style.display = 'flex';
+                userEmailDisplay.textContent = user.email; 
+                
+                fetchTasks();
+                listenToWallet(user.uid); 
+            } else {
+                showView('article');
+            }
+        });
     </script>
 </body>
 </html>
