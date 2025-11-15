@@ -5,13 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Transfer Coins</title>
     
-    <!-- Firebase SDKs (Version 8.10.0) - Ensure these are loaded -->
+    <!-- Firebase SDKs (Zaroori) -->
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
 
     <!-- External Style Sheet Link -->
     <link rel="stylesheet" href="style.css">
+
+    <!-- 1. FIREBASE CONFIGURATION FILE -->
+    <script src="firebase_config.js"></script> 
 </head>
 <body>
 
@@ -64,7 +67,7 @@
                     
                     <div class="form-group">
                         <label for="transferAmount">Coins Ki Miqdar</label>
-                        <input type="number" id="transferAmount" placeholder="Minimum 1 Coin" required min="1">
+                        <input type="number" id="transferAmount" placeholder="Minimum 100 Coin" required min="100">
                     </div>
                     
                     <div class="form-group">
@@ -113,7 +116,7 @@
         </div>
     </div>
 
-    <!-- External Script Link -->
+    <!-- 2. MAIN APPLICATION LOGIC FILE -->
     <script src="script.js"></script>
 </body>
 </html>
