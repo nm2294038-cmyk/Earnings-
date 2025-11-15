@@ -1,22 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- FIREBASE SDKs -->
-  <!-- IMPORTANT: Load Firebase libraries here -->
+  <!-- FIREBASE SDKs (Required in HTML) -->
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
 
+  <!-- Google Adsense (Required in HTML) -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3071493838743593"
      crossorigin="anonymous"></script>
+     
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>YoursMed App - Free Earnings</title>
+  
   <!-- Font Awesome for icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   
-  <!-- Custom Stylesheet Link -->
-  <link rel="stylesheet" href="style.css"> 
+  <!-- Linking External CSS File -->
+  <link rel="stylesheet" href="style.css">
+
 </head>
 <body>
 
@@ -97,7 +100,7 @@
             </div>
     </section>
     
-    <!-- NEW SECTION: Daily Task View -->
+    <!-- NEW SECTION: Daily Task View (Placeholder content, handled by JS navigation) -->
     <section id="daily-task-view" class="content-section">
         <div style="padding: 20px; text-align: center; max-width: 600px; margin: 0 auto;">
             <h2 class="task-heading" style="margin-top: 0;">Daily Tasks Dashboard</h2>
@@ -179,8 +182,9 @@
             <h2 class="task-heading" style="margin: 0 20px 20px 20px;">Reward Timeline</h2>
             
             <div class="reward-timeline">
-                <div class="timeline-item">
-                    <div class="timeline-item-icon"></div>
+                <!-- 100 INVITES REWARD (Locked by default via JS) -->
+                <div class="timeline-item locked" id="reward-100-invites">
+                    <div class="timeline-item-icon"><i class="fas fa-lock"></i></div>
                     <div class="timeline-title">Unlock on 100 Invites</div>
                     <div class="timeline-card card-coins">
                         <i class="fas fa-trophy reward-icon"></i>
@@ -190,8 +194,9 @@
                     </div>
                 </div>
      
-                <div class="timeline-item">
-                    <div class="timeline-item-icon"></div>
+                <!-- 500 INVITES REWARD (Locked by default via JS) -->
+                <div class="timeline-item locked" id="reward-500-invites">
+                    <div class="timeline-item-icon"><i class="fas fa-lock"></i></div>
                     <div class="timeline-title">Unlock on 500 Total Invites</div>
                     <div class="timeline-card card-bluetooth">
                         <i class="fas fa-headphones-alt reward-icon"></i> 
@@ -248,13 +253,21 @@
 
     </section>
     
-    <!-- WALLET CONTENT -->
+    <!-- WALLET CONTENT (Includes Balance Card) -->
     <section id="wallet-content" class="content-section">
-  <!-- Coming Soon Section -->
-    <div style="margin-bottom: 30px;">
-        <h2 style="font-size: 28px; color: #333; margin-bottom: 10px;">Coming Soon</h2>
-        <p style="font-size: 16px; color: #666;">Stay tuned! Exciting features are on the way.</p>
-    </div>
+        
+        <!-- WALLET BALANCE CARD (Shows real-time balance from Firestore) -->
+        <div class="wallet-balance-card">
+            <h3>Your Current Balance (Coins)</h3>
+            <div class="balance-amount">
+                <i class="fas fa-coins"></i>
+                <span id="wallet-coin-balance">---</span>
+            </div>
+            <p style="opacity: 0.7; margin-top: 5px;">Coins can be redeemed for cash or rewards.</p>
+        </div>
+        
+        <h2 class="task-heading" style="margin-top: 0; text-align: center;">Withdrawal Options</h2>
+        
         <div class="withdrawal-grid">
             
             <!-- UPI (LOCKED) -->
@@ -267,7 +280,6 @@
                     <span><i class="fas fa-coins"></i> 25090$</span>
                 </div>
             </div>
-  <!-- UPI (LOCKED) -->
             <div class="withdrawal-item locked-item">
                 <div class="withdrawal-image upi-logo"></div>
                 <div class="withdrawal-name">
@@ -311,7 +323,7 @@
                     <span><i class="fas fa-coins"></i> 8000$</span>
                 </div>
             </a>
-    <!-- EasyPaisa (UNLOCKED) -->
+            <!-- EasyPaisa (UNLOCKED) -->
             <a href="Withdrawal/index.html" class="withdrawal-item">
                 <div class="withdrawal-image easypaisa-logo"></div>
                 <div class="withdrawal-name">EasyPaisa</div>
@@ -320,8 +332,6 @@
                 </div>
             </a>
 
-     
-            
             <!-- Google Play (LOCKED) -->
             <div class="withdrawal-item locked-item">
                 <div class="withdrawal-image googleplay-logo"></div>
@@ -346,84 +356,45 @@
 
            </div>
 
-      <div style="max-width: 800px; margin: 40px auto; padding: 30px; background-color: #f9f9f9; border-radius: 12px; box-shadow: 0 6px 12px rgba(0,0,0,0.1); font-family: Arial, sans-serif; color: #333; text-align: center;">
-
-  
-
-    <!-- Disclaimers Section -->
-    <div>
-        <h2 style="font-size: 24px; color: #333; margin-bottom: 10px;">Disclaimers</h2>
-        <p style="font-size: 16px; line-height: 1.6; color: #555;">
-            The merchants represented are not sponsors of the rewards or otherwise affiliated with Reward King. 
-            All logos and other identifying marks are trademarks of their respective companies. 
-            Please visit each brand's official website for their terms, conditions, and policies.
-        </p>
-<p style="background-color:#f0f8ff; padding:10px; border-left:5px solid #007BFF; animation: fadeIn 2s;">
-<strong>Owner Claim vs Real Risk Comparison</strong>
-</p>
-
-<p style="background-color:#e6ffe6; padding:10px; border-left:5px solid #28a745; animation: fadeIn 2s;">
-<strong>Owner Claim:</strong><br>
-1. Website 100% safe hai.<br>
-2. Users easily paise earn kar sakte hain.<br>
-3. Withdrawal process guaranteed aur instant hai.<br>
-4. No risk, fully reliable platform.
-</p>
-
-<p style="background-color:#fff0f0; padding:10px; border-left:5px solid #dc3545; animation: fadeIn 2s;">
-<strong>Real Risk (Independent Check):</strong><br>
-1. ScamAdviser Score 71/100 – moderate risk.<br>
-2. Unrealistic earning claims – get-rich-quick pattern.<br>
-3. Limited verified user feedback – withdrawal confirmation uncertain.<br>
-4. New domain, owner info private – transparency issue.<br>
-5. Mostly UK-based service – Pakistan support and payout uncertain.<br>
-6. Heavy social media promotions – overhyped, reliability questionable.
-</p>
-
-<p style="background-color:#fff8dc; padding:10px; border-left:5px solid #ffc107; animation: fadeIn 2s;">
-<strong>Takeaway:</strong><br>
-- Owner ka claim marketing aur trust build karne ka tareeqa hai.<br>
-- Independent check aur actual user reports zyada reliable hain.<br>
-- Large investment ya personal info share karne se pehle <strong>minimal test</strong> aur verification zaruri hai.
-</p>
-
-<style>
-@keyframes fadeIn {
-  from {opacity: 0;}
-  to {opacity: 1;}
-}
-</style>
-    </div>
-
-</div>
-
     </section>
 
     
     <!-- MORE CONTENT (Settings, Profile, Social) -->
     <section id="more-content" class="content-section">
+        
+        <!-- USER PROFILE CARD -->
+        <a href="Profile/index.html" class="user-profile-card">
+            <div class="profile-avatar">
+                <i class="fas fa-user"></i>
+            </div>
+            <div class="profile-info">
+                <h3 id="profile-name">Guest User</h3>
+                <p id="profile-balance">Balance: --- Coins</p>
+            </div>
+        </a>
+        
         <h2 class="task-heading" style="margin-top: 0;">Settings & Support</h2>
         <div class="menu-list">
          <a href="Withdrawal/index.html" class="menu-item"><span style="display: flex; align-items: center;"><i class="fas fa-wallet icon-left"></i> My Wallet</span><i class="fas fa-chevron-right"></i></a>
          <a href="How to make.html" class="menu-item"><span style="display: flex; align-items: center;"><i class="fas fa-file-contract icon-left"></i> Privacy Policy</span><i class="fas fa-chevron-right"></i></a>
          <a href="FAQ.html" class="menu-item"><span style="display: flex; align-items: center;"><i class="fas fa-question-circle icon-left"></i> FAQ</span><i class="fas fa-chevron-right"></i></a>
           <a href="about.html" class="menu-item"><span style="display: flex; align-items: center;"><i class="fas fa-headset icon-left"></i> About Us </span><i class="fas fa-chevron-right"></i></a>
-  <a href="withdrawal.html" class="menu-item"><span style="display: flex; align-items: center;"><i class="fas fa-wallet icon-left"></i> Withdrawal Policy  </span><i class="fas fa-chevron-right"></i></a>
+         <a href="withdrawal.html" class="menu-item"><span style="display: flex; align-items: center;"><i class="fas fa-wallet icon-left"></i> Withdrawal Policy  </span><i class="fas fa-chevron-right"></i></a>
          <a href="How to make.html" class="menu-item"><span style="display: flex; align-items: center;"><i class="fas fa-file-contract icon-left"></i> Tasks </span><i class="fas fa-chevron-right"></i></a>
          <a href="Terms of Service .html" class="menu-item"><span style="display: flex; align-items: center;"><i class="fas fa-question-circle icon-left"></i> Terms Of Service </span><i class="fas fa-chevron-right"></i></a>
           <a href="contact.html" class="menu-item"><span style="display: flex; align-items: center;"><i class="fas fa-headset icon-left"></i> Contact Us</span><i class="fas fa-chevron-right"></i></a>
         
-          <!-- NEW LOGIN/SIGNUP/LOGOUT LINKS -->
+          <!-- UPDATED LOGIN/SIGNUP/LOGOUT LINKS -->
           <!-- Logout button (Visible when logged in) -->
-          <a href="#" class="menu-item logged-in-only" id="logout-button" onclick="handleMockLogout(); return false;" style="color: #f44336; font-weight: bold;">
+          <a href="#" class="menu-item logged-in-only" id="logout-button" onclick="handleAuthClick('logout'); return false;" style="color: #f44336; font-weight: bold;">
               <span style="display: flex; align-items: center;"><i class="fas fa-sign-out-alt icon-left" style="color: #f44336;"></i> Logout</span><i class="fas fa-chevron-right"></i>
           </a>
           <!-- Login button (Visible when logged out) -->
-          <a href="#" class="menu-item logged-out-only" id="login-button" onclick="handleMockLogin(); return false;">
+          <a href="#" class="menu-item logged-out-only" id="login-button" onclick="handleAuthClick('login'); return false;">
               <span style="display: flex; align-items: center;"><i class="fas fa-sign-in-alt icon-left"></i> Login</span><i class="fas fa-chevron-right"></i>
           </a>
           <!-- Sign Up button (Visible when logged out) -->
-          <a href="#" class="menu-item logged-out-only" id="signup-button" onclick="handleMockLogin(); return false;">
+          <a href="#" class="menu-item logged-out-only" id="signup-button" onclick="handleAuthClick('signup'); return false;">
               <span style="display: flex; align-items: center;"><i class="fas fa-user-plus icon-left"></i> Sign Up</span><i class="fas fa-chevron-right"></i>
           </a>
         </div>
@@ -443,7 +414,28 @@
 
   </main>
 
-  <!-- 3. Fixed Mobile Footer Navigation -->
+  <!-- 4. AUTHENTICATION MODAL -->
+    <div id="auth-modal" class="modal-overlay" onclick="if(event.target.id === 'auth-modal') closeAuthModal();">
+        <div class="auth-form-container">
+            <h2 id="auth-title">Sign Up</h2>
+            <form id="auth-form" onsubmit="event.preventDefault(); handleAuthSubmit();">
+                <input type="text" id="auth-name" placeholder="Full Name" required style="display: block;">
+                <input type="email" id="auth-email" placeholder="Email Address" required>
+                <input type="password" id="auth-password" placeholder="Password" required>
+                <input type="text" id="auth-referral-code" placeholder="Referral Code (Optional)" style="display: block;">
+                <button type="submit" id="auth-submit-btn">Sign Up</button>
+            </form>
+            <div class="switch-auth-mode">
+                <span id="switch-text">Already have an account? </span>
+                <a href="#" id="switch-link" onclick="toggleAuthMode(); return false;">Login</a>
+                <br><br>
+                <a href="#" onclick="closeAuthModal(); return false;">Close</a>
+            </div>
+        </div>
+    </div>
+
+
+  <!-- 5. Fixed Mobile Footer Navigation -->
   <footer class="mobile-footer">
     <a href="#" class="nav-link active" data-page="home-content"><i class="fas fa-home"></i>Home</a>
     <a href="#" class="nav-link" data-page="rewards-content"><i class="fas fa-gift"></i>Rewards</a>
@@ -451,7 +443,7 @@
     <a href="#" class="nav-link" data-page="more-content"><i class="fas fa-bars"></i>More</a>
   </footer>
 
-  <!-- Custom Javascript Link -->
+  <!-- Linking External JavaScript File -->
   <script src="script.js"></script>
 </body>
 </html>
