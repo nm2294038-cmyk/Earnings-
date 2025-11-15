@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ur">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Rewards Center</title>
+    
+    <!-- Firebase SDKs (Version 8.10.0) -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <!-- External Style Sheet Link -->
+    <link rel="stylesheet" href="style.css">
+
+    </head> 
+    <body> 
+        <header>
+        <h1>Product Rewards Center</h1>
+        <div class="header-right">
+            <div id="walletDisplay" class="wallet-display">0 Coins</div>
+            <button id="profileIconButton" title="Login or Sign Up">👤</button>
+        </div>
+    </header>
+
+    <div class="container">
+        
+        <!-- 1. GUIDE SECTION (Visible when logged out) -->
+        <section id="guideSection">
+            <h2>Products Buy Karen Aur Coins Kamaen</h2>
+            
+            <p>Humari platform par aapka khushamdeed! Yeh section aapko humare partners ke products kharidne par **bade rewards** (coins) kamane ka mauqa deta hai. Yeh coins aap apne withdrawal balance ya specialized wallets mein istemal kar sakte hain.</p>
+
+            <h3>1. Shuruat Kaise Karen: Login</h3>
+            <p>Products tak rasai (access) hasil karne ke liye, sab se pehle upar **Profile Icon (👤)** par click karke login ya signup karen. Login karte hi, aapko products ki list nazar aana shuru ho jayegi.</p>
+
+            <h3>2. Coins Kamane Ka Tareeqa (Product Rewards)</h3>
+            <p>Yeh system do steps mein kaam karta hai:</p>
+            <ol>
+                <li><strong>Click & Earn:</strong> Jab aap kisi product par click karte hain, to us product ke mutabiq coins **fori taur par** aapke wallet mein add ho jate hain. Yeh coins aapko product ki taraf mutawajjeh karne ka reward hai.</li>
+                <li><strong>Verification:</strong> Coins milne ke baad, aapko product partner ki website par jaakar **product kharidna laazmi** hai.</li>
+            </ol>
+
+            <h3>3. Lazmi Intibah (Warning)</h3>
+            <div class="warning-alert">
+                <p><strong>LAZMI INTIBAH:</strong> Coins hasil karne ke baad, agar aap product ko **24 ghante** ke andar kharidte nahi hain, to aapka account **suspended** kar diya jayega aur aapke tamam **withdrawal requests mustarad (rejected)** kar diye jayenge.</p>
+                <p>Yeh system sirf un users ke liye hai jo waqai product kharidne mein dilchaspi rakhte hain. Coins sirf product kharidne ki niyat se diye ja rahe hain.</p>
+            </div>
+
+            <h3>4. Withdrawal Aur Coins Ki Qadar</h3>
+            <p>Aapke kamaye hue coins ko aap baad mein PKR mein tabdeel karke withdraw kar sakte hain. Aap jitne zyada products kharidte hain, utne zyada coins kamate hain.</p>
+            <p><strong>Green Flags (Safe-ish points)</strong><br>
+<p style="background-color:#f0f8ff; padding:10px; border-left:5px solid #007BFF; animation: fadeIn 2s;">
+<strong>Owner Claim vs Real Risk Comparison</strong>
+</p>
+
+<p style="background-color:#e6ffe6; padding:10px; border-left:5px solid #28a745; animation: fadeIn 2s;">
+<strong>Owner Claim:</strong><br>
+1. Website 100% safe hai.<br>
+2. Users easily paise earn kar sakte hain.<br>
+3. Withdrawal process guaranteed aur instant hai.<br>
+4. No risk, fully reliable platform.
+</p>
+
+<p style="background-color:#fff0f0; padding:10px; border-left:5px solid #dc3545; animation: fadeIn 2s;">
+<strong>Real Risk (Independent Check):</strong><br>
+1. ScamAdviser Score 71/100 – moderate risk.<br>
+2. Unrealistic earning claims – get-rich-quick pattern.<br>
+3. Limited verified user feedback – withdrawal confirmation uncertain.<br>
+4. New domain, owner info private – transparency issue.<br>
+5. Mostly UK-based service – Pakistan support and payout uncertain.<br>
+6. Heavy social media promotions – overhyped, reliability questionable.
+</p>
+
+<p style="background-color:#fff8dc; padding:10px; border-left:5px solid #ffc107; animation: fadeIn 2s;">
+<strong>Takeaway:</strong><br>
+- Owner ka claim marketing aur trust build karne ka tareeqa hai.<br>
+- Independent check aur actual user reports zyada reliable hain.<br>
+- Large investment ya personal info share karne se pehle <strong>minimal test</strong> aur verification zaruri hai.
+</p>
+
+<style>
+@keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
+</style>
+1. SSL Certificate Present – Website data encrypted hai.<br>
+2. Functional Website – Pages load hotay hain, links mostly active hain.<br>
+3. Hosting Provider Known – Website reputable hosting pe hai.<br>
+4. Some Reviews Positive – Limited users report ke platform functional hai.</p>
+
+<p><strong>Red Flags (Risk points)</strong><br>
+1. New Domain – Domain register hui May 2025, matlab experience/track record kam hai.<br>
+2. Owner Info Private – Whois data hide hai, transparency ka issue.<br>
+3. Unrealistic Earning Claims – “Invite friends, earn daily” jaisi offers typical get-rich-quick pattern me aati hain.<br>
+4. Limited User Feedback – Publicly verified withdrawal reports ya testimonials nahi milte.<br>
+5. Region Limitations – Mostly UK-based service, Pakistan users ke liye support aur payout uncertain.<br>
+6. Heavy Social Media Promotions – Overhyped posts aur ads, jo reliability ko question karte hain.</p>
+
+<p><strong>Recommendation</strong><br>
+- Do not invest large sums until proven withdrawals.<br>
+- Agar sign-up karo, minimal test amount se start karo.<br>
+- Verify withdrawal before giving full payment info.<br>
+- Check company registration aur payment process properly.</p>
+            <p style="font-weight: bold; color: var(--primary-color); margin-top: 20px;">Login Karen aur Products Rewards se hazaron coins kamaen!</p>
+        </section>
+        
+        <!-- 2. PRODUCT LIST SECTION (Visible when logged in) -->
+        <section id="productListSection">
+            <h2>Products List (Click & Earn)</h2>
+            <div id="productList">
+                <p style="text-align: center;">Products load ho rahe hain...</p>
+            </div>
+        </section>
+    </div>
+    
+    <!-- AUTH MODAL -->
+    <div id="authModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="document.getElementById('authModal').style.display='none'">&times;</span>
+            <h3 id="authTitle">Login Karen</h3>
+            
+            <form class="auth-form" id="authForm">
+                <input type="email" id="authEmail" placeholder="Email Address" required>
+                <input type="password" id="authPassword" placeholder="Password" required>
+                <button type="submit" id="authButton">Login</button>
+            </form>
+            
+            <div class="auth-toggle">
+                <p>Account nahi hai? <a href="index.html">Signup Page Par Jaen</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- SUCCESS POPUP -->
+    <div id="successPopup">
+        ✅ Coins aapke Wallet mein add kar diye gaye hain!
+    </div>
+
+       <!-- External Script Link -->
+    <script src="script.js"></script>
+    </body>
+</html>
