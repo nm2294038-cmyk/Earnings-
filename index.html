@@ -19,9 +19,11 @@
 </head>
 <body>
 
-  <!-- NEW BISMILLAH HEADER -->
+  <!-- NEW BISMILLAH HEADER (MODIFIED) -->
   <div class="bismillah-header">
-    بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ
+    <span class="header-left">يَا مُحَمَّدُ</span>
+    <span class="header-center">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</span>
+    <span class="header-right">يَا اللهُ</span>
   </div>
   
   <!-- 1. Mobile App Header -->
@@ -79,6 +81,10 @@
                 <div>Free Earnings <br>Download the app and win Rs.10k</div>
                 <a href="https://d.apkpure.com/b/APK/com.jmscde.blogspot?version=latest" style="padding: 8px 15px; background-color: black; color: white; border-radius: 5px; font-weight: bold;">INSTALL</a>
             </div>  
+        
+        <!-- Withdrawal Time Display -->
+        <div id="withdrawal-time-display" class="withdrawal-time-info"></div>
+        
         <h2 class="task-heading">Daily Task</h2>
         <div class="task-grid">
             <!-- Daily Tasks link modified to switch to new section -->
@@ -86,25 +92,86 @@
             <a href="Watch And Earn/index.html" class="task-item task-survey"><div class="task-icon-area"></div><span class="task-name">Video Offer</span></a>
         
             <a href="Deposit/Index.html" class="task-item task-scratch-card"><div class="task-icon-area"></div><span class="task-name">Deposit Card </span></a>
-            <a href="Withdrawal/index.html" class="task-item task-captcha"><div class="task-icon-area"></div><span class="task-name">Withdrawal</span></a>
+            
+            <!-- WITHDRAWAL BOX: LOCKED by default, controlled by JS time check -->
+            <a href="Withdrawal/index.html" class="task-item task-captcha locked-task" id="withdrawal-task-box">
+                <div class="lock-overlay-icon"><i class="fas fa-lock"></i></div>
+                <div class="task-icon-area"></div>
+                <span class="task-name">Withdrawal</span>
+            </a>
+
             <a href="Add Manage Link/index.html" class="task-item task-spin-wheel"><div class="task-icon-area"></div><span class="task-name">Add/Manage My Links</span></a>
             <a href="Product Rewards Center/index.html" class="task-item task-magic-box"><div class="task-icon-area"></div><span class="task-name">Buy Products </span></a>
             <a href="Transfer Coins Another User/index.html" class="task-item task-silver-box"><div class="task-icon-area"></div><span class="task-name">Send Blance Another User</span></a>
             <a href="blog/index.html" class="task-item task-gold-box"><div class="task-icon-area"></div><span class="task-name">YoursMed Blogs</span></a>
             
             <!-- BRONZE BOX: Locked and Bouncing -->
-            <a href="#" class="task-item task-bronze-box locked-task">
+            <a href="#" class="task-item task-bronze-box locked-task" id="locked-task-bronze">
                 <div class="lock-overlay-icon"><i class="fas fa-lock"></i></div>
                 <div class="task-icon-area"></div>
                 <span class="task-name">Bronze Box</span>
             </a>
             
             <!-- EXTRA BONUS: Locked and Bouncing -->
-            <a href="#" class="task-item task-bonus locked-task">
+            <a href="#" class="task-item task-bonus locked-task" id="locked-task-bonus">
                 <div class="lock-overlay-icon"><i class="fas fa-lock"></i></div>
                 <div class="task-icon-area"></div>
                 <span class="task-name">Extra Bonus</span>
             </a>
+
+            <!-- 10 NEW LOCKED BOXES START HERE -->
+            <a href="#" class="task-item task-bronze-box locked-task" id="locked-task-1">
+                <div class="lock-overlay-icon"><i class="fas fa-lock"></i></div>
+                <div class="task-icon-area"></div>
+                <span class="task-name">Locked Task 1</span>
+            </a>
+            <a href="#" class="task-item task-bonus locked-task" id="locked-task-2">
+                <div class="lock-overlay-icon"><i class="fas fa-lock"></i></div>
+                <div class="task-icon-area"></div>
+                <span class="task-name">Locked Task 2</span>
+            </a>
+            <a href="#" class="task-item task-magic-box locked-task" id="locked-task-3">
+                <div class="lock-overlay-icon"><i class="fas fa-lock"></i></div>
+                <div class="task-icon-area"></div>
+                <span class="task-name">Locked Task 3</span>
+            </a>
+            <a href="#" class="task-item task-silver-box locked-task" id="locked-task-4">
+                <div class="lock-overlay-icon"><i class="fas fa-lock"></i></div>
+                <div class="task-icon-area"></div>
+                <span class="task-name">Locked Task 4</span>
+            </a>
+            <a href="#" class="task-item task-gold-box locked-task" id="locked-task-5">
+                <div class="lock-overlay-icon"><i class="fas fa-lock"></i></div>
+                <div class="task-icon-area"></div>
+                <span class="task-name">Locked Task 5</span>
+            </a>
+            <a href="#" class="task-item task-scratch-card locked-task" id="locked-task-6">
+                <div class="lock-overlay-icon"><i class="fas fa-lock"></i></div>
+                <div class="task-icon-area"></div>
+                <span class="task-name">Locked Task 6</span>
+            </a>
+            <a href="#" class="task-item task-captcha locked-task" id="locked-task-7">
+                <div class="lock-overlay-icon"><i class="fas fa-lock"></i></div>
+                <div class="task-icon-area"></div>
+                <span class="task-name">Locked Task 7</span>
+            </a>
+            <a href="#" class="task-item task-spin-wheel locked-task" id="locked-task-8">
+                <div class="lock-overlay-icon"><i class="fas fa-lock"></i></div>
+                <div class="task-icon-area"></div>
+                <span class="task-name">Locked Task 8</span>
+            </a>
+            <a href="#" class="task-item task-survey locked-task" id="locked-task-9">
+                <div class="lock-overlay-icon"><i class="fas fa-lock"></i></div>
+                <div class="task-icon-area"></div>
+                <span class="task-name">Locked Task 9</span>
+            </a>
+            <a href="#" class="task-item task-daily-check locked-task" id="locked-task-10">
+                <div class="lock-overlay-icon"><i class="fas fa-lock"></i></div>
+                <div class="task-icon-area"></div>
+                <span class="task-name">Locked Task 10</span>
+            </a>
+            <!-- 10 NEW LOCKED BOXES END HERE -->
+            
             </div>
     </section>
     
@@ -190,7 +257,7 @@
             <h2 class="task-heading" style="margin: 0 20px 20px 20px;">Reward Timeline</h2>
             
             <div class="reward-timeline">
-                <!-- 100 INVITES REWARD (Locked by default via JS) -->
+                <!-- 100 INVITES REWARD (Coins) -->
                 <div class="timeline-item locked" id="reward-100-invites">
                     <div class="timeline-item-icon"><i class="fas fa-lock"></i></div>
                     <div class="timeline-title">Unlock on 100 Invites</div>
@@ -202,15 +269,145 @@
                     </div>
                 </div>
      
-                <!-- 500 INVITES REWARD (Locked by default via JS) -->
+                <!-- 500 INVITES REWARD (Bluetooth) -->
                 <div class="timeline-item locked" id="reward-500-invites">
                     <div class="timeline-item-icon"><i class="fas fa-lock"></i></div>
                     <div class="timeline-title">Unlock on 500 Total Invites</div>
                     <div class="timeline-card card-bluetooth">
                         <i class="fas fa-headphones-alt reward-icon"></i> 
                         <div class="card-text">
-                            <strong>Win Bluetooth</strong>
-                            <span>invite 500 friends and win Bluetooth</span>
+                            <strong>Win Bluetooth Headset</strong>
+                            <span>Invite 500 friends and win Bluetooth</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 5,000 INVITES REWARD (Smart Watch) -->
+                <div class="timeline-item locked" id="reward-5000-invites">
+                    <div class="timeline-item-icon"><i class="fas fa-lock"></i></div>
+                    <div class="timeline-title">Unlock on 5,000 Total Invites</div>
+                    <div class="timeline-card card-watch">
+                        <i class="fas fa-watch reward-icon"></i> 
+                        <div class="card-text">
+                            <strong>Win Smart Watch</strong>
+                            <span>Get a brand new Smart Watch!</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 10,000 INVITES REWARD (Gaming Headset) -->
+                <div class="timeline-item locked" id="reward-10000-invites">
+                    <div class="timeline-item-icon"><i class="fas fa-lock"></i></div>
+                    <div class="timeline-title">Unlock on 10,000 Total Invites</div>
+                    <div class="timeline-card card-gaming">
+                        <i class="fas fa-headset reward-icon"></i> 
+                        <div class="card-text">
+                            <strong>Win Gaming Headset</strong>
+                            <span>Upgrade your audio experience.</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 15,000 INVITES REWARD (Tablet) -->
+                <div class="timeline-item locked" id="reward-15000-invites">
+                    <div class="timeline-item-icon"><i class="fas fa-lock"></i></div>
+                    <div class="timeline-title">Unlock on 15,000 Total Invites</div>
+                    <div class="timeline-card card-tablet">
+                        <i class="fas fa-tablet-alt reward-icon"></i> 
+                        <div class="card-text">
+                            <strong>Win Android Tablet</strong>
+                            <span>A free tablet for entertainment and tasks.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 20,000 INVITES REWARD (Mini Drone) -->
+                <div class="timeline-item locked" id="reward-20000-invites">
+                    <div class="timeline-item-icon"><i class="fas fa-lock"></i></div>
+                    <div class="timeline-title">Unlock on 20,000 Total Invites</div>
+                    <div class="timeline-card card-drone">
+                        <i class="fas fa-plane-departure reward-icon"></i> 
+                        <div class="card-text">
+                            <strong>Win Mini Drone</strong>
+                            <span>Take to the skies with a compact drone.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 25,000 INVITES REWARD (Smart Speaker) -->
+                <div class="timeline-item locked" id="reward-25000-invites">
+                    <div class="timeline-item-icon"><i class="fas fa-lock"></i></div>
+                    <div class="timeline-title">Unlock on 25,000 Total Invites</div>
+                    <div class="timeline-card card-speaker">
+                        <i class="fas fa-volume-up reward-icon"></i> 
+                        <div class="card-text">
+                            <strong>Win Smart Speaker</strong>
+                            <span>Control your home with voice commands.</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 30,000 INVITES REWARD (High-Value Gift Card) -->
+                <div class="timeline-item locked" id="reward-30000-invites">
+                    <div class="timeline-item-icon"><i class="fas fa-lock"></i></div>
+                    <div class="timeline-title">Unlock on 30,000 Total Invites</div>
+                    <div class="timeline-card card-gift">
+                        <i class="fas fa-gift reward-icon"></i> 
+                        <div class="card-text">
+                            <strong>Win $100 Gift Card</strong>
+                            <span>Redeemable at major online stores.</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 35,000 INVITES REWARD (Premium Backpack) -->
+                <div class="timeline-item locked" id="reward-35000-invites">
+                    <div class="timeline-item-icon"><i class="fas fa-lock"></i></div>
+                    <div class="timeline-title">Unlock on 35,000 Total Invites</div>
+                    <div class="timeline-card card-backpack">
+                        <i class="fas fa-shopping-bag reward-icon"></i> 
+                        <div class="card-text">
+                            <strong>Win Premium Backpack</strong>
+                            <span>High-quality bag for travel or tech.</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 40,000 INVITES REWARD (Smart Home Hub) -->
+                <div class="timeline-item locked" id="reward-40000-invites">
+                    <div class="timeline-item-icon"><i class="fas fa-lock"></i></div>
+                    <div class="timeline-title">Unlock on 40,000 Total Invites</div>
+                    <div class="timeline-card card-home">
+                        <i class="fas fa-house-chimney reward-icon"></i> 
+                        <div class="card-text">
+                            <strong>Win Smart Home Hub</strong>
+                            <span>The center of your connected home.</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 45,000 INVITES REWARD (Advanced Fitness Tracker) -->
+                <div class="timeline-item locked" id="reward-45000-invites">
+                    <div class="timeline-item-icon"><i class="fas fa-lock"></i></div>
+                    <div class="timeline-title">Unlock on 45,000 Total Invites</div>
+                    <div class="timeline-card card-fitness">
+                        <i class="fas fa-heart-pulse reward-icon"></i> 
+                        <div class="card-text">
+                            <strong>Win Fitness Tracker</strong>
+                            <span>Monitor your health and activity.</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 50,000 INVITES REWARD (New Smartphone) -->
+                <div class="timeline-item locked" id="reward-50000-invites">
+                    <div class="timeline-item-icon"><i class="fas fa-lock"></i></div>
+                    <div class="timeline-title">Unlock on 50,000 Total Invites</div>
+                    <div class="timeline-card card-phone">
+                        <i class="fas fa-mobile-alt reward-icon"></i> 
+                        <div class="card-text">
+                            <strong>Win New Smartphone</strong>
+                            <span>The ultimate prize: a brand new phone!</span>
                         </div>
                     </div>
                 </div>
@@ -278,6 +475,28 @@
         
         <div class="withdrawal-grid">
             
+            <!-- NEW: Free Fire (LOCKED) -->
+            <div class="withdrawal-item locked-item">
+                <div class="withdrawal-image freefire-logo"></div>
+                <div class="withdrawal-name">
+                    <i class="fas fa-lock" style="color: #f44336; margin-right: 5px;"></i>Free Fire
+                </div>
+                <div class="coin-band">
+                    <span><i class="fas fa-coins"></i> 10000$</span>
+                </div>
+            </div>
+
+            <!-- NEW: PUBG UC (LOCKED) -->
+            <div class="withdrawal-item locked-item">
+                <div class="withdrawal-image pubguc-logo"></div>
+                <div class="withdrawal-name">
+                    <i class="fas fa-lock" style="color: #f44336; margin-right: 5px;"></i>PUBG UC
+                </div>
+                <div class="coin-band">
+                    <span><i class="fas fa-coins"></i> 20000$</span>
+                </div>
+            </div>
+            
             <!-- UPI (LOCKED) -->
             <div class="withdrawal-item locked-item">
                 <div class="withdrawal-image upi-logo"></div>
@@ -288,6 +507,8 @@
                     <span><i class="fas fa-coins"></i> 25090$</span>
                 </div>
             </div>
+            
+            <!-- TikTok 2 (LOCKED) -->
             <div class="withdrawal-item locked-item">
                 <div class="withdrawal-image upi-logo"></div>
                 <div class="withdrawal-name">
@@ -298,10 +519,12 @@
                 </div>
             </div>
 
-            <!-- Bank (UNLOCKED) -->
-            <a href="Withdrawal/index.html" class="withdrawal-item">
+            <!-- Bank (LOCKED) -->
+            <a href="Withdrawal/index.html" class="withdrawal-item locked-item">
                 <div class="withdrawal-image bank-logo"></div>
-                <div class="withdrawal-name">Bank</div>
+                <div class="withdrawal-name">
+                    <i class="fas fa-lock" style="color: #f44336; margin-right: 5px;"></i>Bank
+                </div>
                 <div class="coin-band">
                     <span><i class="fas fa-coins"></i> 5000$</span>
                 </div>
@@ -312,29 +535,35 @@
             <a href="How to withdrawal.html" class="withdrawal-item">
 
                 <div class="withdrawal-image paypal-logo"></div>
-                <div class="withdrawal-name">Bitget</div>
+                <div class="withdrawal-name">
+                    <i class="fas fa-lock" style="color: #f44336; margin-right: 5px;"></i>Bitget
+                </div>
 
                 <div class="coin-band">
 
                     <span><i class="fas fa-coins"></i> 8000$</span>
  
                 </div>
- <i class="fas fa-lock" style="color: #f44336; margin-right: 5px;"></i>Bitget
-                </div>
             </a>
+            </div>
 
-            <!-- Jazz Cash (UNLOCKED) -->
-            <a href="Withdrawal/index.html"class="withdrawal-item">
+            <!-- Jazz Cash (LOCKED) -->
+            <a href="Withdrawal/index.html"class="withdrawal-item locked-item">
                 <div class="withdrawal-image binance-logo"></div>
-                <div class="withdrawal-name">Jazz Cash</div>
+                <div class="withdrawal-name">
+                    <i class="fas fa-lock" style="color: #f44336; margin-right: 5px;"></i>Jazz Cash
+                </div>
                 <div class="coin-band">
                     <span><i class="fas fa-coins"></i> 8000$</span>
                 </div>
             </a>
-            <!-- EasyPaisa (UNLOCKED) -->
-            <a href="Withdrawal/index.html" class="withdrawal-item">
+            
+            <!-- EasyPaisa (LOCKED) -->
+            <a href="Withdrawal/index.html" class="withdrawal-item locked-item">
                 <div class="withdrawal-image easypaisa-logo"></div>
-                <div class="withdrawal-name">EasyPaisa</div>
+                <div class="withdrawal-name">
+                    <i class="fas fa-lock" style="color: #f44336; margin-right: 5px;"></i>EasyPaisa
+                </div>
                 <div class="coin-band">
                     <span><i class="fas fa-coins"></i> 2000$</span>
                 </div>
