@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="ur">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Center - Open & Earn</title>
+    
+    <!-- Firebase SDKs (Version 8.10.0) -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+
+    <!-- Font Awesome for Icons (Logos) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <!-- External Style Sheet Link -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <h1 id="mainHeaderTitle">Earning Categories</h1>
+        <div class="header-right">
+            <!-- User Info (Email and Wallet) -->
+            <div id="userInfo">
+                <p id="userEmailDisplay"></p>
+                <div id="walletIconContainer">
+                    <i class="fas fa-wallet"></i> 
+                    <span id="coinsBalanceDisplay">0 Coins</span>
+                </div>
+            </div>
+            <button id="profileIconButton" title="Login or Sign Up">👤</button>
+        </div>
+    </header>
+
+    <div class="container">
+        
+        <!-- 1. ARTICLE SECTION (Logged Out View) -->
+        <section id="articleSection">
+            <h2>Coins Kamane Aur Tasks Ka Mukammal Guide</h2>
+            
+            <p>Humari platform par aapka khushamdeed! Yeh woh markaz hai jahan aap aasan online tasks mukammal karke haqeeqi coins aur raqam kama sakte hain. Humara nizam is tarah design kiya gaya hai ke aapki har koshish ka sahi ajar mile.</p>
+
+            <h3>1. Shuruat Kaise Karen: Registration Aur Login</h3>
+            <p>Tasks tak rasai (access) hasil karne ke liye, sab se pehle aapko login ya signup karna hoga:</p>
+            <ol>
+                <li><strong>Profile Icon (👤) Par Click Karen:</strong> Screen ke top right corner mein maujood profile icon par click karen.</li>
+                <li><strong>Sign Up:</strong> Agar aap naye hain, to apni email, password aur naam darj karke fori account banaen.</li>
+                <li><strong>Login:</strong> Agar aapka account pehle se hai, to seedha login karen.</li>
+                <li>Login karte hi, yeh guide chhip jayega aur aapko categories nazar aana shuru ho jayengi.</li>
+            </ol>
+            
+            <h3>2. Coins Kamane Ka Tareeqa (Earning Mechanism)</h3>
+            <p>Aap mukhtalif social media platforms par engagement tasks karke coins kama sakte hain. Har task ki qeemat uski mushkil (difficulty) aur waqt ke hisaab se tay ki gayi hai. Aapko milne wali earning fori taur par aapke wallet mein jama ho jati hai.</p>
+            <ul>
+                <li><strong>YouTube:</strong> Videos dekhna, channel subscribe karna, aur likes dena.</li>
+                <li><strong>TikTok:</strong> Videos like karna, follow karna, ya comments karna.</li>
+                <li><strong>WhatsApp & App:</strong> Specific groups join karna ya apps download karna.</li>
+            </ul>
+
+            <h3>3. Tasks Ko Mukammal Karne Ki Hidayat (Instructions)</h3>
+            <p>Har task ke saath ek **"Warning Box"** diya gaya hai. Yeh hidayat laazmi hain:</p>
+            <ul>
+                <li><strong>Har Task Ko Dhyan Se Parhen:</strong> Agar task mein sirf 'Open & Like' likha hai, to sirf wahi amal karen.</li>
+                <li><strong>Mukammal Task:</strong> Task ko hidayat ke mutabiq mukammal karen. Agar aap adhoora task chhor dete hain ya ghalat amal karte hain, to aapki earning reject ho sakti hai.</li>
+            </ul>
+
+            <h3>4. Withdrawal Aur Coins Ki Qadar</h3>
+            <p>Aapke kamaye hue coins ko aap baad mein PKR mein tabdeel karke withdraw kar sakte hain. Humari platform par har coin ki qadar wazahat ke saath di gayi hai (maslan: 4 Coins = 1 PKR).</p>
+            <p style="background-color:#f0f8ff; padding:10px; border-left:5px solid #007BFF; animation: fadeIn 2s;">
+            <strong>Owner Claim vs Real Risk Comparison</strong>
+            </p>
+
+            <p style="background-color:#e6ffe6; padding:10px; border-left:5px solid #28a745; animation: fadeIn 2s;">
+            <strong>Owner Claim:</strong><br>
+            1. Website 100% safe hai.<br>
+            2. Users easily paise earn kar sakte hain.<br>
+            3. Withdrawal process guaranteed aur instant hai.<br>
+            4. No risk, fully reliable platform.
+            </p>
+
+            <p style="background-color:#fff0f0; padding:10px; border-left:5px solid #dc3545; animation: fadeIn 2s;">
+            <strong>Real Risk (Independent Check):</strong><br>
+            1. ScamAdviser Score 71/100 – moderate risk.<br>
+            2. Unrealistic earning claims – get-rich-quick pattern.<br>
+            3. Limited verified user feedback – withdrawal confirmation uncertain.<br>
+            4. New domain, owner info private – transparency issue.<br>
+            5. Mostly UK-based service – Pakistan support and payout uncertain.<br>
+            6. Heavy social media promotions – overhyped, reliability questionable.
+            </p>
+
+            <p style="background-color:#fff8dc; padding:10px; border-left:5px solid #ffc107; animation: fadeIn 2s;">
+            <strong>Takeaway:</strong><br>
+            - Owner ka claim marketing aur trust build karne ka tareeqa hai.<br>
+            - Independent check aur actual user reports zyada reliable hain.<br>
+            - Large investment ya personal info share karne se pehle <strong>minimal test</strong> aur verification zaruri hai.
+            </p>
+
+            <style>
+            @keyframes fadeIn {
+              from {opacity: 0;}
+              to {opacity: 1;}
+            }
+            </style>
+            <p style="font-weight: bold; color: var(--button-cyan); margin-top: 20px;">Intezar mat karen! Abhi login karen aur hazaron coins kamana shuru karen!</p>
+        </section>
+        
+        <!-- 2. CATEGORY MAIN SECTION (Logged In View) -->
+        <section id="categoryMainSection">
+            <h2>Tasks Ki Categories Chunein</h2>
+            
+            <div class="category-list">
+                <!-- Data-platform attribute will be used for filtering -->
+                
+                <a onclick="showTaskListView('YouTube')" class="category-btn">
+                    <i class="fab fa-youtube" style="color: red;"></i> 
+                    <span>YouTube Tasks</span>
+                </a>
+                
+                <a onclick="showTaskListView('TikTok')" class="category-btn">
+                    <i class="fab fa-tiktok" style="color: #69c9d0;"></i> 
+                    <span>TikTok Tasks</span>
+                </a>
+                
+                <a onclick="showTaskListView('Instagram')" class="category-btn">
+                    <i class="fab fa-instagram" style="color: #E1306C;"></i> 
+                    <span>Instagram Tasks</span>
+                </a>
+                
+                <a onclick="showTaskListView('Facebook')" class="category-btn">
+                    <i class="fab fa-facebook" style="color: #1877F2;"></i> 
+                    <span>Facebook Tasks</span>
+                </a>
+                
+                <a onclick="showTaskListView('WhatsApp')" class="category-btn">
+                    <i class="fab fa-whatsapp" style="color: #25D366;"></i> 
+                    <span>WhatsApp Tasks</span>
+                </a>
+                
+                <a onclick="showTaskListView('App Download')" class="category-btn">
+                    <i class="fas fa-mobile-alt" style="color: #007bff;"></i> 
+                    <span>App Download Tasks</span>
+                </a>
+                
+                <a onclick="showTaskListView('General')" class="category-btn">
+                    <i class="fas fa-list" style="color: #555;"></i> 
+                    <span>Other Tasks</span>
+                </a>
+            </div>
+            
+        </section>
+
+        <!-- 3. TASK LIST SECTION (Hidden initially) -->
+        <section id="taskMainSection">
+            <a onclick="showCategoryView()" style="color: var(--primary-color); text-decoration: none; cursor: pointer;">← Wapas Categories Par Jaen</a>
+            <h2 id="taskListHeaderTitle" style="text-align: center; margin-top: 15px;">Tasks</h2>
+            
+            <div id="taskList">
+                <p style="text-align: center;">Tasks load ho rahe hain...</p>
+            </div>
+        </section>
+
+    </div>
+    
+    <!-- AUTH MODAL -->
+    <div id="authModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="document.getElementById('authModal').style.display='none'">&times;</span>
+            <h3 id="authTitle">Login Karen</h3>
+            
+            <form class="auth-form" id="authForm">
+                <input type="email" id="authEmail" placeholder="Email Address" required>
+                <input type="password" id="authPassword" placeholder="Password" required>
+                <button type="submit" id="authButton">Login</button>
+            </form>
+            
+            <div class="auth-toggle">
+                <p>Account nahi hai? <a href="index.html">Signup Page Par Jaen</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- SUCCESS POPUP -->
+    <div id="successPopup">
+        ✅ Coins aapke Wallet mein add kar diye gaye hain!
+    </div>
+
+    <!-- External Script Link -->
+    <script src="script.js"></script>
+</body>
+</html>
