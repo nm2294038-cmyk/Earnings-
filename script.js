@@ -6,7 +6,7 @@ const firebaseConfig = {
     projectId: "traffic-exchange-62a58",
     storageBucket: "traffic-exchange-62a58.appspot.com",
     messagingSenderId: "474999317287",
-    appId: "1:474999317287:web:8e28a2f5f1a959d8ce3f02",
+    appId: "1:474999317287:web:8e28a22f5f1a959d8ce3f02",
     measurementId: "G-HJQ46RQNZS"
 };
 
@@ -30,7 +30,144 @@ let walletListener = null;
 const MOCK_REFERRAL_CODE = "USER-TEST1";
 const USERS_COLLECTION = "users";
 
-// --- PROFILE AND WALLET DISPLAY LOGIC (Firestore Integration) ---
+// Define all reward tiers for easy management (Rewards Tab)
+const REWARD_TIERS = [
+    100, 500, 
+    5000, 10000, 15000, 20000, 25000, 30000, 35000, 40000, 45000, 50000
+];
+
+// --- CORE FUNCTIONS ---
+
+/**
+ * Checks if the current time is between 10:00 PM and 10:10 PM (Local Time).
+ * @returns {boolean} True if the withdrawal window is open.
+ */
+function isWithdrawalWindowOpen() {
+    const now = new Date();
+    const hours = now.getHours();
+    const minutes = now.getMinutes();
+
+    // 10:00 PM is 22:00 in 24-hour format
+    const startTime = 22 * 60; // 1320 minutes (10:00 PM)
+    const endTime = 22 * 60 + 10; // 1330 minutes (10:10 PM)
+    const currentTime = hours * 60 + minutes;
+
+    return currentTime >= startTime && currentTime <= endTime;
+}
+
+/**
+ * Updates the lock state of the Withdrawal button and displays the time status.
+ */
+function updateWithdrawalLockState() {
+    const withdrawalBox = document.getElementById('withdrawal-task-box');
+    const timeDisplay = document.getElementById('withdrawal-time-display');
+    
+    if (!withdrawalBox || !timeDisplay) return;
+
+    if (isWithdrawalWindowOpen()) {
+        // Window is open: UNLOCK
+        withdrawalBox.classList.remove('locked-task');
+        const lockIcon = withdrawalBox.querySelector('.lock-overlay-icon');
+        if (lockIcon) lockIcon.style.display = 'none';
+        
+        timeDisplay.className = 'withdrawal-time-info open';
+        timeDisplay.innerHTML = '✅ Withdrawal Window is OPEN! (10:00 PM - 10:10 PM)';
+        
+    } else {
+        // Window is closed: LOCK
+        withdrawalBox.classList.add('locked-task');
+        const lockIcon = withdrawalBox.querySelector('.lock-overlay-icon');
+        if (lockIcon) lockIcon.style.display = 'block';
+
+        const now = new Date();
+        const nextOpenTime = new Date(now);
+        
+        // Set next open time to 10:00 PM today
+        nextOpenTime.setHours(22, 0, 0, 0); 
+        
+        // If 10 PM has passed today, set it for 10 PM tomorrow
+        if (now.getTime() > nextOpenTime.getTime()) {
+            nextOpenTime.setDate(nextOpenTime.getDate() + 1);
+        }
+
+        const diffMs = nextOpenTime.getTime() - now.getTime();
+        const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+        const diffMinutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+        const diffSeconds = Math.floor((diffMs % (1000 * 60)) / 1000);
+
+
+        timeDisplay.className = 'withdrawal-time-info closed';
+        timeDisplay.innerHTML = `🔒 Withdrawal opens in: ${diffHours}h ${diffMinutes}m ${diffSeconds}s (10:00 PM - 10:10 PM)`;
+    }
+}
+
+/**
+ * Manages the locked state of the other 12 locked boxes (Bronze, Bonus, Task 1-10).
+ * 
+ * --- كيفية فتح هذه الصناديق (How to Unlock These Boxes) ---
+ * 
+ * لفتح صندوق معين، قم بتغيير قيمة المتغير المقابل له أدناه من `true` إلى `false`.
+ * مثال: لفتح صندوق "Bronze Box"، قم بتغيير `const lockBronzeBox = true;` إلى `const lockBronzeBox = false;`
+ * 
+ * @param {string} boxId - The ID of the box element.
+ * @param {boolean} shouldBeLocked - True to lock, False to unlock.
+ */
+function controlOtherLockedBoxes(boxId, shouldBeLocked) {
+    const box = document.getElementById(boxId);
+    if (!box) return;
+
+    if (shouldBeLocked) {
+        box.classList.add('locked-task');
+        // Ensure lock icon is visible
+        const lockIcon = box.querySelector('.lock-overlay-icon');
+        if (lockIcon) lockIcon.style.display = 'block';
+    } else {
+        box.classList.remove('locked-task');
+        // Hide lock icon
+        const lockIcon = box.querySelector('.lock-overlay-icon');
+        if (lockIcon) lockIcon.style.display = 'none';
+    }
+}
+
+// --- LOCK/UNLOCK CONFIGURATION FOR DAILY TASKS (Edit these variables to unlock) ---
+const lockBronzeBox = true; // صندوق البرونز
+const lockExtraBonus = true; // المكافأة الإضافية
+const lockTask1 = true;
+const lockTask2 = true;
+const lockTask3 = true;
+const lockTask4 = true;
+const lockTask5 = true;
+const lockTask6 = true;
+const lockTask7 = true;
+const lockTask8 = true;
+const lockTask9 = true;
+const lockTask10 = true;
+
+
+// --- INITIALIZATION & INTERVALS ---
+
+document.addEventListener('DOMContentLoaded', () => {
+    // 1. Initialize Withdrawal Lock State and start checking every second for precision
+    updateWithdrawalLockState();
+    setInterval(updateWithdrawalLockState, 1000); // Check every second
+
+    // 2. Apply lock states to other boxes
+    controlOtherLockedBoxes('locked-task-bronze', lockBronzeBox);
+    controlOtherLockedBoxes('locked-task-bonus', lockExtraBonus);
+    controlOtherLockedBoxes('locked-task-1', lockTask1);
+    controlOtherLockedBoxes('locked-task-2', lockTask2);
+    controlOtherLockedBoxes('locked-task-3', lockTask3);
+    controlOtherLockedBoxes('locked-task-4', lockTask4);
+    controlOtherLockedBoxes('locked-task-5', lockTask5);
+    controlOtherLockedBoxes('locked-task-6', lockTask6);
+    controlOtherLockedBoxes('locked-task-7', lockTask7);
+    controlOtherLockedBoxes('locked-task-8', lockTask8);
+    controlOtherLockedBoxes('locked-task-9', lockTask9);
+    controlOtherLockedBoxes('locked-task-10', lockTask10);
+});
+
+
+// --- FIREBASE & UI LOGIC ---
 
 /**
  * Sets up a real-time listener to fetch and display the user's wallet balance and rewards data.
@@ -55,6 +192,7 @@ function initializeWalletDisplay() {
         console.log("Previous wallet listener detached.");
     }
 
+    // We listen to the user document identified by their Referral Code (which is the Document ID)
     const walletRef = db.collection(USERS_COLLECTION).doc(currentReferralCode);
     
     balanceDisplay.textContent = 'Loading...';
@@ -85,8 +223,10 @@ function initializeWalletDisplay() {
 
             console.log(`Realtime balance update received: ${formattedBalance}`);
         } else {
+            // If the document is missing, log an error but keep the user logged in via Auth
+            console.error(`Firestore document missing for referral code: ${currentReferralCode}`);
             balanceDisplay.textContent = '0.00';
-            updateProfileCardDisplay("User Not Found", "0.00");
+            updateProfileCardDisplay("User Data Missing", "0.00");
         }
     }, error => {
         console.error("Error listening to user document:", error);
@@ -191,7 +331,7 @@ async function handleAuthSubmit() {
             
             // 1. Create User document in Firestore 
             await db.collection(USERS_COLLECTION).doc(userReferralCode).set({
-                uid: uid,
+                uid: uid, // IMPORTANT: Store UID for later lookup
                 name: name,
                 email: email, 
                 referralCode: userReferralCode,
@@ -202,7 +342,7 @@ async function handleAuthSubmit() {
                 createdAt: firebase.firestore.FieldValue.serverTimestamp()
             });
             
-            // 2. IMPORTANT: Update the referrer's invite count using a Transaction
+            // 2. Update the referrer's invite count
             if (referralCodeUsed) {
                 const referrerRef = db.collection(USERS_COLLECTION).doc(referralCodeUsed);
                 
@@ -211,11 +351,8 @@ async function handleAuthSubmit() {
                     
                     if (referrerDoc.exists) {
                         const newInvites = (referrerDoc.data().totalInvites || 0) + 1;
-                        // Update referrer's total invites (and possibly give bonus coins here too)
                         transaction.update(referrerRef, { 
                             totalInvites: newInvites,
-                            // Example of adding 100 bonus coins to referrer on new signup:
-                            // balance: (referrerDoc.data().balance || 0) + 100 
                         });
                         console.log(`Updated referrer ${referralCodeUsed} with new totalInvites: ${newInvites}`);
                     } else {
@@ -225,7 +362,7 @@ async function handleAuthSubmit() {
             }
 
 
-            alert(`Account created! You received ${signupBonus} coins. Referrer updated if code was valid.`);
+            alert(`Account created! You received ${signupBonus} coins.`);
         } else { // Login
             await auth.signInWithEmailAndPassword(email, password);
         }
@@ -241,17 +378,29 @@ async function handleAuthSubmit() {
     }
 }
 
+/**
+ * Finds the user's Firestore Document ID (Referral Code) using their Auth UID.
+ * This is the crucial step to link Auth login to Firestore data.
+ * 
+ * @param {string} uid - The Firebase Auth User ID.
+ * @returns {string | null} The Referral Code (Document ID) or null if not found.
+ */
 async function findUserReferralCode(uid) {
     try {
+        // Query the 'users' collection where the 'uid' field matches the Auth UID
         const snapshot = await db.collection(USERS_COLLECTION).where('uid', '==', uid).limit(1).get();
+        
         if (!snapshot.empty) {
-            currentUserName = snapshot.docs[0].data().name || "User";
-            return snapshot.docs[0].id; 
+            const doc = snapshot.docs[0];
+            currentUserName = doc.data().name || "User";
+            return doc.id; // The Document ID is the Referral Code
+        } else {
+            console.warn(`Firestore document not found for UID: ${uid}`); 
         }
     } catch (e) {
-        console.error("Error finding user referral code:", e);
+        console.error("Error finding user referral code in Firestore:", e);
     }
-    return MOCK_REFERRAL_CODE; 
+    return null; 
 }
 
 auth.onAuthStateChanged(async user => {
@@ -259,10 +408,21 @@ auth.onAuthStateChanged(async user => {
         currentUserId = user.uid;
         isLoggedIn = true;
         
+        // Step 1: Find the referral code (Document ID) based on the UID
         currentReferralCode = await findUserReferralCode(currentUserId);
         
-        updateAuthStateUI();
-        initializeWalletDisplay();
+        if (currentReferralCode) {
+            updateAuthStateUI();
+            // Step 2: Initialize listener to load wallet data using the found Referral Code
+            initializeWalletDisplay();
+        } else {
+            // If user logged in via Auth but no Firestore data found
+            handleRealLogout(false);
+            // Display specific error for missing Firestore data
+            document.getElementById('profile-name').textContent = "Data Error";
+            document.getElementById('profile-balance').textContent = "User Data Missing!";
+            console.error(`CRITICAL: User ${currentUserId} logged in but Firestore document is missing.`);
+        }
 
     } else {
         handleRealLogout(false);
@@ -312,28 +472,25 @@ function updateAuthStateUI() {
 }
 
 function updateRewardTimeline(inviteCount) {
-    const reward100 = document.getElementById('reward-100-invites');
-    const reward500 = document.getElementById('reward-500-invites');
-
-    if (inviteCount >= 100) {
-        reward100.classList.remove('locked');
-        reward100.querySelector('.timeline-item-icon').innerHTML = '<i class="fas fa-check"></i>';
-        reward100.classList.add('unlocked');
-    } else {
-        reward100.classList.add('locked');
-        reward100.classList.remove('unlocked');
-        reward100.querySelector('.timeline-item-icon').innerHTML = '<i class="fas fa-lock"></i>';
-    }
-
-    if (inviteCount >= 500) {
-        reward500.classList.remove('locked');
-        reward500.querySelector('.timeline-item-icon').innerHTML = '<i class="fas fa-check"></i>';
-        reward500.classList.add('unlocked');
-    } else {
-        reward500.classList.add('locked');
-        reward500.classList.remove('unlocked');
-        reward500.querySelector('.timeline-item-icon').innerHTML = '<i class="fas fa-lock"></i>';
-    }
+    // Check all reward tiers dynamically
+    REWARD_TIERS.forEach(tier => {
+        const rewardId = `reward-${tier}-invites`;
+        const element = document.getElementById(rewardId);
+        
+        if (element) {
+            const iconContainer = element.querySelector('.timeline-item-icon');
+            
+            if (inviteCount >= tier) {
+                element.classList.remove('locked');
+                element.classList.add('unlocked');
+                iconContainer.innerHTML = '<i class="fas fa-check"></i>';
+            } else {
+                element.classList.add('locked');
+                element.classList.remove('unlocked');
+                iconContainer.innerHTML = '<i class="fas fa-lock"></i>';
+            }
+        }
+    });
 }
 
 
