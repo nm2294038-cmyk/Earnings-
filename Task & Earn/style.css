@@ -1,0 +1,176 @@
+/* --- VARIABLES --- */
+:root {
+    --primary-color: #007bff;
+    --secondary-color: #28a745;
+    --header-bg: #2c3e50;
+    --card-bg: #ffffff;
+    --warning-bg: #ffc107;
+    --warning-text: #333;
+    --button-cyan: #00bcd4;
+    --dark-text: #333;
+    --shadow-glow: 0 0 15px rgba(0, 188, 212, 0.5);
+}
+
+/* --- BASE STYLES (PC/Desktop View) --- */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f2f5;
+    color: var(--dark-text);
+    line-height: 1.6;
+}
+
+header {
+    background-color: var(--header-bg);
+    color: white;
+    padding: 10px 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header h1 {
+    font-size: 1.5em;
+    margin: 0;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+/* User Info (Email and Wallet) */
+#userInfo {
+    display: none; /* Default hidden */
+    flex-direction: column;
+    align-items: flex-end;
+    font-size: 0.9em;
+    margin-right: 10px;
+}
+#userEmailDisplay { color: #ccc; margin: 0; }
+#walletIconContainer { display: flex; align-items: center; gap: 5px; padding: 5px 10px; border-radius: 5px; background: rgba(255, 255, 255, 0.1); }
+#walletIconContainer i { color: var(--warning-bg); font-size: 1.2em; }
+#coinsBalanceDisplay { font-weight: bold; color: white; }
+
+#profileIconButton { background: none; border: 2px solid white; color: white; font-size: 24px; cursor: pointer; width: 40px; height: 40px; padding: 0; border-radius: 50%; display: flex; justify-content: center; align-items: center; line-height: 1; transition: background-color 0.3s; }
+
+.container {
+    width: 95%;
+    max-width: 900px;
+    margin: 20px auto;
+    padding: 20px;
+}
+
+/* --- VIEWS --- */
+#articleSection, #categoryMainSection, #taskMainSection {
+    display: none; /* Managed by JS */
+    background-color: var(--card-bg);
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+/* --- CATEGORY LIST STYLES --- */
+.category-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.category-btn {
+    background-color: var(--card-bg);
+    border: 1px solid #ddd;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    text-decoration: none;
+    color: var(--dark-text);
+}
+.category-btn:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+    border-color: var(--primary-color);
+}
+
+.category-btn i {
+    font-size: 40px;
+    margin-bottom: 10px;
+    color: var(--primary-color);
+}
+.category-btn span {
+    font-weight: bold;
+    display: block;
+    font-size: 1.2em;
+}
+
+/* --- TASK CARD STYLING (Screenshot Style) --- */
+#taskList {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.task-card {
+    background-color: #333; /* Dark card background */
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    color: white;
+}
+.task-card:hover {
+    transform: translateY(-3px);
+}
+
+.task-title { font-size: 1.4em; font-weight: bold; color: white; margin-bottom: 5px; }
+.task-platform { color: #aaa; margin-bottom: 15px; }
+
+.warning-box { background-color: #584b00; color: white; padding: 15px; border-radius: 8px; border-left: 5px solid var(--warning-bg); margin-bottom: 20px; text-align: right; direction: rtl; }
+.warning-box .urdu { font-size: 1.1em; margin-bottom: 5px; }
+.warning-box .english { font-size: 0.9em; color: var(--warning-bg); }
+
+.earn-button { background: var(--button-cyan); color: var(--dark-text); border: none; padding: 15px 25px; border-radius: 10px; font-size: 1.1em; font-weight: bold; cursor: pointer; box-shadow: 0 0 15px rgba(0, 188, 212, 0.5); width: 100%; transition: all 0.3s; }
+.earn-button:hover:not(:disabled) { background: #00e0e0; box-shadow: 0 0 20px rgba(0, 255, 255, 0.8); }
+.earn-button:disabled { background: #666; cursor: not-allowed; box-shadow: none; }
+
+/* --- AUTH MODAL STYLING --- */
+.modal { display: none; position: fixed; z-index: 100; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.7); backdrop-filter: blur(5px); justify-content: center; align-items: center; }
+.modal-content { background-color: var(--card-bg); padding: 40px; border-radius: 12px; width: 90%; max-width: 400px; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2); position: relative; color: #333; }
+.close-btn { color: #aaa; position: absolute; top: 15px; right: 25px; font-size: 30px; font-weight: bold; cursor: pointer; }
+.auth-form input { border: 1px solid #ddd; border-radius: 6px; margin-bottom: 15px; padding: 10px; width: 100%; box-sizing: border-box; }
+.auth-form button { background-color: var(--primary-color); color: white; padding: 10px; border: none; border-radius: 4px; width: 100%; cursor: pointer; }
+.auth-toggle { margin-top: 20px; text-align: center; }
+.auth-toggle a { font-weight: bold; color: var(--primary-color); cursor: pointer; }
+
+/* --- SUCCESS POPUP --- */
+#successPopup { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: var(--secondary-color); color: white; padding: 20px 30px; border-radius: 10px; z-index: 10000; box-shadow: 0 0 20px rgba(40, 167, 69, 0.8); font-weight: bold; font-size: 1.2em; display: none; }
+
+
+/* ========================================= */
+/* --- RESPONSIVENESS (Mobile/Tablet) --- */
+/* ========================================= */
+
+/* Tablet View (Max 768px) */
+@media (max-width: 768px) {
+    .category-list { grid-template-columns: repeat(2, 1fr); }
+    #taskList { grid-template-columns: 1fr; }
+}
+
+/* Mobile View (Max 480px) */
+@media (max-width: 480px) {
+    header { padding: 10px; }
+    header h1 { font-size: 1.2em; }
+    .category-list { grid-template-columns: 1fr; } /* Full width buttons */
+    .category-btn { padding: 15px; }
+    .task-title { font-size: 1.2em; }
+    .warning-box .urdu { font-size: 1em; }
+    .warning-box .english { font-size: 0.8em; }
+}
