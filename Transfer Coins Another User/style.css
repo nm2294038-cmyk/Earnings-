@@ -1,0 +1,263 @@
+/* --- VARIABLES --- */
+:root {
+    --primary-color: #007bff;
+    --secondary-color: #28a745;
+    --dark-bg: #2c3e50;
+    --light-bg: #ffffff;
+    --danger-color: #dc3545;
+    --accent-color: #ff9800;
+    --shadow-deep: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+/* --- BASE STYLES (Desktop Default) --- */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f2f5;
+    color: #333;
+    line-height: 1.6;
+}
+
+header {
+    background-color: var(--dark-bg);
+    color: white;
+    padding: 10px 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header h1 {
+    font-size: 1.5em;
+    margin: 0;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+#profileIconButton {
+    background: none;
+    border: 2px solid white;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    line-height: 1;
+    transition: background-color 0.3s;
+}
+
+#currentBalanceDisplay {
+    background-color: var(--accent-color);
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 1.1em;
+    display: none;
+}
+
+.container {
+    width: 90%;
+    max-width: 800px;
+    margin: 40px auto;
+    background-color: var(--light-bg);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: var(--shadow-deep);
+}
+
+/* --- GUIDE ARTICLE STYLES --- */
+#guideArticle {
+    display: none;
+    padding: 10px;
+}
+#guideArticle h2 {
+    color: var(--primary-color);
+    text-align: center;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 10px;
+}
+.call-to-action {
+    text-align: center;
+    margin-top: 20px;
+    padding: 15px;
+    background-color: var(--secondary-color);
+    color: white;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* --- TRANSFER SECTION STYLING --- */
+#transferSection {
+    display: none;
+}
+
+.transfer-box {
+    padding: 20px;
+    border: 1px solid var(--primary-color);
+    border-radius: 10px;
+    background-color: #f0f8ff;
+    margin-bottom: 30px;
+}
+
+/* Coin Buttons Container (Desktop: Flexible row) */
+.coin-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+    justify-content: center;
+}
+.coin-buttons button {
+    background-color: #e0e0e0;
+    color: #333;
+    border: 1px solid #ccc;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-size: 1em;
+    cursor: pointer;
+    flex-grow: 1;
+    min-width: 100px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 1em;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+}
+.form-group label {
+    font-weight: bold;
+    display: block;
+}
+
+#recipientInfo {
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    display: none; /* Managed by JS */
+}
+
+
+#sendButton {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    width: 100%;
+    padding: 15px 20px;
+    font-size: 1.2em;
+    transition: background-color 0.3s;
+}
+#sendButton:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+
+/* --- HISTORY STYLING --- */
+.history-section {
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 2px dashed #ccc;
+}
+.history-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+.history-table th, .history-table td {
+    padding: 10px;
+    font-size: 0.9em;
+    border-bottom: 1px solid #eee;
+    text-align: left;
+}
+.history-table th {
+    background-color: #f9f9f9;
+}
+.sent { color: var(--danger-color); font-weight: bold; }
+.received { color: var(--secondary-color); font-weight: bold; }
+
+/* --- AUTH MODAL STYLING (Remains standard) --- */
+.modal { display: none; position: fixed; z-index: 100; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.7); backdrop-filter: blur(5px); justify-content: center; align-items: center; }
+.modal-content { background-color: var(--light-bg); padding: 40px; border-radius: 12px; width: 90%; max-width: 400px; box-shadow: var(--shadow-deep); position: relative; }
+.close-btn { color: #aaa; position: absolute; top: 15px; right: 25px; font-size: 30px; font-weight: bold; cursor: pointer; }
+.auth-form input { border: 1px solid #ddd; border-radius: 6px; margin-bottom: 15px; padding: 10px; width: 100%; box-sizing: border-box; }
+.auth-form button { background-color: var(--primary-color); color: white; padding: 10px; border: none; border-radius: 4px; width: 100%; cursor: pointer; }
+.auth-toggle { margin-top: 20px; text-align: center; }
+.auth-toggle a { font-weight: bold; color: var(--primary-color); cursor: pointer; }
+
+/* ========================================= */
+/* --- TABLET/MOBILE STYLES --- */
+/* ========================================= */
+@media (max-width: 768px) {
+    .container {
+        margin: 20px auto;
+        padding: 20px;
+    }
+    header h1 {
+        font-size: 1.4em;
+    }
+    .coin-buttons button {
+        padding: 8px 10px;
+        font-size: 0.9em;
+    }
+}
+
+@media (max-width: 480px) {
+    header {
+        padding: 10px 15px;
+    }
+    header h1 {
+        font-size: 1.2em;
+    }
+    
+    #currentBalanceDisplay {
+        font-size: 0.9em;
+        padding: 6px 10px;
+    }
+
+    .container {
+        padding: 15px;
+    }
+    
+    /* Coin Buttons (3 columns) */
+    .coin-buttons {
+        gap: 5px;
+        justify-content: space-between;
+    }
+    .coin-buttons button {
+        width: 30%; /* Approx 3 columns */
+        flex-grow: 0;
+        padding: 6px 4px;
+        font-size: 0.75em;
+        min-width: 0;
+    }
+
+    .history-table th, .history-table td {
+        padding: 6px;
+        font-size: 0.8em;
+    }
+    
+    /* Hide unnecessary columns on small screens */
+    .history-table th:nth-child(4),
+    .history-table td:nth-child(4) {
+        display: none; /* Hide Date column for space */
+    }
+}
