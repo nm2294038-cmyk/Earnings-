@@ -1,291 +1,321 @@
-   /* -------------------------------------- */
-    /* 0. NEW BISMILLAH HEADER & KEYFRAMES    */
-    /* -------------------------------------- */
-    .bismillah-header {
-      text-align: center;
-      padding: 10px;
-      font-size: 1.5em; 
-      font-weight: 700;
-      color: #1e88e5; 
-      background-color: #ffffff;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-      font-family: 'Times New Roman', serif; 
-      position: sticky;
-      top: 0;
-      z-index: 200; 
-    }
-    
-    @keyframes slide-show {
-      0% { transform: translateX(0%); } 9% { transform: translateX(0%); }
-      10% { transform: translateX(-10%); } 19% { transform: translateX(-10%); }
-      20% { transform: translateX(-20%); } 29% { transform: translateX(-20%); }
-      30% { transform: translateX(-30%); } 39% { transform: translateX(-30%); }
-      40% { transform: translateX(-40%); } 49% { transform: translateX(-40%); }
-      50% { transform: translateX(-50%); } 59% { transform: translateX(-50%); }
-      60% { transform: translateX(-60%); } 69% { transform: translateX(-60%); }
-      70% { transform: translateX(-70%); } 79% { transform: translateX(-70%); }
-      80% { transform: translateX(-80%); } 89% { transform: translateX(-80%); }
-      90% { transform: translateX(-90%); } 99% { transform: translateX(-90%); }
-      100% { transform: translateX(0%); } 
-    }
-    @keyframes fadeInScale {
-        from { opacity: 0; transform: scale(0.9); }
-        to { opacity: 1; transform: scale(1); }
-    }
-    @keyframes fadeIn {
-      from {opacity: 0;}
-      to {opacity: 1;}
-    }
+/* -------------------------------------- */
+/* 0. NEW BISMILLAH HEADER & KEYFRAMES    */
+/* -------------------------------------- */
+.bismillah-header {
+  text-align: center;
+  padding: 10px;
+  font-size: 1.5em; 
+  font-weight: 700;
+  color: #1e88e5; 
+  background-color: #ffffff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  font-family: 'Times New Roman', serif; 
+  position: sticky;
+  top: 0;
+  z-index: 200; 
+}
 
-    /* -------------------------------------- */
-    /* 1. GENERAL & BASE STYLES               */
-    /* -------------------------------------- */
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f8f9fa; 
-      margin: 0;
-      padding: 0;
-      padding-bottom: 60px; /* Space for fixed footer */
-      color: #333;
-    }
-    a { text-decoration: none; color: inherit; } 
-    .content-section { display: none; }
-    .content-section.active { display: block; }
-    .tab-content { display: none; }
-    .tab-content.active { display: block; }
+@keyframes slide-show {
+  0% { transform: translateX(0%); } 9% { transform: translateX(0%); }
+  10% { transform: translateX(-10%); } 19% { transform: translateX(-10%); }
+  20% { transform: translateX(-20%); } 29% { transform: translateX(-20%); }
+  30% { transform: translateX(-30%); } 39% { transform: translateX(-30%); }
+  40% { transform: translateX(-40%); } 49% { transform: translateX(-40%); }
+  50% { transform: translateX(-50%); } 59% { transform: translateX(-50%); }
+  60% { transform: translateX(-60%); } 69% { transform: translateX(-60%); }
+  70% { transform: translateX(-70%); } 79% { transform: translateX(-70%); }
+  80% { transform: translateX(-80%); } 89% { transform: translateX(-80%); }
+  90% { transform: translateX(-90%); } 99% { transform: translateX(-90%); }
+  100% { transform: translateX(0%); } 
+}
+@keyframes fadeInScale {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+}
+@keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
 
-    /* -------------------------------------- */
-    /* 2. HEADER & TOP NAVIGATION             */
-    /* -------------------------------------- */
-    .app-header {
-      background-color: #fff;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      position: sticky;
-      top: 45px; 
-      z-index: 100;
-    }
-    .app-header-top {
-      background-color: #e0e0e0; 
-      padding: 15px 15px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between; 
-      border-radius: 0 0 20px 20px; 
-      position: relative;
-    }
-    .app-header-top .back-arrow { font-size: 1.5em; margin-right: 15px; color: #555; cursor: pointer; display: none; }
-    .app-header-top .title { font-size: 1.2em; font-weight: bold; color: #333; flex-grow: 1; text-align: left; }
-    .header-icons a i { font-size: 1.2em; margin-left: 15px; color: #555; cursor: pointer; }
+/* --- NEW BOUNCE KEYFRAME FOR LOCKED TASK --- */
+@keyframes extra-bounce {
+    0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+    40% { transform: translateY(-15px); }
+    60% { transform: translateY(-7px); }
+}
+/* -------------------------------------- */
 
-    /* Flat Header Style */
-    .app-header.flat-header .app-header-top {
-        background-color: #f0f2f5; 
-        border-radius: 0; 
-        justify-content: flex-start;
-    }
-    .app-header.flat-header .app-header-top .title {
-        position: absolute; left: 50%; transform: translateX(-50%); flex-grow: 0; text-align: center; font-size: 1.2em; color: #333;
-    }
-    .app-header.flat-header .app-header-top .header-icons { display: none; }
-    .app-header.flat-header .app-header-top .back-arrow { display: block !important; z-index: 10; color: #000; }
+/* -------------------------------------- */
+/* 1. GENERAL & BASE STYLES               */
+/* -------------------------------------- */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f8f9fa; 
+  margin: 0;
+  padding: 0;
+  padding-bottom: 60px; /* Space for fixed footer */
+  color: #333;
+}
+a { text-decoration: none; color: inherit; } 
+.content-section { display: none; }
+.content-section.active { display: block; }
+.tab-content { display: none; }
+.tab-content.active { display: block; }
 
-    /* Tab Navigation */
-    .tab-navigation { display: none; justify-content: space-around; padding: 0 10px; background-color: #f0f2f5; border-bottom: none; }
-    .tab-navigation a { padding: 12px 15px; font-weight: bold; color: #777; position: relative; transition: color 0.3s; flex: 1; text-align: center; font-size: 0.9em; letter-spacing: 0.5px; }
-    .tab-navigation a.active { color: #000; }
-    .tab-navigation a.active::after { content: ''; position: absolute; bottom: 0; left: 20%; width: 60%; height: 3px; background-color: #000; border-radius: 2px; }
+/* -------------------------------------- */
+/* 2. HEADER & TOP NAVIGATION             */
+/* -------------------------------------- */
+.app-header {
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 45px; 
+  z-index: 100;
+}
+.app-header-top {
+  background-color: #e0e0e0; 
+  padding: 15px 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between; 
+  border-radius: 0 0 20px 20px; 
+  position: relative;
+}
+.app-header-top .back-arrow { font-size: 1.5em; margin-right: 15px; color: #555; cursor: pointer; display: none; }
+.app-header-top .title { font-size: 1.2em; font-weight: bold; color: #333; flex-grow: 1; text-align: left; }
+.header-icons a i { font-size: 1.2em; margin-left: 15px; color: #555; cursor: pointer; }
 
-    /* -------------------------------------- */
-    /* 3. FIXED MOBILE FOOTER NAVIGATION      */
-    /* -------------------------------------- */
-    .mobile-footer {
-      position: fixed; bottom: 0; left: 0; width: 100%; height: 60px;
-      background-color: #fff; box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
-      display: flex; justify-content: space-around; align-items: center; z-index: 200;
-    }
-    .mobile-footer a { display: flex; flex-direction: column; align-items: center; font-size: 0.75em; color: #777; padding: 5px; flex: 1; }
-    .mobile-footer a.active { color: #000; }
-    .mobile-footer a i { font-size: 1.5em; margin-bottom: 3px; }
+/* Flat Header Style */
+.app-header.flat-header .app-header-top {
+    background-color: #f0f2f5; 
+    border-radius: 0; 
+    justify-content: flex-start;
+}
+.app-header.flat-header .app-header-top .title {
+    position: absolute; left: 50%; transform: translateX(-50%); flex-grow: 0; text-align: center; font-size: 1.2em; color: #333;
+}
+.app-header.flat-header .app-header-top .header-icons { display: none; }
+.app-header.flat-header .app-header-top .back-arrow { display: block !important; z-index: 10; color: #000; }
 
-    /* -------------------------------------- */
-    /* 4. HOME CONTENT (Daily Task & Carousel)*/
-    /* -------------------------------------- */
-    #home-content { padding-top: 0; }
-    .carousel-wrapper { width: 100%; height: 220px; overflow: hidden; position: relative; }
-    .carousel-track { display: flex; width: 1000%; height: 100%; animation: slide-show 50s infinite; }
-    .carousel-slide {
-      width: 10%; height: 100%; flex-shrink: 0; display: block; 
-      background-image: url('https://i.ibb.co/4RzTfVh4/IMG-20251110-WA0008.jpg'); 
-      background-size: cover; background-position: center; background-repeat: no-repeat;
-      position: relative;
-    }
-    /* Specific Banner Images */
-    .carousel-slide.slide-1 { background-image: url('https://i.ibb.co/tpF2LTyB/FB-IMG-1763006054777.jpg'); }
-    .carousel-slide.slide-2 { background-image: url('https://i.ibb.co/hFdpRnXR/FB-IMG-1763006052781.jpg'); }
-    .carousel-slide.slide-3 { background-image: url('https://i.ibb.co/bj9cnS2m/FB-IMG-1763006049127.jpg'); }
-    .carousel-slide.slide-4 { background-image: url('https://i.ibb.co/jvgxx2gF/FB-IMG-1763006046346.jpg'); }
-    .carousel-slide.slide-5 { background-image: url('https://i.ibb.co/Fkqz9FXT/FB-IMG-1763006044569.jpg'); }
-    .carousel-slide.slide-6 { background-image: url('https://i.ibb.co/SwGJrVTV/FB-IMG-1763006042540.jpg'); }
+/* Tab Navigation */
+.tab-navigation { display: none; justify-content: space-around; padding: 0 10px; background-color: #f0f2f5; border-bottom: none; }
+.tab-navigation a { padding: 12px 15px; font-weight: bold; color: #777; position: relative; transition: color 0.3s; flex: 1; text-align: center; font-size: 0.9em; letter-spacing: 0.5px; }
+.tab-navigation a.active { color: #000; }
+.tab-navigation a.active::after { content: ''; position: absolute; bottom: 0; left: 20%; width: 60%; height: 3px; background-color: #000; border-radius: 2px; }
 
-    .task-heading { font-size: 1.5em; font-weight: bold; margin: 20px 20px 15px; color: #333; }
-    .task-grid { display: grid; gap: 15px; padding: 0 20px; grid-template-columns: repeat(2, 1fr); margin: 0 auto; }
-    .task-item { display: flex; flex-direction: column; justify-content: flex-end; align-items: flex-start; height: 140px; padding: 10px; padding-top: 60px; border-radius: 40px 40px 10px 10px; font-weight: 600; font-size: 14px; position: relative; overflow: hidden; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05); cursor: pointer; }
-    .task-icon-area { position: absolute; top: 0; left: 0; right: 0; height: 80px; display: flex; justify-content: center; align-items: flex-start; }
-    .task-name { font-size: 1.1em; line-height: 1.2; padding-left: 5px; padding-bottom: 5px; font-weight: 700; }
-    
-    .task-daily-check { background: linear-gradient(to bottom, #d2eafb, #f0f8ff); } .task-daily-check .task-icon-area::before { content: '⭐'; font-size: 30px; position: absolute; top: 25px; }
-    .task-scratch-card { background: linear-gradient(to bottom, #ffe8b5, #fff8e1); } .task-scratch-card .task-icon-area::before { content: '💳'; font-size: 30px; position: absolute; top: 25px; }
-    .task-captcha { background: linear-gradient(to bottom, #e4d7ff, #f3e5f5); } .task-captcha .task-icon-area::before { content: '🔄'; font-size: 30px; position: absolute; top: 25px; }
-    .task-spin-wheel { background: linear-gradient(to bottom, #ffdae9, #ffebee); } .task-spin-wheel .task-icon-area::before { content: '🎡'; font-size: 30px; position: absolute; top: 25px; }
-    .task-magic-box { background: linear-gradient(to bottom, #ffd9c0, #fff8e1); } .task-magic-box .task-icon-area::before { content: '🎁'; font-size: 30px; position: absolute; top: 25px; }
-    .task-silver-box { background: linear-gradient(to bottom, #c9ffcf, #e8f5e9); } .task-silver-box .task-icon-area::before { content: '🥈'; font-size: 30px; position: absolute; top: 25px; }
-    .task-gold-box { background: linear-gradient(to bottom, #e6e0d0, #f5f5f5); } .task-gold-box .task-icon-area::before { content: '🥇'; font-size: 30px; position: absolute; top: 25px; }
-    .task-bronze-box { background: linear-gradient(to bottom, #d1c4e9, #f3e5f5); } .task-bronze-box .task-icon-area::before { content: '🥉'; font-size: 30px; position: absolute; top: 25px; }
-    .task-bonus { background: linear-gradient(to bottom, #ffe9b5, #fffde7); } .task-bonus .task-icon-area::before { content: '💰'; font-size: 30px; position: absolute; top: 25px; }
-    .task-survey { background: linear-gradient(to bottom, #b3e5fc, #e1f5fe); } .task-survey .task-icon-area::before { content: '📺'; font-size: 30px; position: absolute; top: 25px; }
-    
-    /* Ad Placeholder Style */
-    .ad-placeholder { background-color: #f44336; color: white; margin: 0 20px 20px 20px; padding: 10px; border-radius: 5px; font-size: 0.8em; display: flex; justify-content: space-between; align-items: center; max-width: 500px; margin-left: auto; margin-right: auto; }
+/* -------------------------------------- */
+/* 3. FIXED MOBILE FOOTER NAVIGATION      */
+/* -------------------------------------- */
+.mobile-footer {
+  position: fixed; bottom: 0; left: 0; width: 100%; height: 60px;
+  background-color: #fff; box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+  display: flex; justify-content: space-around; align-items: center; z-index: 200;
+}
+.mobile-footer a { display: flex; flex-direction: column; align-items: center; font-size: 0.75em; color: #777; padding: 5px; flex: 1; }
+.mobile-footer a.active { color: #000; }
+.mobile-footer a i { font-size: 1.5em; margin-bottom: 3px; }
 
-    /* -------------------------------------- */
-    /* 5. REWARDS CONTENT (Refer & Earn)      */
-    /* -------------------------------------- */
-    #rewards-content { padding: 0 0 20px 0; } 
-    #invite-tab-content { padding: 20px; }
-    .referral-card { background-color: #1e2a38; color: white; border-radius: 20px; padding: 20px; text-align: center; box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); }
-    .illustration-placeholder { height: 120px; background: url('https://i.ibb.co/4RzTfVh4/IMG-20251110-WA0008.jpg') no-repeat center center; background-size: cover; border-radius: 15px 15px 0 0; margin: -20px -20px 0; }
-    .referral-card h3 { font-size: 1.1em; margin-top: 10px; margin-bottom: 5px; }
-    .referral-card .bonus { font-size: 1.8em; font-weight: 900; color: #ffc107; margin-bottom: 20px; }
-    .referral-link-box { border: 2px dashed rgba(255, 255, 255, 0.5); border-radius: 10px; padding: 15px 10px; margin-bottom: 25px; font-size: 0.9em; word-break: break-all; position: relative; }
-    .referral-link-box .social-icons { position: absolute; top: 10px; right: 10px; width: 30px; height: 30px; background-color: rgba(255, 255, 255, 0.2); border-radius: 5px; }
-    .invite-button { display: block; width: 80%; margin: 0 auto; padding: 12px; background-color: white; color: #1e2a38; font-weight: bold; border-radius: 8px; cursor: pointer; }
-    .how-to-get { padding: 20px 0; }
-    .how-to-get h2 { font-size: 1.4em; margin-bottom: 20px; }
-    .rule-item { display: flex; align-items: flex-start; margin-bottom: 25px; }
-    .rule-item .icon-container { width: 60px; height: 60px; border-radius: 50%; background-color: #e0f7fa; display: flex; justify-content: center; align-items: center; margin-right: 15px; flex-shrink: 0; }
-    .rule-item .text-content { font-size: 0.95em; }
-    .rule-item .text-content strong { display: block; font-size: 1.1em; margin-bottom: 5px; }
+/* -------------------------------------- */
+/* 4. HOME CONTENT (Daily Task & Carousel)*/
+/* -------------------------------------- */
+#home-content { padding-top: 0; }
+.carousel-wrapper { width: 100%; height: 220px; overflow: hidden; position: relative; }
+.carousel-track { display: flex; width: 1000%; height: 100%; animation: slide-show 50s infinite; }
+.carousel-slide {
+  width: 10%; height: 100%; flex-shrink: 0; display: block; 
+  background-image: url('https://i.ibb.co/4RzTfVh4/IMG-20251110-WA0008.jpg'); 
+  background-size: cover; background-position: center; background-repeat: no-repeat;
+  position: relative;
+}
+/* Specific Banner Images */
+.carousel-slide.slide-1 { background-image: url('https://i.ibb.co/tpF2LTyB/FB-IMG-1763006054777.jpg'); }
+.carousel-slide.slide-2 { background-image: url('https://i.ibb.co/hFdpRnXR/FB-IMG-1763006052781.jpg'); }
+.carousel-slide.slide-3 { background-image: url('https://i.ibb.co/bj9cnS2m/FB-IMG-1763006049127.jpg'); }
+.carousel-slide.slide-4 { background-image: url('https://i.ibb.co/jvgxx2gF/FB-IMG-1763006046346.jpg'); }
+.carousel-slide.slide-5 { background-image: url('https://i.ibb.co/Fkqz9FXT/FB-IMG-1763006044569.jpg'); }
+.carousel-slide.slide-6 { background-image: url('https://i.ibb.co/SwGJrVTV/FB-IMG-1763006042540.jpg'); }
 
-    /* REWARDS TAB styles */
-    #rewards-tab-content { padding: 20px; }
-    .rewards-stats-box { display: flex; justify-content: space-around; align-items: center; background-color: white; padding: 25px 0; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.05); margin-bottom: 15px; max-width: 500px; margin-left: auto; margin-right: auto; }
-    .rewards-stats-item { text-align: center; flex: 1; padding: 0 10px; }
-    .rewards-stats-item .count { font-size: 2em; font-weight: 900; color: #000; }
-    .rewards-stats-item .label { font-size: 0.9em; color: #555; font-weight: 600; }
-    .rewards-stats-separator { width: 1px; height: 50px; background-color: #ccc; }
-    .active-invite-note { font-size: 0.9em; color: #777; margin-bottom: 30px; padding: 0 20px; max-width: 500px; margin-left: auto; margin-right: auto; }
+.task-heading { font-size: 1.5em; font-weight: bold; margin: 20px 20px 15px; color: #333; }
+.task-grid { display: grid; gap: 15px; padding: 0 20px; grid-template-columns: repeat(2, 1fr); margin: 0 auto; }
+.task-item { display: flex; flex-direction: column; justify-content: flex-end; align-items: flex-start; height: 140px; padding: 10px; padding-top: 60px; border-radius: 40px 40px 10px 10px; font-weight: 600; font-size: 14px; position: relative; overflow: hidden; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05); cursor: pointer; }
+.task-icon-area { position: absolute; top: 0; left: 0; right: 0; height: 80px; display: flex; justify-content: center; align-items: flex-start; }
+.task-name { font-size: 1.1em; line-height: 1.2; padding-left: 5px; padding-bottom: 5px; font-weight: 700; }
 
-    /* Reward Timeline Styling */
-    .reward-timeline { padding-left: 20px; position: relative; max-width: 500px; margin: 0 auto; padding: 0 20px 0 35px; }
-    .reward-timeline::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background-color: #ddd; border-radius: 2px; }
-    .timeline-item { margin-bottom: 30px; padding-left: 30px; position: relative; }
-    .timeline-item-icon { position: absolute; left: -12px; top: 5px; width: 28px; height: 28px; background-color: white; border: 4px solid #ddd; border-radius: 50%; z-index: 2; display: flex; justify-content: center; align-items: center; }
-    .timeline-item.unlocked .timeline-item-icon { border-color: #4CAF50; color: #4CAF50; }
-    .timeline-item.locked .timeline-item-icon i { color: #f44336; }
-    .timeline-title { font-weight: bold; margin-bottom: 15px; color: #333; }
-    .timeline-card { background-color: white; border-radius: 10px; padding: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); display: flex; align-items: center; width: 100%; }
-    .card-coins { background: linear-gradient(135deg, #4d8aff, #2a6bf2); color: white; }
-    .card-bluetooth { background: linear-gradient(135deg, #7ad399, #4CAF50); color: white; }
-    .card-coins .reward-icon, .card-bluetooth .reward-icon { font-size: 2em; margin-right: 15px; }
-    .card-text strong { font-size: 1.1em; display: block; font-weight: bold; }
-    .card-text span { font-size: 0.9em; }
-    
-    /* LEADERBOARD TAB (Custom Styles) */
-    #leaderboard-tab-content { padding: 0; }
-    .leaderboard-banner-custom { background-color: #1a237e; border-radius: 10px; margin: 0 auto; padding: 0; height: 250px; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; overflow: hidden; position: relative; max-width: 500px; }
-    .leaderboard-banner-custom::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 100%; background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 250" preserveAspectRatio="none"><defs><linearGradient id="g1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="%23673ab7"/><stop offset="100%" stop-color="%231a237e"/></linearGradient></defs><rect x="0" y="0" width="400" height="250" fill="url(%23g1)"/><path d="M 0 100 Q 200 -50, 400 100 L 400 250 L 0 250 Z" fill="%23101757"/><g transform="translate(200, 70)"><rect x="-50" y="15" width="100" height="40" fill="%23e53935" rx="5"/><rect x="-105" y="30" width="50" height="25" fill="%23c0ca33" rx="5"/><rect x="55" y="40" width="50" height="15" fill="%2342a5f5" rx="5"/><text x="0" y="45" font-size="18" font-weight="bold" fill="white" text-anchor="middle">1</text><text x="-80" y="45" font-size="18" font-weight="bold" fill="white" text-anchor="middle">2</text><text x="80" y="45" font-size="18" font-weight="bold" fill="white" text-anchor="middle">3</text><text x="0" y="-10" font-size="40" font-weight="bold" fill="%23ffc107" text-anchor="middle">🏆</text></g></svg>');
-        background-repeat: no-repeat; background-size: cover;
-    }
-    .leaderboard-banner-custom .podium-text-overlay { position: relative; z-index: 10; padding: 15px 0; width: 100%; text-align: center; background-color: rgba(26, 35, 126, 0.7); }
-    .leaderboard-banner-custom h2 { color: white; font-size: 1.4em; font-weight: 700; margin: 0; }
+.task-daily-check { background: linear-gradient(to bottom, #d2eafb, #f0f8ff); } .task-daily-check .task-icon-area::before { content: '⭐'; font-size: 30px; position: absolute; top: 25px; }
+.task-scratch-card { background: linear-gradient(to bottom, #ffe8b5, #fff8e1); } .task-scratch-card .task-icon-area::before { content: '💳'; font-size: 30px; position: absolute; top: 25px; }
+.task-captcha { background: linear-gradient(to bottom, #e4d7ff, #f3e5f5); } .task-captcha .task-icon-area::before { content: '🔄'; font-size: 30px; position: absolute; top: 25px; }
+.task-spin-wheel { background: linear-gradient(to bottom, #ffdae9, #ffebee); } .task-spin-wheel .task-icon-area::before { content: '🎡'; font-size: 30px; position: absolute; top: 25px; }
+.task-magic-box { background: linear-gradient(to bottom, #ffd9c0, #fff8e1); } .task-magic-box .task-icon-area::before { content: '🎁'; font-size: 30px; position: absolute; top: 25px; }
+.task-silver-box { background: linear-gradient(to bottom, #c9ffcf, #e8f5e9); } .task-silver-box .task-icon-area::before { content: '🥈'; font-size: 30px; position: absolute; top: 25px; }
+.task-gold-box { background: linear-gradient(to bottom, #e6e0d0, #f5f5f5); } .task-gold-box .task-icon-area::before { content: '🥇'; font-size: 30px; position: absolute; top: 25px; }
+.task-bronze-box { background: linear-gradient(to bottom, #d1c4e9, #f3e5f5); } .task-bronze-box .task-icon-area::before { content: '🥉'; font-size: 30px; position: absolute; top: 25px; }
+.task-bonus { background: linear-gradient(to bottom, #ffe9b5, #fffde7); } .task-bonus .task-icon-area::before { content: '💰'; font-size: 30px; position: absolute; top: 25px; }
+.task-survey { background: linear-gradient(to bottom, #b3e5fc, #e1f5fe); } .task-survey .task-icon-area::before { content: '📺'; font-size: 30px; position: absolute; top: 25px; }
 
-    .leaderboard-table-custom { width: 90%; max-width: 500px; border-collapse: collapse; background-color: white; border-radius: 10px; overflow: hidden; margin: 20px auto 20px auto; box-shadow: 0 4px 8px rgba(0,0,0,0.05); }
-    .leaderboard-table-custom th, .leaderboard-table-custom td { padding: 15px 15px; text-align: left; border-bottom: 1px solid #eee; }
-    .leaderboard-table-custom th { background-color: #f8f8f8; color: #555; font-size: 0.9em; font-weight: 600; }
-    .leaderboard-table-custom .rank-cell { width: 15%; font-weight: 600; }
-    .leaderboard-table-custom .user-cell { width: 55%; }
-    .leaderboard-table-custom .coins-cell { width: 30%; display: flex; align-items: center; justify-content: flex-end; font-weight: bold; color: #333; font-size: 0.95em; }
-    .leaderboard-table-custom .coin-icon { color: #ffc107; margin-left: 5px; font-size: 1em; }
-    
-    /* -------------------------------------- */
-    /* 6. WALLET CONTENT STYLES               */
-    /* -------------------------------------- */
-    #wallet-content { padding: 20px 20px 80px 20px; }
-    
-    /* WALLET BALANCE CARD STYLES */
-    .wallet-balance-card {
-        background: linear-gradient(135deg, #1e88e5, #0d47a1); color: white; padding: 25px; margin: 0 auto 30px; border-radius: 15px; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); max-width: 500px; position: relative; overflow: hidden;
-    }
-    .wallet-balance-card::before { content: '\f51e'; font-family: 'Font Awesome 5 Free'; font-weight: 900; position: absolute; top: -10px; right: -10px; font-size: 80px; color: rgba(255, 255, 255, 0.1); }
-    .wallet-balance-card .balance-amount { font-size: 2.8em; font-weight: 900; display: flex; align-items: center; }
-    .wallet-balance-card .balance-amount i { font-size: 0.8em; margin-right: 10px; color: #ffc107; }
-    .withdrawal-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 30px; max-width: 500px; margin-left: auto; margin-right: auto; }
-    .withdrawal-item { padding-bottom: 45px; background-color: white; border-radius: 15px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05); overflow: hidden; text-align: center; padding: 10px 10px 0 10px; position: relative; cursor: pointer; min-height: 190px; }
-    .withdrawal-item.locked-item { opacity: 0.5; cursor: default; pointer-events: none; }
-    .withdrawal-image { height: 100px; width: 100%; margin-bottom: 10px; background-size: contain; background-position: center; background-repeat: no-repeat; }
-    
-    /* Specific Image Placeholders (Logo URLs) */
-    .upi-logo { background-image: url('https://i.ibb.co/N60yHzCh/images.png'); height: 80px; margin-top: 15px; }
-    .bank-logo { background-image: url('https://i.ibb.co/bM7zSR2G/download-38.png'); }
-    .paypal-logo { background-image: url('https://i.ibb.co/8n7SMNXv/download-39.png'); }
-    .binance-logo { background-image: url('https://i.ibb.co/Zp3SzD29/download-37.png'); }
-    .googleplay-logo { background-image: url('https://i.ibb.co/BF6wRhZ/google-pay-logo-png-seeklogo-324563.png'); }
-    .amazon-logo { background-image: url('https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg'); }
-    .easypaisa-logo { background-image: url('https://i.ibb.co/tPz8VcqP/download-36.png'); }
+/* --- STYLES FOR LOCKED & BOUNCING TASK --- */
+.task-item.locked-task {
+    position: relative;
+    pointer-events: none; /* Prevent clicks */
+    opacity: 0.7; /* Make it slightly dimmer */
+    /* Apply Bounce Animation */
+    animation: extra-bounce 2s infinite ease-in-out; 
+}
+.task-item.locked-task .lock-overlay-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 3em;
+    color: #f44336; /* Red lock */
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    z-index: 10;
+    opacity: 0.9;
+}
+/* ---------------------------------------------------- */
 
-    .withdrawal-item .coin-band { background-color: #f0f0f0; padding: 10px 0; width: 100%; margin-top: 10px; position: absolute; bottom: 0; left: 0; }
-    .withdrawal-item .coin-band span { font-weight: bold; color: #333; display: flex; align-items: center; justify-content: center; }
-    .withdrawal-item .coin-band i { color: #ffc107; margin-right: 5px; }
 
-    /* -------------------------------------- */
-    /* 7. MORE CONTENT (Settings Menu)        */
-    /* -------------------------------------- */
-    #more-content { padding: 20px 20px 80px 20px; }
-    
-    /* PROFILE CARD IN MORE SECTION */
-    .user-profile-card {
-        background-color: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05); margin: 0 auto 25px; display: flex; align-items: center; max-width: 500px; cursor: pointer;
-    }
-    .profile-avatar { width: 60px; height: 60px; background-color: #bbdefb; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 2em; color: #1e88e5; margin-right: 15px; flex-shrink: 0; }
-    .profile-info h3 { margin: 0; font-size: 1.3em; font-weight: 700; color: #333; }
-    .profile-info p { margin: 3px 0 0; font-size: 0.9em; color: #555; }
-    
-    .menu-list { background-color: white; margin: 0 auto 30px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); max-width: 500px; }
-    .menu-item { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; border-bottom: 1px solid #eee; color: #333; font-size: 1.1em; cursor: pointer; }
-    .menu-item:last-child { border-bottom: none; }
-    .menu-item i { color: #777; }
-    .menu-item .icon-left { margin-right: 15px; color: #1e88e5; width: 25px; text-align: center; }
+/* Ad Placeholder Style */
+.ad-placeholder { background-color: #f44336; color: white; margin: 0 20px 20px 20px; padding: 10px; border-radius: 5px; font-size: 0.8em; display: flex; justify-content: space-between; align-items: center; max-width: 500px; margin-left: auto; margin-right: auto; }
 
-    /* Social Community Styles */
-    .social-proof { text-align: center; padding: 0 20px; max-width: 500px; margin: 0 auto; }
-    .social-proof p { font-size: 0.95em; color: #555; margin-bottom: 20px; }
-    .social-icons-group a { display: inline-block; margin: 0 8px; width: 50px; height: 50px; border-radius: 50%; line-height: 50px; color: white; font-size: 1.5em; text-align: center; transition: transform 0.2s; }
-    .social-icons-group .instagram { background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%); }
-    .social-icons-group .facebook { background-color: #3b5998; }
-    .social-icons-group .youtube { background-color: #ff0000; }
-    .social-icons-group .telegram { background-color: #0088cc; }
+/* -------------------------------------- */
+/* 5. REWARDS CONTENT (Refer & Earn)      */
+/* -------------------------------------- */
+#rewards-content { padding: 0 0 20px 0; } 
+#invite-tab-content { padding: 20px; }
+.referral-card { background-color: #1e2a38; color: white; border-radius: 20px; padding: 20px; text-align: center; box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); }
+.illustration-placeholder { height: 120px; background: url('https://i.ibb.co/4RzTfVh4/IMG-20251110-WA0008.jpg') no-repeat center center; background-size: cover; border-radius: 15px 15px 0 0; margin: -20px -20px 0; }
+.referral-card h3 { font-size: 1.1em; margin-top: 10px; margin-bottom: 5px; }
+.referral-card .bonus { font-size: 1.8em; font-weight: 900; color: #ffc107; margin-bottom: 20px; }
+.referral-link-box { border: 2px dashed rgba(255, 255, 255, 0.5); border-radius: 10px; padding: 15px 10px; margin-bottom: 25px; font-size: 0.9em; word-break: break-all; position: relative; }
+.referral-link-box .social-icons { position: absolute; top: 10px; right: 10px; width: 30px; height: 30px; background-color: rgba(255, 255, 255, 0.2); border-radius: 5px; }
+.invite-button { display: block; width: 80%; margin: 0 auto; padding: 12px; background-color: white; color: #1e2a38; font-weight: bold; border-radius: 8px; cursor: pointer; }
+.how-to-get { padding: 20px 0; }
+.how-to-get h2 { font-size: 1.4em; margin-bottom: 20px; }
+.rule-item { display: flex; align-items: flex-start; margin-bottom: 25px; }
+.rule-item .icon-container { width: 60px; height: 60px; border-radius: 50%; background-color: #e0f7fa; display: flex; justify-content: center; align-items: center; margin-right: 15px; flex-shrink: 0; }
+.rule-item .text-content { font-size: 0.95em; }
+.rule-item .text-content strong { display: block; font-size: 1.1em; margin-bottom: 5px; }
 
-    /* -------------------------------------- */
-    /* 8. AUTH MODAL STYLES                   */
-    /* -------------------------------------- */
-    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.75); display: none; justify-content: center; align-items: center; z-index: 1000; padding: 20px; }
-    .auth-form-container { background-color: #ffffff; padding: 30px; border-radius: 15px; box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4); width: 90%; max-width: 350px; text-align: center; animation: fadeInScale 0.3s ease-out; }
-    .auth-form-container h2 { color: #1e88e5; margin-bottom: 25px; font-size: 1.8em; font-weight: 700; }
-    #auth-form input { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; font-size: 1em; transition: border-color 0.3s, box-shadow 0.3s; }
-    #auth-form input:focus { border-color: #1e88e5; outline: none; box-shadow: 0 0 5px rgba(30, 136, 229, 0.3); }
-    #auth-submit-btn { width: 100%; padding: 15px; background-color: #1e88e5; color: white; border: none; border-radius: 8px; font-size: 1.1em; font-weight: bold; cursor: pointer; transition: background-color 0.3s, transform 0.1s; margin-top: 10px; }
-    #auth-submit-btn:hover { background-color: #1565c0; }
-    #auth-submit-btn:disabled { background-color: #90caf9; cursor: not-allowed; }
-    .switch-auth-mode { margin-top: 20px; font-size: 0.9em; }
-    .switch-auth-mode a { color: #1e88e5; font-weight: bold; }
+/* REWARDS TAB styles */
+#rewards-tab-content { padding: 20px; }
+.rewards-stats-box { display: flex; justify-content: space-around; align-items: center; background-color: white; padding: 25px 0; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.05); margin-bottom: 15px; max-width: 500px; margin-left: auto; margin-right: auto; }
+.rewards-stats-item { text-align: center; flex: 1; padding: 0 10px; }
+.rewards-stats-item .count { font-size: 2em; font-weight: 900; color: #000; }
+.rewards-stats-item .label { font-size: 0.9em; color: #555; font-weight: 600; }
+.rewards-stats-separator { width: 1px; height: 50px; background-color: #ccc; }
+.active-invite-note { font-size: 0.9em; color: #777; margin-bottom: 30px; padding: 0 20px; max-width: 500px; margin-left: auto; margin-right: auto; }
 
-    /* -------------------------------------- */
-    /* 9. RESPONSIVE STYLES                   */
-    /* -------------------------------------- */
-    @media (min-width: 768px) {
-      .app-header-top { padding: 20px 30px; }
-      .app-header-top .title { font-size: 1.4em; }
-      .task-grid { grid-template-columns: repeat(3, 1fr); gap: 20px; max-width: 900px; }
-      .mobile-footer { display: none; } 
-      body { padding-bottom: 0; }
-    }
+/* Reward Timeline Styling */
+.reward-timeline { padding-left: 20px; position: relative; max-width: 500px; margin: 0 auto; padding: 0 20px 0 35px; }
+.reward-timeline::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background-color: #ddd; border-radius: 2px; }
+.timeline-item { margin-bottom: 30px; padding-left: 30px; position: relative; }
+.timeline-item-icon { position: absolute; left: -12px; top: 5px; width: 28px; height: 28px; background-color: white; border: 4px solid #ddd; border-radius: 50%; z-index: 2; display: flex; justify-content: center; align-items: center; }
+.timeline-item.unlocked .timeline-item-icon { border-color: #4CAF50; color: #4CAF50; }
+.timeline-item.locked .timeline-item-icon i { color: #f44336; }
+.timeline-title { font-weight: bold; margin-bottom: 15px; color: #333; }
+.timeline-card { background-color: white; border-radius: 10px; padding: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); display: flex; align-items: center; width: 100%; }
+.card-coins { background: linear-gradient(135deg, #4d8aff, #2a6bf2); color: white; }
+.card-bluetooth { background: linear-gradient(135deg, #7ad399, #4CAF50); color: white; }
+.card-coins .reward-icon, .card-bluetooth .reward-icon { font-size: 2em; margin-right: 15px; }
+.card-text strong { font-size: 1.1em; display: block; font-weight: bold; }
+.card-text span { font-size: 0.9em; }
+
+/* LEADERBOARD TAB (Custom Styles) */
+#leaderboard-tab-content { padding: 0; }
+.leaderboard-banner-custom { background-color: #1a237e; border-radius: 10px; margin: 0 auto; padding: 0; height: 250px; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; overflow: hidden; position: relative; max-width: 500px; }
+.leaderboard-banner-custom::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 100%; background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 250" preserveAspectRatio="none"><defs><linearGradient id="g1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="%23673ab7"/><stop offset="100%" stop-color="%231a237e"/></linearGradient></defs><rect x="0" y="0" width="400" height="250" fill="url(%23g1)"/><path d="M 0 100 Q 200 -50, 400 100 L 400 250 L 0 250 Z" fill="%23101757"/><g transform="translate(200, 70)"><rect x="-50" y="15" width="100" height="40" fill="%23e53935" rx="5"/><rect x="-105" y="30" width="50" height="25" fill="%23c0ca33" rx="5"/><rect x="55" y="40" width="50" height="15" fill="%2342a5f5" rx="5"/><text x="0" y="45" font-size="18" font-weight="bold" fill="white" text-anchor="middle">1</text><text x="-80" y="45" font-size="18" font-weight="bold" fill="white" text-anchor="middle">2</text><text x="80" y="45" font-size="18" font-weight="bold" fill="white" text-anchor="middle">3</text><text x="0" y="-10" font-size="40" font-weight="bold" fill="%23ffc107" text-anchor="middle">🏆</text></g></svg>');
+    background-repeat: no-repeat; background-size: cover;
+}
+.leaderboard-banner-custom .podium-text-overlay { position: relative; z-index: 10; padding: 15px 0; width: 100%; text-align: center; background-color: rgba(26, 35, 126, 0.7); }
+.leaderboard-banner-custom h2 { color: white; font-size: 1.4em; font-weight: 700; margin: 0; }
+
+.leaderboard-table-custom { width: 90%; max-width: 500px; border-collapse: collapse; background-color: white; border-radius: 10px; overflow: hidden; margin: 20px auto 20px auto; box-shadow: 0 4px 8px rgba(0,0,0,0.05); }
+.leaderboard-table-custom th, .leaderboard-table-custom td { padding: 15px 15px; text-align: left; border-bottom: 1px solid #eee; }
+.leaderboard-table-custom th { background-color: #f8f8f8; color: #555; font-size: 0.9em; font-weight: 600; }
+.leaderboard-table-custom .rank-cell { width: 15%; font-weight: 600; }
+.leaderboard-table-custom .user-cell { width: 55%; }
+.leaderboard-table-custom .coins-cell { width: 30%; display: flex; align-items: center; justify-content: flex-end; font-weight: bold; color: #333; font-size: 0.95em; }
+.leaderboard-table-custom .coin-icon { color: #ffc107; margin-left: 5px; font-size: 1em; }
+
+/* -------------------------------------- */
+/* 6. WALLET CONTENT STYLES               */
+/* -------------------------------------- */
+#wallet-content { padding: 20px 20px 80px 20px; }
+
+/* WALLET BALANCE CARD STYLES */
+.wallet-balance-card {
+    background: linear-gradient(135deg, #1e88e5, #0d47a1); color: white; padding: 25px; margin: 0 auto 30px; border-radius: 15px; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); max-width: 500px; position: relative; overflow: hidden;
+}
+.wallet-balance-card::before { content: '\f51e'; font-family: 'Font Awesome 5 Free'; font-weight: 900; position: absolute; top: -10px; right: -10px; font-size: 80px; color: rgba(255, 255, 255, 0.1); }
+.wallet-balance-card .balance-amount { font-size: 2.8em; font-weight: 900; display: flex; align-items: center; }
+.wallet-balance-card .balance-amount i { font-size: 0.8em; margin-right: 10px; color: #ffc107; }
+.withdrawal-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 30px; max-width: 500px; margin-left: auto; margin-right: auto; }
+.withdrawal-item { padding-bottom: 45px; background-color: white; border-radius: 15px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05); overflow: hidden; text-align: center; padding: 10px 10px 0 10px; position: relative; cursor: pointer; min-height: 190px; }
+.withdrawal-item.locked-item { opacity: 0.5; cursor: default; pointer-events: none; }
+.withdrawal-image { height: 100px; width: 100%; margin-bottom: 10px; background-size: contain; background-position: center; background-repeat: no-repeat; }
+
+/* Specific Image Placeholders (Logo URLs) */
+.upi-logo { background-image: url('https://i.ibb.co/N60yHzCh/images.png'); height: 80px; margin-top: 15px; }
+.bank-logo { background-image: url('https://i.ibb.co/bM7zSR2G/download-38.png'); }
+.paypal-logo { background-image: url('https://i.ibb.co/8n7SMNXv/download-39.png'); }
+.binance-logo { background-image: url('https://i.ibb.co/Zp3SzD29/download-37.png'); }
+.googleplay-logo { background-image: url('https://i.ibb.co/BF6wRhZ/google-pay-logo-png-seeklogo-324563.png'); }
+.amazon-logo { background-image: url('https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg'); }
+.easypaisa-logo { background-image: url('https://i.ibb.co/tPz8VcqP/download-36.png'); }
+
+.withdrawal-item .coin-band { background-color: #f0f0f0; padding: 10px 0; width: 100%; margin-top: 10px; position: absolute; bottom: 0; left: 0; }
+.withdrawal-item .coin-band span { font-weight: bold; color: #333; display: flex; align-items: center; justify-content: center; }
+.withdrawal-item .coin-band i { color: #ffc107; margin-right: 5px; }
+
+/* -------------------------------------- */
+/* 7. MORE CONTENT (Settings Menu)        */
+/* -------------------------------------- */
+#more-content { padding: 20px 20px 80px 20px; }
+
+/* PROFILE CARD IN MORE SECTION */
+.user-profile-card {
+    background-color: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05); margin: 0 auto 25px; display: flex; align-items: center; max-width: 500px; cursor: pointer;
+}
+.profile-avatar { width: 60px; height: 60px; background-color: #bbdefb; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 2em; color: #1e88e5; margin-right: 15px; flex-shrink: 0; }
+.profile-info h3 { margin: 0; font-size: 1.3em; font-weight: 700; color: #333; }
+.profile-info p { margin: 3px 0 0; font-size: 0.9em; color: #555; }
+
+.menu-list { background-color: white; margin: 0 auto 30px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); max-width: 500px; }
+.menu-item { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; border-bottom: 1px solid #eee; color: #333; font-size: 1.1em; cursor: pointer; }
+.menu-item:last-child { border-bottom: none; }
+.menu-item i { color: #777; }
+.menu-item .icon-left { margin-right: 15px; color: #1e88e5; width: 25px; text-align: center; }
+
+/* Social Community Styles */
+.social-proof { text-align: center; padding: 0 20px; max-width: 500px; margin: 0 auto; }
+.social-proof p { font-size: 0.95em; color: #555; margin-bottom: 20px; }
+.social-icons-group a { display: inline-block; margin: 0 8px; width: 50px; height: 50px; border-radius: 50%; line-height: 50px; color: white; font-size: 1.5em; text-align: center; transition: transform 0.2s; }
+.social-icons-group .instagram { background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%); }
+.social-icons-group .facebook { background-color: #3b5998; }
+.social-icons-group .youtube { background-color: #ff0000; }
+.social-icons-group .telegram { background-color: #0088cc; }
+
+/* -------------------------------------- */
+/* 8. AUTH MODAL STYLES                   */
+/* -------------------------------------- */
+.modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.75); display: none; justify-content: center; align-items: center; z-index: 1000; padding: 20px; }
+.auth-form-container { background-color: #ffffff; padding: 30px; border-radius: 15px; box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4); width: 90%; max-width: 350px; text-align: center; animation: fadeInScale 0.3s ease-out; }
+.auth-form-container h2 { color: #1e88e5; margin-bottom: 25px; font-size: 1.8em; font-weight: 700; }
+#auth-form input { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; font-size: 1em; transition: border-color 0.3s, box-shadow 0.3s; }
+#auth-form input:focus { border-color: #1e88e5; outline: none; box-shadow: 0 0 5px rgba(30, 136, 229, 0.3); }
+#auth-submit-btn { width: 100%; padding: 15px; background-color: #1e88e5; color: white; border: none; border-radius: 8px; font-size: 1.1em; font-weight: bold; cursor: pointer; transition: background-color 0.3s, transform 0.1s; margin-top: 10px; }
+#auth-submit-btn:hover { background-color: #1565c0; }
+#auth-submit-btn:disabled { background-color: #90caf9; cursor: not-allowed; }
+.switch-auth-mode { margin-top: 20px; font-size: 0.9em; }
+.switch-auth-mode a { color: #1e88e5; font-weight: bold; }
+
+/* -------------------------------------- */
+/* 9. RESPONSIVE STYLES                   */
+/* -------------------------------------- */
+@media (min-width: 768px) {
+  .app-header-top { padding: 20px 30px; }
+  .app-header-top .title { font-size: 1.4em; }
+  .task-grid { grid-template-columns: repeat(3, 1fr); gap: 20px; max-width: 900px; }
+  .mobile-footer { display: none; } 
+  body { padding-bottom: 0; }
+}
