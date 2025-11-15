@@ -1,26 +1,11 @@
-// --- FIREBASE CONFIGURATION AND INITIALIZATION ---
-// NOTE: Make sure the Firebase SDKs are loaded in index.html HEAD before this script runs.
-const firebaseConfig = {
-    apiKey: "AIzaSyDNYv9SNUjMAHlaPzfovyYefoBNDgx4Gd4",
-    authDomain: "traffic-exchange-62a58.firebaseapp.com",
-    projectId: "traffic-exchange-62a58",
-    storageBucket: "traffic-exchange-62a58.appspot.com",
-    messagingSenderId: "474999317287",
-    appId: "1:474999317287:web:8e28a2f5f1a959d8ce3f02",
-    measurementId: "G-HJQ46RQNZS"
-};
-
-firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
-const db = firebase.firestore();
-
-// --- CONSTANTS ---
-const TRANSFER_AMOUNTS = [100, 1200, 2400, 3600, 4800, 5800, 7800, 15000, 25000, 35000];
-
 // --- GLOBAL STATE ---
+// auth aur db objects ab firebase_config.js se aayenge
 let currentUser = null;
 let currentCoinBalance = 0;
 let recipientUserId = null;
+
+// --- CONSTANTS ---
+const TRANSFER_AMOUNTS = [100, 1200, 2400, 3600, 4800, 5800, 7800, 15000, 25000, 35000];
 
 // --- DOM ELEMENTS ---
 const currentBalanceDisplay = document.getElementById('currentBalanceDisplay');
@@ -35,7 +20,6 @@ const sendButton = document.getElementById('sendButton');
 const profileIconButton = document.getElementById('profileIconButton');
 const authModal = document.getElementById('authModal');
 const authTitle = document.getElementById('authTitle');
-const authButton = document.getElementById('authButton');
 const logoutButton = document.getElementById('logoutButton');
 const transferHistoryList = document.getElementById('transferHistoryList');
 const coinButtonsContainer = document.getElementById('coinButtonsContainer');
@@ -62,7 +46,7 @@ renderCoinButtons();
 // --- AUTH MODAL LOGIC ---
 function toggleAuthMode() {
     authTitle.textContent = "Login Karen";
-    authButton.textContent = "Login";
+    document.getElementById('authButton').textContent = "Login";
     document.getElementById('authForm').reset();
 }
 
@@ -114,12 +98,10 @@ function listenToWallet(uid) {
 auth.onAuthStateChanged(user => {
     currentUser = user;
     if (user) {
-        // Logged In: Show Transfer Section
         guideArticle.style.display = 'none';
         transferSection.style.display = 'block';
         currentBalanceDisplay.style.display = 'block';
         
-        // Hide login button in modal
         document.getElementById('authForm').style.display = 'none';
         document.getElementById('toggleText').style.display = 'none';
         logoutButton.style.display = 'block';
@@ -127,20 +109,18 @@ auth.onAuthStateChanged(user => {
         listenToWallet(user.uid);
         listenToTransferHistory(user.uid, user.email);
     } else {
-        // Logged Out: Show Guide Article
         guideArticle.style.display = 'block';
         transferSection.style.display = 'none';
         currentBalanceDisplay.style.display = 'none';
         currentCoinBalance = 0;
 
-        // Show login button in modal
         document.getElementById('authForm').style.display = 'block';
         document.getElementById('toggleText').style.display = 'block';
         logoutButton.style.display = 'none';
     }
 });
 
-// --- RECIPIENT VALIDATION (Real-time check on email input) ---
+// --- RECIPIENT VALIDATION ---
 let emailCheckTimeout;
 
 recipientEmailInput.addEventListener('input', () => {
@@ -177,7 +157,6 @@ async function validateRecipient(email) {
             const recipientData = recipientDoc.data();
             
             recipientUserId = recipientDoc.id;
-            // Assuming user doc might have a 'name' field, otherwise show email
             const name = recipientData.name ? recipientData.name : recipientData.email; 
             recipientNameDisplay.textContent = name;
             recipientInfoDiv.style.display = 'block';
@@ -223,7 +202,6 @@ function checkFormValidity() {
 }
 
 // --- TRANSFER TRANSACTION LOGIC ---
-
 transferForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     
@@ -250,7 +228,6 @@ transferForm.addEventListener('submit', async (e) => {
         await db.runTransaction(async (transaction) => {
             const senderDoc = await transaction.get(senderRef);
             
-            // Check sender existence and balance again (crucial for security)
             if (!senderDoc.exists) {
                 throw new Error("Sender ka account nahi mila.");
             }
@@ -264,7 +241,7 @@ transferForm.addEventListener('submit', async (e) => {
                 coins: firebase.firestore.FieldValue.increment(-amount)
             });
 
-            // 2. Add to Receiver (Receiver existence is already confirmed by recipientUserId)
+            // 2. Add to Receiver
             transaction.update(receiverRef, {
                 coins: firebase.firestore.FieldValue.increment(amount)
             });
@@ -345,7 +322,7 @@ function renderTransferHistory(combinedHistory, userEmail) {
 
 
 function listenToTransferHistory(uid, email) {
-    // Note: These listeners require specific Firestore Composite Indexes to work correctly.
+    // Requires Composite Indexes in Firestore for 'timestamp desc' sorting
     
     const sentQuery = db.collection('transfers')
         .where('senderId', '==', uid)
@@ -362,7 +339,6 @@ function listenToTransferHistory(uid, email) {
     let loadedCount = 0;
 
     const processHistory = () => {
-        // Combine and sort all transactions
         const combinedHistory = [...sentTransfers, ...receivedTransfers].sort((a, b) => {
             const timeA = a.timestamp ? a.timestamp.toMillis() : 0;
             const timeB = b.timestamp ? b.timestamp.toMillis() : 0;
@@ -378,7 +354,6 @@ function listenToTransferHistory(uid, email) {
         }
     };
 
-    // Listener for Sent Transfers
     sentQuery.onSnapshot(snapshot => {
         sentTransfers = snapshot.docs.map(doc => doc.data());
         updateHistory();
@@ -387,7 +362,6 @@ function listenToTransferHistory(uid, email) {
         updateHistory(); 
     });
 
-    // Listener for Received Transfers
     receivedQuery.onSnapshot(snapshot => {
         receivedTransfers = snapshot.docs.map(doc => doc.data());
         updateHistory();
