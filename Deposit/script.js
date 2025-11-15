@@ -18,7 +18,7 @@ const db = firebase.firestore();
 let isSignupMode = false;
 let currentUser = null;
 const COIN_RATE_PKR = 6; // 6 PKR = 1 Coin
-const COIN_PACKAGES = [100, 200, 300, 500, 1000, 2000, 5000]; 
+const COIN_PACKAGES = [10,20,30 ,100, 200, 300, 500, 1000, 2000, 5000,10000,15000,20000,25000, 30000]; 
 
 // --- DOM ELEMENTS ---
 const authModal = document.getElementById('authModal');
