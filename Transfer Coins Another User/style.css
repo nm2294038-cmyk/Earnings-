@@ -204,60 +204,28 @@ header h1 {
 .auth-toggle a { font-weight: bold; color: var(--primary-color); cursor: pointer; }
 
 /* ========================================= */
-/* --- TABLET/MOBILE STYLES --- */
+/* --- RESPONSIVE STYLES --- */
 /* ========================================= */
 @media (max-width: 768px) {
-    .container {
-        margin: 20px auto;
-        padding: 20px;
-    }
-    header h1 {
-        font-size: 1.4em;
-    }
-    .coin-buttons button {
-        padding: 8px 10px;
-        font-size: 0.9em;
-    }
+    .container { margin: 20px auto; padding: 20px; }
+    header h1 { font-size: 1.4em; }
+    .coin-buttons button { padding: 8px 10px; font-size: 0.9em; }
 }
 
 @media (max-width: 480px) {
-    header {
-        padding: 10px 15px;
-    }
-    header h1 {
-        font-size: 1.2em;
-    }
-    
-    #currentBalanceDisplay {
-        font-size: 0.9em;
-        padding: 6px 10px;
-    }
-
-    .container {
-        padding: 15px;
-    }
-    
-    /* Coin Buttons (3 columns) */
-    .coin-buttons {
-        gap: 5px;
-        justify-content: space-between;
-    }
+    header { padding: 10px 15px; }
+    header h1 { font-size: 1.2em; }
+    #currentBalanceDisplay { font-size: 0.9em; padding: 6px 10px; }
+    .container { padding: 15px; }
+    .coin-buttons { gap: 5px; justify-content: space-between; }
     .coin-buttons button {
-        width: 30%; /* Approx 3 columns */
+        width: 30%;
         flex-grow: 0;
         padding: 6px 4px;
         font-size: 0.75em;
         min-width: 0;
     }
-
-    .history-table th, .history-table td {
-        padding: 6px;
-        font-size: 0.8em;
-    }
-    
-    /* Hide unnecessary columns on small screens */
+    .history-table th, .history-table td { padding: 6px; font-size: 0.8em; }
     .history-table th:nth-child(4),
-    .history-table td:nth-child(4) {
-        display: none; /* Hide Date column for space */
-    }
+    .history-table td:nth-child(4) { display: none; }
 }
