@@ -3,381 +3,248 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Dashboard & Auth</title>
+    <title>User Dashboard & Wallet</title>
     
     <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
- <!-- External Style Sheet Link -->
-    <link rel="stylesheet" href="style.css">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
-
-        <title>My profile </title>
-    </head> 
+    <!-- Custom CSS Link (Assuming style.css exists) -->
+    <link rel="stylesheet" href="style.css"> 
+</head>
 <body>
-  <!-- NEW BISMILLAH HEADER -->
-  <div class="bismillah-header">
-    بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ
-  </div>
-   <header id="appHeader" style="display: none;">
-        <h2 id="headerTitle">Dashboard</h2>
-        <button id="logoutButton">Logout</button>
-    </header>
+
+<header id="appHeader" style="display: none;">
+    <h2 id="headerTitle">Dashboard</h2>
+    <button id="logoutButton">Logout</button>
+</header>
+
+<div class="main-content">
     
-    <div class="main-content">
+    <!-- 1. AUTH SECTION -->
+    <div id="authContainer">
+        <h2 id="authTitle">Login Karen</h2>
         
-        <!-- 1. AUTH SECTION -->
-        <div id="authContainer">
-            <h2 id="authTitle">Login Karen</h2>
-            
-            <form class="auth-form" id="authForm">
-                <input type="text" id="authName" placeholder="Aapka Pura Naam" style="display: none;">
-                <input type="email" id="authEmail" placeholder="Email Address" required>
-                <input type="password" id="authPassword" placeholder="Password" required>
-                <button type="submit" id="authButton">Login</button>
-            </form>
-            
-            <div class="auth-toggle">
-                <p id="toggleText">Account nahi hai? <a onclick="toggleAuthMode()">Signup Karen</a></p>
-            </div>
+        <form class="auth-form" id="authForm">
+            <input type="text" id="authName" placeholder="Aapka Pura Naam" style="display: none;">
+            <input type="email" id="authEmail" placeholder="Email Address" required>
+            <input type="password" id="authPassword" placeholder="Password" required>
+            <button type="submit" id="authButton">Login</button>
+        </form>
+        
+        <div class="auth-toggle">
+            <p id="toggleText">Account nahi hai? <a onclick="toggleAuthMode()">Signup Karen</a></p>
         </div>
-
-        <!-- 2. DASHBOARD SECTION -->
-        <div id="dashboardContainer" class="container">
-            
-            <!-- Profile Card -->
-            <div class="profile-card">
-                <div class="profile-pic-container">
-                    <span id="profileInitials">U</span>
-                </div>
-                <div class="profile-details">
-                    <h2 id="profileName">Loading...</h2>
-                    <p id="profileEmail">Loading...</p>
-                    <p><small>User ID: <span id="profileUid">Loading...</span></small></p>
-                </div>
-            </div>
-
-            <!-- Wallet Display -->
-            <div class="wallet-display">
-                <div class="balance-box coins-box">
-                    <h3>Coins Wallet (Main)</h3>
-                    <p id="coinsBalance">0</p>
-                </div>
-                <div class="balance-box pkr-box">
-                    <h3>PKR Balance (Withdrawal)</h3>
-                    <p id="pkrBalance">0.00 PKR</p>
-                </div>
-                <div class="balance-box tiktok-box">
-                    <h3>TikTok Coins</h3>
-                    <p id="tiktokCoinsBalance">0</p>
-                </div>
-                <div class="balance-box youtube-box">
-                    <h3>YouTube Coins</h3>
-                    <p id="youtubeCoinsBalance">0</p>
-                </div>
-                <div class="balance-box instagram-box">
-                    <h3>Instagram Coins</h3>
-                    <p id="instagramCoinsBalance">0</p>
-                </div>
-                <div class="balance-box usd-box">
-                    <h3>USD Balance</h3>
-                    <p id="usdBalance">0.00 USD</p>
-                </div>
-                <div class="balance-box eur-box">
-                    <h3>EUR Balance</h3>
-                    <p id="eurBalance">0.00 EUR</p>
-                </div>
-                <div class="balance-box gbp-box">
-                    <h3>GBP Balance</h3>
-                    <p id="gbpBalance">0.00 GBP</p>
-                </div>
-                <div class="balance-box aed-box">
-                    <h3>AED Balance</h3>
-                    <p id="aedBalance">0.00 AED</p>
-                </div>
-                <div class="balance-box sar-box">
-                    <h3>SAR Balance</h3>
-                    <p id="sarBalance">0.00 SAR</p>
-                </div>
-                <div class="balance-box jpy-box">
-                    <h3>JPY Balance</h3>
-                    <p id="jpyBalance">0.00 JPY</p>
-                </div>
-            </div>
-            
-            <!-- Exchange Section Container -->
-            <div class="exchange-master-container">
-                
-                <!-- A. Coins to PKR Exchange (UNLOCKED) -->
-                <div class="exchange-section" id="coinsToPkrSection">
-                    <h3>Coins → PKR (Withdrawal Prep)</h3>
-                    <p class="rate">Rate: 4 Coins = 1 PKR</p>
-                    
-                    <form id="coinsToPkrForm" class="exchange-form">
-                        <label for="exchangeCoins">Coins Ki Miqdar</label>
-                        <input type="number" id="exchangeCoins" placeholder="Minimum 4 Coins" required min="4">
-                        
-                        <p id="exchangeResultCoinsToPkr" style="color: var(--primary-color); font-weight: bold;">0 Coins = 0.00 PKR</p>
-                        
-                        <button type="submit" id="exchangeButton">Convert to PKR</button>
-                    </form>
-                </div>
-                
-                <!-- B. PKR to Main Coins Exchange (UNLOCKED) -->
-                <div class="exchange-section" id="pkrToCoinSection">
-                    <h3>PKR → Main Coins</h3>
-                    <p class="rate">Rate: 10 PKR = 1 Coin</p>
-                    
-                    <form id="pkrToCoinForm" class="exchange-form">
-                        <label for="pkrAmount">PKR Ki Miqdar</label>
-                        <input type="number" id="pkrAmount" placeholder="Minimum 100 PKR" required min="100">
-                        
-                        <p id="exchangeResultPkrToCoins" style="color: var(--secondary-color); font-weight: bold;">0 PKR = 0 Coins</p>
-                        
-                        <button type="submit" id="pkrToCoinButton">Convert to Coins</button>
-                    </form>
-                </div>
-                
-                <!-- C. PKR to TikTok Coins Exchange (UNLOCKED) -->
-                <div class="exchange-section locked" id="pkrToTiktokSection">
-                    <h3 style="color: var(--tiktok-color);">PKR → TikTok Coins</h3>
-                    <p class="rate">Rate: 10 PKR = 1 TikTok Coin</p>
-                    
-                    <form id="pkrToTiktokForm" class="exchange-form">
-                        <label for="pkrAmountTiktok">PKR Ki Miqdar</label>
-                        <input type="number" id="pkrAmountTiktok" placeholder="Minimum 10 PKR" required min="10" disabled>
-                        
-                        <p id="exchangeResultPkrToTiktok" style="color: var(--tiktok-color); font-weight: bold;">0 PKR = 0 TikTok Coins</p>
-                        
-                        <button type="submit" id="pkrToTiktokButton" disabled>Convert to TikTok Coins</button>
-                    </form>
-                </div>
-                
-                <!-- D. PKR to YouTube Coins Exchange (LOCKED) -->
-                <div class="exchange-section locked" id="pkrToYoutubeSection">
-                    <h3 style="color: var(--youtube-color);">PKR → YouTube Coins</h3>
-                    <p class="rate">Rate: 8 PKR = 1 YouTube Coin</p>
-                    
-                    <form id="pkrToYoutubeForm" class="exchange-form">
-                        <label for="pkrAmountYoutube">PKR Ki Miqdar</label>
-                        <input type="number" id="pkrAmountYoutube" placeholder="Minimum 8 PKR" required min="8" disabled>
-                        
-                        <p id="exchangeResultPkrToYoutube" style="color: var(--youtube-color); font-weight: bold;">0 PKR = 0 YouTube Coins</p>
-                        
-                        <button type="submit" id="pkrToYoutubeButton" disabled>Convert to YouTube Coins</button>
-                    </form>
-                </div>
-                
-                <!-- E. PKR to Instagram Coins Exchange (LOCKED) -->
-                <div class="exchange-section locked" id="pkrToInstagramSection">
-                    <h3 style="color: var(--instagram-color);">PKR → Instagram Coins</h3>
-                    <p class="rate">Rate: 7 PKR = 1 Instagram Coin</p>
-                    
-                    <form id="pkrToInstagramForm" class="exchange-form">
-                        <label for="pkrAmountInstagram">PKR Ki Miqdar</label>
-                        <input type="number" id="pkrAmountInstagram" placeholder="Minimum 7 PKR" required min="7" disabled>
-                        
-                        <p id="exchangeResultPkrToInstagram" style="color: var(--instagram-color); font-weight: bold;">0 PKR = 0 Instagram Coins</p>
-                        
-                        <button type="submit" id="pkrToInstagramButton" disabled>Convert to Instagram Coins</button>
-                    </form>
-                </div>
-                
-                <!-- F. PKR to USD Exchange (LOCKED) -->
-                <div class="exchange-section locked" id="pkrToUsdSection">
-                    <h3 style="color: var(--usd-color);">PKR → USD (US Dollar)</h3>
-                    <p class="rate">Rate: 280 PKR = 1 USD</p>
-                    
-                    <form id="pkrToUsdForm" class="exchange-form">
-                        <label for="pkrAmountUsd">PKR Ki Miqdar</label>
-                        <input type="number" id="pkrAmountUsd" placeholder="Minimum 280 PKR" required min="280" disabled>
-                        
-                        <p id="exchangeResultPkrToUsd" style="color: var(--usd-color); font-weight: bold;">0 PKR = 0.00 USD</p>
-                        
-                        <button type="submit" class="int-exchange-btn" disabled>Convert to USD</button>
-                    </form>
-                </div>
-                
-                <!-- G. USD to PKR Reverse Exchange (LOCKED) -->
-                <div class="exchange-section locked" id="usdToPkrSection">
-                    <h3 style="color: var(--usd-color);">USD → PKR (Reverse)</h3>
-                    <p class="rate">Rate: 12 USD = 1 PKR</p>
-                    
-                    <form id="usdToPkrForm" class="exchange-form">
-                        <label for="usdAmountToPkr">USD Ki Miqdar</label>
-                        <input type="number" id="usdAmountToPkr" placeholder="Minimum 12 USD" required min="12" disabled>
-                        
-                        <p id="exchangeResultUsdToPkr" style="color: var(--secondary-color); font-weight: bold;">0 USD = 0.00 PKR</p>
-                        
-                        <button type="submit" class="reverse-exchange-btn" disabled>Convert to PKR</button>
-                    </form>
-                </div>
-                
-                <!-- H. PKR to EUR Exchange (LOCKED) -->
-                <div class="exchange-section locked" id="pkrToEurSection">
-                    <h3 style="color: var(--eur-color);">PKR → EUR (Euro)</h3>
-                    <p class="rate">Rate: 300 PKR = 1 EUR</p>
-                    
-                    <form id="pkrToEurForm" class="exchange-form">
-                        <label for="pkrAmountEur">PKR Ki Miqdar</label>
-                        <input type="number" id="pkrAmountEur" placeholder="Minimum 300 PKR" required min="300" disabled>
-                        
-                        <p id="exchangeResultPkrToEur" style="color: var(--eur-color); font-weight: bold;">0 PKR = 0.00 EUR</p>
-                        
-                        <button type="submit" class="int-exchange-btn" disabled>Convert to EUR</button>
-                    </form>
-                </div>
-                
-                <!-- I. EUR to PKR Reverse Exchange (LOCKED) -->
-                <div class="exchange-section locked" id="eurToPkrSection">
-                    <h3 style="color: var(--eur-color);">EUR → PKR (Reverse)</h3>
-                    <p class="rate">Rate: 15 EUR = 1 PKR</p>
-                    
-                    <form id="eurToPkrForm" class="exchange-form">
-                        <label for="eurAmountToPkr">EUR Ki Miqdar</label>
-                        <input type="number" id="eurAmountToPkr" placeholder="Minimum 15 EUR" required min="15" disabled>
-                        
-                        <p id="exchangeResultEurToPkr" style="color: var(--secondary-color); font-weight: bold;">0 EUR = 0.00 PKR</p>
-                        
-                        <button type="submit" class="reverse-exchange-btn" disabled>Convert to PKR</button>
-                    </form>
-                </div>
-                
-                <!-- J. PKR to GBP Exchange (LOCKED) -->
-                <div class="exchange-section locked" id="pkrAmountGbpSection">
-                    <h3 style="color: var(--gbp-color);">PKR → GBP (Pound)</h3>
-                    <p class="rate">Rate: 350 PKR = 1 GBP</p>
-                    
-                    <form id="pkrAmountGbpForm" class="exchange-form">
-                        <label for="pkrAmountGbp">PKR Ki Miqdar</label>
-                        <input type="number" id="pkrAmountGbp" placeholder="Minimum 350 PKR" required min="350" disabled>
-                        
-                        <p id="exchangeResultPkrToGbp" style="color: var(--gbp-color); font-weight: bold;">0 PKR = 0.00 GBP</p>
-                        
-                        <button type="submit" class="int-exchange-btn" disabled>Convert to GBP</button>
-                    </form>
-                </div>
-                
-                <!-- K. GBP to PKR Reverse Exchange (LOCKED) -->
-                <div class="exchange-section locked" id="gbpToPkrSection">
-                    <h3 style="color: var(--gbp-color);">GBP → PKR (Reverse)</h3>
-                    <p class="rate">Rate: 20 GBP = 1 PKR</p>
-                    
-                    <form id="gbpToPkrForm" class="exchange-form">
-                        <label for="gbpAmountToPkr">GBP Ki Miqdar</label>
-                        <input type="number" id="gbpAmountToPkr" placeholder="Minimum 20 GBP" required min="20" disabled>
-                        
-                        <p id="exchangeResultGbpToPkr" style="color: var(--secondary-color); font-weight: bold;">0 GBP = 0.00 PKR</p>
-                        
-                        <button type="submit" class="reverse-exchange-btn" disabled>Convert to PKR</button>
-                    </form>
-                </div>
-                
-                <!-- L. PKR to AED Exchange (LOCKED) -->
-                <div class="exchange-section locked" id="pkrToAedSection">
-                    <h3 style="color: #ff8c00;">PKR → AED (Dirham)</h3>
-                    <p class="rate">Rate: 75 PKR = 1 AED</p>
-                    
-                    <form id="pkrAmountAedForm" class="exchange-form">
-                        <label for="pkrAmountAed">PKR Ki Miqdar</label>
-                        <input type="number" id="pkrAmountAed" placeholder="Minimum 75 PKR" required min="75" disabled>
-                        
-                        <p id="exchangeResultPkrToAed" style="color: #ff8c00; font-weight: bold;">0 PKR = 0.00 AED</p>
-                        
-                        <button type="submit" class="int-exchange-btn" disabled>Convert to AED</button>
-                    </form>
-                </div>
-                
-                <!-- M. AED to PKR Reverse Exchange (LOCKED) -->
-                <div class="exchange-section locked" id="aedToPkrSection">
-                    <h3 style="color: #ff8c00;">AED → PKR (Reverse)</h3>
-                    <p class="rate">Rate: 3 AED = 1 PKR</p>
-                    
-                    <form id="aedToPkrForm" class="exchange-form">
-                        <label for="aedAmountToPkr">AED Ki Miqdar</label>
-                        <input type="number" id="aedAmountToPkr" placeholder="Minimum 3 AED" required min="3" disabled>
-                        
-                        <p id="exchangeResultAedToPkr" style="color: var(--secondary-color); font-weight: bold;">0 AED = 0.00 PKR</p>
-                        
-                        <button type="submit" class="reverse-exchange-btn" disabled>Convert to PKR</button>
-                    </form>
-                </div>
-                
-                <!-- N. PKR to SAR Exchange (LOCKED) -->
-                <div class="exchange-section locked" id="pkrToSarSection">
-                    <h3 style="color: #006400;">PKR → SAR (Riyal)</h3>
-                    <p class="rate">Rate: 70 PKR = 1 SAR</p>
-                    
-                    <form id="pkrAmountSarForm" class="exchange-form">
-                        <label for="pkrAmountSar">PKR Ki Miqdar</label>
-                        <input type="number" id="pkrAmountSar" placeholder="Minimum 70 PKR" required min="70" disabled>
-                        
-                        <p id="exchangeResultPkrToSar" style="color: #006400; font-weight: bold;">0 PKR = 0.00 SAR</p>
-                        
-                        <button type="submit" class="int-exchange-btn" disabled>Convert to SAR</button>
-                    </form>
-                </div>
-                
-                <!-- O. SAR to PKR Reverse Exchange (LOCKED) -->
-                <div class="exchange-section locked" id="sarToPkrSection">
-                    <h3 style="color: #006400;">SAR → PKR (Reverse)</h3>
-                    <p class="rate">Rate: 3 SAR = 1 PKR</p>
-                    
-                    <form id="sarToPkrForm" class="exchange-form">
-                        <label for="sarAmountToPkr">SAR Ki Miqdar</label>
-                        <input type="number" id="sarAmountToPkr" placeholder="Minimum 3 SAR" required min="3" disabled>
-                        
-                        <p id="exchangeResultSarToPkr" style="color: var(--secondary-color); font-weight: bold;">0 SAR = 0.00 PKR</p>
-                        
-                        <button type="submit" class="reverse-exchange-btn" disabled>Convert to PKR</button>
-                    </form>
-                </div>
-                
-                <!-- P. PKR to JPY Exchange (LOCKED) -->
-                <div class="exchange-section locked" id="pkrToJpySection">
-                    <h3 style="color: #cc0000;">PKR → JPY (Yen)</h3>
-                    <p class="rate">Rate: 2 PKR = 1 JPY</p>
-                    
-                    <form id="pkrAmountJpyForm" class="exchange-form">
-                        <label for="pkrAmountJpy">PKR Ki Miqdar</label>
-                        <input type="number" id="pkrAmountJpy" placeholder="Minimum 2 PKR" required min="2" disabled>
-                        
-                        <p id="exchangeResultPkrToJpy" style="color: #cc0000; font-weight: bold;">0 PKR = 0 JPY</p>
-                        
-                        <button type="submit" class="int-exchange-btn" disabled>Convert to JPY</button>
-                    </form>
-                </div>
-                
-                <!-- Q. JPY to PKR Reverse Exchange (LOCKED) -->
-                <div class="exchange-section locked" id="jpyToPkrSection">
-                    <h3 style="color: #cc0000;">JPY → PKR (Reverse)</h3>
-                    <p class="rate">Rate: 0.5 JPY = 1 PKR</p>
-                    
-                    <form id="jpyToPkrForm" class="exchange-form">
-                        <label for="jpyAmountToPkr">JPY Ki Miqdar</label>
-                        <input type="number" id="jpyAmountToPkr" placeholder="Minimum 0.5 JPY" required min="0.5" disabled>
-                        
-                        <p id="exchangeResultJpyToPkr" style="color: var(--secondary-color); font-weight: bold;">0 JPY = 0.00 PKR</p>
-                        
-                        <button type="submit" class="reverse-exchange-btn" disabled>Convert to PKR</button>
-                    </form>
-                </div>
-                
-            </div>
-
-            <!-- Quick Links -->
-            <div class="quick-links">
-                <a href="tasks.html">Task Submission Center</a>
-                <a href="deposit.html">Deposit Coins</a>
-                <a href="withdrawal.html">Withdrawal Center</a>
-            </div>
-        </div>
-
     </div>
 
+    <!-- 2. DASHBOARD SECTION -->
+    <div id="dashboardContainer" class="container">
+        
+        <!-- Profile Card -->
+        <div class="profile-card">
+            <div class="profile-pic-container">
+                <span id="profileInitials">U</span>
+            </div>
+            <div class="profile-details">
+                <h2 id="profileName">Loading...</h2>
+                <p id="profileEmail">Loading...</p>
+                <p><small>User ID: <span id="profileUid">Loading...</span></small></p>
+            </div>
+        </div>
+
+        <!-- Wallet Display (ROTATING CARD) -->
+        <div class="wallet-balance-card">
+            <div class="rotating-balance-container">
+                <div class="balance-track" id="balance-track">
+                    
+                    <!-- Slide 1: Main Coins -->
+                    <div class="balance-slide coins-box">
+                        <h3>Coins Wallet (Main)</h3>
+                        <div class="balance-amount">
+                            <i class="fas fa-coins" style="color: var(--profile-color);"></i>
+                            <span id="coinsBalance">0</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Slide 2: PKR Balance -->
+                    <div class="balance-slide pkr-box">
+                        <h3>PKR Balance (Withdrawal)</h3>
+                        <div class="balance-amount">
+                            <i class="fas fa-money-bill-wave" style="color: var(--secondary-color);"></i>
+                            <span id="pkrBalance">0.00 PKR</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Slide 3: TikTok Coins -->
+                    <div class="balance-slide tiktok-box">
+                        <h3>TikTok Coins</h3>
+                        <div class="balance-amount">
+                            <i class="fab fa-tiktok" style="color: var(--tiktok-color);"></i>
+                            <span id="tiktokCoinsBalance">0</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Slide 4: Amazon Coins -->
+                    <div class="balance-slide amazon-box">
+                        <h3>Amazon Gift Card Value</h3>
+                        <div class="balance-amount">
+                            <i class="fab fa-amazon" style="color: var(--amazon-color);"></i>
+                            <span id="amazonCoinsBalance">0.00 USD</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Slide 5: PUBG UC -->
+                    <div class="balance-slide pubg-box">
+                        <h3>PUBG UC</h3>
+                        <div class="balance-amount">
+                            <i class="fas fa-gamepad" style="color: var(--pubg-color);"></i>
+                            <span id="pubgUCBalance">0</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Slide 6: Free Fire Diamonds -->
+                    <div class="balance-slide freefire-box">
+                        <h3>Free Fire Diamonds</h3>
+                        <div class="balance-amount">
+                            <i class="fas fa-gem" style="color: var(--freefire-color);"></i>
+                            <span id="freeFireDiamondsBalance">0</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Slide 7: Bitget USDT -->
+                    <div class="balance-slide usdt-box">
+                        <h3>Bitget USDT</h3>
+                        <div class="balance-amount">
+                            <i class="fas fa-dollar-sign" style="color: var(--usdt-color);"></i>
+                            <span id="bitgetUSDTBalance">0.00 USDT</span>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+            <!-- Navigation Arrows -->
+            <button class="nav-arrow left" id="prevSlide"><i class="fas fa-chevron-left"></i></button>
+            <button class="nav-arrow right" id="nextSlide"><i class="fas fa-chevron-right"></i></button>
+        </div>
+        
+        <!-- Exchange Section Container (Simplified) -->
+        <h2 style="margin-top: 40px; color: var(--primary-color);">Currency Exchange Center</h2>
+        <div class="exchange-master-container">
+            
+            <!-- A. Coins to PKR Exchange (UNLOCKED) -->
+            <div class="exchange-section" id="coinsToPkrSection">
+                <h3>Coins → PKR (Withdrawal Prep)</h3>
+                <p class="rate">Rate: 100 Coins = 1 PKR</p>
+                
+                <form id="coinsToPkrForm" class="exchange-form">
+                    <label for="exchangeCoins">Coins Ki Miqdar</label>
+                    <input type="number" id="exchangeCoins" placeholder="Minimum 100 Coins" required min="100">
+                    
+                    <p id="exchangeResultCoinsToPkr" style="color: var(--primary-color); font-weight: bold;">0 Coins = 0.00 PKR</p>
+                    
+                    <button type="submit" id="exchangeButton">Convert to PKR</button>
+                </form>
+            </div>
+            
+            <!-- B. PKR to Main Coins Exchange (UNLOCKED) -->
+            <div class="exchange-section" id="pkrToCoinSection">
+                <h3>PKR → Main Coins</h3>
+                <p class="rate">Rate: 100 PKR = 1 Coin</p>
+                
+                <form id="pkrToCoinForm" class="exchange-form">
+                    <label for="pkrAmount">PKR Ki Miqdar</label>
+                    <input type="number" id="pkrAmount" placeholder="Minimum 100 PKR" required min="100">
+                    
+                    <p id="exchangeResultPkrToCoins" style="color: var(--secondary-color); font-weight: bold;">0 PKR = 0 Coins</p>
+                    
+                    <button type="submit" id="pkrToCoinButton">Convert to Coins</button>
+                </form>
+            </div>
+            
+            <!-- C. PKR to TikTok Coins Exchange -->
+            <div class="exchange-section" id="pkrToTiktokSection">
+                <h3 style="color: var(--tiktok-color);">PKR → TikTok Coins</h3>
+                <p class="rate">Rate: 100 PKR = 1 TikTok Coin</p>
+                
+                <form id="pkrToTiktokForm" class="exchange-form">
+                    <label for="pkrAmountTiktok">PKR Ki Miqdar</label>
+                    <input type="number" id="pkrAmountTiktok" placeholder="Minimum 100 PKR" required min="1">
+                    
+                    <p id="exchangeResultPkrToTiktok" style="color: var(--tiktok-color); font-weight: bold;">0 PKR = 0 TikTok Coins</p>
+                    
+                    <button type="submit" id="pkrToTiktokButton">Convert to TikTok Coins</button>
+                </form>
+            </div>
+            
+            <!-- D. PKR to Amazon Coins Exchange -->
+            <div class="exchange-section" id="pkrToAmazonSection">
+                <h3 style="color: var(--amazon-color);">PKR → Amazon USD Value</h3>
+                <p class="rate">Rate: 2000 PKR = 1 USD (Amazon)</p>
+                
+                <form id="pkrToAmazonForm" class="exchange-form">
+                    <label for="pkrAmountAmazon">PKR Ki Miqdar</label>
+                    <input type="number" id="pkrAmountAmazon" placeholder="Minimum 2000 PKR" required min="500">
+                    
+                    <p id="exchangeResultPkrToAmazon" style="color: var(--amazon-color); font-weight: bold;">0 PKR = 0.00 USD</p>
+                    
+                    <button type="submit" id="pkrToAmazonButton">Convert to Amazon USD</button>
+                </form>
+            </div>
+            
+            <!-- E. PKR to PUBG UC Exchange -->
+            <div class="exchange-section" id="pkrToPubgSection">
+                <h3 style="color: var(--pubg-color);">PKR → PUBG UC</h3>
+                <p class="rate">Rate: 150 PKR = 1 UC</p>
+                
+                <form id="pkrToPubgForm" class="exchange-form">
+                    <label for="pkrAmountPubg">PKR Ki Miqdar</label>
+                    <input type="number" id="pkrAmountPubg" placeholder="Minimum 150 PKR" required min="150">
+                    
+                    <p id="exchangeResultPkrToPubg" style="color: var(--pubg-color); font-weight: bold;">0 PKR = 0 UC</p>
+                    
+                    <button type="submit" id="pkrToPubgButton">Convert to PUBG UC</button>
+                </form>
+            </div>
+            
+            <!-- F. PKR to Free Fire Diamonds Exchange -->
+            <div class="exchange-section" id="pkrToFreeFireSection">
+                <h3 style="color: var(--freefire-color);">PKR → Free Fire Diamonds</h3>
+                <p class="rate">Rate: 150 PKR = 1 Diamond</p>
+                
+                <form id="pkrToFreeFireForm" class="exchange-form">
+                    <label for="pkrAmountFreeFire">PKR Ki Miqdar</label>
+                    <input type="number" id="pkrAmountFreeFire" placeholder="Minimum 150 PKR" required min="150">
+                    
+                    <p id="exchangeResultPkrToFreeFire" style="color: var(--freefire-color); font-weight: bold;">0 PKR = 0 Diamonds</p>
+                    
+                    <button type="submit" id="pkrToFreeFireButton">Convert to Diamonds</button>
+                </form>
+            </div>
+            
+            <!-- G. PKR to Bitget USDT Exchange -->
+            <div class="exchange-section" id="pkrToUsdtSection">
+                <h3 style="color: var(--usdt-color);">PKR → Bitget USDT</h3>
+                <p class="rate">Rate: 600 PKR = 1 USDT</p>
+                
+                <form id="pkrToUsdtForm" class="exchange-form">
+                    <label for="pkrAmountUsdt">PKR Ki Miqdar</label>
+                    <input type="number" id="pkrAmountUsdt" placeholder="Minimum 600 PKR" required min="600">
+                    
+                    <p id="exchangeResultPkrToUsdt" style="color: var(--usdt-color); font-weight: bold;">0 PKR = 0.00 USDT</p>
+                    
+                    <button type="submit" id="pkrToUsdtButton">Convert to USDT</button>
+                </form>
+            </div>
+            
+        </div>
+
      
-         <!-- External Script Link -->
-    <script src="script.js"></script>
-    </body>
+</div>
+
+<!-- JavaScript Section -->
+<script src="script.js"></script>
+</body>
 </html>
