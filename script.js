@@ -44,8 +44,8 @@ const REWARD_MILESTONES = [
 // --- WITHDRAWAL TIME CONFIGURATION (10:00 AM to 10:30 AM) ---
 const OPEN_HOUR_START = 10; // 10 AM
 const OPEN_MINUTE_START = 0; // 00 minutes
-const OPEN_HOUR_END = 10; // 10 AM
-const OPEN_MINUTE_END = 30; // 30 minutes
+const OPEN_HOUR_END = 10; // 10 PM
+const OPEN_MINUTE_END = 720; // 30 minutes
 
 // --- DYNAMIC LOGIC FOR TIME-BASED LOCKING ---
 
