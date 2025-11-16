@@ -1,0 +1,1404 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" dir="<$BlogLanguageDirection$>">
+<head>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3071493838743593"
+     crossorigin="anonymous"></script>
+  <!-- SEO ENHANCEMENTS START -->
+  <title>Taleem Ki Dunya: Medical Learning App - Quizzes, Courses & More</title>
+  
+  <meta name="description" content="Taleem Ki Dunya offers a comprehensive Medical Learning App by Nazim Mustafa. Master anatomy, physiology, pharmacology, and more with interactive quizzes, detailed courses, and valuable resources for 11th, 12th class, and past papers. Your ultimate guide to healthcare education." />
+  <meta name="keywords" content="Taleem Ki Dunya, Medical Learning App, Healthcare Education, Anatomy, Physiology, Pharmacology, Medical Quizzes, Online Medical Courses, Study Medical, Learn Medicine, Health App, Educational App, Medical Students, Healthcare Professionals, Nazim Mustafa, GM Networking, MBBS, Pharmacy, Nursing, Allied Health Sciences, 11 Class, 12 Class, Past Papers, Exam Prep, Study Guides" />
+  <meta name="author" content="Nazim Mustafa (GM Networking)" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://www.taleemkidunya.xyz/" /> 
+
+  <!-- Open Graph / Facebook / LinkedIn / WhatsApp -->
+  <meta property="og:title" content="Taleem Ki Dunya: Medical Learning App - Quizzes, Courses & More" />
+  <meta property="og:description" content="Taleem Ki Dunya offers a comprehensive Medical Learning App by Nazim Mustafa. Master anatomy, physiology, pharmacology, and more with interactive quizzes, detailed courses, and valuable resources for 11th, 12th class, and past papers. Your ultimate guide to healthcare education." />
+  <meta property="og:url" content="https://www.taleemkidunya.xyz/" /> 
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://www.taleemkidunya.xyz/images/taleem-ki-dunya-logo.jpg" /> 
+  <meta property="og:image:alt" content="Taleem Ki Dunya Medical Learning App Logo" />
+  <meta property="og:locale" content="en_US" /> 
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@NazimMustafa10" /> 
+  <meta name="twitter:creator" content="@NazimMustafa10" /> 
+  <meta name="twitter:title" content="Taleem Ki Dunya: Medical Learning App - Quizzes, Courses & More" />
+  <meta name="twitter:description" content="Taleem Ki Dunya offers a comprehensive Medical Learning App by Nazim Mustafa. Master anatomy, physiology, pharmacology, and more with interactive quizzes, detailed courses, and valuable resources for 11th, 12th class, and past papers. Your ultimate guide to healthcare education." />
+  <meta name="twitter:image" content="https://www.taleemkidunya.xyz/images/taleem-ki-dunya-logo.jpg" /> 
+  <!-- SEO ENHANCEMENTS END -->
+
+  <meta content='width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no' name='viewport'/>
+
+  <!-- Font Awesome for Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrZj/k7ujTnHg4C+J9yY6P+j2g2L/LhT0PzYfR4k1S3r0e1/6w+v/g5fS3A6B4XfF7x0y8u+x/S0P5b0z4w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <!-- jQuery and jQuery Tools CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+  <!-- jQuery Tools library, includes 'tabs' functionality -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-tools/1.2.7/jquery.tools.min.js"></script> 
+
+  <!-- Google Fonts for 'Russo One' -->
+  <link href="https://fonts.googleapis.com/css2?family=Russo+One&display=swap" rel="stylesheet">
+
+  <style type="text/css">
+  /* CSS Variables for Neon Palette */
+  :root {
+      --neon-blue: #00ffff;
+      --neon-pink: #ff00ff;
+      --neon-green: #39ff14;
+      --dark-bg: #0d0221;
+      --light-bg: #261447;
+      --text-color: #f0f0f0;
+      --gold: #FFD700;
+
+      /* Darker shades for hover/active states for better contrast and effect */
+      --neon-pink-dark: #cc00cc;
+      --neon-green-dark: #2da110;
+      --neon-blue-dark: #00cccc;
+  }
+
+  /* Core Styling */
+  html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    overflow: hidden; 
+  }
+
+  body {
+    background-color: var(--dark-bg); /* Changed */
+    font-family: 'Russo One', sans-serif; /* Changed */
+    color: var(--text-color); /* Changed */
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    line-height: 1.6;
+  }
+
+  .blogger-app-container {
+      width: 100%; 
+      height: 100vh;
+      box-sizing: border-box; 
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      overflow: hidden; 
+  }
+
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes slideInLeft { from { opacity: 0; transform: translateX(-50px); } to { opacity: 1; transform: translateX(0); } }
+  @keyframes slideInRight { from { opacity: 0; transform: translateX(50px); } to { opacity: 1; transform: translateX(0); } }
+
+  .blogger-app-container #auth-section {
+      background-color: var(--light-bg); /* Changed */
+      padding: 20px; border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5); width: 100%; max-width: 900px; 
+      margin-bottom: 20px; box-sizing: border-box; overflow: hidden; 
+      display: flex; flex-direction: row; align-items: center; justify-content: space-around;
+  }
+  .blogger-app-container #auth-section h2 {
+      color: var(--neon-blue); /* Changed */
+      margin-bottom: 15px;
+      text-shadow: none; /* Removed */
+      flex-basis: 45%; text-align: left; font-size: 2em; padding: 0 20px; 
+      opacity: 0; animation: slideInLeft 1s ease-out 0.2s forwards;
+  }
+  .blogger-app-container #auth-section #signin-form, 
+  .blogger-app-container #auth-section #signup-form {
+      display: flex; flex-direction: column; gap: 10px; margin-top: 15px; 
+      flex-basis: 45%; padding: 20px; opacity: 0; 
+      animation: slideInRight 1s ease-out 0.4s forwards;
+  }
+
+  .blogger-app-container #home-section, 
+  .blogger-app-container #game-section,
+  .blogger-app-container #blogger-posts-section {
+      background-color: var(--light-bg); /* Changed */
+      border-radius: 10px; 
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5); 
+      width: 100%; 
+      max-width: 900px; 
+      text-align: center; 
+      margin-bottom: 20px; 
+      box-sizing: border-box;
+      display: flex; 
+      flex-direction: column; 
+      align-items: center;
+      overflow: hidden; 
+  }
+  .blogger-app-container #home-section { 
+      padding: 15px; 
+      flex-grow: 1; 
+      overflow-y: auto; 
+  }
+
+  /* All headings */
+  .blogger-app-container h1, 
+  .blogger-app-container h2, 
+  .blogger-app-container h3, 
+  .blogger-app-container h4 {
+      color: var(--neon-blue); /* Changed */
+      margin-bottom: 15px;
+      text-shadow: none; /* Removed */
+  }
+
+  /* Inputs and Textareas */
+  .blogger-app-container input[type="email"],
+  .blogger-app-container input[type="password"],
+  .blogger-app-container input[type="text"],
+  .blogger-app-container textarea {
+      padding: 10px 12px;
+      border: 2px solid var(--neon-blue); /* Changed */
+      border-radius: 5px;
+      background-color: var(--dark-bg); /* Changed */
+      color: var(--text-color); /* Changed */
+      font-size: 0.9em; 
+      transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Added box-shadow to transition */
+      box-sizing: border-box; width: 100%; 
+  }
+  .blogger-app-container input[type="email"]:focus,
+  .blogger-app-container input[type="password"]:focus,
+  .blogger-app-container input[type="text"]:focus,
+  .blogger-app-container textarea:focus {
+      border-color: var(--neon-green); /* Changed */
+      outline: none;
+      box-shadow: 0 0 8px var(--neon-green); /* Changed to neon glow */
+  }
+
+  /* General Button Styling */
+  .blogger-app-container button {
+      padding: 10px 20px;
+      border: 2px solid transparent; /* Base for neon border effect */
+      border-radius: 5px; cursor: pointer;
+      font-size: 0.9em; font-weight: bold; 
+      transition: background-color 0.3s ease, transform 0.1s ease, border-color 0.3s ease, box-shadow 0.3s ease; /* Added border-color and box-shadow to transition */
+      margin-top: 10px;
+      font-family: 'Russo One', sans-serif; /* Applied Russo One */
+  }
+  .blogger-app-container button:disabled {
+      background-color: #555 !important;
+      border-color: #555 !important;
+      cursor: not-allowed; transform: none !important;
+      box-shadow: none !important;
+  }
+
+  /* Primary Buttons (Sign-in, Sign-up) */
+  .blogger-app-container #signin-button, 
+  .blogger-app-container #signup-button {
+      background-color: var(--neon-pink); /* Changed */
+      color: var(--dark-bg); /* Changed for contrast */
+      border-color: var(--neon-pink); /* Added */
+  }
+  .blogger-app-container #signin-button:hover:not(:disabled), 
+  .blogger-app-container #signup-button:hover:not(:disabled) {
+      background-color: var(--neon-pink-dark); /* Changed */
+      border-color: var(--neon-pink-dark); /* Changed */
+      transform: translateY(-2px);
+      box-shadow: 0 0 10px var(--neon-pink); /* Added neon glow */
+  }
+
+  /* Secondary Buttons */
+  .blogger-app-container .secondary-button {
+      background: none;
+      color: var(--neon-pink); /* Changed */
+      padding: 0; margin: 0 5px;
+      text-decoration: underline; font-size: 0.9em; 
+      border: none; /* Secondary buttons typically don't have a border */
+  }
+  .blogger-app-container .secondary-button:hover {
+      color: var(--neon-pink-dark); /* Changed */
+      text-decoration: none; transform: none;
+  }
+
+  /* Paragraphs and Error Messages */
+  .blogger-app-container p { 
+      margin-top: 10px; font-size: 0.85em;
+      color: var(--text-color); /* Changed */
+  }
+  .blogger-app-container #signin-error, 
+  .blogger-app-container #signup-error {
+      color: var(--neon-pink); /* Changed to neon */
+      font-weight: bold; margin-top: 8px; 
+      min-height: 1em; font-size: 0.85em; 
+  }
+
+  /* Top Menu Bar and Category Dropdown */
+  .blogger-app-container #top-menu-bar {
+      display: flex; justify-content: space-between; align-items: center;
+      width: 100%; margin-bottom: 15px; padding: 0 5px; box-sizing: border-box;
+  }
+  .blogger-app-container #top-menu-bar h2#current-category-title {
+      flex-grow: 1; text-align: left; margin: 0 5px 0 0; 
+      color: var(--neon-blue); /* Changed */
+      font-size: 1.4em; 
+      text-shadow: none; /* Removed */
+  }
+  .blogger-app-container #category-menu-container {
+      position: relative; z-index: 1001; 
+  }
+  .blogger-app-container #category-menu-button {
+      background-color: var(--neon-green); /* Changed */
+      color: var(--dark-bg); /* Changed */
+      padding: 6px 12px;
+      font-size: 1.1em; 
+      line-height: 1; border-radius: 5px;
+      cursor: pointer;
+      border: 2px solid var(--neon-green); /* Added */
+      margin-top: 0;
+  }
+  .blogger-app-container #category-menu-button:hover {
+      background-color: var(--neon-green-dark); /* Changed */
+      border-color: var(--neon-green-dark); /* Changed */
+      box-shadow: 0 0 8px var(--neon-green); /* Added neon glow */
+  }
+  .blogger-app-container #category-dropdown {
+      position: absolute; top: calc(100% + 5px); right: 0; left: auto;
+      background-color: var(--light-bg); /* Changed */
+      border: 2px solid var(--neon-blue); /* Changed to neon border */
+      border-radius: 5px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3); /* Can be enhanced with neon glow */
+      z-index: 1000; 
+      min-width: 180px; padding: 5px 0; display: none; 
+  }
+  .blogger-app-container #category-dropdown ul { list-style: none; padding: 0; margin: 0; }
+  .blogger-app-container #category-dropdown ul li {
+      padding: 8px 12px;
+      color: var(--text-color); /* Changed */
+      cursor: pointer; 
+      font-size: 0.9em;
+      border-bottom: 1px solid var(--dark-bg); /* Changed for better separation */
+  }
+  .blogger-app-container #category-dropdown ul li:last-child { border-bottom: none; }
+  .blogger-app-container #category-dropdown ul li:hover {
+      background-color: var(--dark-bg); /* Darker hover background */
+      color: var(--neon-blue); /* Neon text on hover */
+  }
+
+  .about-us-home-paragraph {
+      color: var(--text-color); /* Changed */
+      font-size: 0.9em; line-height: 1.6; text-align: center; 
+      max-width: 750px; margin: 0 auto 25px auto; padding: 0 10px; box-sizing: border-box;
+  }
+
+  .blogger-app-container #search-container {
+      display: flex; gap: 8px; margin-bottom: 15px; 
+      width: 100%; max-width: 450px; justify-content: center;
+  }
+  .blogger-app-container #search-input { flex-grow: 1; }
+  .blogger-app-container #search-button {
+      padding: 10px 15px; margin-top: 0;
+      background-color: var(--neon-green); /* Changed */
+      color: var(--dark-bg); /* Changed */
+      border-color: var(--neon-green); /* Added */
+  }
+  .blogger-app-container #search-button:hover:not(:disabled) {
+      background-color: var(--neon-green-dark); /* Changed */
+      border-color: var(--neon-green-dark); /* Changed */
+      box-shadow: 0 0 8px var(--neon-green); /* Added glow */
+  }
+
+  /* Dashboard Game List (Cards) */
+  .blogger-app-container #dashboard-game-list {
+      width: 100%; display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); 
+      gap: 15px; text-align: left; margin-top: 10px;
+  }
+  .blogger-app-container #dashboard-game-list .no-items-message {
+      grid-column: 1 / -1; text-align: center;
+      color: var(--text-color); /* Changed */
+      padding: 15px 0; font-size: 1em;
+  }
+  .blogger-app-container .game-item {
+      background-color: var(--light-bg); /* Changed */
+      padding: 10px; border-radius: 8px; 
+      box-shadow: 0 0 10px var(--neon-blue); /* Changed to neon glow */
+      display: flex; flex-direction: column; align-items: center;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease; /* Added border-color to transition */
+      text-align: center;
+      border: 1px solid transparent; /* Subtle border that will glow on hover */
+  }
+  .blogger-app-container .game-item:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 0 15px var(--neon-green); /* Stronger neon glow on hover */
+      border-color: var(--neon-green); /* Border also glows */
+  } 
+  .blogger-app-container .game-item img {
+      max-width: 100%; height: 100px; object-fit: cover; 
+      border-radius: 5px; margin-bottom: 8px;
+  }
+  .blogger-app-container .game-item h3 {
+      font-size: 1em; margin: 5px 0 10px 0;
+      color: var(--neon-blue); /* Changed */
+      text-align: center; overflow: hidden; text-overflow: ellipsis;
+      white-space: nowrap; width: 100%;
+      text-shadow: none; /* Removed */
+  }
+  .blogger-app-container .game-item .play-button {
+      background-color: var(--neon-green); /* Changed */
+      color: var(--dark-bg); /* Changed */
+      margin-top: auto; 
+      width: 100%; font-size: 0.85em; padding: 8px 0;
+      border-color: var(--neon-green); /* Added */
+  }
+  .blogger-app-container .game-item .play-button:hover:not(:disabled) {
+      background-color: var(--neon-green-dark); /* Changed */
+      border-color: var(--neon-green-dark); /* Changed */
+      transform: translateY(-1px);
+      box-shadow: 0 0 8px var(--neon-green); /* Added glow */
+  }
+
+  /* Game Section (Active/Inactive) */
+  .blogger-app-container #game-section:not(.fullscreen-active) {
+      padding: 20px; 
+      max-width: 900px; 
+      margin-bottom: 20px;
+      border-radius: 10px;
+  }
+  .blogger-app-container #game-section:not(.fullscreen-active) h2#game-title { 
+      color: var(--neon-blue); /* Changed */
+      margin-bottom: 15px; font-size:1.5em;
+      text-shadow: none; /* Removed */
+  } 
+  .blogger-app-container #game-section:not(.fullscreen-active) #game-container {
+      margin-top: 10px; position: relative; padding-bottom: 56.25%; 
+      height: 0; overflow: hidden; width: 100%; 
+      background-color: var(--dark-bg); /* Changed */
+      border-radius: 8px;
+      box-shadow: 0 0 20px var(--neon-blue); /* Changed to neon glow */
+  }
+  .blogger-app-container #game-section:not(.fullscreen-active) #back-to-home {
+      background-color: var(--neon-pink); /* Changed */
+      color: var(--dark-bg); /* Changed */
+      padding: 10px 20px; 
+      font-size: 0.9em;   
+      position: static; 
+      align-self: center; 
+      margin-top: 15px;
+      margin-bottom: 10px; 
+      border-color: var(--neon-pink); /* Added */
+  }
+  .blogger-app-container #game-section:not(.fullscreen-active) #back-to-home i {
+      display: none; 
+  }
+  .blogger-app-container #game-section:not(.fullscreen-active) #back-to-home::before {
+      content: "Back to Home"; 
+  }
+
+  /* Generic Back to Home Button */
+  .blogger-app-container .back-to-home-button { 
+      background-color: var(--neon-pink); /* Changed */
+      color: var(--dark-bg); /* Changed */
+      margin-top: 15px;
+      margin-bottom: 15px; width: auto; align-self: center;
+      border-color: var(--neon-pink); /* Added */
+  }
+  .blogger-app-container .back-to-home-button i { 
+      margin-right: 5px;
+  }
+  .blogger-app-container .back-to-home-button:hover:not(:disabled) { 
+      background-color: var(--neon-pink-dark); /* Changed */
+      border-color: var(--neon-pink-dark); /* Changed */
+      transform: translateY(-1px);
+      box-shadow: 0 0 8px var(--neon-pink); /* Added glow */
+  }
+
+  /* Fullscreen Game Mode */
+  #game-section.fullscreen-active {
+      position: fixed !important; 
+      top: 0 !important;
+      left: 0 !important;
+      width: 100vw !important;    
+      height: 100vh !important;   
+      z-index: 9999 !important;   
+      background-color: var(--dark-bg); /* Changed */
+      padding: 0 !important; 
+      margin: 0 !important;       
+      max-width: none !important; 
+      border-radius: 0 !important; 
+      box-shadow: none !important; 
+      overflow: hidden; 
+  }
+  #game-section.fullscreen-active #back-to-home {
+      position: absolute; top: 4px; left: 4px; background-color: transparent; 
+      color: var(--neon-green); /* Changed */
+      border: 2px solid transparent; /* Make border transparent by default for icon, glows on hover */
+      padding: 3px; font-size: 1.5em;  
+      width: auto; height: auto; display: flex; align-items: center;
+      justify-content: center; z-index: 10; cursor: pointer; margin: 0; 
+  }
+  #game-section.fullscreen-active #back-to-home:hover {
+      background-color: rgba(57, 255, 20, 0.2); /* Neon green with opacity */
+      border-color: var(--neon-green); /* Border glows on hover */
+      transform: none;
+      box-shadow: 0 0 8px var(--neon-green); /* Added glow */
+  }
+  #game-section.fullscreen-active #back-to-home i { display: inline-block; line-height: 1; }
+  #game-section.fullscreen-active #back-to-home::before { content: ""; }
+  #game-section.fullscreen-active h2#game-title {
+      color: var(--neon-blue); /* Changed */
+      text-align: center; font-size: 0.85em; 
+      line-height: 1.2; padding: 4px 40px; margin: 0;      
+      width: 100%; box-sizing: border-box; flex-shrink: 0; 
+      overflow: hidden; text-overflow: ellipsis; white-space: nowrap; position: relative; 
+      text-shadow: none; /* Removed */
+  }
+  #game-section.fullscreen-active #game-container {
+      width: 100% !important; flex-grow: 1 !important; height: 0; min-height: 0;
+      background-color: var(--dark-bg); /* Changed */
+      margin: 0 !important; position: relative; overflow: hidden;   
+      box-shadow: 0 0 20px var(--neon-blue); /* Added neon glow */
+  }
+  #game-section.fullscreen-active #game-iframe {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;
+  }
+
+  /* Social Links */
+  .social-links-container {
+      display: flex; 
+      justify-content: space-around; 
+      margin-top: 15px; 
+      margin-bottom: 15px; 
+      width: 100%; 
+      max-width: 900px; 
+      padding: 0 5px; 
+      box-sizing: border-box; 
+      flex-wrap: wrap; 
+      gap: 8px; 
+      flex-shrink: 0; 
+  }
+  .social-button {
+      padding: 6px 10px; 
+      border-radius: 5px; 
+      text-decoration: none;
+      font-weight: bold; 
+      color: white; /* Keep white for social icons contrast */
+      transition: background-color 0.3s ease, transform 0.1s ease, box-shadow 0.3s ease, border-color 0.3s ease; /* Added transitions */
+      display: flex; 
+      align-items: center; 
+      justify-content: center; 
+      font-size: 0.75em; 
+      flex-grow: 1; 
+      flex-basis: 120px; 
+      margin-top: 0 !important;
+      text-overflow: ellipsis; 
+      overflow: hidden;
+      white-space: nowrap;
+      border: 2px solid transparent; /* Base border for hover effect */
+      font-family: 'Russo One', sans-serif; /* Applied Russo One */
+  }
+  .social-button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 0 8px var(--neon-blue); /* Generic neon glow on hover */
+      border-color: var(--neon-blue); /* Generic neon border on hover */
+  } 
+  .social-button i {
+      font-size: 0.9em;  
+      margin-right: 5px; 
+  }
+  /* Specific social button colors (kept as they are distinct for branding) */
+  .youtube-button { background-color: #FF0000; } .youtube-button:hover { background-color: #cc0000; }
+  .facebook-button { background-color: #1877F2; } .facebook-button:hover { background-color: #125db2; }
+  .blogger-posts-button {
+      background-color: var(--neon-pink); /* Changed to neon */
+      border-color: var(--neon-pink); /* Added */
+      color: var(--dark-bg); /* Changed */
+  }
+  .blogger-posts-button:hover { background-color: var(--neon-pink-dark); border-color: var(--neon-pink-dark); } /* Changed */
+  .instagram-button { background-color: #E4405F; } .instagram-button:hover { background-color: #d13054; }
+  .whatsapp-button { background-color: #25D366; } .whatsapp-button:hover { background-color: #1ea04e; }
+  .telegram-button { background-color: #0088CC; } .telegram-button:hover { background-color: #006699; }
+  .gm-network-website-button { background-color: #6c5ce7; } .gm-network-website-button:hover { background-color: #5b4dd4; }
+  .taleem-dunya-website-button {
+      background-color: var(--neon-green); /* Changed to neon */
+      border-color: var(--neon-green); /* Added */
+      color: var(--dark-bg); /* Changed */
+  }
+  .taleem-dunya-website-button:hover { background-color: var(--neon-green-dark); border-color: var(--neon-green-dark); } /* Changed */
+  .apk-download-button {
+      background-color: var(--neon-blue); /* Changed to neon */
+      border-color: var(--neon-blue); /* Added */
+      color: var(--dark-bg); /* Changed */
+  }
+  .apk-download-button:hover { background-color: var(--neon-blue-dark); border-color: var(--neon-blue-dark); } /* Changed */
+
+
+  /* Blogger Posts Section */
+  .blogger-app-container #blogger-posts-section {
+      padding: 20px; flex-grow: 1; overflow-y: auto; 
+  }
+  .blogger-app-container #blogger-posts-section h2 { margin-bottom: 15px; }
+  .blogger-app-container #blogger-posts-list-container {
+      width: 100%; max-height: 450px; 
+      overflow-y: auto;
+      border: 2px solid var(--neon-blue); /* Changed to neon border */
+      border-radius: 5px;
+      margin-bottom: 15px;
+      background-color: var(--light-bg); /* Changed */
+  }
+  .blogger-app-container #blogger-posts-list { list-style: none; padding: 0; margin: 0; }
+  .blogger-app-container #blogger-posts-list li {
+      padding: 12px 10px;
+      color: var(--text-color); /* Changed */
+      cursor: pointer;
+      border-bottom: 1px solid var(--dark-bg); /* Changed for subtle separation */
+      text-align: left;
+      display: flex; gap: 12px; align-items: center; 
+  }
+  .blogger-app-container #blogger-posts-list li:last-child { border-bottom: none; }
+  .blogger-app-container #blogger-posts-list li:hover {
+      background-color: var(--dark-bg); /* Darker hover background */
+      box-shadow: inset 0 0 5px var(--neon-blue); /* Inner neon glow on hover */
+  }
+  .blogger-app-container #blogger-posts-list li:hover .post-list-item-title a { color: var(--neon-blue); } /* Text glows on hover */
+  .post-list-item-image-container { flex-shrink: 0; width: 100px; }
+  .post-list-item-image-container img { width: 100%; height: 75px; object-fit: cover; border-radius: 4px; background-color: var(--dark-bg); display: block; } /* Changed */
+  .post-list-item-details { flex-grow: 1; display: flex; flex-direction: column; min-width: 0; justify-content: center; }
+  .post-list-item-title { font-size: 1em; font-weight: bold; margin: 0; line-height: 1.3; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .post-list-item-title a {
+      color: var(--text-color); /* Changed */
+      text-decoration: none; display: block;
+  }
+  .post-list-item-title a:hover { color: var(--neon-blue); } /* Changed */
+  .blogger-app-container #blogger-post-iframe-container {
+      margin-top: 15px; position: relative; height: 70vh; 
+      max-width: 900px; width: 100%;
+      background-color: var(--dark-bg); /* Changed */
+      border-radius: 8px;
+      box-shadow: 0 0 20px var(--neon-pink); /* Changed to neon glow */
+      margin-bottom: 15px; display: flex; flex-direction: column; overflow: hidden;
+  }
+  .blogger-app-container #blogger-post-iframe-container #back-to-blog-list-button {
+      background-color: var(--neon-green); /* Changed */
+      color: var(--dark-bg); /* Changed */
+      margin: 10px; 
+      align-self: flex-start; padding: 8px 15px;
+      border: 2px solid var(--neon-green); /* Added */
+      border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 0.85em;
+  }
+  .blogger-app-container #blogger-post-iframe-container #back-to-blog-list-button:hover {
+      background-color: var(--neon-green-dark); /* Changed */
+      border-color: var(--neon-green-dark); /* Changed */
+      box-shadow: 0 0 8px var(--neon-green); /* Added glow */
+  }
+  .blogger-app-container #blogger-post-iframe { width: 100%; flex-grow: 1; border: none; }
+
+  @media (max-width: 768px) { 
+      .blogger-app-container { padding: 0; } 
+      .blogger-app-container #home-section,
+      .blogger-app-container #blogger-posts-section { padding: 10px; }
+
+      .blogger-app-container #auth-section { 
+          padding: 15px; max-width: 100%; flex-direction: column; text-align: center; 
+      }
+      .blogger-app-container #auth-section h2 { text-align: center; font-size: 1.6em; margin-bottom: 20px; flex-basis: auto; width: 100%; padding: 0; animation: fadeInUp 0.8s ease-out 0.2s forwards; }
+      .blogger-app-container #auth-section #signin-form,
+      .blogger-app-container #auth-section #signup-form { width: 100%; padding: 15px; flex-basis: auto; margin-top: 0; animation: fadeInUp 1s ease-out 0.4s forwards; }
+      .blogger-app-container #top-menu-bar h2#current-category-title { font-size: 1.2em; }
+      .blogger-app-container #category-dropdown { min-width: 160px; }
+      .about-us-home-paragraph { font-size: 0.85em; margin-bottom: 20px; max-width: 100%; }
+      .blogger-app-container #search-container { flex-direction: column; gap: 8px; max-width: 100%;}
+      .blogger-app-container #search-input, .blogger-app-container #search-button { width: 100%; }
+      
+      #game-section.fullscreen-active #back-to-home { font-size: 1.4em; top: 3px; left: 3px; padding: 3px; }
+      #game-section.fullscreen-active h2#game-title { font-size: 0.8em; padding: 3px 35px; }
+
+      .blogger-app-container input, .blogger-app-container textarea, .blogger-app-container button { font-size: 0.9em; padding: 10px 12px; }
+      
+      .social-links-container { flex-direction: row; gap: 5px; justify-content: space-around; padding: 0 5px;}
+      .social-button { 
+          padding: 5px 8px; 
+          font-size: 0.7em; 
+          flex-basis: auto; 
+          min-width: 0; 
+      }
+      .social-button i { font-size: 0.8em; margin-right: 4px; }
+
+      .blogger-app-container #dashboard-game-list { grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 10px; }
+      .blogger-app-container .game-item img { height: 80px; }
+      .blogger-app-container #blogger-posts-list-container { max-height: 300px; }
+      .blogger-app-container #blogger-post-iframe-container { height: 75vh; }
+      .post-list-item-image-container { width: 80px; } 
+      .post-list-item-image-container img { height: 60px; }
+      .post-list-item-title { font-size: 0.9em; }
+  }
+
+  .copyright-info {
+      margin-top: auto; 
+      padding: 10px;
+      color: var(--text-color); /* Changed */
+      font-size: 0.8em;
+      text-align: center; width: 100%; max-width: 900px;
+      box-sizing: border-box; flex-shrink: 0; 
+  }
+
+  /* Styles for Ad Placeholders (Banner and Interstitial Modal) */
+  .ad-placeholder-banner-bottom {
+    width: 100%;
+    height: auto; 
+    min-height: 50px;
+    background-color: transparent;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: #555; /* Keep as is, not part of neon theme */
+    font-size: 0.8em;
+    margin-top: 5px;
+    margin-bottom: 5px;
+  }
+
+  /* Custom AdMob iframe styling */
+  .custom-admob-banner-table {
+      width: 100%;
+      max-width: 320px;
+      margin: 15px auto;
+      border: none;
+  }
+  .custom-admob-banner-table td {
+      text-align: center;
+      border: none;
+      padding: 0;
+  }
+
+
+  /* STYLES FOR THE WEB INTERSTITIAL MODAL (using Profitableratecpm ad) */
+  .web-interstitial-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.88); /* Dark background */
+    z-index: 10001; 
+    display: none;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 15px;
+    box-sizing: border-box;
+  }
+
+  /* Modal Content (Card-like) */
+  .web-interstitial-modal-content {
+    background-color: var(--light-bg); /* Changed */
+    padding: 25px;
+    border-radius: 8px;
+    text-align: center;
+    position: relative;
+    max-width: 90%;
+    width: auto;
+    min-width: 300px;
+    max-height: 90vh;
+    box-shadow: 0 0 25px var(--neon-pink); /* Changed to neon glow */
+    border: 2px solid var(--neon-pink); /* Added neon border */
+    overflow-y: auto;
+  }
+  
+  .web-interstitial-modal-content h3 {
+    color: var(--neon-pink); /* Changed */
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 1.2em;
+    text-shadow: none; /* Removed */
+  }
+
+  .web-interstitial-modal-close-button {
+    position: absolute;
+    top: -10px; 
+    right: -10px;
+    background-color: var(--neon-pink); /* Changed */
+    color: var(--dark-bg); /* Changed for contrast */
+    border: 2px solid var(--neon-blue); /* Changed to neon border */
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    font-size: 16px;
+    line-height: 26px; 
+    text-align: center;
+    cursor: pointer;
+    font-weight: bold;
+    box-shadow: 0 0 10px var(--neon-blue); /* Added neon glow */
+    z-index: 1;
+    transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease; /* Added transitions */
+  }
+  .web-interstitial-modal-close-button:hover {
+      background-color: var(--neon-pink-dark); /* Changed */
+      border-color: var(--neon-green); /* Change border color on hover for effect */
+      box-shadow: 0 0 15px var(--neon-green); /* Stronger glow on hover */
+  }
+  
+  /* Container for the Profitableratecpm ad inside the modal */
+  #web-interstitial-profitableratecpm-container {
+      margin-top: 15px;
+      margin-bottom: 15px;
+      width: 100%;
+      min-height: 50px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+  }
+  .ad-warning {
+      font-size: 0.75em;
+      color: var(--text-color); /* Changed */
+      margin-top: 10px;
+  }
+  </style>
+</head>
+
+<body>
+  <div class="blogger-app-container">
+      <!-- Adsterra Ad Code START (TOP BANNER) -->
+      <!-- Place your Adsterra ad code here if you have one -->
+      <!-- Adsterra Ad Code END (TOP BANNER) -->
+
+      <div id="auth-section" style="display: none;">
+          <h2>Welcome to the Learning App Store</h2>
+          <div id="signin-form">
+              <h3>Sign In</h3>
+              <input type="email" id="signin-email" placeholder="Email"/>
+              <input type="password" id="signin-password" placeholder="Password"/>
+              <button id="signin-button">Sign In</button>
+              <p id="signin-error"></p>
+              <p>Don't have an account? <button id="show-signup" class="secondary-button">Sign Up</button></p>
+          </div>
+          <div id="signup-form" style="display: none;">
+              <h3>Sign Up</h3>
+              <input type="text" id="signup-fullname" placeholder="Full Name"/>
+              <input type="email" id="signup-email" placeholder="Email"/>
+              <input type="password" id="signup-password" placeholder="Password"/>
+              <button id="signup-button">Sign Up</button>
+              <p id="signup-error"></p>
+              <p>Already have an account? <button id="show-signin" class="secondary-button">Sign In</button></p>
+          </div>
+      </div>
+
+      <div id="home-section" style="display: flex;">
+          <div id="top-menu-bar">
+              <h2 id="current-category-title">All Learning Apps & Games</h2>
+              <div id="category-menu-container">
+                  <button id="category-menu-button"><i class="fas fa-bars"></i></button>
+                  <div id="category-dropdown"></div>
+              </div>
+          </div>
+          
+          <p class="about-us-home-paragraph"> Nazim Mustafa has designed the Medical Learning App to give a better look to the apps. It has been made with simple and beautiful apps to make it more comfortable.</p>
+
+          <div id="search-container">
+              <input type="text" id="search-input" placeholder="Search apps/games..."/>
+              <button id="search-button">Search</button>
+          </div>
+          <div id="dashboard-game-list" class="category-game-list">
+              <p class="no-items-message">Select a category or search to view items.</p>
+          </div>
+
+          <!-- ***** START: CUSTOM AdMob BANNER DISPLAY (Using the table structure) ***** -->
+          <table class="custom-admob-banner-table">
+            <tr>
+               <td>
+                 <script type="text/javascript">
+                    // This script writes the iframe for the ad defined in the <head>
+                    // IMPORTANT: 'src1' variable must be defined elsewhere (e.g., in a Blogger widget or external JS)
+                    // If src1 is not defined, this ad will not load.
+                    var _0x28f9=["\x3C\x69\x66\x72\x61\x6D\x65\x20\x73\x72\x63\x3D\x22","\x22\x20\x73\x74\x79\x6C\x65\x3D\x22\x62\x6F\x72\x64\x65\x72\x3A\x6E\x6F\x6E\x65\x3B\x22\x20\x68\x65\x69\x67\x68\x3D\x22\x35\x30\x22\x20\x77\x69\x64\x74\x3D\x22\x33\x32\x30\x22\x20\x66\x72\x61\x6D\x65\x62\x6F\x72\x64\x65\x72\x3D\x22\x30\x22\x20\x73\x63\x72\x6F\x6C\x6C\x69\x6E\x67\x3D\x22\x6E\x6F\x22\x3E\x3C\x2F\x69\x66\x72\x61\x6D\x65\x3E","\x77\x72\x69\x74\x65"];
+                    if (typeof src1 !== 'undefined') {
+                        document[_0x28f9[2]](_0x28f9[0]+ src1+ _0x28f9[1]);
+                    } else {
+                        console.warn("Custom AdMob source 'src1' is not defined. Ad will not load via this method.");
+                    }
+                 </script>
+               </td>
+            </tr>
+          </table>
+          <!-- ***** END: CUSTOM AdMob BANNER DISPLAY ***** -->
+
+          <div class="social-links-container">
+              <a href="https://youtu.be/NseyolyiBao?si=BPGbVJF0bgo-OfFx" target="_blank" class="social-button youtube-button" title="Our YouTube Channel">
+                  <i class="fab fa-youtube"></i> Our YouTube Channel
+              </a>
+              <a href="https://www.facebook.com/share/g/16dDZTHyxu/" target="_blank" class="social-button facebook-button" title="Facebook Share Post">
+                  <i class="fab fa-facebook-f"></i> Facebook Share Post
+              </a>
+              <a href="https://www.instagram.com/nazimmustafa10" target="_blank" class="social-button instagram-button" title="Nazim Mustafa Instagram">
+                  <i class="fab fa-instagram"></i> Instagram
+              </a>
+              <a href="https://whatsapp.com/channel/0029Vb5sBgLAe5VvpwVKDQ0v" target="_blank" class="social-button whatsapp-button" title="GM Networking WhatsApp Channel">
+                  <i class="fab fa-whatsapp"></i> WhatsApp Channel
+              </a>
+              <a href="https://t.me/gmnetworkings" target="_blank" class="social-button telegram-button" title="GM Networking Telegram Channel">
+                  <i class="fab fa-telegram-plane"></i> Telegram Channel
+              </a>
+              <a href="https://www.taleemkidunya.xyz" target="_blank" class="social-button taleem-dunya-website-button" title="Taleem Ki Duniya Official Website">
+                  <i class="fas fa-globe"></i> Taleem Ki Duniya Website
+              </a>
+              <a href="https://apkpure.com/taleem-ki-dunya/com.taleem.duniya?utm_source=whatsapp&utm_campaign=share&utm_medium=social_network" target="_blank" class="social-button apk-download-button" title="Download Taleem Ki Duniya App (APK)">
+                  <i class="fas fa-download"></i> Download App (APK)
+              </a>
+              <button id="show-blogger-posts-button" class="social-button blogger-posts-button" title="View Our Blog Posts">
+                  <i class="fas fa-blog"></i> View Our Blog Posts
+              </button>
+          </div>
+          <div class="copyright-info">
+              <p>© 2024 Nazim Mustafa. All rights reserved. <br/>Taleem Ki Dunya - Your Gateway to Medical Learning.</p>
+              <p>Stay connected with GM Networking & Educational Resources</p>
+              <p> Taleem ki dunya</p>
+          </div>
+      </div>
+
+      <div id="game-section" style="display: none;">
+          <button id="back-to-home" title="Back to Home"> 
+              <i class="fas fa-arrow-left"></i>
+          </button>
+          <h2 id="game-title"></h2>
+          <div id="game-container">
+              <iframe id="game-iframe" sandbox="allow-scripts allow-same-origin"></iframe>
+          </div>
+      </div>
+
+      <div id="blogger-posts-section" style="display: none;"> 
+          <h2>Our Blog Posts</h2>
+          <button id="back-to-home-from-blog" class="back-to-home-button">Back to Home</button> 
+          <div id="blogger-posts-list-container"> 
+              <ul id="blogger-posts-list">
+                  <li>Loading posts...</li>
+              </ul>
+          </div>
+          <div id="blogger-post-iframe-container" style="display: none;"> 
+              <button id="back-to-blog-list-button">Back to Posts List</button>
+              <iframe id="blogger-post-iframe" sandbox="allow-scripts allow-same-origin allow-popups allow-forms" title="Blog Post Content"></iframe>
+          </div>
+      </div>
+      
+      <!-- WEB INTERSTITIAL MODAL with Profitableratecpm.com Ad -->
+      <div id="web-interstitial-modal" class="web-interstitial-modal-overlay">
+          <div class="web-interstitial-modal-content">
+              <button id="web-interstitial-close-button" class="web-interstitial-modal-close-button">X</button>
+              <h3>Advertisement</h3>
+              <div id="web-interstitial-profitableratecpm-container">
+                  <!-- The Profitableratecpm.com ad will be placed here by its script -->
+                  <div id="container-6cd8c133318a16a48e4a4064dedfb334"></div>
+              </div>
+              <p class="ad-warning">Please wait for the advertisement to load or close.</p>
+          </div>
+      </div>
+
+  </div> <!-- End of .blogger-app-container -->
+
+  <!-- SCRIPT FOR PROFITABLERATECPM.COM AD -->
+  <script async="async" data-cfasync="false" src="//pl27136142.profitableratecpm.com/c06b9ae2b3e9e7aa8a4929bca46124c1/invoke.js"></script>
+
+  <script type="text/javascript">
+    // jQuery Tabs Initialization
+    $(document).ready(function(){
+     if (typeof $.fn.tabs === 'function') { 
+        $("ul.tabs").tabs("div.panes > div");
+     } else {
+        console.warn("jQuery Tools 'tabs' function not found. Tabs feature might not work.");
+     }
+   });
+  </script>
+
+  <script type="module">
+    //<![CDATA[
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-auth.js";
+    import { getFirestore, collection, getDocs, doc, getDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyDn3w9ruBoM8fj1xPZWe06RU34fNU_QTvQ", 
+        authDomain: "pakistanvsindiama.firebaseapp.com",
+        projectId: "pakistanvsindiama",
+        storageBucket: "pakistanvsindiama.firebasestorage.app",
+        messagingSenderId: "1092908411292",
+        appId: "1:1092908411292:web:ed74ca3b2162f4b55ec059",
+        measurementId: "G-2YKGPMJWEJ"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app); 
+    const db = getFirestore(app);
+    const gamesCollection = collection(db, 'games');
+
+    const authSection = document.getElementById('auth-section');
+    const homeSection = document.getElementById('home-section');
+    const gameSection = document.getElementById('game-section');
+    const categoryMenuButton = document.getElementById('category-menu-button');
+    const categoryDropdown = document.getElementById('category-dropdown');
+    const currentCategoryTitleElement = document.getElementById('current-category-title');
+    const dashboardGameListContainer = document.getElementById('dashboard-game-list');
+    const searchInput = document.getElementById('search-input');
+    const searchButton = document.getElementById('search-button');
+    const gameTitleElement = document.getElementById('game-title');
+    const gameIframe = document.getElementById('game-iframe');
+    const backToHomeButtonGame = document.querySelector('#game-section #back-to-home'); 
+
+    const bloggerPostsSection = document.getElementById('blogger-posts-section');
+    const showBloggerPostsButton = document.getElementById('show-blogger-posts-button');
+    const bloggerPostsListContainer = document.getElementById('blogger-posts-list-container');
+    const bloggerPostsListUL = document.getElementById('blogger-posts-list'); 
+    const bloggerPostIframeContainer = document.getElementById('blogger-post-iframe-container');
+    const bloggerPostIframe = document.getElementById('blogger-post-iframe');
+    const backToHomeFromBlogButton = document.getElementById('back-to-home-from-blog');
+    const backToBlogListButton = document.getElementById('back-to-blog-list-button');
+
+    const webInterstitialModal = document.getElementById('web-interstitial-modal');
+    const webInterstitialCloseButton = document.getElementById('web-interstitial-close-button');
+    
+    const YOUR_BLOG_URL = "https://www.taleemkidunya.xyz"; 
+    const MAX_BLOG_POSTS_TO_SHOW = 1000; 
+    const PLACEHOLDER_IMAGE_URL = 'https://via.placeholder.com/100x75/3a3a5a/e0e0e0?text=No+Image';
+    
+    const basePath = window.location.pathname.endsWith('/') ? window.location.pathname : window.location.pathname + '/'; 
+
+
+    let allGames = []; 
+    let currentSelectedCategory = "Show All"; 
+    const categoriesForMenu = ["Show All","Nazim Mustafa " ,"Despenser", "Anatomy and Physiology", "Applied Science", "Physics", "Chemistry", "Game", "Tools", "News", "11 Class", "12 Class", "Past Paper", "Download APK File"];
+    const apkDownloadLink = "https://apkpure.com/taleem-ki-dunya/com.taleem.duniya?utm_source=whatsapp&utm_campaign=share&utm_medium=social_network"; 
+    
+    const INTERSTITIAL_DISPLAY_INTERVAL = 90000; 
+    let lastInterstitialShowTime = 0;
+
+    function safeSetDisplay(element, displayValue) { if (element) element.style.display = displayValue; }
+    function safeSetTextContent(element, text) { if (element) element.textContent = text; }
+    function safeSetInnerHTML(element, html) { if (element) element.innerHTML = html; }
+    function safeSetValue(element, value) { if (element) element.value = value; }
+
+    function updateCurrentCategoryTitle(categoryName) {
+        if (currentCategoryTitleElement) {
+            if (categoryName === "Show All") safeSetInnerHTML(currentCategoryTitleElement, "All Learning Apps & Games");
+            else if (categoryName !== "Download APK File") safeSetTextContent(currentCategoryTitleElement, categoryName);
+        }
+    }
+
+    function tryShowWebInterstitial(onAdClosedCallback) {
+        const now = Date.now();
+        if (now - lastInterstitialShowTime < INTERSTITIAL_DISPLAY_INTERVAL) {
+            console.log("Web Interstitial: Too soon, skipping.");
+            if (onAdClosedCallback) onAdClosedCallback();
+            return;
+        }
+
+        if (webInterstitialModal && webInterstitialCloseButton) {
+            console.log("Showing Web Interstitial Modal");
+            webInterstitialModal.style.display = 'flex';
+            lastInterstitialShowTime = now;
+
+            webInterstitialCloseButton.disabled = true;
+            setTimeout(() => {
+                webInterstitialCloseButton.disabled = false;
+            }, 2500); 
+
+            const closeHandler = () => {
+                hideWebInterstitial();
+                if (onAdClosedCallback) onAdClosedCallback();
+                webInterstitialCloseButton.removeEventListener('click', closeHandler);
+            };
+            webInterstitialCloseButton.addEventListener('click', closeHandler);
+        } else {
+            console.warn("Web interstitial modal or close button not found.");
+            if (onAdClosedCallback) onAdClosedCallback(); 
+        }
+    }
+
+    function hideWebInterstitial() {
+        if (webInterstitialModal) {
+            webInterstitialModal.style.display = 'none';
+        }
+    }
+
+    function originalNavigateToState(stateTarget, gameData = null, postData = null) {
+        let newState = {};
+        let newTitle = "Taleem Ki Dunya";
+        let newPath = basePath; 
+
+        if (gameSection) gameSection.classList.remove('fullscreen-active');
+        document.body.style.overflow = ''; 
+        if(gameIframe) { gameIframe.srcdoc = ''; gameIframe.src = 'about:blank'; }
+        if(bloggerPostIframe) { bloggerPostIframe.srcdoc = ''; bloggerPostIframe.src = 'about:blank'; }
+
+        safeSetDisplay(authSection, 'none'); 
+        safeSetDisplay(homeSection, 'none');
+        safeSetDisplay(gameSection, 'none');
+        safeSetDisplay(bloggerPostsSection, 'none'); 
+        safeSetDisplay(bloggerPostIframeContainer, 'none'); 
+        if(bloggerPostsListContainer) safeSetDisplay(bloggerPostsListContainer, 'block');
+
+
+        switch(stateTarget) {
+            case 'home':
+                newState = { appSection: 'home' };
+                newTitle = "Home - Taleem Ki Dunya";
+                safeSetDisplay(homeSection, 'flex');
+                updateCurrentCategoryTitle(currentSelectedCategory); 
+                document.body.style.overflow = ''; 
+                break;
+            case 'game': 
+                if (gameData && gameData.id) {
+                    newState = { appSection: 'game', gameId: gameData.id, name: gameData.name || 'Game', htmlCode: gameData.htmlCode || '' };
+                    newTitle = (gameData.name || 'Game') + " - Game";
+                    newPath = basePath + '#game/' + gameData.id;
+                } else {
+                    console.warn("Game data missing or invalid for game state.");
+                    originalNavigateToState('home'); return; 
+                }
+                break;
+            case 'bloglist':
+                newState = { appSection: 'bloglist' };
+                newTitle = "Blog Posts - Taleem Ki Dunya";
+                newPath = basePath + '#bloglist';
+                safeSetDisplay(bloggerPostsSection, 'flex');
+                if(bloggerPostsListContainer) safeSetDisplay(bloggerPostsListContainer, 'block');
+                safeSetDisplay(bloggerPostIframeContainer, 'none');
+                if (bloggerPostsListUL && (!bloggerPostsListUL.hasChildNodes() || (bloggerPostsListUL.firstChild && bloggerPostsListUL.firstChild.textContent && bloggerPostsListUL.firstChild.textContent.includes("Loading")))) {
+                     fetchAndDisplayBloggerPosts(); 
+                }
+                document.body.style.overflow = ''; 
+                break;
+            case 'blogpost':
+                if (postData && postData.url) {
+                    newState = { appSection: 'blogpost', url: postData.url, title: postData.title || 'Blog Post' };
+                    newTitle = (postData.title || 'Blog Post') + " - Blog Post";
+                    newPath = basePath + '#blogpost?url=' + encodeURIComponent(postData.url); 
+                    safeSetDisplay(bloggerPostsSection, 'flex');
+                    if(bloggerPostsListContainer) safeSetDisplay(bloggerPostsListContainer, 'none');
+                    safeSetDisplay(bloggerPostIframeContainer, 'flex');
+                    if(bloggerPostIframe) bloggerPostIframe.src = postData.url;
+                    document.body.style.overflow = 'hidden'; 
+                } else {
+                    console.warn("Post data missing or invalid for blogpost state.");
+                    originalNavigateToState('bloglist'); return; 
+                }
+                break;
+            default: 
+                newState = { appSection: 'home' };
+                safeSetDisplay(homeSection, 'flex');
+                document.body.style.overflow = '';
+                break;
+        }
+        
+        const currentFullUrl = window.location.pathname + window.location.search + window.location.hash;
+        const targetFullUrl = newPath; 
+
+        if (currentFullUrl !== targetFullUrl) { 
+            if (history.state && history.state.appSection === newState.appSection && 
+                ((newState.appSection === 'game' && history.state.gameId === newState.gameId) || 
+                 (newState.appSection === 'blogpost' && history.state.url === newState.url) ||
+                 (newState.appSection !== 'game' && newState.appSection !== 'blogpost' )
+                )
+            ) { 
+                history.replaceState(newState, newTitle, targetFullUrl);
+            } else {
+                history.pushState(newState, newTitle, targetFullUrl);
+            }
+        } else if (!history.state && newState.appSection === 'home') { 
+            history.replaceState(newState, newTitle, targetFullUrl);
+        }
+        document.title = newTitle;
+        if (categoryDropdown) safeSetDisplay(categoryDropdown, 'none');
+    }
+    
+    function proceedToGameDisplay(gameData) {
+        if (!gameData || !gameData.id) {
+            console.error("Game data missing for proceedToGameDisplay");
+            originalNavigateToState('home'); 
+            return;
+        }
+        originalNavigateToState('game', gameData); 
+
+        safeSetDisplay(gameSection, 'flex');
+        if (gameSection) gameSection.classList.add('fullscreen-active');
+        document.body.style.overflow = 'hidden'; 
+        safeSetTextContent(gameTitleElement, gameData.name || 'Game');
+        if(gameIframe) gameIframe.srcdoc = gameData.htmlCode || '<p>Error loading game content.</p>';
+    }
+
+    function navigateToState(stateTarget, gameData = null, postData = null) {
+        if (stateTarget === 'game' && gameData) {
+            tryShowWebInterstitial(() => {
+                proceedToGameDisplay(gameData);
+            });
+        } else if (stateTarget === 'bloglist') { 
+             tryShowWebInterstitial(() => {
+                originalNavigateToState(stateTarget, gameData, postData);
+            });
+        }
+        else { 
+            originalNavigateToState(stateTarget, gameData, postData);
+        }
+    }
+
+    function showHomeSectionFunc() { navigateToState('home'); }
+    function showBloggerPostsView() { navigateToState('bloglist'); }
+
+    window.addEventListener('popstate', function(event) {
+        if (event.state && event.state.appSection) {
+            const section = event.state.appSection;
+            const gameDataFromState = (section === 'game' && event.state.gameId) ? { id: event.state.gameId, name: event.state.name, htmlCode: event.state.htmlCode } : null;
+            const postDataFromState = (section === 'blogpost' && event.state.url) ? { url: event.state.url, title: event.state.title } : null;
+
+            if (section === 'game' && gameDataFromState) {
+                proceedToGameDisplay(gameDataFromState); 
+            } else {
+                originalNavigateToState(section, gameDataFromState, postDataFromState);
+            }
+        } else { 
+            originalNavigateToState('home'); 
+        }
+    });
+
+    function extractFirstImageUrl(htmlContent) {
+        if (!htmlContent) return null;
+        const match = htmlContent.match(/<\s*img [^>]*src\s*=\s*["']([^"']+)["'][^>]*>/i);
+        return match ? match[1] : null;
+    }
+
+    async function fetchAndDisplayBloggerPosts() {
+        if (!bloggerPostsListUL) return;
+        safeSetInnerHTML(bloggerPostsListUL, '<li>Aapke blog posts load ho rahi hain...</li>');
+        const feedUrl = `${YOUR_BLOG_URL.replace(/\/$/, "")}/feeds/posts/default?alt=json&max-results=${MAX_BLOG_POSTS_TO_SHOW}&orderby=published`;
+        try {
+            const response = await fetch(feedUrl);
+            if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}.`);
+            const data = await response.json();
+            safeSetInnerHTML(bloggerPostsListUL, ''); 
+            if (data.feed && data.feed.entry && data.feed.entry.length > 0) {
+                data.feed.entry.forEach(post => {
+                    const postTitle = post.title.$t;
+                    const fullPostContent = post.content ? post.content.$t : '';
+                    const firstImageUrl = extractFirstImageUrl(fullPostContent) || PLACEHOLDER_IMAGE_URL;
+                    let postUrl = ''; 
+                    if (post.link) { for (let i = 0; i < post.link.length; i++) { if (post.link[i].rel === 'alternate' && post.link[i].type === 'text/html') { postUrl = post.link[i].href; break; } } }
+                    if (postTitle && postUrl) { 
+                        const listItem = document.createElement('li');
+                        listItem.setAttribute('data-post-url', postUrl); 
+                        listItem.setAttribute('data-post-title', postTitle); 
+                        listItem.innerHTML = `<div class="post-list-item-image-container"><img src="${firstImageUrl}" alt="${postTitle}" loading="lazy"/></div><div class="post-list-item-details"><h4 class="post-list-item-title"><a href="${postUrl}" title="${postTitle}" target="_blank">${postTitle}</a></h4></div>`;
+                        listItem.addEventListener('click', (event) => {
+                            event.preventDefault(); 
+                            const clickedListItem = event.currentTarget;
+                            originalNavigateToState('blogpost', null, { url: clickedListItem.getAttribute('data-post-url'), title: clickedListItem.getAttribute('data-post-title') });
+                        });
+                        bloggerPostsListUL.appendChild(listItem);
+                    }
+                });
+            } else { safeSetInnerHTML(bloggerPostsListUL, '<li>Koi posts nahi mili.</li>'); }
+        } catch (error) { console.error("Blogger posts fetch error:", error); safeSetInnerHTML(bloggerPostsListUL, `<li>Posts load karne mein error.</li>`); }
+    }
+
+    function setupEventListeners() {
+        if (categoryMenuButton && categoryDropdown) {
+            categoryMenuButton.addEventListener('click', (event) => { 
+                event.stopPropagation(); 
+                categoryDropdown.style.display = categoryDropdown.style.display === 'block' ? 'none' : 'block'; 
+            });
+            document.addEventListener('click', (event) => { 
+                if (categoryDropdown && categoryDropdown.style.display === 'block' && categoryMenuButton && !categoryMenuButton.contains(event.target) && !categoryDropdown.contains(event.target)) { 
+                    categoryDropdown.style.display = 'none'; 
+                } 
+            });
+        }
+        if(searchButton) searchButton.addEventListener('click', performSearch);
+        if(searchInput) searchInput.addEventListener('keypress', (event) => { if (event.key === 'Enter') { event.preventDefault(); performSearch(); } });
+        if(backToHomeButtonGame) backToHomeButtonGame.addEventListener('click', showHomeSectionFunc); 
+        if (showBloggerPostsButton) showBloggerPostsButton.addEventListener('click', showBloggerPostsView);
+        if (backToHomeFromBlogButton) backToHomeFromBlogButton.addEventListener('click', showHomeSectionFunc);
+        if (backToBlogListButton) { backToBlogListButton.addEventListener('click', () => { if (history.state && history.state.appSection === 'blogpost') { history.back(); } else { navigateToState('bloglist'); } }); }
+    }
+
+    function populateCategoryDropdown() {
+        if (!categoryDropdown) return;
+        const ul = document.createElement('ul');
+        categoriesForMenu.forEach(categoryName => {
+            const li = document.createElement('li');
+            li.textContent = categoryName;
+            if (categoryName === "Download APK File") { 
+                li.addEventListener('click', () => { window.open(apkDownloadLink, '_blank'); if(categoryDropdown) safeSetDisplay(categoryDropdown, 'none'); }); 
+            } else { 
+                li.addEventListener('click', () => { 
+                    currentSelectedCategory = categoryName; 
+                    updateCurrentCategoryTitle(categoryName); 
+                    if(searchInput) safeSetValue(searchInput, ''); 
+                    displayGamesForCategory(allGames); 
+                    if(categoryDropdown) safeSetDisplay(categoryDropdown, 'none'); 
+                }); 
+            }
+            ul.appendChild(li);
+        });
+        safeSetInnerHTML(categoryDropdown, ''); categoryDropdown.appendChild(ul);
+    }
+    
+    async function fetchAllGamesAndDisplay() {
+        if (!dashboardGameListContainer) return;
+        safeSetInnerHTML(dashboardGameListContainer, '<p class="no-items-message">Loading apps & games...</p>');
+        try {
+            const gamesQuery = query(gamesCollection, orderBy('createdAt', 'desc'));
+            const querySnapshot = await getDocs(gamesQuery);
+            allGames = []; 
+            if (querySnapshot.empty) { safeSetInnerHTML(dashboardGameListContainer, '<p class="no-items-message">No apps & games available.</p>'); } 
+            else { 
+                querySnapshot.forEach((docSnap) => { 
+                    allGames.push({ 
+                        id: docSnap.id, 
+                        name: docSnap.data().name || 'Game', 
+                        imageUrl: docSnap.data().imageUrl || PLACEHOLDER_IMAGE_URL,
+                        category: docSnap.data().category || '', // Ensure category exists
+                        categories: docSnap.data().categories || [] // Ensure categories array exists
+                    }); 
+                }); 
+            }
+            displayGamesForCategory(allGames); 
+        } catch (error) { console.error("Firebase games fetch error: ", error); safeSetInnerHTML(dashboardGameListContainer, '<p class="no-items-message" style="color: red;">Error loading apps/games.</p>'); allGames = []; }
+    }
+
+    function displayGamesForCategory(gamesToFilter) {
+        if (!dashboardGameListContainer) return;
+        let gamesToShow = [];
+        const lowerCatInput = currentSelectedCategory.toLowerCase().trim();
+        
+        if (lowerCatInput === "show all") { 
+            gamesToShow = gamesToFilter; 
+        } else {
+            gamesToShow = gamesToFilter.filter(game => {
+                const gameNameLower = game.name ? game.name.toLowerCase() : '';
+                const gameCategoryLower = game.category ? game.category.toLowerCase() : '';
+                const gameCategoriesLower = Array.isArray(game.categories) ? game.categories.map(cat => typeof cat === 'string' ? cat.toLowerCase() : '') : [];
+                
+                return gameNameLower.includes(lowerCatInput) || 
+                       gameCategoryLower.includes(lowerCatInput) ||
+                       gameCategoriesLower.some(cat => cat.includes(lowerCatInput));
+            });
+        }
+        
+        renderGamesToDashboard(gamesToShow);
+    }
+
+    function renderGamesToDashboard(gamesToRender) {
+        if (!dashboardGameListContainer) return;
+        safeSetInnerHTML(dashboardGameListContainer, ''); 
+        if (gamesToRender.length === 0) { safeSetInnerHTML(dashboardGameListContainer, `<p class="no-items-message">No items found in "${currentSelectedCategory === "Show All" ? "All Categories" : currentSelectedCategory}".</p>`); return; }
+        gamesToRender.forEach(game => {
+            const gameElement = document.createElement('div');
+            gameElement.classList.add('game-item');
+            gameElement.innerHTML = `<img src="${game.imageUrl}" alt="${game.name || 'Game'}" loading="lazy"/><h3>${game.name || 'Game'}</h3><button class="play-button" data-game-id="${game.id}">Open</button>`;
+            dashboardGameListContainer.appendChild(gameElement);
+        });
+        dashboardGameListContainer.querySelectorAll('.game-item .play-button').forEach(button => { button.addEventListener('click', (event) => loadSelectedGame(event.target.dataset.gameId)); });
+    }
+
+    async function loadSelectedGame(gameId) {
+        if (!gameId) { console.error("loadSelectedGame called with undefined gameId"); navigateToState('home'); return; }
+        try {
+            const docRef = doc(db, 'games', gameId);
+            const docSnap = await getDoc(docRef);
+            if (docSnap.exists()) { 
+                const gameData = docSnap.data(); 
+                navigateToState('game', { 
+                    id: gameId, 
+                    name: gameData.name || 'Game', 
+                    htmlCode: gameData.htmlCode || '<p>Error loading game content.</p>' 
+                });
+            } else { 
+                console.warn("Game not found with ID:", gameId);
+                navigateToState('home'); 
+            } 
+        } catch (error) { 
+            console.error("Error fetching game details:", error); 
+            alert("Error loading game."); 
+            navigateToState('home'); 
+        } 
+    }
+
+    function performSearch() {
+        if(!searchInput) return;
+        const searchQuery = searchInput.value.trim().toLowerCase();
+        if (searchQuery === '') { 
+            currentSelectedCategory = "Show All"; // Reset to show all if search is cleared
+            updateCurrentCategoryTitle(currentSelectedCategory);
+            displayGamesForCategory(allGames); 
+        } else { 
+            const filteredGamesFromAll = allGames.filter(game => (game.name && game.name.toLowerCase().includes(searchQuery))); 
+            updateCurrentCategoryTitle(`Search: "${searchInput.value.trim()}"`); 
+            renderGamesToDashboard(filteredGamesFromAll); 
+        }
+    }
+    
+    onAuthStateChanged(auth, async (user) => {
+        // Your existing auth logic can go here if you implement sign-in/sign-up features
+        // For now, it will proceed to initialize the app content
+        if (user) {
+            console.log("User is signed in:", user.uid);
+        } else {
+            console.log("User is signed out or not signed in.");
+        }
+
+        console.log('App initializing content...');
+        if(authSection) safeSetDisplay(authSection, 'none'); // Keep auth hidden by default as per original
+        populateCategoryDropdown();
+        setupEventListeners();
+        await fetchAllGamesAndDisplay(); 
+
+        const currentHash = window.location.hash;
+        let navigatedFromHash = false;
+
+        if (currentHash) {
+            if (currentHash.startsWith('#game/')) {
+                const gameIdFromHash = currentHash.substring('#game/'.length);
+                if (gameIdFromHash) { 
+                    const gameToLoad = allGames.find(g => g.id === gameIdFromHash);
+                    if (gameToLoad) {
+                        // Fetch full game data for htmlCode if not already in allGames
+                        const docRef = doc(db, 'games', gameIdFromHash);
+                        const docSnap = await getDoc(docRef);
+                        if (docSnap.exists()) {
+                            const gameData = docSnap.data();
+                             proceedToGameDisplay({ id: gameIdFromHash, name: gameData.name || 'Game', htmlCode: gameData.htmlCode || '<p>Error loading game content.</p>' });
+                        } else { originalNavigateToState('home'); }
+                    } else { originalNavigateToState('home'); }
+                    navigatedFromHash = true; 
+                }
+            } else if (currentHash === '#bloglist') {
+                originalNavigateToState('bloglist');
+                navigatedFromHash = true;
+            } else if (currentHash.startsWith('#blogpost?url=')) {
+                try {
+                    const urlParams = new URLSearchParams(currentHash.substring(currentHash.indexOf('?') + 1));
+                    const postUrlInHash = urlParams.get('url');
+                    if (postUrlInHash) {
+                        originalNavigateToState('blogpost', null, {url: decodeURIComponent(postUrlInHash), title: "Blog Post"});
+                        navigatedFromHash = true;
+                    }
+                } catch (e) { console.error("Error parsing blogpost hash:", e); }
+            }
+        }
+
+        if (!navigatedFromHash) {
+            if (history.state && history.state.appSection) {
+                 const { appSection, gameId, name, htmlCode, url, title } = history.state;
+                 const gameData = gameId ? { id: gameId, name, htmlCode } : null;
+                 const postData = url ? { url, title } : null;
+                 originalNavigateToState(appSection, gameData, postData);
+            } else {
+                 originalNavigateToState('home'); 
+            }
+        }
+    });
+
+      //]]>
+  </script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3071493838743593"
+     crossorigin="anonymous"></script>
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-format="autorelaxed"
+     data-ad-client="ca-pub-3071493838743593"
+     data-ad-slot="6446273593"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</body>
+</html>
