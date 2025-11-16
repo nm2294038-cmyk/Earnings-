@@ -1,170 +1,200 @@
-/* -------------------------------------- */
-    /* 0. NEW BISMILLAH HEADER & KEYFRAMES    */
-    /* -------------------------------------- */
-    .bismillah-header {
-      text-align: center;
-      padding: 10px;
-      font-size: 1.5em; 
-      font-weight: 700;
-      color: #1e88e5; 
-      background-color: #ffffff;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-      font-family: 'Times New Roman', serif; 
-      position: sticky;
-      top: 0;
-      z-index: 200; 
-    }
-
 :root {
-            --primary-color: #007bff;
-            --secondary-color: #28a745;
-            --dark-bg: #2c3e50;
-            --light-bg: #ffffff;
-            --danger-color: #dc3545;
-            --shadow-deep: 0 10px 25px rgba(0, 0, 0, 0.2);
-            --profile-color: #ff9800;
-            --tiktok-color: #00f2ea;
-            --youtube-color: #ff0000;
-            --instagram-color: #e1306c;
-            --usd-color: #008000;
-            --eur-color: #003399;
-            --gbp-color: #800080;
-            --locked-overlay: rgba(0, 0, 0, 0.7);
-        }
+    --primary-color: #007bff;
+    --secondary-color: #28a745;
+    --dark-bg: #2c3e50;
+    --light-bg: #ffffff;
+    --danger-color: #dc3545;
+    --shadow-deep: 0 10px 25px rgba(0, 0, 0, 0.2);
+    --profile-color: #ff9800;
+    --tiktok-color: #00f2ea;
+    --amazon-color: #ff9900;
+    --pubg-color: #f39c12;
+    --freefire-color: #e74c3c;
+    --usdt-color: #26a17b;
+    --locked-overlay: rgba(0, 0, 0, 0.7);
+}
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f0f2f5;
-            color: #333;
-            line-height: 1.6;
-            min-height: 100vh;
-        }
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f2f5;
+    color: #333;
+    line-height: 1.6;
+    min-height: 100vh;
+}
 
-        header {
-            background-color: var(--dark-bg);
-            color: white;
-            padding: 15px 20px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .main-content {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
+header {
+    background-color: var(--dark-bg);
+    color: white;
+    padding: 15px 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 
-        .container {
-            width: 90%;
-            max-width: 1200px;
-            margin: 40px auto;
-            background-color: var(--light-bg);
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
+.main-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
 
-        /* --- AUTH STYLES --- */
-        #authContainer { display: none; max-width: 400px; width: 100%; padding: 40px; background: var(--light-bg); border-radius: 12px; box-shadow: var(--shadow-deep); text-align: center; }
-        .auth-form input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; }
-        .auth-form button { background-color: var(--primary-color); color: white; padding: 12px; border: none; border-radius: 6px; width: 100%; cursor: pointer; font-size: 1.1em; margin-top: 15px; }
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 40px auto;
+    background-color: var(--light-bg);
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
 
-        /* --- DASHBOARD & PROFILE STYLES --- */
-        #dashboardContainer { display: none; }
-        
-        .profile-card { display: flex; align-items: center; justify-content: center; padding: 20px; margin-bottom: 30px; border: 1px solid #ddd; border-radius: 10px; background: #fcfcfc; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05); }
-        .profile-pic-container { width: 70px; height: 70px; border-radius: 50%; background-color: var(--profile-color); color: white; font-size: 24px; font-weight: bold; display: flex; justify-content: center; align-items: center; margin-right: 20px; flex-shrink: 0; }
-        .profile-details h2 { color: var(--primary-color); margin: 0 0 5px 0; font-size: 1.8em; }
+/* --- AUTH STYLES --- */
+#authContainer { display: none; max-width: 400px; width: 100%; padding: 40px; background: var(--light-bg); border-radius: 12px; box-shadow: var(--shadow-deep); text-align: center; }
+.auth-form input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; }
+.auth-form button { background-color: var(--primary-color); color: white; padding: 12px; border: none; border-radius: 6px; width: 100%; cursor: pointer; font-size: 1.1em; margin-top: 15px; }
 
-        .wallet-display {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 15px;
-            margin-bottom: 30px;
-            text-align: center;
-        }
-        .balance-box { padding: 15px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); }
-        
-        /* Specific Wallet Colors */
-        .coins-box { background-color: #e6f7ff; border: 1px solid var(--primary-color); }
-        .pkr-box { background-color: #e6ffe6; border: 1px solid var(--secondary-color); }
-        .tiktok-box { background-color: #ffe6f7; border: 1px solid var(--tiktok-color); }
-        .youtube-box { background-color: #ffe6e6; border: 1px solid var(--youtube-color); }
-        .instagram-box { background-color: #f0e6ff; border: 1px solid var(--instagram-color); }
-        .usd-box { background-color: #e6f0e6; border: 1px solid var(--usd-color); }
-        .eur-box { background-color: #e6e6ff; border: 1px solid var(--eur-color); }
-        .gbp-box { background-color: #f0e6ff; border: 1px solid var(--gbp-color); }
-        .aed-box { background-color: #fff0e6; border: 1px solid #ff8c00; }
-        .sar-box { background-color: #e6f0f0; border: 1px solid #006400; }
-        .jpy-box { background-color: #ffffcc; border: 1px solid #cc0000; }
+/* --- DASHBOARD & PROFILE STYLES --- */
+#dashboardContainer { display: none; }
 
-        .balance-box h3 { margin: 0 0 5px 0; font-size: 1em; }
-        .balance-box p { font-size: 1.6em; font-weight: bold; }
+.profile-card { display: flex; align-items: center; justify-content: center; padding: 20px; margin-bottom: 30px; border: 1px solid #ddd; border-radius: 10px; background: #fcfcfc; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05); }
+.profile-pic-container { width: 70px; height: 70px; border-radius: 50%; background-color: var(--profile-color); color: white; font-size: 24px; font-weight: bold; display: flex; justify-content: center; align-items: center; margin-right: 20px; flex-shrink: 0; }
+.profile-details h2 { color: var(--primary-color); margin: 0 0 5px 0; font-size: 1.8em; }
 
-        /* --- Exchange Section --- */
-        .exchange-master-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-        .exchange-section {
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            background-color: #f9f9f9;
-            position: relative; /* For lock overlay */
-        }
-        
-        /* LOCK OVERLAY STYLES */
-        .exchange-section.locked::before {
-            content: '🔒 Locked';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: var(--locked-overlay);
-            color: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 1.5em;
-            font-weight: bold;
-            border-radius: 8px;
-            cursor: not-allowed;
-            z-index: 10;
-        }
-        
-        .exchange-section h3 { color: var(--danger-color); margin-top: 0; font-size: 1.2em; }
-        .exchange-section p.rate { font-weight: bold; color: #555; margin-bottom: 15px; font-size: 0.9em; }
-        .exchange-form input { width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
-        
-        /* Button Styles */
-        .exchange-form button { background-color: var(--danger-color); color: white; padding: 10px; border: none; border-radius: 4px; cursor: pointer; width: 100%; transition: background-color 0.3s; }
-        #pkrToCoinButton { background-color: var(--secondary-color); }
-        #pkrToTiktokButton { background-color: var(--tiktok-color); color: var(--dark-bg); font-weight: bold; }
-        
-        /* International Currency Buttons */
-        .int-exchange-btn { background-color: var(--primary-color); }
-        .reverse-exchange-btn { background-color: #808080; }
+/* --- ROTATING WALLET CARD STYLES --- */
+.wallet-balance-card {
+    background: linear-gradient(135deg, #1e88e5, #0d47a1); 
+    color: white; 
+    padding: 25px; 
+    margin: 0 auto 30px; 
+    border-radius: 15px; 
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); 
+    max-width: 500px; 
+    position: relative; 
+    overflow: hidden;
+    height: 150px; /* Fixed height for the card */
+    display: flex;
+    align-items: center;
+}
 
-        @media (max-width: 1200px) {
-            .exchange-master-container {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-        @media (max-width: 700px) {
-            .wallet-display, .exchange-master-container {
-                grid-template-columns: 1fr;
-            }
-            .profile-card { flex-direction: column; text-align: center; }
-            .profile-pic-container { margin-right: 0; margin-bottom: 15px; }
-            .profile-details { text-align: center; }
-            .quick-links { flex-direction: column; }
-        }
+.rotating-balance-container {
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+}
+
+.balance-track {
+    display: flex;
+    width: 700%; /* 7 slides * 100% */
+    height: 100%;
+    transition: transform 0.5s ease-in-out;
+}
+
+.balance-slide {
+    width: 14.28%; /* 100% / 7 slides */
+    flex-shrink: 0;
+    padding-right: 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.balance-slide h3 {
+    font-size: 1em;
+    margin-top: 0;
+    margin-bottom: 5px;
+    opacity: 0.8;
+}
+.balance-slide .balance-amount { 
+    font-size: 2.5em; 
+    font-weight: 900; 
+    display: flex; 
+    align-items: center; 
+}
+.balance-slide .balance-amount i { 
+    font-size: 0.8em; 
+    margin-right: 10px; 
+    color: var(--profile-color); /* Default coin color */
+}
+
+/* Navigation Arrows */
+.nav-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.3);
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    z-index: 10;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background 0.3s;
+}
+.nav-arrow:hover {
+    background: rgba(0, 0, 0, 0.6);
+}
+.nav-arrow.left { left: 10px; }
+.nav-arrow.right { right: 10px; }
+
+
+/* Specific Wallet Colors (Used for icons/text color inside the slide) */
+.coins-box .balance-amount i { color: #ffc107; }
+.pkr-box .balance-amount i { color: #28a745; }
+.tiktok-box .balance-amount i { color: #00f2ea; }
+.amazon-box .balance-amount i { color: #ff9900; }
+.pubg-box .balance-amount i { color: #f39c12; }
+.freefire-box .balance-amount i { color: #e74c3c; }
+.usdt-box .balance-amount i { color: #26a17b; }
+
+
+/* --- Exchange Section --- */
+.exchange-master-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+.exchange-section {
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    position: relative;
+}
+
+.exchange-section h3 { color: var(--primary-color); margin-top: 0; font-size: 1.2em; }
+.exchange-section p.rate { font-weight: bold; color: #555; margin-bottom: 15px; font-size: 0.9em; }
+.exchange-form input { width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+
+/* Button Styles */
+.exchange-form button { background-color: var(--danger-color); color: white; padding: 10px; border: none; border-radius: 4px; cursor: pointer; width: 100%; transition: background-color 0.3s; }
+#pkrToCoinButton { background-color: var(--secondary-color); }
+#pkrToTiktokButton { background-color: var(--tiktok-color); color: var(--dark-bg); font-weight: bold; }
+#pkrToAmazonButton { background-color: var(--amazon-color); color: var(--dark-bg); font-weight: bold; }
+#pkrToPubgButton { background-color: var(--pubg-color); color: white; font-weight: bold; }
+#pkrToFreeFireButton { background-color: var(--freefire-color); color: white; font-weight: bold; }
+#pkrToUsdtButton { background-color: var(--usdt-color); color: white; font-weight: bold; }
+
+@media (max-width: 1200px) {
+    .exchange-master-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+@media (max-width: 700px) {
+    .exchange-master-container {
+        grid-template-columns: 1fr;
+    }
+    .profile-card { flex-direction: column; text-align: center; }
+    .profile-pic-container { margin-right: 0; margin-bottom: 15px; }
+    .profile-details { text-align: center; }
+}
