@@ -284,3 +284,13 @@
             margin-bottom: 20px;
             font-weight: bold;
         }
+
+/* --- AD CONTAINER STYLING --- */
+/* Yeh code banner ads ko center mein rakhta hai */
+.ad-container-top, .ad-container-bottom {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 15px 0;
+    width: 100%;
+}
