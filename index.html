@@ -251,12 +251,48 @@
     <!-- WALLET CONTENT (Includes Balance Card) -->
     <section id="wallet-content" class="content-section">
         
-        <!-- WALLET BALANCE CARD (Shows real-time balance from Firestore) -->
+        <!-- WALLET BALANCE CARD (Now contains the rotating display) -->
         <div class="wallet-balance-card">
-            <h3>Your Current Balance (Coins)</h3>
-            <div class="balance-amount">
-                <i class="fas fa-coins"></i>
-                <span id="wallet-coin-balance">---</span>
+            <div class="rotating-balance-container">
+                <div class="balance-track" id="balance-track">
+                    
+                    <!-- Slide 1: Main App Coins -->
+                    <div class="balance-slide main-app-coins">
+                        <h3>Your Current Balance (Coins)</h3>
+                        <div class="balance-amount">
+                            <i class="fas fa-coins"></i>
+                            <span id="wallet-coin-balance">---</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Slide 2: TikTok Coins -->
+                    <div class="balance-slide tiktok-coins">
+                        <h3>TikTok Coins Balance</h3>
+                        <div class="balance-amount">
+                            <i class="fab fa-tiktok" style="color: #000;"></i>
+                            <span id="tiktok-coin-balance">---</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Slide 3: Amazon Coins -->
+                    <div class="balance-slide amazon-coins">
+                        <h3>Amazon Gift Card Value</h3>
+                        <div class="balance-amount">
+                            <i class="fab fa-amazon" style="color: #ff9900;"></i>
+                            <span id="amazon-coin-balance">---</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Slide 4: PUBG UC -->
+                    <div class="balance-slide pubg-uc-coins">
+                        <h3>PUBG UC Balance</h3>
+                        <div class="balance-amount">
+                            <i class="fas fa-gamepad" style="color: #f39c12;"></i>
+                            <span id="pubg-uc-balance">---</span>
+                        </div>
+                    </div>
+                    
+                </div>
             </div>
             <p style="opacity: 0.7; margin-top: 5px;">Coins can be redeemed for cash or rewards.</p>
         </div>
