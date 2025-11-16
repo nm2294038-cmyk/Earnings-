@@ -12,13 +12,14 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
     <!-- ================== AD CODES START ================== -->
-    <!-- In ads ko <head> mein rakhna behtar hota hai taake yeh page load hote hi kaam shuru kar saken -->
 
-    <!-- AD SCRIPT 1: Social Ad -->
+    <!-- AD SCRIPT 1: Social Ad (Pop-under/Interstitial) -->
     <script type='text/javascript' src='//pl28063578.effectivegatecpm.com/f8/df/df/f8dfdf7576999fcac45d5b19753b542e.js'></script>
 
-    <!-- AD SCRIPT 2: Interstitial/Box Ad ("Instsal add") -->
+    <!-- AD SCRIPT 2: Box Ad (Interstitial) -->
     <script type='text/javascript' src='//pl28063649.effectivegatecpm.com/cf/42/09/cf420988b1ca161c5be1e9794586972d.js'></script>
+
+    <!-- CSS for Centering Ad Banners has been MOVED to style.css -->
     
     <!-- =================== AD CODES END =================== -->
 
@@ -27,7 +28,7 @@
 
     <!-- TOP BANNER AD PLACEMENT -->
     <div class="ad-container-top">
-        <script type="text/javascript">
+        <script type="text-javascript">
             atOptions = {
                 'key' : '42296cdf3e86265a8ec0c7f04f5f58b1',
                 'format' : 'iframe',
@@ -42,6 +43,7 @@
     <header>
         <h1 id="mainHeaderTitle">Earning Categories</h1>
         <div class="header-right">
+            <!-- User Info (Email and Wallet) -->
             <div id="userInfo">
                 <p id="userEmailDisplay"></p>
                 <div id="walletIconContainer">
@@ -55,7 +57,7 @@
 
     <div class="container">
         
-        <!-- ... (Yahan aapka baaki content waisa hi rahega) ... -->
+        <!-- 1. ARTICLE SECTION (Logged Out View) -->
         <section id="articleSection">
             <h2>Coins Kamane Aur Tasks Ka Mukammal Guide</h2>
             <p>Humari platform par aapka khushamdeed! Yeh woh markaz hai jahan aap aasan online tasks mukammal karke haqeeqi coins aur raqam kama sakte hain.</p>
@@ -75,6 +77,7 @@
             <p style="font-weight: bold; color: var(--button-cyan); margin-top: 20px;">Intezar mat karen! Abhi login karen aur hazaron coins kamana shuru karen!</p>
         </section>
         
+        <!-- 2. CATEGORY MAIN SECTION (Logged In View) -->
         <section id="categoryMainSection">
             <h2>Tasks Ki Categories Chunein</h2>
             <div class="category-list">
@@ -88,6 +91,7 @@
             </div>
         </section>
 
+        <!-- 3. TASK LIST SECTION (Hidden initially) -->
         <section id="taskMainSection">
             <a onclick="showCategoryView()" style="color: var(--primary-color); text-decoration: none; cursor: pointer;">← Wapas Categories Par Jaen</a>
             <h2 id="taskListHeaderTitle" style="text-align: center; margin-top: 15px;">Tasks</h2>
@@ -131,7 +135,7 @@
         <script type="text/javascript" src="//www.highperformanceformat.com/42296cdf3e86265a8ec0c7f04f5f58b1/invoke.js"></script>
     </div>
 
-    <!-- Firebase SDKs -->
+    <!-- Firebase SDKs (Version 8.10.0) -->
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
