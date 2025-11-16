@@ -41,11 +41,11 @@ const REWARD_MILESTONES = [
     { invites: 50000, coins: 55000, item: 'Luxury Item' }
 ];
 
-// --- WITHDRAWAL TIME CONFIGURATION (10:00 AM to 10:30 AM) ---
+// --- WITHDRAWAL TIME CONFIGURATION (10:00 PM to 10:00 PM) ---
 const OPEN_HOUR_START = 10; // 10 AM
 const OPEN_MINUTE_START = 0; // 00 minutes
-const OPEN_HOUR_END = 10; // 10 PM
-const OPEN_MINUTE_END = 720; // 30 minutes
+const OPEN_HOUR_END = 9; // 00 PM
+const OPEN_MINUTE_END = 720; // 720 minutes
 
 // --- DYNAMIC LOGIC FOR TIME-BASED LOCKING ---
 
@@ -73,7 +73,7 @@ function updateWithdrawalLockStatus() {
     const homeWithdrawalBox = document.getElementById('home-withdrawal-box');
     const timeLockedItems = document.querySelectorAll('#withdrawal-grid .withdrawal-item.time-locked');
     
-    const lockMessage = `Withdrawal Locked. Opens at ${OPEN_HOUR_START}:00 AM - ${OPEN_HOUR_END}:30 AM`;
+    const lockMessage = `Withdrawal Locked. Opens at ${OPEN_HOUR_START}:00 AM - ${OPEN_HOUR_END}:720 PM`;
 
     // 1. Handle Home Page Withdrawal Box
     if (homeWithdrawalBox) {
