@@ -59,12 +59,11 @@ function showView(viewName) {
     }
 }
 
-// Global functions exposed to HTML via onclick
-window.showCategoryView = function() {
+function showCategoryView() {
     showView('categories');
 }
 
-window.showTaskListView = function(platform) {
+function showTaskListView(platform) {
     currentFilterPlatform = platform;
     taskListHeaderTitle.textContent = `${platform} Tasks`;
     showView('tasks');
@@ -97,7 +96,6 @@ async function addCoinsToWallet(uid, amount, platform, link, type) {
         return true;
     } catch (error) {
         if (error.code === 'not-found') {
-             // User document might not exist, create it.
              await userRef.set({ coins: amount, email: currentUser.email }, { merge: true });
              return true;
         }
@@ -138,6 +136,20 @@ document.getElementById('authForm').addEventListener('submit', async (e) => {
     }
 });
 
+auth.onAuthStateChanged(user => {
+    currentUser = user;
+    if (user) {
+        showView('categories');
+        userInfoDiv.style.display = 'flex';
+        userEmailDisplay.textContent = user.email; 
+        
+        fetchTasks();
+        listenToWallet(user.uid); 
+    } else {
+        showView('article');
+    }
+});
+
 // --- WALLET LISTENER (For Header Display) ---
 function listenToWallet(uid) {
     db.collection('users').doc(uid).onSnapshot(doc => {
@@ -154,11 +166,9 @@ function listenToWallet(uid) {
 
 // --- TASK FETCHING ---
 function fetchTasks() {
-    // Fetch all approved tasks and store them locally
     db.collection('tasks').where('status', '==', 'Approved').onSnapshot(snapshot => {
         allTasks = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
         
-        // If we are currently viewing tasks, re-render them with new data
         if (currentView === 'tasks') {
             renderTasks(currentFilterPlatform);
         }
@@ -166,7 +176,7 @@ function fetchTasks() {
     }, error => {
         console.error("Error fetching tasks:", error);
         if (currentView === 'tasks') {
-            taskList.innerHTML = `<p style="color: var(--danger-color);">Tasks load nahi ho sake. Database connection check karen.</p>`;
+            taskList.innerHTML = `<p style="color: red;">Tasks load nahi ho sake. Database connection check karen.</p>`;
         }
     });
 }
@@ -191,11 +201,8 @@ function renderTasks(platform) {
         const title = task.linkTitle || task.type || 'New Task'; 
         const platformName = task.platform || 'General';
         const coinsToEarn = task.coinsRate || 0;
-        const earnAmountDisplay = (coinsToEarn / 1000).toFixed(2); 
-        
-        // Assuming maxClicks and currentClicks exist in the database model
-        const clicksRemaining = task.maxClicks ? (task.maxClicks - (task.currentClicks || 0)) : 'N/A';
         const clicksCompleted = task.currentClicks || 0;
+        const maxClicks = task.maxClicks || 1;
 
         const card = document.createElement('div');
         card.className = 'task-card';
@@ -216,7 +223,7 @@ function renderTasks(platform) {
                     data-coins="${coinsToEarn}"
                     data-type="${task.type || 'Click'}"
                     onclick="handleTaskClick(this)">
-                Open & Earn ₹${earnAmountDisplay} (Clicks: ${clicksCompleted}/${clicksRemaining})
+                Open & Earn ${coinsToEarn} Coins (Clicks: ${clicksCompleted}/${maxClicks})
             </button>
         `;
         taskList.appendChild(card);
@@ -237,17 +244,15 @@ window.handleTaskClick = async function(button) {
     const type = button.dataset.type;
     
     if (coinsToEarn <= 0) {
-         alert("Is task ki earning 0 hai.");
+         alert("Is task ki earning 0 hai. Admin se rabta karen.");
          return;
     }
     
     button.disabled = true;
     button.textContent = "Processing...";
     
-    // 1. Open the link in a new tab (Simulates viewing the task)
     window.open(link, '_blank');
     
-    // 2. INSTANT COIN ADDITION & LOGGING
     const success = await addCoinsToWallet(currentUser.uid, coinsToEarn, platform, link, type);
     
     if (success) {
@@ -256,22 +261,8 @@ window.handleTaskClick = async function(button) {
         alert("Coins add karne mein masla hua.");
     }
 
-    // Reset button state (Ideally, the user should refresh or the app should handle click tracking/limits properly)
-    // For now, we simply change the button text to show earning is done for this click.
     button.textContent = "Task Completed (Earning Done)";
 }
 
-// --- INITIAL LOAD & AUTH CHECK ---
-auth.onAuthStateChanged(user => {
-    currentUser = user;
-    if (user) {
-        showView('categories');
-        userEmailDisplay.textContent = user.email; 
-        
-        // Start listening to data
-        fetchTasks();
-        listenToWallet(user.uid); 
-    } else {
-        showView('article');
-    }
-});
+// --- INITIAL LOAD ---
+// This is handled by the onAuthStateChanged listener above, which is the correct way.
