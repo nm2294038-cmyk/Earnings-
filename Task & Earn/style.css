@@ -168,3 +168,13 @@ header h1 {
     .warning-box .urdu { font-size: 1em; }
     .warning-box .english { font-size: 0.8em; }
 }
+
+/* --- AD CONTAINER STYLING --- */
+/* Yeh code banner ads ko center mein rakhta hai */
+.ad-container-top, .ad-container-bottom {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 15px 0;
+    width: 100%;
+}
