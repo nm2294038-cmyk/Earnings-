@@ -77,9 +77,12 @@ async function addCoinsToWallet(uid, amount, platform, link, type) {
     const userEmail = currentUser.email;
 
     try {
+        // 1. Update Wallet
         await userRef.update({
             coins: firebase.firestore.FieldValue.increment(amount) 
         });
+
+        // 2. Log Earning for Admin Panel (worker_earnings collection)
         await db.collection('worker_earnings').add({
             userId: uid,
             email: userEmail,
@@ -89,6 +92,7 @@ async function addCoinsToWallet(uid, amount, platform, link, type) {
             reference: link,
             timestamp: firebase.firestore.FieldValue.serverTimestamp()
         });
+        
         return true;
     } catch (error) {
         if (error.code === 'not-found') {
@@ -138,6 +142,7 @@ auth.onAuthStateChanged(user => {
         showView('categories');
         userInfoDiv.style.display = 'flex';
         userEmailDisplay.textContent = user.email; 
+        
         fetchTasks();
         listenToWallet(user.uid); 
     } else {
@@ -158,13 +163,16 @@ function listenToWallet(uid) {
     });
 }
 
+
 // --- TASK FETCHING ---
 function fetchTasks() {
     db.collection('tasks').where('status', '==', 'Approved').onSnapshot(snapshot => {
         allTasks = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        
         if (currentView === 'tasks') {
             renderTasks(currentFilterPlatform);
         }
+
     }, error => {
         console.error("Error fetching tasks:", error);
         if (currentView === 'tasks') {
@@ -176,29 +184,38 @@ function fetchTasks() {
 // --- TASK RENDERING ---
 function renderTasks(platform) {
     taskList.innerHTML = '';
-    let filteredTasks = allTasks.filter(task => task.platform === platform);
-    if (platform === 'General') {
+    let filteredTasks = allTasks;
+
+    if (platform !== 'All' && platform !== 'General') {
+        filteredTasks = allTasks.filter(task => task.platform === platform);
+    } else if (platform === 'General') {
         filteredTasks = allTasks.filter(task => !['YouTube', 'TikTok', 'Instagram', 'Facebook', 'WhatsApp', 'App Download'].includes(task.platform));
     }
+    
     if (filteredTasks.length === 0) {
         taskList.innerHTML = `<p style="text-align: center;">Is category mein koi task maujood nahi hai.</p>`;
         return;
     }
+
     filteredTasks.forEach(task => {
         const title = task.linkTitle || task.type || 'New Task'; 
         const platformName = task.platform || 'General';
         const coinsToEarn = task.coinsRate || 0;
         const clicksCompleted = task.currentClicks || 0;
         const maxClicks = task.maxClicks || 1;
+
         const card = document.createElement('div');
         card.className = 'task-card';
+
         card.innerHTML = `
             <div class="task-title">${title}</div>
             <div class="task-platform">${platformName}</div>
+            
             <div class="warning-box">
                 <div class="urdu">لازمی انتباہ: اگر ٹاسک ہدایات کے مطابق مکمل نہیں کیا گیا تو آپ کا وتھڈراول مسترد کر دیا جائے گا۔</div>
                 <div class="english">Warning: If the task isn't completed correctly, your withdrawal will be rejected.</div>
             </div>
+            
             <button class="earn-button" 
                     data-link="${task.link}" 
                     data-task-id="${task.id}"
@@ -220,23 +237,32 @@ window.handleTaskClick = async function(button) {
         document.getElementById('profileIconButton').click();
         return;
     }
+
     const link = button.dataset.link;
     const coinsToEarn = Number(button.dataset.coins);
     const platform = button.dataset.platform;
     const type = button.dataset.type;
+    
     if (coinsToEarn <= 0) {
          alert("Is task ki earning 0 hai. Admin se rabta karen.");
          return;
     }
+    
     button.disabled = true;
     button.textContent = "Processing...";
+    
     window.open(link, '_blank');
+    
     const success = await addCoinsToWallet(currentUser.uid, coinsToEarn, platform, link, type);
+    
     if (success) {
         showSuccessPopup(`✅ ${coinsToEarn.toLocaleString()} Coins aapke Wallet mein fori taur par add kar diye gaye hain!`);
     } else {
         alert("Coins add karne mein masla hua.");
     }
+
     button.textContent = "Task Completed (Earning Done)";
 }
 
+// --- INITIAL LOAD ---
+// This is handled by the onAuthStateChanged listener above, which is the correct way.
