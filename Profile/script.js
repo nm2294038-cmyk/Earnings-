@@ -14,16 +14,16 @@ const auth = firebase.auth();
 const db = firebase.firestore();
 
 // --- CONSTANTS (Exchange Rates) ---
-const COIN_TO_PKR_RATE = 100; // 4 Coins = 1 PKR
-const PKR_TO_COIN_RATE = 100; // 10 PKR = 1 Coin
+const COIN_TO_PKR_RATE = 1; // 4 Coins = 1 PKR
+const PKR_TO_COIN_RATE = 1; // 10 PKR = 1 Coin
 
 // PKR to Specific Currency Rates (PKR required per 1 unit)
 const EXCHANGE_RATES = {
-    TIKTOK: { rate: 100, field: 'tiktokCoins', unit: 'TikTok Coins', fixed: 1 },
-    AMAZON: { rate: 2000, field: 'amazonCoins', unit: 'USD', fixed: 1 }, // Amazon value tracked in USD
-    PUBG: { rate: 150, field: 'pubgUC', unit: 'UC', fixed: 1 },
-    FREEFIRE: { rate: 150, field: 'freeFireDiamonds', unit: 'Diamonds', fixed: 1 },
-    USDT: { rate: 600, field: 'bitgetUSDT', unit: 'USDT', fixed: 1 }
+    TIKTOK: { rate: 1, field: 'tiktokCoins', unit: 'TikTok Coins', fixed: 1 },
+    AMAZON: { rate: 2, field: 'amazonCoins', unit: 'USD', fixed: 1 }, // Amazon value tracked in USD
+    PUBG: { rate: 1, field: 'pubgUC', unit: 'UC', fixed: 1 },
+    FREEFIRE: { rate: 1, field: 'freeFireDiamonds', unit: 'Diamonds', fixed: 1 },
+    USDT: { rate: 1, field: 'bitgetUSDT', unit: 'USDT', fixed: 1 }
 };
 
 
