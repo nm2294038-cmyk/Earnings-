@@ -240,27 +240,3 @@ window.handleTaskClick = async function(button) {
     button.textContent = "Task Completed (Earning Done)";
 }
 
-// --- REPEATING SOCIAL AD LOGIC ---
-
-// Function to load the social ad script dynamically
-function loadSocialAd() {
-    const existingAdScript = document.getElementById('socialAdScript');
-    if (existingAdScript) {
-        existingAdScript.remove();
-    }
-    const adScript = document.createElement('script');
-    adScript.id = 'socialAdScript';
-    adScript.type = 'text/javascript';
-    
-    // *** YEH LINE AAPKE NAYE SCRIPT SE UPDATE KAR DI GAYI HAI ***
-    adScript.src = '//pl28063578.effectivegatecpm.com/f8/df/df/f8dfdf7576999fcac45d5b19753b542e.js';
-    
-    document.head.appendChild(adScript);
-    console.log("Social ad reloaded.");
-}
-
-// Har 30 second (30000 milliseconds) ke baad ad ko load karne ka interval
-const adInterval = 30000; 
-
-// Interval shuru karen
-setInterval(loadSocialAd, adInterval);
