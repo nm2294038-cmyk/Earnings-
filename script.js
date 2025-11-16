@@ -121,13 +121,22 @@ function updateWithdrawalLockStatus() {
  * @comment: Yeh function real-time mein user ka balance, invites, aur profile data update karta hai.
  */
 function initializeWalletDisplay() {
-    const balanceDisplay = document.getElementById('wallet-coin-balance');
+    // Main App Coins
+    const mainBalanceDisplay = document.getElementById('wallet-coin-balance');
+    // New Balances
+    const tiktokBalanceDisplay = document.getElementById('tiktok-coin-balance');
+    const amazonBalanceDisplay = document.getElementById('amazon-coin-balance');
+    const pubgUCBalanceDisplay = document.getElementById('pubg-uc-balance');
+    
     const totalInviteCountDisplay = document.getElementById('total-invites-count');
     const activeInviteCountDisplay = document.getElementById('active-invites-count');
     
     if (!db || !currentUserId) {
         console.warn("Wallet Display: Not logged in (UID missing).");
-        balanceDisplay.textContent = '---';
+        mainBalanceDisplay.textContent = '---';
+        tiktokBalanceDisplay.textContent = '---';
+        amazonBalanceDisplay.textContent = '---';
+        pubgUCBalanceDisplay.textContent = '---';
         updateProfileCardDisplay("Guest User", "---");
         return;
     }
@@ -141,7 +150,7 @@ function initializeWalletDisplay() {
     // Firestore reference user ke UID (document ID) par
     const walletRef = db.collection(USERS_COLLECTION).doc(currentUserId);
     
-    balanceDisplay.textContent = 'Loading...';
+    mainBalanceDisplay.textContent = 'Loading...';
     totalInviteCountDisplay.textContent = '...';
     activeInviteCountDisplay.textContent = '...';
 
@@ -150,8 +159,11 @@ function initializeWalletDisplay() {
         if (doc.exists) {
             const data = doc.data();
             
-            // Reading the 'coins' field (lowercase)
+            // Reading all coin fields
             const rawCoins = data.coins !== undefined ? data.coins : 0; 
+            const tiktokCoins = data.tiktokCoins !== undefined ? data.tiktokCoins : 0;
+            const amazonCoins = data.amazonCoins !== undefined ? data.amazonCoins : 0;
+            const pubgUC = data.pubgUC !== undefined ? data.pubgUC : 0;
             
             const totalInvites = data.totalInvites || 0; 
             const activeInvites = data.activeInvites || 0;
@@ -159,7 +171,11 @@ function initializeWalletDisplay() {
             
             const formattedBalance = parseFloat(rawCoins).toFixed(2);
             
-            balanceDisplay.textContent = formattedBalance;
+            // Update all balance displays
+            mainBalanceDisplay.textContent = formattedBalance;
+            tiktokBalanceDisplay.textContent = parseFloat(tiktokCoins).toFixed(2);
+            amazonBalanceDisplay.textContent = parseFloat(amazonCoins).toFixed(2);
+            pubgUCBalanceDisplay.textContent = parseInt(pubgUC).toLocaleString(); // UC is usually integer
             
             totalInviteCountDisplay.textContent = totalInvites;
             activeInviteCountDisplay.textContent = activeInvites;
@@ -171,22 +187,29 @@ function initializeWalletDisplay() {
         } else {
             console.warn(`USER INIT: User document missing for UID: ${currentUserId}. Creating placeholder.`);
             
+            // Initialize all coin fields for a new user
             walletRef.set({
                 name: auth.currentUser.email.split('@')[0],
                 email: auth.currentUser.email,
                 coins: 0, 
+                tiktokCoins: 0,
+                amazonCoins: 0,
+                pubgUC: 0,
                 referralCode: currentUserId.substring(0, 8).toUpperCase(),
                 totalInvites: 0,
                 activeInvites: 0,
                 createdAt: firebase.firestore.FieldValue.serverTimestamp()
             }, { merge: true }); 
 
-            balanceDisplay.textContent = '0.00 (New User)';
+            mainBalanceDisplay.textContent = '0.00 (New User)';
+            tiktokBalanceDisplay.textContent = '0.00';
+            amazonBalanceDisplay.textContent = '0.00';
+            pubgUCBalanceDisplay.textContent = '0';
             updateProfileCardDisplay(currentUserName, "0.00");
         }
     }, error => {
         console.error("ERROR: Error listening to user document (Check Security Rules!):", error);
-        balanceDisplay.textContent = 'Error!';
+        mainBalanceDisplay.textContent = 'Error!';
     });
 }
 
@@ -297,6 +320,9 @@ async function handleAuthSubmit() {
                 name: name,
                 email: email, 
                 coins: signupBonus, 
+                tiktokCoins: 0, // Initialize new fields
+                amazonCoins: 0, // Initialize new fields
+                pubgUC: 0,      // Initialize new fields
                 referralCode: userReferralCode, 
                 referredBy: referralCodeUsed || null,
                 totalInvites: 0,
@@ -377,7 +403,12 @@ function handleRealLogout(shouldRedirect = true) {
      currentUserId = null;
      currentUserName = "Guest User";
      
+     // Reset all balance displays
      document.getElementById('wallet-coin-balance').textContent = '---';
+     document.getElementById('tiktok-coin-balance').textContent = '---';
+     document.getElementById('amazon-coin-balance').textContent = '---';
+     document.getElementById('pubg-uc-balance').textContent = '---';
+     
      document.getElementById('total-invites-count').textContent = 0;
      document.getElementById('active-invites-count').textContent = 0;
      updateRewardTimeline(0); 
