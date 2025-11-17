@@ -3,623 +3,716 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nazim Mustafa - Clyde Style Portfolio</title>
-    <!-- Google Fonts: Poppins for modern look -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <!-- Font Awesome for Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>G M Networking - NEON STYLE</title>
+    <!-- Google Fonts for Neon Style: Orbitron (Headings), Space Mono (Body) -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome (for social icons and feature icons) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     
     <style>
-        /* ================================================= */
-        /* BASE & VARIABLES (CLYDE STYLE) */
-        /* ================================================= */
+        /* ---------------------------------- */
+        /* NEON THEME VARIABLES */
+        /* ---------------------------------- */
         :root {
-            --primary-text: #2c2d33;
-            --secondary-text: #6c757d;
-            --accent-color: #8b9278; /* Muted Khaki/Green (Key Color) */
-            --hero-accent-color: #3e4431; /* Darker variant for CTAs */
-            --light-bg: #f8f9fa; 
-            --dark-bg: #343a40; 
-            --white: #fff;
-            --transition: all 0.3s ease;
+            --neon-cyan: #00FFFF; /* Primary Neon Color */
+            --neon-magenta: #FF00FF; /* Secondary Neon Color */
+            --neon-shadow-cyan: 0 0 5px #00FFFF, 0 0 10px #00FFFF, 0 0 20px #00FFFF, 0 0 40px rgba(0, 255, 255, 0.4);
+            --neon-shadow-magenta: 0 0 5px #FF00FF, 0 0 10px #FF00FF, 0 0 20px #FF00FF, 0 0 40px rgba(255, 0, 255, 0.4);
+            --dark-bg: #0a0a0a; /* Deep Black Background */
+            --dark-bg-secondary: #1a1a1a;
+            --light-text: #E0FFFF; /* Pale Cyan Text */
+            --secondary-text: #808080;
         }
 
+        /* ---------------------------------- */
+        /* BASE STYLING & FONT (NEON) */
+        /* ---------------------------------- */
         body {
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Space Mono', monospace; /* Changed Font */
             margin: 0;
             padding: 0;
-            color: var(--primary-text);
-            background-color: var(--white);
-            line-height: 1.7;
+            background-color: var(--dark-bg); /* Changed Background */
+            color: var(--light-text); /* Changed Text Color */
+            line-height: 1.6;
+            overflow-x: hidden; 
         }
-        
-        a { text-decoration: none; color: var(--primary-text); transition: var(--transition); }
-        a:hover { color: var(--accent-color); }
-        h1, h2, h3, h4 { font-weight: 600; line-height: 1.2; }
-        
+
         .container {
             width: 90%;
+            max-width: 1100px;
             margin: 0 auto;
-            padding: 40px 0; 
+            padding: 20px 0;
         }
 
-        /* Utility Classes */
-        .section-heading { text-align: center; margin-bottom: 50px; }
-        .section-heading small { color: var(--accent-color); text-transform: uppercase; font-size: 13px; letter-spacing: 2px; }
-        .section-heading h2 { font-size: 34px; margin-top: 5px; margin-bottom: 10px; }
-        .btn { padding: 12px 25px; border-radius: 50px; text-transform: uppercase; font-weight: 500; font-size: 14px; display: inline-block; margin: 5px; }
-        .btn-primary { background: var(--hero-accent-color); color: var(--white); border: 1px solid var(--hero-accent-color); }
-        .btn-secondary { background: transparent; color: var(--white); border: 1px solid rgba(255, 255, 255, 0.5); }
-        .btn-primary:hover { background: var(--accent-color); border-color: var(--accent-color); }
-        .btn-secondary:hover { background: var(--white); color: var(--hero-accent-color); }
-
-        /* Animations */
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        .animated { animation-duration: 0.8s; animation-fill-mode: both; }
-
-        /* ================================================= */
-        /* 1. HERO SECTION */
-        /* ================================================= */
-        .hero {
-            position: relative; height: 85vh; 
-            background: url('https://picsum.photos/1920/1080?random=hero') no-repeat center center; /* Placeholder Image */
-            background-size: cover;
-            display: flex; align-items: center; justify-content: center; text-align: center; color: var(--white);
+        h1, h2, h3 {
+            font-family: 'Orbitron', sans-serif; /* Changed Font */
+            color: var(--neon-cyan); 
+            text-shadow: 0 0 5px rgba(0, 255, 255, 0.7); /* Basic Neon Glow */
+            margin-bottom: 10px;
+            text-align: center;
         }
-        .hero::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.55); }
-        .hero-content { position: relative; z-index: 10; padding: 20px; }
-        .hero h1 { font-size: 50px; margin-bottom: 10px; }
-        .hero h1 span { color: var(--accent-color); }
-        .hero .caption { font-size: 18px; margin-bottom: 30px; }
-
-        /* ================================================= */
-        /* 2. STATS SECTION */
-        /* ================================================= */
-        .stats-section { padding: 40px 0; background: var(--white); }
-        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; text-align: center; }
-        .stat-item { padding: 20px; border-right: 1px solid #eee; }
-        .stat-item:last-child { border-right: none; }
-        .stat-item .icon { font-size: 30px; color: var(--accent-color); margin-bottom: 10px; }
-        .stat-item h3 { font-size: 36px; margin: 0 0 5px; }
-        .stat-item p { color: var(--secondary-text); margin: 0; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; }
-
-        /* ================================================= */
-        /* 3. ABOUT ME SECTION */
-        /* ================================================= */
-        .about-section { padding: 80px 0; background: var(--light-bg); }
-        .about-content { display: flex; gap: 40px; align-items: flex-start; }
-
-        .about-image { flex: 1; position: relative; }
-        .about-image img {
-            width: 100%;
-            height: 600px; 
-            object-fit: cover;
-            border-radius: 10px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            transform: translateY(-50px); /* Lifted appearance */
-        }
-        .about-text { flex: 1.5; padding-top: 50px; } 
-        .about-text h2 { margin-bottom: 20px; }
-        .personal-details { margin: 30px 0; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .personal-details strong { color: var(--hero-accent-color); }
-        .hobby-list { display: flex; gap: 15px; margin-top: 30px; flex-wrap: wrap; }
-        .hobby-item { color: var(--secondary-text); font-size: 14px; }
-        .hobby-item i { color: var(--accent-color); margin-right: 5px; }
-
-        /* ================================================= */
-        /* 4. SKILLS SECTION (Progress Bars) */
-        /* ================================================= */
-        .skills-section { background: var(--white); padding: 80px 0; }
-        .skills-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px; text-align: center; }
-        .skill-item { background: var(--light-bg); padding: 30px 20px; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.02); }
-        .skill-item h4 { margin-top: 0; color: var(--hero-accent-color); }
-
-        .progress-circle { position: relative; width: 140px; height: 140px; margin: 0 auto 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
-        .progress-circle .percentage { font-size: 34px; font-weight: 700; color: var(--primary-text); background: var(--light-bg); width: 110px; height: 110px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
-        .sub-stats { font-size: 12px; color: var(--secondary-text); display: flex; justify-content: space-between; }
         
-        /* Conic Gradients for progress visualization */
-        .css-skill { background: conic-gradient(var(--accent-color) 95%, #e9ecef 0%); }
-        .html-skill { background: conic-gradient(var(--accent-color) 98%, #e9ecef 0%); }
-        .jquery-skill { background: conic-gradient(var(--accent-color) 68%, #e9ecef 0%); }
-        .photoshop-skill { background: conic-gradient(var(--accent-color) 92%, #e9ecef 0%); }
+        h1 { font-size: 2.5rem; }
+        h2 { font-size: 2rem; }
+        h3 { font-size: 1.5rem; }
+
+        p {
+            color: var(--secondary-text); 
+            text-align: center;
+        }
+
+        .section-title {
+            text-align: center;
+            padding-bottom: 30px;
+        }
         
-
-        /* ================================================= */
-        /* 5. SERVICES SECTION */
-        /* ================================================= */
-        .services-section { padding: 80px 0; background: var(--light-bg); }
-        .services-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
-        .service-card { 
-            background: var(--white); 
-            padding: 30px; 
-            border-radius: 10px; 
-            transition: var(--transition);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        .section-title h2 {
+            text-shadow: var(--neon-shadow-cyan); /* Stronger glow for titles */
         }
-        .service-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
-        .service-card i { font-size: 30px; color: var(--accent-color); margin-bottom: 15px; }
-        .service-card h4 { margin: 0 0 10px; }
 
-
-        /* ================================================= */
-        /* 6. PROJECTS SECTION & CTA */
-        /* ================================================= */
-        .projects-section { padding-bottom: 80px; }
-
-        /* CTA Banner Style */
-        .cta-banner {
-            background: var(--hero-accent-color);
-            color: var(--white);
-            padding: 50px 0;
-            margin-bottom: 80px;
-        }
-        .cta-inner {
+        /* 1. Header/Navigation */
+        header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            gap: 40px;
-            padding: 0; /* Remove container padding overlap */
+            padding: 15px 5%;
+            border-bottom: 1px solid var(--neon-cyan); 
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.2);
+            position: sticky;
+            top: 0;
+            background-color: rgba(10, 10, 10, 0.95); /* Slightly transparent dark background for sticky effect */
+            z-index: 1000;
         }
-        .cta-text { max-width: 600px; }
-        .cta-text h3 { font-size: 30px; margin-top: 0; }
+
+        .logo {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--light-text);
+            text-shadow: 0 0 3px var(--neon-cyan);
+        }
+
+        .logo span {
+            color: var(--neon-cyan);
+        }
+
+        .burger-menu {
+            font-size: 1.5rem;
+            cursor: pointer;
+            z-index: 1000;
+            color: var(--neon-cyan);
+        }
         
-        .projects-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; }
-        .project-item { overflow: hidden; display: block; }
-        .project-item img { 
-            width: 100%; 
-            height: 250px; /* Consistent height for projects */
-            object-fit: cover; 
-            border-radius: 5px; 
-            transition: transform 0.3s; 
+        .nav-links {
+            display: none; 
         }
-        .project-item img:hover { transform: scale(1.05); opacity: 0.8; }
 
-
-        /* ================================================= */
-        /* 7. TESTIMONIALS SECTION */
-        /* ================================================= */
-        .testimonials-section { background: var(--light-bg); padding: 80px 0; }
-        .testimonial-carousel { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 30px; padding-bottom: 20px; }
-        .testimonial-card {
-            background: var(--white);
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            scroll-snap-align: start;
-            flex: 0 0 calc(33.333% - 20px); /* Show 3 cards on desktop */
-            min-width: 300px;
+        .nav-links li a {
+            transition: color 0.3s, text-shadow 0.3s;
         }
-        .quote-icon { font-size: 24px; color: var(--accent-color); margin-bottom: 15px; display: block; }
-        .client-info { display: flex; align-items: center; margin-top: 20px; }
-        .client-info img { width: 50px; height: 50px; border-radius: 50%; margin-right: 15px; object-fit: cover; }
-        .client-info strong { display: block; font-weight: 600; }
-        .client-info small { color: var(--secondary-text); }
-
-
-        /* ================================================= */
-        /* 8. BLOG SECTION (Uniform Images) */
-        /* ================================================= */
-        .blog-section { padding: 80px 0; }
-        .blog-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
-        .blog-post-inner { background: var(--white); border-radius: 10px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.05); transition: var(--transition); }
-        .blog-post-inner:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
         
-        .blog-post-inner img {
-            width: 100%;
-            height: 220px; /* Consistent height for blog images */
-            object-fit: cover;
+        .nav-links li a:hover {
+            color: var(--neon-cyan);
+            text-shadow: 0 0 10px var(--neon-cyan);
         }
-        .blog-content { padding: 20px; }
-        .blog-content small { color: var(--secondary-text); font-size: 12px; }
-        .blog-content h4 { margin: 5px 0 15px; font-size: 18px; }
-        .blog-content p { font-size: 14px; color: var(--secondary-text); }
 
+        /* Mobile Menu */
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            right: -100%; 
+            width: 250px;
+            height: 100%;
+            background-color: var(--dark-bg);
+            box-shadow: -2px 0 10px rgba(0, 255, 255, 0.5);
+            transition: right 0.3s ease-in-out;
+            z-index: 999;
+            padding-top: 70px;
+        }
+        
+        .mobile-menu.active {
+            right: 0; 
+        }
+        
+        .mobile-menu ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .mobile-menu ul li a {
+            display: block;
+            padding: 15px 20px;
+            text-decoration: none;
+            color: var(--light-text);
+            border-bottom: 1px solid rgba(0, 255, 255, 0.2);
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .mobile-menu ul li a:hover {
+            color: var(--neon-cyan);
+            background-color: var(--dark-bg-secondary);
+        }
+        
+        /* 2. Hero Section */
+        .hero-section {
+            padding: 80px 0 50px 0;
+            text-align: center;
+        }
 
-        /* ================================================= */
-        /* 9. CONTACT SECTION */
-        /* ================================================= */
-        .contact-section { background: var(--light-bg); padding: 80px 0; }
-        .contact-content { display: grid; grid-template-columns: 1fr 2fr; gap: 50px; }
-        .contact-info-item { display: flex; align-items: center; margin-bottom: 25px; }
-        .contact-info-item i { font-size: 24px; color: var(--accent-color); width: 40px; }
-        .contact-info-item h4 { margin: 0; font-size: 16px; }
-        .contact-info-item p { margin: 0; font-size: 14px; color: var(--secondary-text); }
-
-        .contact-form .form-group { margin-bottom: 20px; }
-        .contact-form input[type="text"],
-        .contact-form input[type="email"],
-        .contact-form textarea {
-            width: 100%;
-            padding: 15px;
-            border: 1px solid #ddd;
+        .btn-primary {
+            background-color: transparent; /* Changed to transparent */
+            border: 2px solid var(--neon-cyan); /* Neon Border */
+            color: var(--neon-cyan);
+            padding: 12px 25px;
             border-radius: 5px;
-            font-family: 'Poppins', sans-serif;
-            transition: border-color 0.3s;
+            text-decoration: none;
+            cursor: pointer;
+            font-weight: bold;
+            display: inline-block;
+            text-shadow: 0 0 5px rgba(0, 255, 255, 0.7);
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.5); /* Neon Box Shadow */
+            transition: all 0.4s ease-in-out;
         }
-        .contact-form input:focus, .contact-form textarea:focus {
-            border-color: var(--accent-color);
-            outline: none;
+        .btn-primary:hover {
+            background-color: var(--neon-cyan);
+            color: var(--dark-bg);
+            text-shadow: none;
+            box-shadow: 0 0 5px var(--neon-cyan), 0 0 20px var(--neon-cyan), 0 0 40px var(--neon-cyan);
+            transform: scale(1.05);
         }
-        .contact-form textarea { resize: vertical; height: 150px; }
-        .contact-form .btn { color: var(--white); cursor: pointer; border-radius: 5px; }
-
-
-        /* ================================================= */
-        /* 10. FOOTER */
-        /* ================================================= */
-        footer { background: var(--dark-bg); color: #ccc; padding: 60px 0 20px; }
-        .footer-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px; }
-        footer a { color: #ccc; }
-        footer a:hover { color: var(--accent-color); }
-        footer h4 { color: var(--white); margin-bottom: 20px; }
-        footer p, footer li { font-size: 14px; }
-        .social-icons { margin-top: 15px; display: flex; gap: 15px; }
-        .social-icons a { font-size: 18px; }
-        .footer-links ul { list-style: none; padding: 0; }
-        .footer-links li { margin-bottom: 10px; }
-        .footer-links li i { margin-right: 5px; color: var(--accent-color); }
-        .copyright { text-align: center; margin-top: 50px; border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 20px; font-size: 13px; }
-
-
-        /* ================================================= */
-        /* RESPONSIVE DESIGN (Media Queries) */
-        /* ================================================= */
         
-        /* Mobile View Adjustments */
-        @media (max-width: 767px) {
-            .hero { height: 60vh; }
-            .hero h1 { font-size: 38px; }
-            .stats-grid, .skills-grid, .services-grid, .projects-grid, .blog-grid, .footer-grid, .contact-content { grid-template-columns: 1fr; }
-            
-            .stat-item { border-right: none; border-bottom: 1px solid #eee; }
-            .about-content { flex-direction: column; }
-            .about-image img { height: 400px; transform: none; }
-            .about-text { padding-top: 0; }
-            .cta-inner { flex-direction: column; text-align: center; }
-            .testimonial-card { flex: 0 0 100%; } /* One card per screen on mobile */
-            .contact-content { grid-template-areas: "form" "info"; }
-            .contact-info { grid-area: info; }
-            .contact-form { grid-area: form; }
+        /* Bar Graph Illustration - CSS only */
+        .bar-graph-illustration {
+            width: 100%; max-width: 400px; height: 250px; margin: 50px auto 0 auto; display: flex; align-items: flex-end; justify-content: space-around; 
+            border-left: 2px solid var(--neon-magenta); 
+            border-bottom: 2px solid var(--neon-magenta); 
+            padding-top: 20px; position: relative;
+        }
+        .bar { 
+            width: 15%; 
+            background-color: var(--neon-magenta); 
+            border-radius: 5px 5px 0 0; 
+            margin-right: 5px; 
+            opacity: 0.8; 
+            outline: 2px solid rgba(255, 0, 255, 0.5); 
+            box-shadow: 0 0 5px var(--neon-magenta); /* Bar glow */
+            transition: height 0.8s ease-out;
+        }
+        .bar:nth-child(1) { height: 40%; opacity: 0.7; }
+        .bar:nth-child(2) { height: 60%; }
+        .bar:nth-child(3) { height: 75%; }
+        .bar:nth-child(4) { height: 90%; }
+        .bar:nth-child(5) { 
+            height: 100%; 
+            opacity: 1; 
+            outline: 3px solid var(--neon-cyan); 
+            background-color: var(--neon-cyan);
+            box-shadow: var(--neon-shadow-cyan); /* Stronger glow for the highest bar */
         }
 
-        /* Tablet View Adjustments */
-        @media (min-width: 768px) and (max-width: 991px) {
-            .stats-grid, .services-grid, .blog-grid, .footer-grid { grid-template-columns: repeat(2, 1fr); }
-            .skills-grid, .projects-grid { grid-template-columns: repeat(3, 1fr); }
-            .about-image img { height: 500px; }
-            .testimonial-card { flex: 0 0 calc(50% - 15px); } /* Two cards on tablet */
-            .stat-item:nth-child(even) { border-right: none; } /* Fix border issues on 2 column grid */
+
+        /* 3. Features Section */
+        .features-grid { display: grid; grid-template-columns: 1fr; gap: 30px; padding: 50px 0; }
+        .feature-box { 
+            background-color: var(--dark-bg-secondary); 
+            padding: 30px; 
+            border-radius: 8px; 
+            text-align: center; 
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.1);
+            transition: box-shadow 0.3s, transform 0.3s;
         }
+        .feature-box:hover {
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.7); /* Intense Neon Glow on hover */
+            transform: translateY(-8px);
+        }
+        .feature-icon { 
+            width: 50px; height: 50px; 
+            background-color: var(--neon-cyan); 
+            color: var(--dark-bg); 
+            border-radius: 50%; 
+            margin: 0 auto 15px auto; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            font-size: 1.5rem; 
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.8); /* Icon Glow */
+        }
+        .feature-box h3 {
+            color: var(--light-text);
+            text-shadow: 0 0 3px rgba(0, 255, 255, 0.5);
+        }
+        .feature-box .learn-more { 
+            color: var(--neon-magenta); 
+            text-decoration: none; 
+            font-weight: bold; 
+            display: block; 
+            margin-top: 10px; 
+            text-shadow: 0 0 5px var(--neon-magenta);
+            transition: text-shadow 0.3s;
+        }
+        .feature-box .learn-more:hover {
+            text-shadow: var(--neon-shadow-magenta);
+        }
+
+
+        /* 4. Communication Section */
+        .comm-content { text-align: left; padding: 30px 0; }
+        .comm-content h2 { text-align: left; }
+        .comm-content p { color: var(--light-text); text-align: left; }
+        .client-avatar-img { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; margin-right: 15px; border: 2px solid var(--neon-cyan); }
+        .testimonial-box { 
+            background-color: var(--dark-bg-secondary); 
+            border-left: 5px solid var(--neon-magenta); 
+            padding: 20px; 
+            margin-top: 30px; 
+            border-radius: 0 5px 5px 0; 
+            box-shadow: 0 0 15px rgba(255, 0, 255, 0.4);
+            transition: box-shadow 0.3s;
+        }
+        .testimonial-box:hover {
+            box-shadow: 0 0 30px rgba(255, 0, 255, 0.7);
+        }
+        .testimonial-info { display: flex; align-items: center; margin-bottom: 15px; }
+        .client-details h4 { margin: 0; font-size: 1rem; color: var(--neon-cyan); text-align: left; text-shadow: 0 0 3px var(--neon-cyan);}
+        .client-details p { margin: 0; font-size: 0.85rem; color: var(--secondary-text); text-align: left; }
+        .testimonial-text { font-style: italic; color: var(--light-text); text-align: left; }
+        .comm-illustration-img { 
+            width: 100%; max-width: 400px; height: 300px; border-radius: 8px; margin: 0 auto; object-fit: contain; 
+            background-color: var(--dark-bg-secondary);
+            border: 2px solid var(--neon-cyan);
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+        }
+
+
+        /* 5. Team Section */
+        .team-grid { display: grid; grid-template-columns: 1fr; gap: 30px; padding: 50px 0 80px 0; }
+        .team-member { text-align: center; }
+        .member-photo img { 
+            width: 100%; height: auto; aspect-ratio: 1 / 1; border-radius: 8px; margin-bottom: 15px; object-fit: cover; 
+            border: 2px solid var(--neon-cyan);
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.4);
+            transition: box-shadow 0.3s;
+        }
+        .team-member:hover .member-photo img {
+            box-shadow: 0 0 30px rgba(0, 255, 255, 1);
+        }
+        .team-member h3 { color: var(--light-text); text-shadow: 0 0 3px var(--neon-cyan);}
+        .team-member .role { 
+            color: var(--neon-magenta); 
+            text-transform: uppercase; 
+            font-size: 0.85rem; 
+            margin-bottom: 10px; 
+            display: block; 
+            text-shadow: 0 0 5px var(--neon-magenta);
+        }
+        .team-member .description { color: var(--secondary-text); text-align: center; font-size: 0.9rem; }
+
+
+        /* 6. Contact Us Section */
+        .contact-section { 
+            /* Custom dark gradient and neon background placeholder */
+            background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url('https://via.placeholder.com/1200x800/1a1a1a/00ffff?text=Contact+Background+NEON') no-repeat center center; 
+            background-size: cover; 
+            color: white; padding: 80px 0; text-align: center; 
+            border-top: 1px solid var(--neon-magenta);
+        }
+        .contact-section h2 { 
+            color: var(--neon-cyan); 
+            text-align: center; 
+            font-size: 2rem; 
+            margin-bottom: 40px; 
+            text-shadow: var(--neon-shadow-cyan);
+        }
+        .contact-form-box { 
+            background-color: rgba(10, 10, 10, 0.95); /* Semi-transparent dark background */
+            color: var(--light-text); 
+            padding: 40px; 
+            border-radius: 8px; 
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.5); /* Strong box glow */
+            border: 1px solid var(--neon-cyan);
+            max-width: 700px; margin: 0 auto; text-align: left; 
+        }
+        .form-group { margin-bottom: 20px; display: flex; gap: 20px; }
+        .form-field { flex-grow: 1; }
+        .form-field input[type="text"], .form-field input[type="email"], .form-field textarea { 
+            width: 100%; padding: 10px; 
+            background-color: #222;
+            color: var(--light-text);
+            border: 1px solid var(--neon-magenta);
+            border-radius: 4px; 
+            box-sizing: border-box; 
+            box-shadow: inset 0 0 5px rgba(255, 0, 255, 0.3);
+        }
+        .form-field textarea { resize: vertical; min-height: 150px; }
+        .form-single-column { display: block; margin-bottom: 20px; }
+        .btn-submit { 
+            background-color: transparent;
+            border: 2px solid var(--neon-magenta);
+            color: var(--neon-magenta);
+            padding: 12px 25px; 
+            border-radius: 5px; 
+            cursor: pointer; 
+            font-weight: bold; 
+            font-size: 1rem; 
+            transition: all 0.3s; 
+            float: left; 
+            text-shadow: 0 0 5px var(--neon-magenta);
+            box-shadow: 0 0 10px rgba(255, 0, 255, 0.3);
+        }
+        .btn-submit:hover {
+            background-color: var(--neon-magenta);
+            color: var(--dark-bg);
+            text-shadow: none;
+            box-shadow: 0 0 5px var(--neon-magenta), 0 0 20px var(--neon-magenta);
+        }
+
+        /* 7. Footer */
+        footer { 
+            padding: 30px 0; 
+            text-align: center; 
+            background-color: var(--dark-bg); 
+            border-top: 1px solid rgba(0, 255, 255, 0.1);
+        }
+        .social-icons a { 
+            color: var(--light-text); 
+            margin: 0 10px; 
+            font-size: 1.2rem; 
+            text-decoration: none; 
+            transition: color 0.3s, text-shadow 0.3s;
+        }
+        .social-icons a:hover {
+            color: var(--neon-cyan);
+            text-shadow: 0 0 15px var(--neon-cyan);
+        }
+        .social-icons { margin-bottom: 20px; }
+        .copyright { font-size: 0.8rem; color: var(--secondary-text); }
+        .copyright a {
+            color: var(--neon-magenta) !important;
+            text-decoration: none;
+            text-shadow: 0 0 5px var(--neon-magenta);
+        }
+
+
+        /* Desktop/Tablet Media Query */
+        @media (min-width: 768px) {
+            header { padding: 15px 10%; }
+            .burger-menu { display: none; }
+            .nav-links { display: flex; list-style: none; padding: 0; margin: 0; }
+            .nav-links li a { text-decoration: none; color: var(--light-text); margin-left: 20px; font-weight: bold; }
+            .features-grid { grid-template-columns: 1fr 1fr; }
+            .communication-section { display: grid; grid-template-columns: 1fr 1fr; align-items: center; }
+            .comm-illustration { order: 2; }
+            .comm-content { order: 1; }
+            .team-grid { grid-template-columns: repeat(4, 1fr); }
+            .form-group { flex-direction: row; }
+        }
+        
+        /* Mobile adjustments */
+        @media (max-width: 767px) {
+            .form-group { flex-direction: column; gap: 0; }
+        }
+
+        /* ---------------------------------- */
+        /* Animation Classes: Left/Right/Up Slide (Enhanced for Neon) */
+        /* ---------------------------------- */
+        /* Initial State: Off-screen and Invisible */
+        .slide-in-left {
+            opacity: 0;
+            transform: translateX(-100px); 
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out, box-shadow 0.8s ease-out; /* Added box-shadow for a glow-on-appear effect */
+            will-change: opacity, transform; 
+        }
+
+        .slide-in-right {
+            opacity: 0;
+            transform: translateX(100px); 
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out, box-shadow 0.8s ease-out;
+            will-change: opacity, transform; 
+        }
+        
+        /* NEW: Slide Up from Bottom */
+        .slide-up {
+            opacity: 0;
+            transform: translateY(50px); 
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out, box-shadow 0.8s ease-out;
+            will-change: opacity, transform;
+        }
+
+        /* Final State: Center and Visible (Triggered by JS) */
+        .in-view {
+            opacity: 1;
+            transform: translateX(0) translateY(0); 
+            /* Optional: Add a subtle glow on appearance for better effect */
+            /* box-shadow: 0 0 5px rgba(0, 255, 255, 0.5); */ 
+        }
+
+        /* Staggered Delay for Grid Items (for Features and Team) */
+        .in-view[data-delay="0"] { transition-delay: 0s; }
+        .in-view[data-delay="1"] { transition-delay: 0.1s; }
+        .in-view[data-delay="2"] { transition-delay: 0.2s; }
+        .in-view[data-delay="3"] { transition-delay: 0.3s; }
+        .in-view[data-delay="4"] { transition-delay: 0.4s; }
+        .in-view[data-delay="5"] { transition-delay: 0.5s; }
+        .in-view[data-delay="6"] { transition-delay: 0.6s; }
+
     </style>
 </head>
 <body>
 
-    <!-- Optional: Top Navigation Bar (If needed for scrolling links) -->
-    <!-- Not implemented here to keep focus on sections, but styles are available -->
+    <!-- 1. HEADER/NAVIGATION -->
+    <header>
+        <div class="logo slide-in-left" data-delay="0">G M <span>Networking .</span></div>
+        <!-- Desktop Navigation Links -->
+        <ul class="nav-links slide-in-right" data-delay="0">
+            <li><a href="#hero">Home</a></li>
+            <li><a href="#features">Features</a></li>
+            <li><a href="#team">Team</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+        <div class="burger-menu" id="burgerMenu">&#9776;</div>
+    </header>
+    
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu" id="mobileMenu">
+        <ul>
+            <li><a href="#hero" class="menu-link">Home</a></li>
+            <li><a href="#features" class="menu-link">Features</a></li>
+            <li><a href="#team" class="menu-link">Team</a></li>
+            <li><a href="#contact" class="menu-link">Contact</a></li>
+        </ul>
+    </div>
 
-    <!-- 1. HERO SECTION -->
-    <section class="hero" id="home">
-        <div class="hero-content animated fadeInUp" style="animation-delay: 0.1s;">
-            <small>We Design and Develop For Great Brands</small>
-            <h1>Hi, I am <span>Nazim</span> Mustafa.</h1>
-            <p class="caption">This is my favorite work.</p>
-            <div style="animation-delay: 0.3s;" class="animated fadeInUp">
-                <a href="mailto:mn1691316@gmail.com" class="btn btn-primary">Hire Me</a>
-                <a href="#contact" class="btn btn-secondary">Contact Me</a>
-            </div>
-        </div>
-    </section>
-
-    <!-- 2. STATS SECTION -->
-    <section class="stats-section">
+    <!-- 2. HERO SECTION -->
+    <section class="hero-section" id="hero">
         <div class="container">
-            <div class="stats-grid">
-                <div class="stat-item animated fadeInUp" style="animation-delay: 0.4s;">
-                    <div class="icon"><i class="fas fa-briefcase"></i></div>
-                    <h3>750</h3><p>PROJECTS COMPLETE</p>
-                </div>
-                <div class="stat-item animated fadeInUp" style="animation-delay: 0.6s;">
-                    <div class="icon"><i class="fas fa-users"></i></div>
-                    <h3>568K</h3><p>HAPPY CLIENTS</p>
-                </div>
-                <div class="stat-item animated fadeInUp" style="animation-delay: 0.8s;">
-                    <div class="icon"><i class="fas fa-mug-hot"></i></div>
-                    <h3>478</h3><p>CUPS OF COFFEE</p>
-                </div>
-                <div class="stat-item animated fadeInUp" style="animation-delay: 1.0s;">
-                    <div class="icon"><i class="fas fa-star"></i></div>
-                    <h3>780+</h3><p>EXPERIENCED HOURS</p>
-                </div>
+            <!-- Illustration Placeholder 1 - CSS Bar Graph -->
+            <div class="bar-graph-illustration slide-in-left">
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
             </div>
+
+            <h1 class="slide-in-right">Make Your Business More Profitable</h1>
+            <p class="slide-in-right" data-delay="1">Grow your success with smart strategies, modern marketing, and innovative solutions.
+We help you increase sales, build strong customer trust, and achieve long-term growth.</p>
+            
+            <!-- GET STARTED BUTTON: target="_blank" added to open in new tab -->
+            <a href="https://www.yoursmed.xyz" class="btn-primary slide-in-right" data-delay="2" target="_blank">Get Started</a>
+            
         </div>
     </section>
 
-    <!-- 3. ABOUT ME SECTION -->
-    <section class="about-section" id="about">
-        <div class="container about-content">
-            <div class="about-image animated fadeInUp" style="animation-delay: 0.3s;">
-                <!-- Placeholder Image (Replace with your actual photo) -->
-                <img src="https://picsum.photos/600/800?random=profile" alt="Nazim Mustafa Profile">
-            </div>
-            
-            <div class="about-text animated fadeInUp" style="animation-delay: 0.5s;">
-                <small>My Intro</small>
-                <h2>About Me</h2>
-                <p>A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth. I specialize in real-time animation concepts and delivering highly consistent, polished digital solutions.</p>
-                
-                <div class="personal-details">
-                    <div class="detail-item"><strong>Name:</strong> Nazim Mustafa</div>
-                    <div class="detail-item"><strong>Date of birth:</strong> January 01, 1990</div>
-                    <div class="detail-item"><strong>Address:</strong> Rawalpindi, Pakistan</div>
-                    <div class="detail-item"><strong>Zip code:</strong> 46000</div>
-                    <div class="detail-item"><strong>Email:</strong> mn1691316@gmail.com</div>
-                    <div class="detail-item"><strong>Phone:</strong> 0343-5641151</div>
-                </div>
+    <!-- 3. FEATURES SECTION -->
+    <section class="features-section container" id="features">
+        <div class="section-title slide-in-left">
+            <h2>Imagine Features</h2>
+            <p>Discover powerful tools and services that help your business grow smarter, faster, and stronger.
+</p>
+        </div>
 
-                <div class="hobby-list">
-                    <div class="hobby-item"><i class="fas fa-music"></i>Music</div>
-                    <div class="hobby-item"><i class="fas fa-plane"></i>Travel</div>
-                    <div class="hobby-item"><i class="fas fa-film"></i>Movie</div>
-                    <div class="hobby-item"><i class="fas fa-futbol"></i>Sports</div>
-                </div>
-                
-                <h3 style="margin-top: 50px;">Our Mission (Free Earnings App)</h3>
-                <p>At Free Earnings App, our mission is to create a reliable and accessible bridge between individuals seeking supplementary income and businesses looking for genuine online engagement. We aim to empower people by providing them with a simple, secure, and transparent platform to monetize their free time.</p>
-            </div>
+        <div class="features-grid">
+            <!-- Features using slide-in-right and slide-in-left -->
+            <div class="feature-box slide-in-right" data-delay="1"><div class="feature-icon"><i class="fa-solid fa-note-sticky"></i></div><h3>Marketing Consulting</h3><p>Get expert advice to boost your brand, attract customers, and increase sales.</p><a href="#" class="learn-more">Learn More</a></div>
+            <div class="feature-box slide-in-left" data-delay="2"><div class="feature-icon"><i class="fa-solid fa-chart-line"></i></div><h3>Market Analysis</h3><p>Understand your market with in-depth insights and smart data to make better decisions.</p><a href="#" class="learn-more">Learn More</a></div>
+            <div class="feature-box slide-in-right" data-delay="3"><div class="feature-icon"><i class="fa-solid fa-cart-shopping"></i></div><h3>Easy Purchase</h3><p>Enjoy a smooth, secure, and hassle-free buying experience every time.</p><a href="#" class="learn-more">Learn More</a></div>
+            <div class="feature-box slide-in-left" data-delay="4"><div class="feature-icon"><i class="fa-solid fa-arrows-rotate"></i></div><h3>Free Updates</h3><p>Get regular updates and improvements at no extra cost — stay ahead always.</p><a href="#" class="learn-more">Learn More</a></div>
+            <div class="feature-box slide-in-right" data-delay="5"><div class="feature-icon"><i class="fa-solid fa-face-smile"></i></div><h3>100% Satisfied</h3><p>We value your satisfaction — our services are designed to meet your goals perfectly.</p><a href="#" class="learn-more">Learn More</a></div>
+            <div class="feature-box slide-in-left" data-delay="6"><div class="feature-icon"><i class="fa-solid fa-plug"></i></div><h3>Easy Plugin</h3><p>Integrate our tools quickly and easily into your existing system with just one click.</p><a href="#" class="learn-more">Learn More</a></div>
         </div>
     </section>
 
-    <!-- 4. SKILLS SECTION -->
-    <section class="skills-section" id="skills">
-        <div class="container">
-            <div class="section-heading animated fadeInUp">
-                <small>Clyde.</small>
-                <h2>My Skills</h2>
-                <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia</p>
-            </div>
+    <!-- 4. COMMUNICATION AND FEEDBACK SECTION -->
+    <section class="communication-section container">
+        <div class="comm-content slide-in-left">
+            <h2>Communicate and gather feedback</h2>
+            <p>Stay connected with your audience and understand what really matters to them.
+Effective communication helps you improve your services, build trust, and grow stronger relationships.</p>
             
-            <div class="skills-grid">
-                <div class="skill-item animated fadeInUp" style="animation-delay: 0.1s;"><h4>CSS</h4><div class="progress-circle css-skill"><span class="percentage">95<sup>%</sup></span></div><div class="sub-stats"><span>High Consistency</span><span>Expert Level</span></div></div>
-                <div class="skill-item animated fadeInUp" style="animation-delay: 0.3s;"><h4>HTML</h4><div class="progress-circle html-skill"><span class="percentage">98<sup>%</sup></span></div><div class="sub-stats"><span>Structure First</span><span>Clean Code</span></div></div>
-                <div class="skill-item animated fadeInUp" style="animation-delay: 0.5s;"><h4>JQuery</h4><div class="progress-circle jquery-skill"><span class="percentage">68<sup>%</sup></span></div><div class="sub-stats"><span>Frontend Logic</span><span>Interactive Design</span></div></div>
-                <div class="skill-item animated fadeInUp" style="animation-delay: 0.7s;"><h4>Photoshop</h4><div class="progress-circle photoshop-skill"><span class="percentage">92<sup>%</sup></span></div><div class="sub-stats"><span>Image Editing</span><span>Graphics</span></div></div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 5. SERVICES SECTION (Clickable) -->
-    <section class="services-section" id="services">
-        <div class="container">
-            <div class="section-heading animated fadeInUp">
-                <small>I am grat at</small>
-                <h2>We do awesome services for our clients</h2>
-                <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia</p>
-            </div>
-            
-            <div class="services-grid">
-                <a href="Daliy Task.html" class="service-card animated fadeInUp" style="animation-delay: 0.1s;"><i class="fas fa-desktop"></i><h4>Web Design</h4><p>A small river named Duden flows by their place and supplies.</p></a>
-                <a href="Daliy Task.html" class="service-card animated fadeInUp" style="animation-delay: 0.2s;"><i class="fas fa-cogs"></i><h4>Web Application</h4><p>A small river named Duden flows by their place and supplies.</p></a>
-                <a href="Daliy Task.html" class="service-card animated fadeInUp" style="animation-delay: 0.3s;"><i class="fas fa-code"></i><h4>Web Development</h4><p>A small river named Duden flows by their place and supplies.</p></a>
-                <a href="Daliy Task.html" class="service-card animated fadeInUp" style="animation-delay: 0.4s;"><i class="fas fa-ad"></i><h4>Banner Design</h4><p>A small river named Duden flows by their place and supplies.</p></a>
-                <a href="Daliy Task.html" class="service-card animated fadeInUp" style="animation-delay: 0.5s;"><i class="fas fa-lightbulb"></i><h4>Branding</h4><p>A small river named Duden flows by their place and supplies.</p></a>
-                <a href="Daliy Task.html" class="service-card animated fadeInUp" style="animation-delay: 0.6s;"><i class="fas fa-icons"></i><h4>Icon Design</h4><p>A small river named Duden flows by their place and supplies.</p></a>
-                <a href="Daliy Task.html" class="service-card animated fadeInUp" style="animation-delay: 0.7s;"><i class="fas fa-paint-brush"></i><h4>Graphic Design</h4><p>A small river named Duden flows by their place and supplies.</p></a>
-                <a href="Daliy Task.html" class="service-card animated fadeInUp" style="animation-delay: 0.8s;"><i class="fas fa-search"></i><h4>SEO</h4><p>A small river named Duden flows by their place and supplies.</p></a>
-            </div>
-        </div>
-    </section>
-
-    <!-- 6. PROJECTS SECTION & CTA -->
-    <section class="projects-section" id="projects">
-        <div class="cta-banner">
-            <div class="container cta-inner">
-                <div class="cta-text animated fadeInUp">
-                    <h3>Have a project on your mind.</h3>
-                    <p>A small river named Duden flows by their place and supplies it with the necessary regelialia.</p>
-                    <a href="#contact" class="btn btn-secondary">Contact me</a>
-                </div>
-            </div>
-        </div>
-
-        <div class="container">
-            <div class="section-heading animated fadeInUp">
-                <small>Accomplishments</small>
-                <h2>Our Projects</h2>
-                <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia</p>
-            </div>
-            
-            <div class="projects-grid">
-                <!-- Uniform 250px height images for consistent presentation -->
-                <a href="Daliy Task.html" class="project-item animated fadeInUp"><img src="https://picsum.photos/400/300?random=1" alt="Project 1"></a>
-                <a href="Daliy Task.html" class="project-item animated fadeInUp" style="animation-delay: 0.1s;"><img src="https://picsum.photos/400/300?random=2" alt="Project 2"></a>
-                <a href="Daliy Task.html" class="project-item animated fadeInUp" style="animation-delay: 0.2s;"><img src="https://picsum.photos/400/300?random=3" alt="Project 3"></a>
-                <a href="Daliy Task.html" class="project-item animated fadeInUp" style="animation-delay: 0.3s;"><img src="https://picsum.photos/400/300?random=4" alt="Project 4"></a>
-                <a href="Daliy Task.html" class="project-item animated fadeInUp" style="animation-delay: 0.4s;"><img src="https://picsum.photos/400/300?random=5" alt="Project 5"></a>
-                <a href="Daliy Task.html" class="project-item animated fadeInUp" style="animation-delay: 0.5s;"><img src="https://picsum.photos/400/300?random=6" alt="Project 6"></a>
-                <a href="Daliy Task.html" class="project-item animated fadeInUp" style="animation-delay: 0.6s;"><img src="https://picsum.photos/400/300?random=7" alt="Project 7"></a>
-                <a href="Daliy Task.html" class="project-item animated fadeInUp" style="animation-delay: 0.7s;"><img src="https://picsum.photos/400/300?random=8" alt="Project 8"></a>
-            </div>
-        </div>
-    </section>
-
-    <!-- 7. TESTIMONIALS SECTION -->
-    <section class="testimonials-section">
-        <div class="container">
-            <div class="section-heading animated fadeInUp">
-                <small>Testimonies</small>
-                <h2>What client says about?</h2>
-                <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia</p>
-            </div>
-            
-            <!-- Note: The carousel layout is managed by the `flex` and `scroll-snap` CSS properties -->
-            <div class="testimonial-carousel animated fadeInUp">
-                <div class="testimonial-card">
-                    <i class="fas fa-quote-left quote-icon"></i>
-                    <blockquote>Nazim delivered exceptional quality. The real-time animations blended perfectly with the clean Clyde design theme. Highly recommended!</blockquote>
-                    <div class="client-info">
-                        <img src="https://picsum.photos/50/50?random=10" alt="Roger Scott">
-                        <div><strong>Roger Scott</strong><small>Marketing Manager</small></div>
+            <div class="testimonial-box">
+                <div class="testimonial-info">
+                    <!-- IMAGE LINK FOR CLIENT AVATAR -->
+                    <img src="https://i.ibb.co/5XXbm0nr/IMG-20251015-WA0021.jpg" alt="Grey Simson Avatar" class="client-avatar-img">
+                    <div class="client-details">
+                        <h4>Nazim Mustafa </h4>
+                        <p>Co-Found, G M Networking .</p>
                     </div>
                 </div>
-                <div class="testimonial-card">
-                    <i class="fas fa-quote-left quote-icon"></i>
-                    <blockquote>The consistency in style and attention to detail ensured our brand image was perfectly represented across all platforms.</blockquote>
-                    <div class="client-info">
-                        <img src="https://picsum.photos/50/50?random=11" alt="Amelia W">
-                        <div><strong>Amelia W.</strong><small>CEO, TechCorp</small></div>
-                    </div>
+                <p class="testimonial-text">"We believe communication is the key to growth — listening to feedback makes success easier and faster."</p>
+            </div>
+        </div>
+        
+        <div class="comm-illustration slide-in-right">
+            <!-- IMAGE LINK FOR MAIN ILLUSTRATION (Woman, Document, Gift) -->
+            <img src="https://i.ibb.co/5XXbm0nr/IMG-20251015-WA0021.jpg" alt="Communication Illustration" class="comm-illustration-img">
+        </div>
+    </section>
+    
+    <!-- 5. TEAM SECTION -->
+    <section class="team-section container" id="team">
+        <div class="section-title slide-in-right">
+            <h2>Our Team</h2>
+            <p>We are a group of passionate and skilled professionals dedicated to helping your business grow.
+Each member of our team brings unique expertise, creativity, and energy to every project.</p>
+        </div>
+
+        <div class="team-grid">
+            <!-- Team members now use slide-up class -->
+            <div class="team-member slide-up" data-delay="1">
+                <!-- IMAGE LINK FOR TEAM MEMBER 1 -->
+                <div class="member-photo">
+                    <img src="https://i.ibb.co/d0PTcjD9/IMG-20251015-WA0025.jpg" alt="Cloe Mareena Photo">
                 </div>
-                <div class="testimonial-card">
-                    <i class="fas fa-quote-left quote-icon"></i>
-                    <blockquote>Fast response and incredible design work. The project was completed on time and exceeded expectations.</blockquote>
-                    <div class="client-info">
-                        <img src="https://picsum.photos/50/50?random=12" alt="John D">
-                        <div><strong>John Davis</strong><small>Lead Developer</small></div>
-                    </div>
+                <h3>Ghulam  Mustafa </h3>
+                <span class="role">Designer</span>
+                <p class="description">Specializes in modern and eye-catching visual design.
+
+Turns ideas into powerful graphics that attract clients.</p>
+            </div>
+            <div class="team-member slide-up" data-delay="2">
+                <!-- IMAGE LINK FOR TEAM MEMBER 2 -->
+                <div class="member-photo">
+                    <img src="https://i.ibb.co/5XXbm0nr/IMG-20251015-WA0021.jpg" alt="Nazim Mustafa ">
                 </div>
+                <h3>Nazim Mustafa </h3>
+                <span class="role">Marketing</span>
+                <p class="description">Expert in digital marketing and brand strategy.
+
+Focused on driving growth through creative campaigns.
+</p>
+            </div>
+            <div class="team-member slide-up" data-delay="3">
+                <!-- IMAGE LINK FOR TEAM MEMBER 3 -->
+                <div class="member-photo">
+                    <img src="https://i.ibb.co/h1n6qLvQ/IMG-20251015-WA0027.jpg" alt="Will Turner Photo">
+                </div>
+                <h3>Kazim Mustafa </h3>
+                <span class="role">Marketing</span>
+                <p class="description">Skilled in customer engagement and market research.
+
+Helps the team find new opportunities for expansion.</p>
+            </div>
+            <div class="team-member slide-up" data-delay="4">
+                <!-- IMAGE LINK FOR TEAM MEMBER 4 -->
+                <div class="member-photo">
+                    <img src="https://i.ibb.co/DHqNcCXt/IMG-20251015-WA0048.jpg" alt="Nicolas Stainer Photo">
+                </div>
+                <h3>Hassan Mujtbha </h3>
+                <span class="role">Marketing </span>
+                <p class="description">Expert in planning result-driven marketing strategies.
+
+Focused on analyzing trends to improve business performance.</p>
             </div>
         </div>
     </section>
-
-    <!-- 8. BLOG SECTION -->
-    <section class="blog-section" id="blog">
-        <div class="container">
-            <div class="section-heading animated fadeInUp">
-                <small>Latest News</small>
-                <h2>Our Blog</h2>
-                <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia</p>
-            </div>
-            
-            <div class="blog-grid">
-                <a href="#" class="blog-post animated fadeInUp">
-                    <div class="blog-post-inner">
-                        <img src="https://picsum.photos/400/300?random=20" alt="Blog Post 1">
-                        <div class="blog-content">
-                            <small>June 21, 2024 | Design</small>
-                            <h4>How to Maintain Style Consistency in Web Design</h4>
-                            <p>Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove.</p>
-                        </div>
-                    </div>
-                </a>
-                <a href="#" class="blog-post animated fadeInUp" style="animation-delay: 0.2s;">
-                    <div class="blog-post-inner">
-                        <img src="https://picsum.photos/400/300?random=21" alt="Blog Post 2">
-                        <div class="blog-content">
-                            <small>June 18, 2024 | Animation</small>
-                            <h4>Exploring Real-Time CSS Animations for Better UX</h4>
-                            <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia.</p>
-                        </div>
-                    </div>
-                </a>
-                <a href="#" class="blog-post animated fadeInUp" style="animation-delay: 0.4s;">
-                    <div class="blog-post-inner">
-                        <img src="https://picsum.photos/400/300?random=22" alt="Blog Post 3">
-                        <div class="blog-content">
-                            <small>June 15, 2024 | Productivity</small>
-                            <h4>The Benefits of Using the Clyde Portfolio Layout</h4>
-                            <p>Blind texts separated they live in Bookmarksgrove right at the coast of the Semantics.</p>
-                        </div>
-                    </div>
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- 9. CONTACT SECTION -->
+    
+    <!-- 6. CONTACT US SECTION -->
     <section class="contact-section" id="contact">
+        <h2 class="slide-in-left">Contact Us</h2>
         <div class="container">
-            <div class="section-heading animated fadeInUp">
-                <small>Get in touch</small>
-                <h2>Contact Me</h2>
-                <p>I'm available for freelance projects and collaborations.</p>
-            </div>
-
-            <div class="contact-content">
-                <div class="contact-info animated fadeInUp" style="animation-delay: 0.2s;">
-                    <div class="contact-info-item">
-                        <i class="fas fa-map-marker-alt"></i>
-                        <div><h4>Address:</h4><p>Rawalpindi, Pakistan 46000</p></div>
-                    </div>
-                    <div class="contact-info-item">
-                        <i class="fas fa-phone-alt"></i>
-                        <div><h4>Phone:</h4><p>+92 343 5641151</p></div>
-                    </div>
-                    <div class="contact-info-item">
-                        <i class="fas fa-envelope"></i>
-                        <div><h4>Email:</h4><p>mn1691316@gmail.com</p></div>
-                    </div>
-                    <div class="contact-info-item">
-                        <i class="fas fa-globe"></i>
-                        <div><h4>Website:</h4><p>YourWebsiteLink.com</p></div>
+            <div class="contact-form-box slide-in-right">
+                <h3>Contact Form</h3>
+                <form action="#" method="POST">
+                    
+                    <div class="form-group">
+                        <div class="form-field">
+                            <input type="text" name="first-name" placeholder="First Name" required>
+                        </div>
+                        <div class="form-field">
+                            <input type="text" name="last-name" placeholder="Last Name" required>
+                        </div>
                     </div>
                     
-                    <!-- Placeholder Map -->
-                    <div style="height: 250px; background: #e9ecef; border-radius: 5px; margin-top: 30px; display: flex; align-items: center; justify-content: center; color: var(--secondary-text);">
-                        [Map Placeholder]
+                    <div class="form-single-column">
+                        <div class="form-field">
+                            <input type="email" name="email" placeholder="Email" required>
+                        </div>
                     </div>
-                </div>
 
-                <form class="contact-form animated fadeInUp" style="animation-delay: 0.4s;">
-                    <div class="form-group"><input type="text" placeholder="Your Name" required></div>
-                    <div class="form-group"><input type="email" placeholder="Your Email" required></div>
-                    <div class="form-group"><input type="text" placeholder="Subject"></div>
-                    <div class="form-group"><textarea placeholder="Message"></textarea></div>
-                    <div class="form-group"><button type="submit" class="btn btn-primary">Send Message</button></div>
+                    <div class="form-single-column">
+                        <div class="form-field">
+                            <input type="text" name="subject" placeholder="Subject" required>
+                        </div>
+                    </div>
+
+                    <div class="form-single-column">
+                        <div class="form-field">
+                            <textarea name="message" placeholder="Leave your message here..."></textarea>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-submit">Send Message</button>
+
                 </form>
             </div>
         </div>
     </section>
-
-    <!-- 10. FOOTER -->
+    
+    <!-- 7. FOOTER -->
     <footer>
         <div class="container">
-            <div class="footer-grid">
-                <div class="footer-col animated fadeInUp">
-                    <h4>Nazim Mustafa</h4>
-                    <p>A small river named Duden flows by their place and supplies it with the necessary regelialia.</p>
-                    <div class="social-icons">
-                        <a href="#"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                    </div>
-                </div>
-                
-                <div class="footer-col footer-links animated fadeInUp" style="animation-delay: 0.1s;">
-                    <h4>Quick Links</h4>
-                    <ul>
-                        <li><a href="#home"><i class="fas fa-chevron-right"></i> Home</a></li>
-                        <li><a href="#about"><i class="fas fa-chevron-right"></i> About</a></li>
-                        <li><a href="#services"><i class="fas fa-chevron-right"></i> Services</a></li>
-                        <li><a href="#projects"><i class="fas fa-chevron-right"></i> Portfolio</a></li>
-                        <li><a href="#contact"><i class="fas fa-chevron-right"></i> Contact</a></li>
-                    </ul>
-                </div>
-
-                <div class="footer-col animated fadeInUp" style="animation-delay: 0.2s;">
-                    <h4>Services</h4>
-                    <ul>
-                        <li><a href="#"><i class="fas fa-chevron-right"></i> Web Development</a></li>
-                        <li><a href="#"><i class="fas fa-chevron-right"></i> Graphic Design</a></li>
-                        <li><a href="#"><i class="fas fa-chevron-right"></i> Branding</a></li>
-                        <li><a href="#"><i class="fas fa-chevron-right"></i> SEO Optimization</a></li>
-                    </ul>
-                </div>
-
-                <div class="footer-col animated fadeInUp" style="animation-delay: 0.3s;">
-                    <h4>Have a Question?</h4>
-                    <p><i class="fas fa-map-marker-alt"></i> Rawalpindi, Pakistan</p>
-                    <p><i class="fas fa-phone-alt"></i> +92 343 5641151</p>
-                    <p><i class="fas fa-envelope"></i> mn1691316@gmail.com</p>
-                </div>
+            <div class="social-icons">
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                <a href="#"><i class="fab fa-pinterest"></i></a>
             </div>
-
-            <div class="copyright">
-                <p>Copyright &copy; 2024 All rights reserved | This template is made with by Nazim Mustafa</p>
-            </div>
+            <p class="copyright">Copyright ©2025 All rights reserved | This template is made with <span style="color: var(--neon-magenta); text-shadow: 0 0 5px var(--neon-magenta);">♥</span> by <a href="https://colorlib.com/" style="text-decoration: none;">G M Networking </a></p>
         </div>
     </footer>
+    
+    <script>
+        // Menu Button Functionality (Working)
+        const burgerMenu = document.getElementById('burgerMenu');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const menuLinks = document.querySelectorAll('.menu-link');
+
+        // Toggle menu visibility
+        burgerMenu.addEventListener('click', function() {
+            mobileMenu.classList.toggle('active');
+        });
+
+        // Hide menu when a link is clicked (for smoother navigation)
+        menuLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                mobileMenu.classList.remove('active');
+            });
+        });
+
+
+        // ----------------------------------
+        // JAVASCRIPT FOR SCROLL ANIMATION
+        // ----------------------------------
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Select all elements that have the slide-in/slide-up classes
+            const animatedElements = document.querySelectorAll('.slide-in-left, .slide-in-right, .slide-up');
+
+            // Create a new Intersection Observer
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    // Check if the element is intersecting (in view)
+                    if (entry.isIntersecting) {
+                        // Add the 'in-view' class to start the animation
+                        entry.target.classList.add('in-view');
+                        // Stop observing this element since it only needs to animate once
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                // Configure the options for the observer
+                root: null, // relative to the viewport
+                threshold: 0.1 // Trigger when 10% of the element is visible
+            });
+
+            // Start observing each animated element
+            animatedElements.forEach(element => {
+                observer.observe(element);
+            });
+        });
+    </script>
 
 </body>
 </html>
