@@ -3,138 +3,151 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Task Submission Center</title>
-    
+    <title>YoursMed - User Task Submission Center</title>
+
+    <!-- Custom CSS Link -->
+    <link rel="stylesheet" href="style.css">
+
     <!-- Firebase SDKs (Version 8.10.0) -->
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
-
-    <!-- External Style Sheet Link -->
-    <link rel="stylesheet" href="style.css">
-
 </head>
-    <body> 
-          <!-- NEW BISMILLAH HEADER -->
-  <div class="bismillah-header">
-    بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ
-  </div>
-       <header>
-        <h1>User Task Submission</h1>
-        <div class="header-right">
-            <!-- Wallet Display -->
-            <div id="currentBalanceDisplay">Loading...</div>
-            <!-- Profile Icon -->
-            <button id="profileIconButton" title="Login or View Profile">👤</button>
-        </div>
-    </header>
+<body>
 
-    <div class="container">
-        
-        <!-- ARTICLE/GUIDE SECTION (Visible when logged out) -->
-        <div id="articleSection">
-            <h2 style="color: var(--dark-bg); text-align: center;">Apne Social Media Ko Real Growth Dein</h2>
-            
-            <div class="guide-article">
-                <h3>1. Shuruat Karen: Sign Up Aur Login</h3>
-                <p>Is system ka istemal karne ke liye, aapka account hona zaroori hai. Amal nihayat aasan hai:</p>
-                <ol>
-                    <li><strong>Profile Icon (👤) Par Click Karen:</strong> Page ke top right corner mein maujood profile icon par click karen.</li>
-                    <li><strong>Sign Up:</strong> Agar aap naye hain, to "Signup Karen" par click karen, apni email aur password daal kar account banaen.</li>
-                    <li><strong>Login:</strong> Agar aapka account pehle se hai, to seedha email aur password daal kar login karen.</li>
-                    <li>Login karte hi, aapka **Wallet Balance** header mein nazar aayega aur Task Submission Form khul jayega.</li>
-                </ol>
-
-                <h3>2. Real Followers Aur Engagement Hasil Karen</h3>
-                <p>Humara yeh section aapko **mukammal Real Engagement** faraham karne ke liye design kiya gaya hai. Jab aap yahan koi link submit karte hain, to aapke kharch kiye gaye coins dusre users ko task complete karne ke liye diye jaate hain.</p>
-                
-                <p><strong>Real Engagement Ki Guarantee:</strong> Humara nizam is tarah kaam karta hai ke aapke links sirf haqeeqi (real) aur active users tak pahunchte hain. Humari guarantee hai ke aapko <strong>1 se lekar 1000 tak (ya usse zyada) Real Follows, Likes, aur Views</strong> milenge, jo aapke channel/profile ki growth mein madad karenge.</p>
-
-                <h4>3. Task Submission Ka Tareeqa</h4>
-                <ol>
-                    <li><strong>Platform aur Task Chunein:</strong> Login ke baad, form mein apna social media platform (YouTube, TikTok, etc.) aur required task (maslan: YouTube Subscriber ya TikTok Follow) chunein.</li>
-                    <li><strong>Coins Check Karen:</strong> Task chunte hi, uski qeemat (Coins) fori taur par aapko nazar aayegi.</li>
-                    <li><strong>Link Submit Karen:</strong> Apne video/profile ka woh link daalen jahan aap engagement chahte hain.</li>
-                    <li><strong>Admin Approval:</strong> Aapka link pehle Admin ke paas jayega. Admin check karega ke link sahi hai ya nahi.</li>
-                    <li><strong>Task Status:</strong> Aapki request **Pending** status mein chali jayegi. Approval ke baad, aapka link users ko dikhaya jayega aur aapko real engagement milna shuru ho jayega.</li>
-                </ol>
-                <div class="call-to-action">
-                    Login Karen aur Apne Coins Ko Real Social Media Growth Mein Lagaein!
-                </div>
-            </div>
-        </div>
-        <!-- END ARTICLE/GUIDE SECTION -->
-        
-        <!-- Task Submission Section (Visible only after login) -->
-        <div id="taskSubmissionSection">
-            
-            <h2 style="color: var(--dark-bg); text-align: center;">Naya Task Submit Karen</h2>
-            
-            <form id="taskForm">
-                
-                <div class="form-group">
-                    <label for="platformSelect">Social Media Platform Chunein</label>
-                    <select id="platformSelect" required>
-                        <option value="">--- Select Platform ---</option>
-                        <option value="YouTube">YouTube</option>
-                        <option value="TikTok">TikTok</option>
-                        <option value="Instagram">Instagram</option>
-                        <option value="Facebook">Facebook</option>
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label for="taskTypeSelect">Task Ki Qism (Type) Aur Coins</label>
-                    <select id="taskTypeSelect" required disabled>
-                        <option value="">--- Pehle Platform Chunein ---</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="taskLink">Video/Channel/Profile Link Submit Karen</label>
-                    <input type="url" id="taskLink" placeholder="Task ka Link yahan darj karen" required>
-                </div>
-                
-                <p id="coinsRequiredDisplay">0 Coins</p>
-
-                <button type="submit" id="submitTaskButton" disabled>Task Submit Karen</button>
-            </form>
-            
-            <!-- Task History Section -->
-            <div class="history-section">
-                <h3>Aapki Submitted Tasks</h3>
-                <div id="taskHistoryList">
-                    <p>Aapki requests load ho rahi hain...</p>
-                </div>
-            </div>
-            
-            <a href="withdrawal.html" style="display: block; text-align: center; margin-top: 20px; color: var(--primary-color);">Withdrawal Center Par Jaen →</a>
-        </div>
+<header>
+    <h1>User Task Submission</h1>
+    <div class="header-right">
+        <!-- Wallet Display -->
+        <div id="currentBalanceDisplay">Loading...</div>
+        <!-- Profile Icon -->
+        <button id="profileIconButton" title="Login or View Profile">👤</button>
     </div>
+</header>
+
+<div class="container">
     
-    <!-- 1. Auth Modal (Login/Signup) -->
-    <div id="authModal" class="modal">
-        <div class="modal-content">
-            <span class="close-btn" onclick="document.getElementById('authModal').style.display='none'">&times;</span>
-            <h3 id="authTitle">Login Karen</h3>
+    <!-- ARTICLE/GUIDE SECTION (Visible when logged out) -->
+    <div id="articleSection">
+        <h2 style="color: var(--dark-bg); text-align: center;">Apne Social Media Ko Real Growth Dein</h2>
+        
+        <div class="guide-article">
+            <h3>1. Shuruat Karen: Sign Up Aur Login</h3>
+            <p>Is system ka istemal karne ke liye, aapka account hona zaroori hai. Amal nihayat aasan hai:</p>
+            <ol>
+                <li><strong>Profile Icon (👤) Par Click Karen:</strong> Page ke top right corner mein maujood profile icon par click karen.</li>
+                <li><strong>Sign Up:</strong> Agar aap naye hain, to "Signup Karen" par click karen, apni email aur password daal kar account banaen.</li>
+                <li><strong>Login:</strong> Agar aapka account pehle se hai, to seedha email aur password daal kar login karen.</li>
+                <li>Login karte hi, aapka **Wallet Balance** header mein nazar aayega aur Task Submission Form khul jayega.</li>
+            </ol>
+
+            <h3>2. Real Followers Aur Engagement Hasil Karen</h3>
+            <p>Humara yeh section aapko **mukammal Real Engagement** faraham karne ke liye design kiya gaya hai. Jab aap yahan koi link submit karte hain, to aapke kharch kiye gaye coins dusre users ko task complete karne ke liye diye jaate hain.</p>
             
-            <form class="auth-form" id="authForm">
-                <input type="email" id="authEmail" placeholder="Email Address" required>
-                <input type="password" id="authPassword" placeholder="Password" required>
-                <button type="submit" id="authButton">Login</button>
-            </form>
-            
-            <div class="auth-toggle">
-                <p id="toggleText">Account nahi hai? <a onclick="toggleAuthMode()">Signup Karen</a></p>
-                <button id="logoutButton" style="display: none; background-color: #dc3545; margin-top: 15px;">Logout</button>
+            <p><strong>Real Engagement Ki Guarantee:</strong> Humara Platform  is tarah kaam karta hai ke aapke links sirf haqeeqi (real) aur active users tak pahunchte hain. Humari guarantee hai ke aapko <strong>Real Follows, Likes, aur Views</strong> milenge, jo aapke channel/profile ki growth mein madad karenge.</p>
+
+            <h4>3. Task Submission Ka Tareeqa</h4>
+            <ol>
+                <li><strong>Platform aur Task Chunein:</strong> Login ke baad, form mein apna social media platform (YouTube, TikTok, Products, etc.) aur required task (maslan: YouTube Subscriber ya Product Click) chunein.</li>
+                <li><strong>Quantity Select Karen:</strong> Aapko jitne likes/followers/clicks chahiye, woh miqdar (Quantity) darj karen.</li>
+                <li><strong>Coins Check Karen:</strong> Task aur Quantity chunte hi, uski **Total Qeemat (Coins)** fori taur par aapko nazar aayegi.</li>
+                <li><strong>Link Submit Karen:</strong> Apne video/profile/product ka woh link daalen jahan aap engagement chahte hain.</li>
+                <li><strong>Admin Approval:</strong> Aapka link pehle Admin ke paas jayega. Admin check karega ke link sahi hai ya nahi.</li>
+                <li><strong>Task Status:</strong> Aapki request **Pending** status mein chali jayegi. Approval ke baad, aapka link users ko dikhaya jayega aur aapko real engagement milna shuru ho jayega.</li>
+            </ol>
+            <div class="call-to-action">
+                Login Karen aur Apne Coins Ko Real Social Media Growth Mein Lagaein!
             </div>
         </div>
     </div>
+    <!-- END ARTICLE/GUIDE SECTION -->
+    
+    <!-- Task Submission Section (Visible only after login) -->
+    <div id="taskSubmissionSection">
+        
+        <h2 style="color: var(--dark-bg); text-align: center;">Naya Task Submit Karen</h2>
+        
+        <form id="taskForm">
+            
+            <div class="form-group">
+                <label for="platformSelect">Platform Chunein (Social Media / Products)</label>
+                <select id="platformSelect" required>
+                    <option value="">--- Select Platform ---</option>
+                    <option value="YouTube">YouTube</option>
+                    <option value="TikTok">TikTok</option>
+                    <option value="Instagram">Instagram</option>
+                    <option value="Facebook">Facebook</option>
+                    <option value="Products">Products (Click & Earn)</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="taskTypeSelect">Task Ki Qism (Type) aur Unit Cost</label>
+                <select id="taskTypeSelect" required disabled>
+                    <option value="">--- Pehle Platform Chunein ---</option>
+                </select>
+            </div>
 
- 
-    <!-- External Script Link -->
-    <script src="script.js"></script>
-        <script type='text/javascript' src='//pl28063578.effectivegatecpm.com/f8/df/df/f8dfdf7576999fcac45d5b19753b542e.js'></script>
-        <script type='text/javascript' src='//pl28072139.effectivegatecpm.com/86/fd/e7/86fde7258b817d6ad0bac2d9813c6c7c.js'></script>
+            <!-- Quantity Input Section -->
+            <div class="form-group-flex">
+                <div class="form-group">
+                    <label for="taskQuantity">Kitni Miqdar Chahiye (Quantity)</label>
+                    <input type="number" id="taskQuantity" placeholder="Minimum 10" required min="1" disabled>
+                </div>
+                <div class="form-group">
+                    <label for="minQuantityDisplay">Minimum Required</label>
+                    <input type="text" id="minQuantityDisplay" value="10" disabled style="background: #e9e9e9;">
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="taskLink">Video/Channel/Profile/Product Link Submit Karen</label>
+                <input type="url" id="taskLink" placeholder="Task ka Link yahan darj karen" required>
+            </div>
+            
+            <p id="coinsRequiredDisplay">Total Required Coins: 0</p>
+
+            <button type="submit" id="submitTaskButton" disabled>Task Submit Karen</button>
+        </form>
+        
+        <!-- Task History Section -->
+        <div class="history-section">
+            <h3>Aapki Submitted Tasks</h3>
+            <div id="taskHistoryList">
+                <p>Aapki requests load ho rahi hain...</p>
+            </div>
+        </div>
+        
+        <a href="tasks.html" style="display: block; text-align: center; margin-top: 20px; color: var(--secondary-color);">Coins Earn Karen →</a>
+    </div>
+</div>
+
+<!-- 1. Auth Modal (Login/Signup) -->
+<div id="authModal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="document.getElementById('authModal').style.display='none'">&times;</span>
+        <h3 id="authTitle">Login Karen</h3>
+        
+        <form class="auth-form" id="authForm">
+            <input type="email" id="authEmail" placeholder="Email Address" required>
+            <input type="password" id="authPassword" placeholder="Password" required>
+            <button type="submit" id="authButton">Login</button>
+        </form>
+        
+        <div class="auth-toggle">
+            <p id="toggleText">Account nahi hai? <a onclick="toggleAuthMode()">Signup Karen</a></p>
+            <button id="logoutButton" style="display: none; background-color: #dc3545; margin-top: 15px;">Logout</button>
+        </div>
+    </div>
+</div>
+
+<!-- Custom JavaScript Link (Modular) -->
+<script src="script.js" type="module"></script>
+<script type='text/javascript' src='//pl28072139.effectivegatecpm.com/86/fd/e7/86fde7258b817d6ad0bac2d9813c6c7c.js'></script>
+<script type='text/javascript' src='//pl28063578.effectivegatecpm.com/f8/df/df/f8dfdf7576999fcac45d5b19753b542e.js'></script>
+
+<script type='text/javascript' src='//pl27352667.effectivegatecpm.com/49/cc/3e/49cc3e205b154236f3590a08c598b44d.js'></script>
+<script type='text/javascript' src='//pl28075170.effectivegatecpm.com/ee/24/e2/ee24e2a9e18a910dc1ed1e57493f74c0.js'></script>
+<script type='text/javascript' src='//pl28075165.effectivegatecpm.com/d4/ed/81/d4ed81603b5b5eb7b2ed5357cc8574d6.js'></script>
 </body>
 </html>
