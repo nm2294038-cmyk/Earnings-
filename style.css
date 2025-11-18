@@ -454,12 +454,286 @@ a { text-decoration: none; color: inherit; }
   .mobile-footer { display: none; } 
   body { padding-bottom: 0; }
 }
-/* --- AD CONTAINER STYLING --- */
-/* Yeh code banner ads ko center mein rakhta hai */
-.ad-container-top, .ad-container-bottom {
+
+/* --- NEW FEATURE CARD STYLES --- */
+.feature-section {
+    padding: 0 20px;
+    max-width: 500px;
+    margin: 20px auto;
+}
+.feature-grid {
+    display: grid;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+.feature-grid-2-col {
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.feature-card {
+    background-color: white;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    overflow: hidden;
+    position: relative;
+    color: #333;
+}
+.feature-card .content {
+    flex-grow: 1;
+    padding-right: 15px;
+}
+.feature-card h3 {
+    margin: 0;
+    font-size: 1.2em;
+    font-weight: 700;
+    line-height: 1.2;
+}
+.feature-card p {
+    margin: 5px 0 0;
+    font-size: 0.85em;
+    color: #777;
+}
+.feature-card .icon-placeholder {
+    width: 60px;
+    height: 60px;
+    flex-shrink: 0;
+    margin-left: 10px;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 15px 0;
-    width: 100%;
+    font-size: 2.5em; /* Icon size */
 }
+
+/* Specific Card Styles (Full Width Cards) */
+.card-word-puzzle {
+    background: linear-gradient(135deg, #4d8aff, #2a6bf2);
+    color: white;
+}
+.card-word-puzzle p { color: rgba(255, 255, 255, 0.85); }
+.card-word-puzzle .icon-placeholder {
+    /* Using custom puzzle icon */
+    color: #ffc107;
+}
+.card-word-puzzle .new-badge {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: #ff476e;
+    color: white;
+    padding: 3px 8px;
+    font-size: 0.7em;
+    font-weight: bold;
+    border-radius: 0 10px 0 10px;
+}
+
+.card-knowledge {
+    background-color: #1e2a38;
+    color: white;
+}
+.card-knowledge p { color: rgba(255, 255, 255, 0.85); }
+.card-knowledge .icon-placeholder {
+    /* Using search/magnifying glass icon */
+    color: #4CAF50;
+}
+.card-knowledge .coin-overlay {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    font-size: 1.5em;
+    color: #ffc107;
+}
+
+.card-extra-bonus, .card-play-game {
+    background-color: #1e2a38;
+    color: white;
+    padding: 20px 15px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+.card-extra-bonus .icon-placeholder {
+    /* Using bullhorn icon for social media promotion */
+    color: #1e88e5;
+}
+.card-play-game .icon-placeholder {
+    /* Using gamepad icon */
+    color: #9c27b0;
+}
+
+.card-task-challenge {
+    background: linear-gradient(90deg, #ff476e, #f44336);
+    color: white;
+    padding: 15px;
+}
+.card-task-challenge h3 { font-size: 1.4em; }
+.card-task-challenge p { color: rgba(255, 255, 255, 0.9); font-weight: 500;}
+.card-task-challenge .icon-time {
+    font-size: 2.5em;
+    color: white;
+    margin-right: 15px;
+}
+.card-task-challenge .icon-fire {
+    font-size: 1.5em;
+    color: #ffc107;
+    margin-left: 10px;
+}
+
+/* Offerwall/Survey Grid Styles */
+.feature-card-grid {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    margin-top: 15px;
+}
+.feature-card-grid .card-item {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    padding: 15px;
+    flex: 1;
+    text-align: center;
+}
+.feature-card-grid .card-item .img-placeholder {
+    height: 80px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 3em;
+}
+.feature-card-grid .card-item h4 {
+    margin: 5px 0;
+    font-size: 1.1em;
+    font-weight: 700;
+}
+.feature-card-grid .card-item .coins {
+    font-size: 0.9em;
+    color: #777;
+    margin-bottom: 10px;
+}
+.feature-card-grid .card-item .rating {
+    color: #ffc107;
+    font-size: 0.9em;
+}
+
+/* Pubscale Offerwall Card (Special Design) */
+.card-pubscale {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+.card-pubscale .logo-placeholder {
+    width: 60px;
+    height: 60px;
+    margin-right: 15px;
+    flex-shrink: 0;
+    /* Custom P icon representation */
+    font-size: 2.5em;
+    color: #f44336;
+    transform: rotate(-15deg);
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    line-height: 1;
+}
+.card-pubscale .logo-placeholder::before {
+    content: '\f062'; /* fas fa-arrow-up */
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    color: #000;
+    position: absolute;
+    top: 5px;
+    left: 10px;
+    font-size: 1.2em;
+    transform: rotate(15deg);
+}
+.card-pubscale h3 { margin: 0; font-size: 1.3em; color: #333; }
+.card-pubscale .offer-text { font-size: 0.85em; color: #555; margin: 3px 0; }
+.card-pubscale .coins-highlight { font-size: 1.2em; font-weight: 900; color: #f44336; margin-bottom: 5px; }
+.card-pubscale .earn-button {
+    background-color: #ffc107;
+    color: #333;
+    padding: 8px 15px;
+    border-radius: 8px; /* Changed to 8px for consistency */
+    font-weight: bold;
+    display: inline-block;
+    margin-top: 10px;
+}
+/* --- END NEW FEATURE CARD STYLES --- */
+
+/* --- NEW EXIT MODAL STYLES --- */
+#exit-modal-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: none; /* Hidden by default */
+    justify-content: center; align-items: center; z-index: 1001;
+}
+
+#exit-modal-content {
+    background-color: white;
+    padding: 30px 20px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    width: 85%;
+    max-width: 350px;
+    text-align: center;
+}
+
+#exit-modal-content .star-icon {
+    font-size: 5em;
+    color: #ffc107;
+    margin-bottom: 15px;
+}
+
+#exit-modal-content h3 {
+    font-size: 1.5em;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+#exit-modal-content .rating-stars {
+    color: #ccc;
+    font-size: 2em;
+    margin-bottom: 30px;
+}
+
+#exit-modal-content .button-group {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+#exit-modal-content .modal-button {
+    flex: 1;
+    padding: 12px 10px;
+    font-size: 1.1em;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+#exit-modal-content .btn-no {
+    background-color: #ffc107; /* Yellow */
+    color: #333;
+}
+
+#exit-modal-content .btn-exit {
+    background-color: #1a237e; /* Dark Blue */
+    color: white;
+}
+/* -------------------------------------- */
