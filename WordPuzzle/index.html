@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Word Puzzle Game - Explore Themes</title>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- FIREBASE SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+</head>
+<body>
+
+    <!-- 1. HEADER (Profile and Wallet) -->
+    <header class="app-header">
+        <span class="header-title">Word Puzzle Challenge</span>
+        <div class="profile-icon" id="profile-icon">
+            <i class="fas fa-user-circle"></i>
+            <span class="wallet-info" id="wallet-display">0 Coins</span>
+        </div>
+    </header>
+
+    <!-- 2. MAIN CONTENT AREA (Themed Puzzles) -->
+    <div class="container">
+        
+        <div class="theme-header">
+            <h1>EXPLORE MANY THEMES</h1>
+            <nav class="difficulty-nav">
+                <div class="diff-button" data-difficulty="easy">EASY</div>
+                <div class="diff-button active" data-difficulty="medium">MEDIUM</div>
+                <div class="diff-button" data-difficulty="hard">HARD</div>
+                <div class="diff-button" data-difficulty="pro">PRO</div>
+            </nav>
+        </div>
+
+        <div class="theme-grid" id="theme-grid">
+            <!-- Theme Cards will be populated by JavaScript -->
+        </div>
+
+    </div>
+
+    <!-- 3. AUTHENTICATION/GUIDE MODAL -->
+    <div id="auth-modal" class="modal-overlay">
+        <div class="modal-content">
+            <h2 id="modal-heading">How to Start</h2>
+            
+            <div id="guide-content" class="guide-content">
+                <h3>Welcome to the Word Puzzle Challenge!</h3>
+                <p>Before you begin, please read the guide below:</p>
+                <ul>
+                    <li>Complete a minimum of 30 puzzles in each theme to master it.</li>
+                    <li>Every time you solve a puzzle, you will earn **1 to 10 random coins**.</li>
+                    <li>These coins are added immediately to your real-time wallet.</li>
+                    <li>You can exchange these coins for cash rewards in your main app wallet (YoursMed).</li>
+                </ul>
+                <p style="font-weight: bold; margin-top: 15px;">Please Sign Up or Log In to Save Your Progress and Coins.</p>
+                <button onclick="showAuthForm('signup')">Go to Sign Up</button>
+                <div class="switch-mode" style="margin-top: 15px;">
+                    <a href="#" onclick="closeModal('auth-modal')">Continue as Guest (No saving)</a>
+                </div>
+            </div>
+
+            <form id="auth-form" onsubmit="event.preventDefault(); handleAuthSubmit();" style="display: none;">
+                <input type="text" id="auth-name" placeholder="Full Name" required>
+                <input type="email" id="auth-email" placeholder="Email Address" required>
+                <input type="password" id="auth-password" placeholder="Password" required>
+                <input type="text" id="auth-referral-code" placeholder="Referral Code (Optional)"> 
+                <button type="submit" id="auth-submit-btn">Sign Up</button>
+                <div class="switch-mode">
+                    <span id="switch-text">Already have an account? </span>
+                    <a href="#" id="switch-link" onclick="toggleAuthMode(); return false;">Login</a>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- 4. GAME PLAY MODAL -->
+    <div id="game-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="game-header">
+                <button onclick="closeModal('game-modal')" style="background-color: #f44336; width: auto; padding: 5px 10px;">
+                    <i class="fas fa-arrow-left"></i> Back
+                </button>
+                <h3 id="game-theme-title">Theme: Animals</h3>
+                <div id="game-puzzle-counter">Puzzle 0/30</div>
+            </div>
+            
+            <div id="puzzle-area">
+                <div id="current-word-display">_ _ _ _ _</div>
+                <div id="hint-display" style="color:#777; margin-bottom: 20px;"></div>
+                
+                <div id="letter-options">
+                    <!-- Letter buttons go here -->
+                </div>
+            </div>
+            
+            <div class="game-buttons">
+                <button onclick="clearAttempt()" style="background-color: #ff9800;"><i class="fas fa-undo"></i> Clear</button>
+                <button onclick="checkPuzzle()" style="background-color: #1e88e5;"><i class="fas fa-check"></i> Submit</button>
+            </div>
+
+            <div id="message-area" style="margin-top: 20px; font-weight: bold; color: #f44336;"></div>
+        </div>
+    </div>
+    
+    <!-- 5. COIN REWARD NOTIFICATION -->
+    <div id="coin-notification">
+        +<span id="reward-amount">10</span> Coins Added! <i class="fas fa-coins"></i>
+    </div>
+
+    <!-- Custom JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>
