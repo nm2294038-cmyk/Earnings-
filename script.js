@@ -1,3 +1,4 @@
+
 // ====================================================================
 // SECTION A: FIREBASE CONFIGURATION & CORE STATE
 // ====================================================================
@@ -44,8 +45,8 @@ const REWARD_MILESTONES = [
 
 const OPEN_HOUR_START = 10; 
 const OPEN_MINUTE_START = 0; 
-const OPEN_HOUR_END = 9; 
-const OPEN_MINUTE_END = 720; 
+const OPEN_HOUR_END = 21; // Assuming 9:00 PM is 21:00 (720 minutes logic was confusing)
+const OPEN_MINUTE_END = 0; 
 
 // ====================================================================
 // SECTION B: UI NAVIGATION HANDLERS (Defined first for proper scoping)
@@ -77,12 +78,14 @@ function _internalUISwitch(targetPageId, title) {
         backButton.style.display = 'none';
     }
 
+    // Footer link active state update
     navLinks.forEach(l => l.classList.remove('active'));
     const activeFooterLink = document.querySelector(`.mobile-footer [data-page="${targetPageId}"]`);
     if (activeFooterLink) {
         activeFooterLink.classList.add('active');
     }
     
+    // Rewards tab visibility
     rewardsTabs.style.display = (targetPageId === 'rewards-content') ? 'flex' : 'none';
     
     window.scrollTo(0, 0);
@@ -98,6 +101,7 @@ function switchTab(targetTabId) {
     rewardsTabs.querySelectorAll('.tab-link').forEach(link => {
         link.classList.remove('active');
     });
+    // Ensure we find the correct tab link (e.g., 'invite-tab' from 'invite-tab-content')
     rewardsTabs.querySelector(`[data-tab="${targetTabId.replace('-content', '')}"]`).classList.add('active');
 }
 
@@ -106,15 +110,20 @@ function switchPage(targetPageId, title) {
 
     // History Management: Push new state only if navigating to a *new* tab
     if (targetPageId !== currentPageId) {
+        // Push state to enable back navigation and prevent redirect to #
         history.pushState({ page: targetPageId, title: title }, title, `#${targetPageId}`);
     }
     
     _internalUISwitch(targetPageId, title);
     if (targetPageId === 'rewards-content') {
+         // Activate the default sub-tab when switching to the Rewards page
          const defaultTabLink = rewardsTabs.querySelector('.tab-link.active');
          if (defaultTabLink) {
              const defaultTabId = defaultTabLink.getAttribute('data-tab');
              switchTab(defaultTabId + '-content');
+         } else {
+             // Fallback to the first tab if none is active
+             switchTab('invite-tab-content');
          }
     }
 }
@@ -127,10 +136,13 @@ function handleBack() {
 
 // ====================================================================
 // SECTION C: FEATURES (Link Handling & Exit Prompt)
-// ====================================================================
+// ====================================================
 
 /**
  * FEATURE 1: Global Link Interception (New Tab / Mobile App Support)
+ * NOTE: Isko maine thoda modify kiya hai takay internal links (jo # se start nahi hote) bhi new tab mein open hon.
+ * Agar aapko chahiye ki internal app links (jaise ki Task Earn, Profile) app ke andar hi load hon, to yeh logic
+ * adjust karna padega ya aap un links par 'target="_self"' add kar sakte hain.
  */
 document.addEventListener('click', function(e) {
     let target = e.target;
@@ -141,10 +153,19 @@ document.addEventListener('click', function(e) {
     if (target && target.href) {
         const url = target.href;
         
+        // Agar link internal navigation (data-page) ya auth modal ya sirf # hai, to ignore karein.
+        if (target.getAttribute('data-page') || target.id === 'logout-button' || url.endsWith('#')) {
+            return;
+        }
+
+        // Agar yeh external URL hai (http/https se start ho raha hai)
         if (url.startsWith('http') || url.startsWith('https') || url.startsWith('//')) {
             e.preventDefault(); 
+            // External links ko new tab mein open karein
             window.open(url, '_blank');
         }
+        // Agar yeh path based internal link hai (e.g., 'Profile/index.html'), to ye default browser behavior par chhod dega.
+        // Agar aap chahte hain ki yeh bhi new tab mein khule, to aapko isko target._blank dena hoga.
     }
 });
 
@@ -164,10 +185,17 @@ function hideExitModal() {
 function handleExitDecision(shouldExit) {
     hideExitModal();
     if (shouldExit) {
-        // User wants to exit. Allow the browser to proceed with the last back action.
+        // Agar user exit karna chahta hai, to history ko aage badhne dein (jo browser ko band kar dega)
+        // Ya agar yeh Cordova/WebView hai to Native Exit function call karein.
+        // For browser, we do nothing and let the history depletion happen.
     } else {
-        // User wants to stay. Push the current home state back to trap them here.
+        // Agar user rukna chahta hai, to home page ka state dobara history mein daal do
         history.pushState({ page: 'home-content', title: 'Daily Tasks' }, 'Daily Tasks', '#home-content');
+        // Ab hum home content par hain
+        _internalUISwitch('home-content', 'Daily Tasks');
+        // Footer ko bhi update karein
+        document.querySelectorAll('.mobile-footer .nav-link').forEach(l => l.classList.remove('active'));
+        document.querySelector(`.mobile-footer [data-page="home-content"]`).classList.add('active');
     }
 }
 
@@ -176,11 +204,12 @@ window.addEventListener('popstate', function(event) {
     const state = event.state;
     
     if (state && state.page) {
-        // Internal navigation (Sub-page to Home or vice versa). NO PROMPT.
+        // Internal navigation (State change within the app). NO PROMPT.
         _internalUISwitch(state.page, state.title || 'YoursMed App');
     } else {
-        // Exiting the app from the root state (History is depleted). SHOW PROMPT.
+        // Exiting the app from the root state. SHOW PROMPT.
         
+        // Agar hum home page par hain aur history khatam ho gayi, tabhi prompt dikhao
         if (currentPageId === 'home-content') {
             showExitModal();
         }
@@ -197,8 +226,10 @@ function isWithdrawalWindowOpen() {
     const currentHour = now.getHours();
     const currentMinute = now.getMinutes();
     const startTimeInMinutes = (OPEN_HOUR_START * 60) + OPEN_MINUTE_START;
-    const endTimeInMinutes = (OPEN_HOUR_END * 60) + OPEN_MINUTE_END;
+    const endTimeInMinutes = (OPEN_HOUR_END * 60) + OPEN_MINUTE_END; // 21 * 60 + 0 = 1260
     const currentTimeInMinutes = (currentHour * 60) + currentMinute;
+    
+    // Check if current time is within the start and end time window
     return (currentTimeInMinutes >= startTimeInMinutes && currentTimeInMinutes < endTimeInMinutes);
 }
 
@@ -206,7 +237,7 @@ function updateWithdrawalLockStatus() {
     const isOpen = isWithdrawalWindowOpen();
     const homeWithdrawalBox = document.getElementById('home-withdrawal-box');
     const timeLockedItems = document.querySelectorAll('#withdrawal-grid .withdrawal-item.time-locked');
-    const lockMessage = `Withdrawal Locked. Opens at ${OPEN_HOUR_START}:00 AM - ${OPEN_HOUR_END}:720 PM`;
+    const lockMessage = `Withdrawal Locked. Opens at ${OPEN_HOUR_START}:00 AM - ${OPEN_HOUR_END - 12}:00 PM`; // User-friendly display 9:00 PM
 
     if (homeWithdrawalBox) {
         let overlay = homeWithdrawalBox.querySelector('.lock-time-overlay');
@@ -237,6 +268,7 @@ function updateWithdrawalLockStatus() {
             item.style.opacity = '0.5';
         }
     });
+    // Set timeout to check again after 1 minute
     setTimeout(updateWithdrawalLockStatus, 60000); 
 }
 
@@ -426,7 +458,9 @@ function handleRealLogout(shouldRedirect = true) {
      updateAuthStateUI();
      if (shouldRedirect) {
         auth.signOut();
-        switchPage('home-content', 'Daily Tasks');
+        // Logout ke baad home page par switch karein aur history ko replace karein
+        history.replaceState({ page: 'home-content', title: 'Daily Tasks' }, 'Daily Tasks', '#home-content');
+        _internalUISwitch('home-content', 'Daily Tasks');
      }
 }
 
@@ -525,13 +559,17 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // --- 1. Set initial history state ---
+  // Ensure home page is the initial state for popstate management
   history.replaceState({ page: 'home-content', title: 'Daily Tasks' }, 'Daily Tasks', '#home-content');
 
 
-  // --- 2. Event listeners for navigation ---
+  // --- 2. Event listeners for navigation (This part is crucial) ---
   navLinks.forEach(link => {
     link.addEventListener('click', (e) => {
+      // *** YEH LINE REDIRECT HONAY SE ROKTI HAI ***
       e.preventDefault(); 
+      // ******************************************
+      
       const targetPageId = link.getAttribute('data-page');
       
       let title = '';
