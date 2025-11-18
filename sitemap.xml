@@ -1,18 +1,127 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
-  <!-- Homepage -->
+  <!-- ==================================================================== -->
+  <!--             CORE APPLICATION PAGES (Priority 0.9 - 1.0)              -->
+  <!-- ==================================================================== -->
+  
   <url>
-    <loc>https://www.yoursmed.xyz/</loc>
-    <lastmod>2025-11-10</lastmod>
+    <loc>https://www.yoursmed.xyz/index.html</loc>
+    <lastmod>2024-05-18</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
+    <!-- Main Earning Dashboard & Homepage -->
   </url>
+  
+  <url>
+    <loc>https://www.yoursmed.xyz/Withdrawal/index.html</loc>
+    <lastmod>2024-05-18</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+    <!-- Instant Cash Out & Rewards Withdrawal -->
+  </url>
+  
+  <url>
+    <loc>https://www.yoursmed.xyz/Profile/index.html</loc>
+    <lastmod>2024-05-18</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+    <!-- User Profile, Account Settings, and Balance -->
+  </url>
+  
+  <url>
+    <loc>https://www.yoursmed.xyz/Task & Earn/index.html</loc>
+    <lastmod>2024-05-18</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+    <!-- Generic Task Completion Page -->
+  </url>
+  
+  <!-- ==================================================================== -->
+  <!--             SPECIFIC EARNING FEATURES (Priority 0.7 - 0.8)           -->
+  <!-- ==================================================================== -->
+
+  <url>
+    <loc>https://www.yoursmed.xyz/Watch And Earn/index.html</loc>
+    <lastmod>2024-05-18</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+    <!-- Watch Videos and Earn Coins -->
+  </url>
+  
+  <url>
+    <loc>https://www.yoursmed.xyz/Offerwall/index.html</loc>
+    <lastmod>2024-05-18</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+    <!-- High Paying Offers and App Downloads -->
+  </url>
+
+  <url>
+    <loc>https://www.yoursmed.xyz/Survey/index.html</loc>
+    <lastmod>2024-05-18</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+    <!-- Paid Surveys Section -->
+  </url>
+
+  <url>
+    <loc>https://www.yoursmed.xyz/Pubscale/index.html</loc>
+    <lastmod>2024-05-18</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+    <!-- Third-party Offerwall Integration -->
+  </url>
+  
+  <url>
+    <loc>https://www.yoursmed.xyz/WordPuzzle/index.html</loc>
+    <lastmod>2024-05-18</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <!-- Word Puzzle Earning Game -->
+  </url>
+  
+  <url>
+    <loc>https://www.yoursmed.xyz/Knowledge/index.html</loc>
+    <lastmod>2024-05-18</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <!-- Improve Knowledge & Earn Section -->
+  </url>
+  
+  <url>
+    <loc>https://www.yoursmed.xyz/PlayGame/index.html</loc>
+    <lastmod>2024-05-18</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <!-- Play Games and Earn Coins -->
+  </url>
+
+  <!-- Money Management and Transfer -->
+  <url>
+    <loc>https://www.yoursmed.xyz/Deposit/Index.html</loc>
+    <lastmod>2024-05-18</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <!-- Deposit and Investment Card -->
+  </url>
+  
+  <url>
+    <loc>https://www.yoursmed.xyz/Transfer Coins Another User/index.html</loc>
+    <lastmod>2024-05-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <!-- Send Balance to Other Users -->
+  </url>
+
+  <!-- ==================================================================== -->
+  <!--             INFORMATION, LEGAL, AND BLOG (Priority 0.6 - 0.8)        -->
+  <!-- ==================================================================== -->
 
   <!-- Blog Index -->
   <url>
     <loc>https://www.yoursmed.xyz/blog/index.html</loc>
-    <lastmod>2025-11-10</lastmod>
+    <lastmod>2024-05-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -20,26 +129,73 @@
   <!-- Individual Blog Pages -->
   <url>
     <loc>https://www.yoursmed.xyz/blog/how-to-earn.html</loc>
-    <lastmod>2025-11-10</lastmod>
-    <changefreq>weekly</changefreq>
+    <lastmod>2024-05-18</lastmod>
+    <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
     <loc>https://www.yoursmed.xyz/blog/promotion-tips.html</loc>
-    <lastmod>2025-11-10</lastmod>
-    <changefreq>weekly</changefreq>
+    <lastmod>2024-05-18</lastmod>
+    <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
-
-  <!-- Future Blog Pages Template -->
-  <!--
+  
+  <!-- Legal and Support Pages (From the "More" Menu) -->
   <url>
-    <loc>https://www.yoursmed.xyz/blog/new-blog-page.html</loc>
-    <lastmod>YYYY-MM-DD</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
+    <loc>https://www.yoursmed.xyz/How to make.html</loc>
+    <lastmod>2024-05-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <!-- Privacy Policy / How To Make Money -->
   </url>
-  -->
-
+  
+  <url>
+    <loc>https://www.yoursmed.xyz/FAQ.html</loc>
+    <lastmod>2024-05-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <!-- Frequently Asked Questions -->
+  </url>
+  
+  <url>
+    <loc>https://www.yoursmed.xyz/about.html</loc>
+    <lastmod>2024-05-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <!-- About Us Page -->
+  </url>
+  
+  <url>
+    <loc>https://www.yoursmed.xyz/withdrawal.html</loc>
+    <lastmod>2024-05-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <!-- Detailed Withdrawal Policy -->
+  </url>
+  
+  <url>
+    <loc>https://www.yoursmed.xyz/Tasks/index.html</loc>
+    <lastmod>2024-05-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <!-- All Available Tasks List -->
+  </url>
+  
+  <url>
+    <loc>https://www.yoursmed.xyz/Terms of Service .html</loc>
+    <lastmod>2024-05-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <!-- Terms and Conditions -->
+  </url>
+  
+  <url>
+    <loc>https://www.yoursmed.xyz/contact.html</loc>
+    <lastmod>2024-05-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <!-- Contact Information and Support -->
+  </url>
+  
 </urlset>
