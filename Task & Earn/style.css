@@ -1,180 +1,372 @@
-/* --- VARIABLES --- */
+/* ===================================================================
+   TABLE OF CONTENTS
+======================================================================
+1.  :root VARIABLES         - Poori website ke colors, fonts, spacing
+2.  GENERAL & RESET STYLES  - Body, headings, links ke default styles
+3.  LAYOUT & STRUCTURE      - Header, Container, Sections
+4.  COMPONENTS              - Buttons, Cards, Modals, Forms
+5.  UTILITY CLASSES         - Chotay helper classes
+6.  RESPONSIVE DESIGN       - Media Queries for Tablet & Desktop
+    - 6.1 TABLET VIEW       (768px aur us se barri screens)
+    - 6.2 DESKTOP VIEW      (1024px aur us se barri screens)
+=================================================================== */
+
+
+/* ===================================================================
+   1. :root VARIABLES
+   Yahan hum poori website mein istemal hone wale colors aur
+   doosri values set karte hain taake unhe badalna aasan ho.
+=================================================================== */
 :root {
+    /* Colors */
     --primary-color: #007bff;
     --secondary-color: #28a745;
     --header-bg: #2c3e50;
     --card-bg: #ffffff;
+    --body-bg: #f0f2f5;
     --warning-bg: #ffc107;
-    --warning-text: #333;
     --button-cyan: #00bcd4;
     --dark-text: #333;
-    --shadow-glow: 0 0 15px rgba(0, 188, 212, 0.5);
+    --light-text: #f8f9fa;
+    --subtle-text: #6c757d;
+    --border-color: #dee2e6;
+
+    /* Fonts */
+    --font-family-main: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    --base-font-size: 16px;
+
+    /* Spacing */
+    --spacing-small: 8px;
+    --spacing-medium: 16px;
+    --spacing-large: 32px;
+
+    /* Effects */
+    --box-shadow-light: 0 4px 8px rgba(0, 0, 0, 0.05);
+    --box-shadow-heavy: 0 8px 25px rgba(0, 0, 0, 0.1);
+    --border-radius: 12px;
 }
 
-/* --- BASE STYLES (PC/Desktop View) --- */
+
+/* ===================================================================
+   2. GENERAL & RESET STYLES
+   Yeh styles poori website par apply honge.
+=================================================================== */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: var(--font-family-main);
+    font-size: var(--base-font-size);
     margin: 0;
     padding: 0;
-    background-color: #f0f2f5;
+    background-color: var(--body-bg);
     color: var(--dark-text);
     line-height: 1.6;
 }
 
+h1, h2, h3 {
+    color: var(--header-bg);
+    margin-top: 0;
+    margin-bottom: var(--spacing-medium);
+}
+
+p {
+    margin-top: 0;
+    margin-bottom: var(--spacing-medium);
+}
+
+a {
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: #0056b3;
+}
+
+
+/* ===================================================================
+   3. LAYOUT & STRUCTURE
+   Header, Container, aur Sections ka design.
+=================================================================== */
+
+/* --- Header --- */
 header {
     background-color: var(--header-bg);
-    color: white;
-    padding: 10px 20px;
+    color: var(--light-text);
+    padding: var(--spacing-medium) var(--spacing-medium);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     display: flex;
     justify-content: space-between;
     align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
 }
 
 header h1 {
-    font-size: 1.5em;
+    font-size: 1.2em; /* Mobile par chota title */
+    color: var(--light-text);
     margin: 0;
 }
 
 .header-right {
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap: var(--spacing-medium);
 }
 
-/* User Info (Email and Wallet) */
 #userInfo {
-    display: none; /* Default hidden */
+    display: none; /* Default hidden, JS se show hoga */
     flex-direction: column;
     align-items: flex-end;
-    font-size: 0.9em;
-    margin-right: 10px;
 }
-#userEmailDisplay { color: #ccc; margin: 0; }
-#walletIconContainer { display: flex; align-items: center; gap: 5px; padding: 5px 10px; border-radius: 5px; background: rgba(255, 255, 255, 0.1); }
-#walletIconContainer i { color: var(--warning-bg); font-size: 1.2em; }
-#coinsBalanceDisplay { font-weight: bold; color: white; }
 
-#profileIconButton { background: none; border: 2px solid white; color: white; font-size: 24px; cursor: pointer; width: 40px; height: 40px; padding: 0; border-radius: 50%; display: flex; justify-content: center; align-items: center; line-height: 1; transition: background-color 0.3s; }
+#userEmailDisplay {
+    font-size: 0.8em;
+    color: #bdc3c7;
+    margin: 0;
+}
 
-.container {
+#walletIconContainer {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-small);
+    padding: 5px 10px;
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+#walletIconContainer i {
+    color: var(--warning-bg);
+}
+
+#coinsBalanceDisplay {
+    font-weight: bold;
+    color: var(--light-text);
+}
+
+#profileIconButton {
+    background: none;
+    border: 2px solid var(--light-text);
+    color: var(--light-text);
+    font-size: 20px;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+#profileIconButton:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    transform: scale(1.1);
+}
+
+/* --- Main Container & Sections --- */
+.container, .auth-container {
     width: 95%;
-    max-width: 900px;
-    margin: 20px auto;
-    padding: 20px;
+    max-width: 1200px;
+    margin: var(--spacing-large) auto;
+    padding: 0;
 }
 
-/* --- VIEWS --- */
-#articleSection, #categoryMainSection, #taskMainSection {
-    display: none; /* Managed by JS */
+section {
+    display: none; /* JS se manage hoga */
     background-color: var(--card-bg);
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    padding: var(--spacing-large);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow-heavy);
 }
 
-/* --- CATEGORY LIST STYLES --- */
+.back-link {
+    display: inline-block;
+    margin-bottom: var(--spacing-medium);
+    font-weight: bold;
+}
+
+
+/* ===================================================================
+   4. COMPONENTS
+   Buttons, Cards, Modals, Forms waghera.
+=================================================================== */
+
+/* --- Category List --- */
 .category-list {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
-    margin-top: 20px;
+    grid-template-columns: 1fr; /* Mobile par ek column */
+    gap: var(--spacing-medium);
 }
 
 .category-btn {
     background-color: var(--card-bg);
-    border: 1px solid #ddd;
-    padding: 20px;
-    border-radius: 10px;
+    border: 1px solid var(--border-color);
+    padding: var(--spacing-large);
+    border-radius: var(--border-radius);
     text-align: center;
     cursor: pointer;
-    transition: all 0.3s;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
-    text-decoration: none;
-    color: var(--dark-text);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    box-shadow: var(--box-shadow-light);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-small);
 }
+
 .category-btn:hover {
     transform: translateY(-5px);
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--box-shadow-heavy);
     border-color: var(--primary-color);
 }
 
 .category-btn i {
-    font-size: 40px;
-    margin-bottom: 10px;
-    color: var(--primary-color);
-}
-.category-btn span {
-    font-weight: bold;
-    display: block;
-    font-size: 1.2em;
+    font-size: 36px;
+    margin-bottom: var(--spacing-small);
 }
 
-/* --- TASK CARD STYLING (Screenshot Style) --- */
+.category-btn span {
+    font-weight: bold;
+    font-size: 1.1em;
+    color: var(--dark-text);
+}
+
+/* --- Task List & Cards --- */
 #taskList {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-    gap: 20px;
-    margin-top: 30px;
+    grid-template-columns: 1fr; /* Mobile par ek column */
+    gap: var(--spacing-large);
 }
 
 .task-card {
-    background-color: #333; /* Dark card background */
-    padding: 20px;
-    border-radius: 15px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    background-color: #333;
+    padding: var(--spacing-large);
+    border-radius: var(--border-radius);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
     text-align: center;
-    color: white;
-}
-.task-card:hover {
-    transform: translateY(-3px);
-}
-
-.task-title { font-size: 1.4em; font-weight: bold; color: white; margin-bottom: 5px; }
-.task-platform { color: #aaa; margin-bottom: 15px; }
-
-.warning-box { background-color: #584b00; color: white; padding: 15px; border-radius: 8px; border-left: 5px solid var(--warning-bg); margin-bottom: 20px; text-align: right; direction: rtl; }
-.warning-box .urdu { font-size: 1.1em; margin-bottom: 5px; }
-.warning-box .english { font-size: 0.9em; color: var(--warning-bg); }
-
-.earn-button { background: var(--button-cyan); color: var(--dark-text); border: none; padding: 15px 25px; border-radius: 10px; font-size: 1.1em; font-weight: bold; cursor: pointer; box-shadow: 0 0 15px rgba(0, 188, 212, 0.5); width: 100%; transition: all 0.3s; }
-.earn-button:hover:not(:disabled) { background: #00e0e0; box-shadow: 0 0 20px rgba(0, 255, 255, 0.8); }
-.earn-button:disabled { background: #666; cursor: not-allowed; box-shadow: none; }
-
-/* --- AUTH MODAL STYLING --- */
-.modal { display: none; position: fixed; z-index: 100; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.7); backdrop-filter: blur(5px); justify-content: center; align-items: center; }
-.modal-content { background-color: var(--card-bg); padding: 40px; border-radius: 12px; width: 90%; max-width: 400px; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2); position: relative; color: #333; }
-.close-btn { color: #aaa; position: absolute; top: 15px; right: 25px; font-size: 30px; font-weight: bold; cursor: pointer; }
-.auth-form input { border: 1px solid #ddd; border-radius: 6px; margin-bottom: 15px; padding: 10px; width: 100%; box-sizing: border-box; }
-.auth-form button { background-color: var(--primary-color); color: white; padding: 10px; border: none; border-radius: 4px; width: 100%; cursor: pointer; }
-.auth-toggle { margin-top: 20px; text-align: center; }
-.auth-toggle a { font-weight: bold; color: var(--primary-color); cursor: pointer; }
-
-/* --- SUCCESS POPUP --- */
-#successPopup { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: var(--secondary-color); color: white; padding: 20px 30px; border-radius: 10px; z-index: 10000; box-shadow: 0 0 20px rgba(40, 167, 69, 0.8); font-weight: bold; font-size: 1.2em; display: none; }
-
-/* --- RESPONSIVENESS (Mobile/Tablet) --- */
-@media (max-width: 768px) {
-    .category-list { grid-template-columns: repeat(2, 1fr); }
-    #taskList { grid-template-columns: 1fr; }
-}
-
-@media (max-width: 480px) {
-    header { padding: 10px; }
-    header h1 { font-size: 1.2em; }
-    .category-list { grid-template-columns: 1fr; }
-    .category-btn { padding: 15px; }
-    .task-title { font-size: 1.2em; }
-    .warning-box .urdu { font-size: 1em; }
-    .warning-box .english { font-size: 0.8em; }
-}
-
-/* --- AD CONTAINER STYLING --- */
-/* Yeh code banner ads ko center mein rakhta hai */
-.ad-container-top, .ad-container-bottom {
+    color: var(--light-text);
     display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 15px 0;
+    flex-direction: column;
+    transition: transform 0.3s ease;
+}
+
+.task-card:hover {
+    transform: scale(1.02);
+}
+
+.task-title {
+    font-size: 1.3em;
+    font-weight: bold;
+    color: var(--light-text);
+}
+
+.task-platform {
+    color: #bdc3c7;
+    margin-bottom: var(--spacing-medium);
+}
+
+.warning-box {
+    background-color: rgba(255, 193, 7, 0.1);
+    color: var(--light-text);
+    padding: var(--spacing-medium);
+    border-radius: 8px;
+    border-left: 5px solid var(--warning-bg);
+    margin-bottom: var(--spacing-medium);
+    text-align: right;
+    direction: rtl;
+    flex-grow: 1; /* Yeh button ko neeche push karega */
+}
+
+.earn-button {
+    background: var(--button-cyan);
+    color: var(--dark-text);
+    border: none;
+    padding: var(--spacing-medium) var(--spacing-large);
+    border-radius: 8px;
+    font-size: 1.1em;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 0 15px rgba(0, 188, 212, 0.5);
     width: 100%;
+    transition: all 0.3s ease;
+    margin-top: auto; /* Yeh button ko card ke end mein rakhega */
+}
+
+.earn-button:hover:not(:disabled) {
+    background: #00e0e0;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.8);
+    transform: scale(1.05);
+}
+
+.earn-button:disabled {
+    background: #6c757d;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+/* --- Auth Modal & Signup Page --- */
+.auth-container { display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: var(--spacing-medium); }
+.auth-content { background-color: white; padding: var(--spacing-large); border-radius: var(--border-radius); box-shadow: var(--box-shadow-heavy); width: 100%; max-width: 400px; text-align: center; }
+.auth-content h2 { margin-bottom: var(--spacing-small); }
+.auth-content p { margin-bottom: var(--spacing-large); color: var(--subtle-text); }
+.modal { display: none; position: fixed; z-index: 1001; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.7); backdrop-filter: blur(5px); justify-content: center; align-items: center; }
+.modal-content { background-color: var(--card-bg); padding: var(--spacing-large); border-radius: var(--border-radius); width: 90%; max-width: 400px; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2); position: relative; }
+.close-btn { color: var(--subtle-text); position: absolute; top: var(--spacing-medium); right: var(--spacing-large); font-size: 30px; font-weight: bold; cursor: pointer; }
+.auth-form input { border: 1px solid var(--border-color); border-radius: 8px; margin-bottom: var(--spacing-medium); padding: 14px; width: 100%; font-size: 1em; }
+.auth-form input:focus { border-color: var(--primary-color); outline: none; box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25); }
+.auth-form button { background-color: var(--secondary-color); color: white; padding: 14px; border: none; border-radius: 8px; width: 100%; cursor: pointer; font-size: 1.1em; font-weight: bold; transition: background-color 0.3s; }
+.auth-form button:hover { background-color: #218838; }
+.auth-toggle { margin-top: var(--spacing-large); }
+#message { margin-top: var(--spacing-medium); font-weight: bold; color: #dc3545; }
+
+/* --- Success Popup --- */
+#successPopup { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: var(--secondary-color); color: white; padding: var(--spacing-large); border-radius: var(--border-radius); z-index: 10000; box-shadow: 0 0 20px rgba(40, 167, 69, 0.8); font-weight: bold; font-size: 1.2em; display: none; text-align: center; }
+
+
+/* ===================================================================
+   6. RESPONSIVE DESIGN (Media Queries)
+   Yahan se hum barri screens ke liye layout ko adjust karenge.
+   Mobile/iPhone view pehle se hi default styles mein cover ho chuka hai.
+=================================================================== */
+
+/* --- 6.1 TABLET VIEW --- */
+/* Yeh styles 768px ya us se barri screens (jaise iPads) par apply honge */
+@media (min-width: 768px) {
+    header h1 {
+        font-size: 1.5em; /* Tablet par title thora barra */
+    }
+
+    .category-list {
+        grid-template-columns: repeat(2, 1fr); /* Tablet par 2 columns */
+    }
+
+    #taskList {
+        grid-template-columns: repeat(2, 1fr); /* Tablet par 2 columns */
+    }
+}
+
+
+/* --- 6.2 DESKTOP VIEW --- */
+/* Yeh styles 1024px ya us se barri screens (jaise Laptops, PCs) par apply honge */
+@media (min-width: 1024px) {
+    .category-list {
+        grid-template-columns: repeat(3, 1fr); /* Desktop par 3 columns */
+    }
+
+    #taskList {
+        grid-template-columns: repeat(3, 1fr); /* Desktop par 3 columns */
+    }
+
+    section {
+        padding: 40px; /* Desktop par sections mein zyada padding */
+    }
 }
