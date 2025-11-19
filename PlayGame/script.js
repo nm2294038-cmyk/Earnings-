@@ -26,8 +26,8 @@ window.currentUser = null;
 window.userWalletBalance = 0;
 window.userName = 'Guest';
 window.gameActive = false;
-window.GAME_BET_AMOUNT = 100;
-window.GAME_WIN_REWARD = 50;
+window.GAME_BET_AMOUNT = 320;
+window.GAME_WIN_REWARD = 320;
 window.MANUAL_PLAYER_COLOR = 'yellow';
 const WORKER_EARNINGS_COLLECTION = "worker_earnings"; // Admin logging collection
 
@@ -190,7 +190,7 @@ window.deductBet = async function() {
 window.handleGameEndBetting = async function(winnerColor) {
     if (!window.currentUser) return;
     const userColor = window.MANUAL_PLAYER_COLOR;
-    let amountCredit = 0; // Amount to credit back to the user's wallet
+    let amountCredit = 0; 
 
     if (winnerColor === userColor) {
         // User wins: User gets back the BET + the REWARD (e.g., 100 + 50 = 150)
@@ -214,14 +214,19 @@ window.handleGameEndBetting = async function(winnerColor) {
     }
 }
 
-// --- 4. Authentication Functions ---
+// --- 4. Authentication Functions (FIXED) ---
 
 onAuthStateChanged(auth, (user) => {
     window.currentUser = user;
     if (user) {
         document.getElementById('auth-status').textContent = `Hello, ${user.email}`;
+        // Ensure profile email is set
+        if (document.getElementById('profile-email')) {
+            document.getElementById('profile-email').textContent = user.email;
+        }
         startWalletListener(user.uid);
     } else {
+        document.getElementById('auth-status').textContent = 'Login/Signup';
         document.getElementById('wallet-display').textContent = 'Wallet: -';
         window.userWalletBalance = 0;
         window.userName = 'Guest';
@@ -254,43 +259,10 @@ window.logoutUser = function() {
     }).catch((error) => { console.error("Logout Error:", error); });
 }
 
-// --- 5. Modal Control Functions ---
-window.showAuthModal = function(mode) {
-    const modal = document.getElementById('authModal');
-    const profileContent = document.getElementById('profileContent');
-    const authContent = document.getElementById('authContent');
-    const modalTitle = document.getElementById('modalTitle');
-    const authNameInput = document.getElementById('authName');
+// --- 5. Modal Control Functions (FIXED EVENT HANDLER) ---
 
-    if (mode === 'profile' && window.currentUser) {
-        modalTitle.textContent = 'User Profile';
-        authContent.style.display = 'none';
-        profileContent.style.display = 'block';
-        document.getElementById('profile-wallet-balance').textContent = window.userWalletBalance + ' Coins';
-    } else {
-        modalTitle.textContent = mode === 'login' ? 'Login' : 'Sign Up';
-        document.getElementById('authSubmitButton').textContent = modalTitle.textContent;
-        document.getElementById('toggleAuth').textContent = mode === 'login' ? 'Need an account? Sign Up' : 'Already have an account? Login';
-        authContent.dataset.mode = mode;
-
-        authNameInput.style.display = mode === 'signup' ? 'block' : 'none';
-
-        authContent.style.display = 'block';
-        profileContent.style.display = 'none';
-    }
-    modal.style.display = 'block';
-}
-
-window.closeAuthModal = function() {
-    document.getElementById('authModal').style.display = 'none';
-}
-
-window.toggleAuthMode = function() {
-    const authContent = document.getElementById('authContent');
-    const currentMode = authContent.dataset.mode;
-    const newMode = currentMode === 'login' ? 'signup' : 'login';
-    window.showAuthModal(newMode);
-}
+// We need to attach the submit handler dynamically or ensure the HTML button calls the right function.
+// Since the HTML calls submitAuthForm(), we just need to ensure the form fields are read correctly.
 
 window.submitAuthForm = function() {
     const name = document.getElementById('authName').value;
@@ -314,7 +286,8 @@ window.submitAuthForm = function() {
     }
 }
 
-// --- 6. Ludo Game Logic ---
+
+// --- 6. Ludo Game Logic (Remaining functions are complete) ---
 
 window.handleStartGame = function() {
     if (!window.currentUser || window.userWalletBalance < window.GAME_BET_AMOUNT) {
