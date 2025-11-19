@@ -1,6 +1,6 @@
 // --- 1. Firebase Setup and Global Variables ---
 
-// Firebase Configuration (Same as provided)
+// Firebase Configuration
 const firebaseConfig = {
     apiKey: "AIzaSyDNYv9SNUjMAHlaPzfovyYefoBNDgx4Gd4",
     authDomain: "traffic-exchange-62a58.firebaseapp.com",
@@ -12,24 +12,23 @@ const firebaseConfig = {
     measurementId: "G-HJQ46RQNZS"
 };
 
-// Firebase Imports (Modular v9+)
+// Firebase Imports
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
 import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
-import { getFirestore, doc, setDoc, onSnapshot, updateDoc, increment, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+import { getFirestore, doc, setDoc, onSnapshot, updateDoc, increment } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-// Global state variables
+// Global state variables (Exposed via window)
 window.currentUser = null;
 window.userWalletBalance = 0;
 window.userName = 'Guest';
 window.gameActive = false;
 window.GAME_BET_AMOUNT = 320;
-window.GAME_WIN_REWARD = 320;
+window.GAME_WIN_REWARD = 1000;
 window.MANUAL_PLAYER_COLOR = 'yellow';
-const WORKER_EARNINGS_COLLECTION = "worker_earnings"; // Admin logging collection
 
 // --- Ludo Constants ---
 const PLAYERS = ['green', 'yellow', 'blue', 'red'];
@@ -55,13 +54,13 @@ let currentPlayerIndex = 0; let currentDiceValue = null; let consecutiveSixes = 
 let pawns = {}; let playerPawns = { green: [], yellow: [], blue: [], red: [] };
 let waitingForPawnMove = false;
 let diceAnimationTimeout = null; let diceAnimationInterval = null;
-let gameTurnCount = 0;
+let gameTurnCount = 0; // Track total turns for the 'first 6' logic
 
 const pathCoords = [ { row: 7, col: 2 }, { row: 7, col: 3 }, { row: 7, col: 4 }, { row: 7, col: 5 }, { row: 7, col: 6 }, { row: 6, col: 7 }, { row: 5, col: 7 }, { row: 4, col: 7 }, { row: 3, col: 7 }, { row: 2, col: 7 }, { row: 1, col: 7 }, { row: 1, col: 8 }, { row: 1, col: 9 }, { row: 2, col: 9 }, { row: 3, col: 9 }, { row: 4, col: 9 }, { row: 5, col: 9 }, { row: 6, col: 9 }, { row: 7, col: 10 }, { row: 7, col: 11 }, { row: 7, col: 12 }, { row: 7, col: 13 }, { row: 7, col: 14 }, { row: 7, col: 15 }, { row: 8, col: 15 }, { row: 9, col: 15 }, { row: 9, col: 14 }, { row: 9, col: 13 }, { row: 9, col: 12 }, { row: 9, col: 11 }, { row: 9, col: 10 }, { row: 10, col: 9 }, { row: 11, col: 9 }, { row: 12, col: 9 }, { row: 13, col: 9 }, { row: 14, col: 9 }, { row: 15, col: 9 }, { row: 15, col: 8 }, { row: 15, col: 7 }, { row: 14, col: 7 }, { row: 13, col: 7 }, { row: 12, col: 7 }, { row: 11, col: 7 }, { row: 10, col: 7 }, { row: 9, col: 6 }, { row: 9, col: 5 }, { row: 9, col: 4 }, { row: 9, col: 3 }, { row: 9, col: 2 }, { row: 9, col: 1 }, { row: 8, col: 1 }, { row: 7, col: 1 } ];
 const finalHomePathCoords = { green:  [{ row: 2, col: 8 }, { row: 3, col: 8 }, { row: 4, col: 8 }, { row: 5, col: 8 }, { row: 6, col: 8 }, { row: 7, col: 8 }], yellow: [{ row: 8, col: 2 }, { row: 8, col: 3 }, { row: 8, col: 4 }, { row: 8, col: 5 }, { row: 8, col: 6 }, { row: 8, col: 7 }], blue:   [{ row: 14, col: 8 }, { row: 13, col: 8 }, { row: 12, col: 8 }, { row: 11, col: 8 }, { row: 10, col: 8 }, { row: 9, col: 8 }], red:    [{ row: 8, col: 14 }, { row: 8, col: 13 }, { row: 8, col: 12 }, { row: 8, col: 11 }, { row: 8, col: 10 }, { row: 8, col: 9 }] };
 
 
-// --- 2. Ludo Utility Functions ---
+// --- 2. Ludo Utility Functions (Globalized) ---
 
 function capitalize(s) { if (!s) return ''; return s.charAt(0).toUpperCase() + s.slice(1); }
 function getCurrentPlayerColor() { return PLAYERS[currentPlayerIndex]; }
@@ -70,13 +69,14 @@ function getCellElement(positionId) { return boardElement.querySelector(`[data-c
 function getPawnsOnCell(cellId) {  const occupyingPawns = []; if (!cellId) return []; const cellElement = document.getElementById(cellId) || getCellElement(cellId); if (cellElement) { const pawnElements = cellElement.querySelectorAll('.pawn'); pawnElements.forEach(p => occupyingPawns.push(p.id)); } return occupyingPawns; }
 function checkWinCondition(playerColor) {  const playerPawnIds = playerPawns[playerColor]; return playerPawnIds.every(pawnId => pawns[pawnId].state === 'finished'); }
 
+// State Reset Function (Used by initializeGame)
 function resetGameStateVars() { 
     currentPlayerIndex = 0; 
     currentDiceValue = null; 
     consecutiveSixes = 0; 
     waitingForPawnMove = false; 
     diceElement.textContent = '👑'; 
-    gameTurnCount = 0;
+    gameTurnCount = 0; // Reset turn counter
 }
 
 window.getPlayerName = function(color) {
@@ -88,7 +88,10 @@ window.getPlayerName = function(color) {
         default: return capitalize(color);
     }
 }
+
 window.setMessage = function(text) { messageElement.textContent = text; }
+
+// --- Highlight Function (Fixed: Now defined globally in the module scope) ---
 function highlightActivePlayerArea() {
     document.querySelectorAll('.start-area').forEach(area => area.classList.remove('active-player'));
     document.querySelectorAll('.player-display').forEach(pd => pd.classList.remove('active-player-info'));
@@ -97,26 +100,8 @@ function highlightActivePlayerArea() {
     const activePlayerInfoDiv = document.getElementById(`player-info-${color}`); if(activePlayerInfoDiv) activePlayerInfoDiv.classList.add('active-player-info');
 }
 
-// --- NEW/MODIFIED: Logging Function for Admin Panel ---
-async function logLudoTransaction(amount, type, winnerColor = null) {
-    if (!window.currentUser || !window.currentUser.email || amount === 0) return;
 
-    try {
-        await addDoc(collection(db, WORKER_EARNINGS_COLLECTION), {
-            userId: window.currentUser.uid,
-            email: window.currentUser.email,
-            amount: amount, // Log the actual change (+ve or -ve)
-            source: "Ludo Game",
-            type: type, // "WIN_CREDITED" or "BET_DEDUCTED"
-            reference: `Bet: ${window.GAME_BET_AMOUNT}, Reward: ${window.GAME_WIN_REWARD}, Winner: ${winnerColor || 'N/A'}`,
-            timestamp: serverTimestamp()
-        });
-    } catch (error) {
-        console.error("Error logging Ludo transaction:", error);
-    }
-}
-
-// --- 3. Wallet/Eligibility Logic ---
+// --- 3. Wallet/Eligibility Logic (Globalized) ---
 
 function updateYellowPlayerDisplay(name) {
     document.getElementById('yellow-player-name').textContent = `${name} (You)`;
@@ -138,9 +123,6 @@ function startWalletListener(uid) {
             window.userWalletBalance = 0;
             document.getElementById('wallet-display').textContent = 'Wallet: 0 Coins';
             window.checkGameEligibility();
-        }
-        if (document.getElementById('profile-wallet-balance')) {
-             document.getElementById('profile-wallet-balance').textContent = window.userWalletBalance + ' Coins';
         }
     });
 }
@@ -173,12 +155,7 @@ window.deductBet = async function() {
     }
     const userDocRef = doc(db, "users", window.currentUser.uid);
     try {
-        // Deduct the bet amount
         await updateDoc(userDocRef, { coins: increment(-window.GAME_BET_AMOUNT) });
-        
-        // Log the deduction (LOSS)
-        await logLudoTransaction(-window.GAME_BET_AMOUNT, "BET_DEDUCTED"); 
-        
         return true;
     } catch (error) {
         console.error("Error deducting bet:", error);
@@ -190,43 +167,34 @@ window.deductBet = async function() {
 window.handleGameEndBetting = async function(winnerColor) {
     if (!window.currentUser) return;
     const userColor = window.MANUAL_PLAYER_COLOR;
-    let amountCredit = 0; 
+    let amountChange = 0;
 
     if (winnerColor === userColor) {
-        // User wins: User gets back the BET + the REWARD (e.g., 100 + 50 = 150)
-        amountCredit = window.GAME_BET_AMOUNT + window.GAME_WIN_REWARD; 
-        window.setMessage(`VICTORY! ${window.userName} won! You received ${amountCredit} coins.`);
+        amountChange = window.GAME_BET_AMOUNT + window.GAME_WIN_REWARD;
+        window.setMessage(`VICTORY! ${window.userName} won! You received ${amountChange} coins.`);
     } else {
-        // User loses: Already lost the bet (-100). No credit needed.
-        amountCredit = 0;
+        amountChange = 0;
         window.setMessage(`DEFEAT. ${window.getPlayerName(winnerColor)} won. You lost your ${window.GAME_BET_AMOUNT} coin bet.`);
     }
 
-    if (amountCredit > 0) {
+    if (amountChange > 0) {
         const userDocRef = doc(db, "users", window.currentUser.uid);
         try {
-            await updateDoc(userDocRef, { coins: increment(amountCredit) });
-            // Log the total winning credit (Bet + Reward)
-            await logLudoTransaction(amountCredit, "WIN_CREDITED", winnerColor);
+            await updateDoc(userDocRef, { coins: increment(amountChange) });
         } catch (error) {
             console.error("Error crediting reward:", error);
         }
     }
 }
 
-// --- 4. Authentication Functions (FIXED) ---
+// --- 4. Authentication Functions (Globalized) ---
 
 onAuthStateChanged(auth, (user) => {
     window.currentUser = user;
     if (user) {
         document.getElementById('auth-status').textContent = `Hello, ${user.email}`;
-        // Ensure profile email is set
-        if (document.getElementById('profile-email')) {
-            document.getElementById('profile-email').textContent = user.email;
-        }
         startWalletListener(user.uid);
     } else {
-        document.getElementById('auth-status').textContent = 'Login/Signup';
         document.getElementById('wallet-display').textContent = 'Wallet: -';
         window.userWalletBalance = 0;
         window.userName = 'Guest';
@@ -245,7 +213,7 @@ window.signupUser = function(name, email, password) {
     createUserWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
             const userDocRef = doc(db, "users", userCredential.user.uid);
-            setDoc(userDocRef, { coins: 200, email: email, name: name }); 
+            setDoc(userDocRef, { coins: 200, email: email, name: name });
             window.closeAuthModal();
         })
         .catch((error) => { alert("Sign Up Failed: " + error.message); });
@@ -259,10 +227,43 @@ window.logoutUser = function() {
     }).catch((error) => { console.error("Logout Error:", error); });
 }
 
-// --- 5. Modal Control Functions (FIXED EVENT HANDLER) ---
+// --- 5. Modal Control Functions (Globalized) ---
+window.showAuthModal = function(mode) {
+    const modal = document.getElementById('authModal');
+    const profileContent = document.getElementById('profileContent');
+    const authContent = document.getElementById('authContent');
+    const modalTitle = document.getElementById('modalTitle');
+    const authNameInput = document.getElementById('authName');
 
-// We need to attach the submit handler dynamically or ensure the HTML button calls the right function.
-// Since the HTML calls submitAuthForm(), we just need to ensure the form fields are read correctly.
+    if (mode === 'profile' && window.currentUser) {
+        modalTitle.textContent = 'User Profile';
+        authContent.style.display = 'none';
+        profileContent.style.display = 'block';
+        document.getElementById('profile-wallet-balance').textContent = window.userWalletBalance + ' Coins';
+    } else {
+        modalTitle.textContent = mode === 'login' ? 'Login' : 'Sign Up';
+        document.getElementById('authSubmitButton').textContent = modalTitle.textContent;
+        document.getElementById('toggleAuth').textContent = mode === 'login' ? 'Need an account? Sign Up' : 'Already have an account? Login';
+        authContent.dataset.mode = mode;
+
+        authNameInput.style.display = mode === 'signup' ? 'block' : 'none';
+
+        authContent.style.display = 'block';
+        profileContent.style.display = 'none';
+    }
+    modal.style.display = 'block';
+}
+
+window.closeAuthModal = function() {
+    document.getElementById('authModal').style.display = 'none';
+}
+
+window.toggleAuthMode = function() {
+    const authContent = document.getElementById('authContent');
+    const currentMode = authContent.dataset.mode;
+    const newMode = currentMode === 'login' ? 'signup' : 'login';
+    window.showAuthModal(newMode);
+}
 
 window.submitAuthForm = function() {
     const name = document.getElementById('authName').value;
@@ -286,8 +287,7 @@ window.submitAuthForm = function() {
     }
 }
 
-
-// --- 6. Ludo Game Logic (Remaining functions are complete) ---
+// --- 6. Ludo Game Logic ---
 
 window.handleStartGame = function() {
     if (!window.currentUser || window.userWalletBalance < window.GAME_BET_AMOUNT) {
@@ -368,11 +368,14 @@ function performDiceRollAnimation(callback) {
     const currentPlayerColor = getCurrentPlayerColor();
     let finalDiceValue;
 
+    // Logic for guaranteed 6 on first turn for AI players
     if (gameTurnCount < PLAYERS.length && currentPlayerColor !== window.MANUAL_PLAYER_COLOR) {
         finalDiceValue = 6;
     } else if (gameTurnCount < PLAYERS.length && currentPlayerColor === window.MANUAL_PLAYER_COLOR) {
-        finalDiceValue = Math.floor(Math.random() * 5) + 1;
+        // Logic for guaranteed NON-6 on first turn for real user
+        finalDiceValue = Math.floor(Math.random() * 5) + 1; // 1 to 5
     } else {
+        // Normal random roll after the first round
         finalDiceValue = Math.floor(Math.random() * 6) + 1;
     }
 
@@ -380,6 +383,8 @@ function performDiceRollAnimation(callback) {
     diceAnimationTimeout = setTimeout(() => {
         clearInterval(diceAnimationInterval); diceElement.classList.remove('rolling');
         diceElement.textContent = finalDiceValue; currentDiceValue = finalDiceValue; 
+        
+        // Increment turn counter only after the dice roll is finalized for the player
         gameTurnCount++; 
         callback();
     }, DICE_ANIMATION_DURATION);
@@ -694,33 +699,3 @@ function highlightMovablePawns(movablePawnIds, forManualClick) {
 }
 function clearPawnHighlights() {  document.querySelectorAll('.pawn').forEach(p => { p.classList.remove('movable'); p.onclick = null; }); }
 function sendPawnHome(pawnId) {  const pawn = pawns[pawnId]; const color = pawn.color; let targetStartSpotId = null; for (let i = 0; i < 4; i++) { const spotId = `${color}-start-${i}`; if (getPawnsOnCell(spotId).length === 0) { targetStartSpotId = spotId; break; } } if (!targetStartSpotId) targetStartSpotId = `${color}-start-0`; const oldPositionId = pawn.position; pawn.position = targetStartSpotId; pawn.state = 'start'; movePawnElement(pawnId, targetStartSpotId); if (oldPositionId) updateStackedPawnVisuals(oldPositionId); }
-
-function automatedRollDice() { performDiceRollAnimation(processAutomatedRollResult); }
-function processAutomatedRollResult() {
-    const currentPlayerColor = getCurrentPlayerColor(); const currentPlayerName = window.getPlayerName(currentPlayerColor);
-
-    const pawnsOutsideStart = playerPawns[currentPlayerColor].some(pId => pawns[pId].state !== 'start');
-    if (currentDiceValue === 6) {
-        consecutiveSixes++;
-        if (consecutiveSixes === 3) { window.setMessage(`Rolled third 6! ${currentPlayerName}'s turn forfeited.`); handleTurnCompletion(false); return; }
-        window.setMessage(`${currentPlayerName} rolled a 6! Will move. Gets another turn.`);
-    } else {
-        consecutiveSixes = 0;
-        if (!pawnsOutsideStart) { window.setMessage(`${currentPlayerName} rolled ${currentDiceValue}. Needs 6. Turn passes.`); handleTurnCompletion(false); return; }
-        window.setMessage(`${currentPlayerName} rolled ${currentDiceValue}. Will move pawn.`);
-    }
-
-    const movablePawns = getMovablePawns(currentPlayerColor, currentDiceValue);
-
-    if (movablePawns.length === 0) {
-        window.setMessage(`${currentPlayerName} rolled ${currentDiceValue}, no moves.`);
-        handleTurnCompletion(currentDiceValue === 6 && consecutiveSixes < 3);
-    }
-    else {
-        highlightMovablePawns(movablePawns, false);
-        setTimeout(() => {
-            clearPawnHighlights();
-            executePawnMove(movablePawns[0]);
-        }, PAWN_MOVE_VISUAL_DELAY);
-    }
-}
