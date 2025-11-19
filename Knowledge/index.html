@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>250-Level Match Game (Firebase Firestore Wallet)</title>
+    
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+    
+    <!-- Google Fonts and Font Awesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <!-- External CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- HEADER -->
+    <header id="main-header">
+        <div id="user-profile">
+            <div id="profile-icon" onclick="showAuthModal()"><i class="fas fa-user-circle"></i></div>
+            <div id="wallet-container">
+                <span><i class="fas fa-coins"></i></span>
+                <span id="coin-count">0</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- LOGIN/SIGNUP MODAL -->
+    <div id="auth-modal">
+        <div class="auth-modal-content">
+            <span class="close-modal" onclick="closeAuthModal()">&times;</span>
+            <div id="auth-form-container">
+                <h3 id="auth-title">Log In</h3>
+                <input type="email" id="email" placeholder="Email" required>
+                <input type="password" id="password" placeholder="Password" required>
+                <div id="auth-error"></div>
+                <button id="auth-submit-btn" onclick="handleAuthSubmit()">Login</button>
+                <p>
+                    <span id="switch-text">Don't have an account?</span> 
+                    <a href="#" id="switch-link" onclick="toggleAuthMode()">Sign Up</a>
+                </p>
+            </div>
+            <div id="user-info">
+                <h3>Profile</h3>
+                <p id="user-email-display"></p>
+                <p>Highest Unlocked Level: <strong id="user-max-level">1</strong></p>
+                <button id="logout-btn" onclick="handleAuthLogout()">Logout</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="app-container">
+        <!-- Level Selection Screen -->
+        <div class="screen active" id="level-select-screen">
+            <h2>Select a Level</h2>
+            <div id="level-buttons-container"></div>
+            <p style="color: #555555; font-size: 0.8em; margin-top: 15px;">Login to save your progress permanently!</p>
+        </div>
+
+        <!-- Game Screen -->
+        <div class="screen" id="game-screen">
+            <h1 id="game-title">Match It Up!</h1>
+            <div id="level-display">Level X</div>
+            <div class="columns-container">
+                <svg id="connector-lines"></svg>
+                <div class="column" id="letters"></div>
+                <div class="column" id="pictures"></div>
+            </div>
+            <div id="message">Select an item...</div>
+            <div class="button-container">
+                <button class="game-button" id="back-button" onclick="goToLevelSelect()">Back to Levels</button>
+                <button class="game-button" id="restart-level-button" onclick="restartLevel()">Restart Level</button>
+            </div>
+        </div>
+
+        <!-- Celebration Overlay -->
+        <div id="celebration-container"></div>
+    </div>
+
+    <!-- External JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>
