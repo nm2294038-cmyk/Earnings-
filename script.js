@@ -1,4 +1,3 @@
-
 // ====================================================================
 // SECTION A: FIREBASE CONFIGURATION & CORE STATE
 // ====================================================================
@@ -29,6 +28,7 @@ let authMode = 'signup';
 let walletListener = null; 
 let currentPageId = 'home-content'; 
 const USERS_COLLECTION = "users";
+const CAROUSEL_SLIDE_COUNT = 6;
 
 const REWARD_MILESTONES = [
     { invites: 5000, coins: 10000, item: 'Bonus Coins' },
@@ -45,16 +45,13 @@ const REWARD_MILESTONES = [
 
 const OPEN_HOUR_START = 10; 
 const OPEN_MINUTE_START = 0; 
-const OPEN_HOUR_END = 21; // Assuming 9:00 PM is 21:00 (720 minutes logic was confusing)
+const OPEN_HOUR_END = 21; 
 const OPEN_MINUTE_END = 0; 
 
 // ====================================================================
-// SECTION B: UI NAVIGATION HANDLERS (Defined first for proper scoping)
+// SECTION B: UI NAVIGATION HANDLERS
 // ====================================================================
 
-/**
- * Core function to switch the visible content section and update header/footer UI.
- */
 function _internalUISwitch(targetPageId, title) {
     const contentSections = document.querySelectorAll('.content-section');
     const headerTitle = document.getElementById('header-title');
@@ -78,14 +75,12 @@ function _internalUISwitch(targetPageId, title) {
         backButton.style.display = 'none';
     }
 
-    // Footer link active state update
     navLinks.forEach(l => l.classList.remove('active'));
     const activeFooterLink = document.querySelector(`.mobile-footer [data-page="${targetPageId}"]`);
     if (activeFooterLink) {
         activeFooterLink.classList.add('active');
     }
     
-    // Rewards tab visibility
     rewardsTabs.style.display = (targetPageId === 'rewards-content') ? 'flex' : 'none';
     
     window.scrollTo(0, 0);
@@ -101,49 +96,38 @@ function switchTab(targetTabId) {
     rewardsTabs.querySelectorAll('.tab-link').forEach(link => {
         link.classList.remove('active');
     });
-    // Ensure we find the correct tab link (e.g., 'invite-tab' from 'invite-tab-content')
-    rewardsTabs.querySelector(`[data-tab="${targetTabId.replace('-content', '')}"]`).classList.add('active');
+    const activeLink = rewardsTabs.querySelector(`[data-tab="${targetTabId.replace('-content', '')}"]`);
+    if(activeLink) activeLink.classList.add('active');
 }
 
 function switchPage(targetPageId, title) {
     const rewardsTabs = document.getElementById('rewards-tabs');
 
-    // History Management: Push new state only if navigating to a *new* tab
     if (targetPageId !== currentPageId) {
-        // Push state to enable back navigation and prevent redirect to #
         history.pushState({ page: targetPageId, title: title }, title, `#${targetPageId}`);
     }
     
     _internalUISwitch(targetPageId, title);
     if (targetPageId === 'rewards-content') {
-         // Activate the default sub-tab when switching to the Rewards page
          const defaultTabLink = rewardsTabs.querySelector('.tab-link.active');
          if (defaultTabLink) {
              const defaultTabId = defaultTabLink.getAttribute('data-tab');
              switchTab(defaultTabId + '-content');
          } else {
-             // Fallback to the first tab if none is active
              switchTab('invite-tab-content');
          }
     }
 }
 
 function handleBack() {
-    // Internal back arrow click triggers popstate
     window.history.back();
 }
 
 
 // ====================================================================
 // SECTION C: FEATURES (Link Handling & Exit Prompt)
-// ====================================================
+// ====================================================================
 
-/**
- * FEATURE 1: Global Link Interception (New Tab / Mobile App Support)
- * NOTE: Isko maine thoda modify kiya hai takay internal links (jo # se start nahi hote) bhi new tab mein open hon.
- * Agar aapko chahiye ki internal app links (jaise ki Task Earn, Profile) app ke andar hi load hon, to yeh logic
- * adjust karna padega ya aap un links par 'target="_self"' add kar sakte hain.
- */
 document.addEventListener('click', function(e) {
     let target = e.target;
     while (target && target.tagName !== 'A') {
@@ -153,26 +137,36 @@ document.addEventListener('click', function(e) {
     if (target && target.href) {
         const url = target.href;
         
-        // Agar link internal navigation (data-page) ya auth modal ya sirf # hai, to ignore karein.
         if (target.getAttribute('data-page') || target.id === 'logout-button' || url.endsWith('#')) {
             return;
         }
 
-        // Agar yeh external URL hai (http/https se start ho raha hai)
+        let parentContainer = target.closest('.admin-locked-container');
+        if (parentContainer && parentContainer.classList.contains('locked')) {
+            e.preventDefault();
+            e.stopPropagation();
+            const message = parentContainer.querySelector('.admin-locked-overlay p').textContent;
+            alert(message);
+            return;
+        }
+        
+        const featureElement = target.closest('[data-feature]');
+        if (featureElement && featureElement.classList.contains('locked')) {
+            e.preventDefault();
+            e.stopPropagation();
+            const message = featureElement.querySelector('.admin-locked-overlay p').textContent;
+            alert(message);
+            return;
+        }
+
+
         if (url.startsWith('http') || url.startsWith('https') || url.startsWith('//')) {
             e.preventDefault(); 
-            // External links ko new tab mein open karein
             window.open(url, '_blank');
         }
-        // Agar yeh path based internal link hai (e.g., 'Profile/index.html'), to ye default browser behavior par chhod dega.
-        // Agar aap chahte hain ki yeh bhi new tab mein khule, to aapko isko target._blank dena hoga.
     }
 });
 
-
-/**
- * FEATURE 2: Back Button Confirmation Prompt (Custom Modal)
- */
 
 function showExitModal() {
     document.getElementById('exit-modal-overlay').style.display = 'flex';
@@ -184,18 +178,12 @@ function hideExitModal() {
 
 function handleExitDecision(shouldExit) {
     hideExitModal();
-    if (shouldExit) {
-        // Agar user exit karna chahta hai, to history ko aage badhne dein (jo browser ko band kar dega)
-        // Ya agar yeh Cordova/WebView hai to Native Exit function call karein.
-        // For browser, we do nothing and let the history depletion happen.
-    } else {
-        // Agar user rukna chahta hai, to home page ka state dobara history mein daal do
+    if (!shouldExit) {
         history.pushState({ page: 'home-content', title: 'Daily Tasks' }, 'Daily Tasks', '#home-content');
-        // Ab hum home content par hain
         _internalUISwitch('home-content', 'Daily Tasks');
-        // Footer ko bhi update karein
         document.querySelectorAll('.mobile-footer .nav-link').forEach(l => l.classList.remove('active'));
-        document.querySelector(`.mobile-footer [data-page="home-content"]`).classList.add('active');
+        const homeLink = document.querySelector(`.mobile-footer [data-page="home-content"]`);
+        if (homeLink) homeLink.classList.add('active');
     }
 }
 
@@ -204,12 +192,8 @@ window.addEventListener('popstate', function(event) {
     const state = event.state;
     
     if (state && state.page) {
-        // Internal navigation (State change within the app). NO PROMPT.
         _internalUISwitch(state.page, state.title || 'YoursMed App');
     } else {
-        // Exiting the app from the root state. SHOW PROMPT.
-        
-        // Agar hum home page par hain aur history khatam ho gayi, tabhi prompt dikhao
         if (currentPageId === 'home-content') {
             showExitModal();
         }
@@ -217,8 +201,194 @@ window.addEventListener('popstate', function(event) {
 });
 
 
+/**
+ * Applies or removes a lock overlay controlled by the Admin.
+ */
+function applyAdminLock(element, locked, message) {
+    if (!element) return;
+
+    const existingOverlay = element.querySelector('.admin-locked-overlay');
+
+    if (locked) {
+        element.classList.add('locked');
+        
+        if (!existingOverlay) {
+            const overlay = document.createElement('div');
+            overlay.className = 'admin-locked-overlay';
+            overlay.innerHTML = `<i class="fas fa-exclamation-triangle"></i><p style="font-size: 0.9em; margin: 5px 0 0;">${message}</p>`;
+            
+            overlay.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                alert(message);
+            });
+            element.appendChild(overlay);
+        }
+    } else {
+        element.classList.remove('locked');
+        if (existingOverlay) {
+            existingOverlay.remove();
+        }
+    }
+}
+
+/**
+ * Checks global settings from Firebase and applies locks to UI sections.
+ */
+function checkFeatureLocks() {
+    if (typeof db === 'undefined') {
+        console.error("Firestore not available for locking.");
+        return;
+    }
+
+    db.collection('settings').doc('global').onSnapshot(doc => {
+        if (doc.exists) {
+            const settings = doc.data();
+            
+            const applyLockToFeature = (featureName, lockKey, defaultMessage) => {
+                const isLocked = settings[lockKey] === true;
+                const elements = document.querySelectorAll(`[data-feature="${featureName}"]`);
+                elements.forEach(element => {
+                    applyAdminLock(element, isLocked, defaultMessage);
+                });
+            };
+
+            // Main Grid Locks
+            applyLockToFeature('dailyCheck', 'isLockDailyCheck', "Daily Check is temporarily disabled by the Admin.");
+            applyLockToFeature('videoOffer', 'isLockVideoOffer', "Video Offers are temporarily disabled by the Admin.");
+            applyLockToFeature('depositCoins', 'isLockDepositCoins', "Deposit requests are temporarily disabled by the Admin.");
+            applyLockToFeature('withdrawalOptions', 'isLockWithdrawal', "All Withdrawal options are temporarily disabled by the Admin.");
+            applyLockToFeature('manageLinks', 'isLockManageLinks', "Link Management is temporarily disabled by the Admin.");
+            applyLockToFeature('coinsEarn', 'isLockCoinsEarn', "Coins Earn/Product Rewards are temporarily disabled by the Admin.");
+            
+            // Section Locks
+            applyLockToFeature('rewardsSection', 'isLockRewardsSection', "The Referral and Rewards system is temporarily disabled by the Admin.");
+            applyLockToFeature('newFeaturesSection', 'isLockNewFeatures', "New Features/Offerwalls are temporarily disabled by the Admin.");
+            
+            // New Features Individual Locks
+            applyLockToFeature('wordPuzzle', 'isLockWordPuzzle', "Word Puzzle is currently unavailable.");
+            applyLockToFeature('improveKnowledge', 'isLockImproveKnowledge', "Improve Knowledge feature is currently unavailable.");
+            applyLockToFeature('offerwall', 'isLockOfferwall', "Offerwall is currently unavailable.");
+            applyLockToFeature('survey', 'isLockSurvey', "Survey feature is currently unavailable.");
+            applyLockToFeature('pubscale', 'isLockPubscale', "Pubscale Offerwall is currently unavailable.");
+            applyLockToFeature('extraBonus', 'isLockExtraBonus', "Extra Bonus feature is currently unavailable.");
+            applyLockToFeature('playGame', 'isLockPlayGame', "Play Game feature is currently unavailable.");
+            applyLockToFeature('taskChallenge', 'isLockTaskChallenge', "Task Challenge is currently unavailable.");
+
+
+            // Locked Tasks (Bottom Grid)
+            for (let i = 1; i <= 10; i++) {
+                const lockKey = `isLockLockedTask${i}`;
+                const featureName = `lockedTask${i}`;
+                const element = document.querySelector(`[data-feature="${featureName}"]`);
+                const hardcodedLockIcon = element ? element.querySelector('.lock-overlay-icon') : null;
+                
+                if (element) {
+                    const isLockedByAdmin = settings[lockKey] === true;
+                    
+                    if (settings[lockKey] === false) {
+                        element.classList.remove('locked-task');
+                        element.style.pointerEvents = 'auto';
+                        if (hardcodedLockIcon) hardcodedLockIcon.style.display = 'none';
+                    } else if (isLockedByAdmin || settings[lockKey] === undefined) {
+                        element.classList.add('locked-task');
+                        element.style.pointerEvents = 'none';
+                        if (hardcodedLockIcon) hardcodedLockIcon.style.display = 'block';
+                    }
+                }
+            }
+
+
+        } else {
+            console.warn("Global settings document not found.");
+        }
+    }, error => {
+        console.error("Error fetching settings for locks:", error);
+    });
+}
+
+
 // ====================================================================
-// SECTION D: FIREBASE & DATA LOGIC
+// SECTION D: DYNAMIC CONTENT LOADING
+// ====================================================================
+
+/**
+ * Loads Carousel Slides from Firebase Settings.
+ */
+function loadCarouselSlides() {
+    if (typeof db === 'undefined') return;
+
+    const carouselTrack = document.getElementById('carousel-track');
+    
+    db.collection('settings').doc('carousel_slides').onSnapshot(doc => {
+        let slides = [];
+        if (doc.exists) {
+            slides = doc.data().slides || [];
+        }
+
+        if (slides.length === 0) {
+            // Default slides if nothing is configured by admin
+            slides = [
+                { imageUrl: 'https://i.ibb.co/qM4wYtKy/IMG-20251119-WA0032.jpg', linkUrl: 'https://toolswebsite205.blogspot.com' },
+                { imageUrl: 'https://i.ibb.co/hFdpRnXR/FB-IMG-1763006052781.jpg', linkUrl: 'https://www.facebook.com/share/g/17MG25oD5j/' },
+                { imageUrl: 'https://i.ibb.co/bj9cnS2m/FB-IMG-1763006049127.jpg', linkUrl: 'https://www.instagram.com/gmnetworking9?igsh=ejV6MjUzcTVyMGxz' },
+                { imageUrl: 'https://i.ibb.co/jvgxx2gF/FB-IMG-1763006046346.jpg', linkUrl: 'https://youtu.be/fjHXG7brtso?si=zCx7akwg0TUkTRwn' },
+                { imageUrl: 'https://i.ibb.co/Fkqz9FXT/FB-IMG-1763006044569.jpg', linkUrl: 'https://www.tiktok.com/@gmnetworking9?_r=1' },
+                { imageUrl: 'https://i.ibb.co/SwGJrVTV/FB-IMG-1763006042540.jpg', linkUrl: 'https://www.yoursmed.xyz/?ref=29UI1U0O' }
+            ];
+        }
+
+        let innerHTML = '';
+        const effectiveSlides = slides.slice(0, CAROUSEL_SLIDE_COUNT);
+
+        effectiveSlides.forEach((slide, index) => {
+             innerHTML += `
+                 <a href="${slide.linkUrl || '#'}" 
+                    class="carousel-slide slide-${index + 1}"
+                    style="background-image: url('${slide.imageUrl || ''}');">
+                 </a>
+             `;
+        });
+        
+        // Loop the slides for smooth transition (Add duplicates up to 10 slides total)
+        for (let i = effectiveSlides.length; i < 10; i++) {
+            const originalSlide = effectiveSlides[i % effectiveSlides.length];
+             innerHTML += `
+                 <a href="${originalSlide.linkUrl || '#'}" 
+                    class="carousel-slide slide-placeholder-${i + 1}"
+                    style="background-image: url('${originalSlide.imageUrl || ''}');">
+                 </a>
+             `;
+        }
+
+        carouselTrack.innerHTML = innerHTML;
+    });
+}
+
+/**
+ * Loads App Download Links and Ad Message from Firebase Settings.
+ */
+function loadAppDownloadLinks() {
+    if (typeof db === 'undefined') return;
+
+    const adMessageElement = document.getElementById('ad-message');
+    const downloadButton = document.getElementById('app-download-button');
+
+    db.collection('settings').doc('app_links').onSnapshot(doc => {
+        if (doc.exists) {
+            const links = doc.data();
+            const downloadLink = links.appDownloadLink || '#';
+            const message = links.adPlaceholderMessage || 'Download the app and win Rs.10k';
+            
+            if (adMessageElement) adMessageElement.innerHTML = `YoursMed King <br>${message}`;
+            if (downloadButton) downloadButton.href = downloadLink;
+        }
+    });
+}
+
+
+// ====================================================================
+// SECTION E: CORE FIREBASE & USER LOGIC
 // ====================================================================
 
 function isWithdrawalWindowOpen() {
@@ -226,18 +396,17 @@ function isWithdrawalWindowOpen() {
     const currentHour = now.getHours();
     const currentMinute = now.getMinutes();
     const startTimeInMinutes = (OPEN_HOUR_START * 60) + OPEN_MINUTE_START;
-    const endTimeInMinutes = (OPEN_HOUR_END * 60) + OPEN_MINUTE_END; // 21 * 60 + 0 = 1260
+    const endTimeInMinutes = (OPEN_HOUR_END * 60) + OPEN_MINUTE_END;
     const currentTimeInMinutes = (currentHour * 60) + currentMinute;
     
-    // Check if current time is within the start and end time window
     return (currentTimeInMinutes >= startTimeInMinutes && currentTimeInMinutes < endTimeInMinutes);
 }
 
 function updateWithdrawalLockStatus() {
     const isOpen = isWithdrawalWindowOpen();
     const homeWithdrawalBox = document.getElementById('home-withdrawal-box');
-    const timeLockedItems = document.querySelectorAll('#withdrawal-grid .withdrawal-item.time-locked');
-    const lockMessage = `Withdrawal Locked. Opens at ${OPEN_HOUR_START}:00 AM - ${OPEN_HOUR_END - 12}:00 PM`; // User-friendly display 9:00 PM
+    const timeLockedItems = document.querySelectorAll('#withdrawal-grid-container .withdrawal-item.time-locked');
+    const lockMessage = `Withdrawal Locked. Opens at ${OPEN_HOUR_START}:00 AM to ${OPEN_HOUR_END - 12}:00 PM`;
 
     if (homeWithdrawalBox) {
         let overlay = homeWithdrawalBox.querySelector('.lock-time-overlay');
@@ -247,8 +416,10 @@ function updateWithdrawalLockStatus() {
             homeWithdrawalBox.appendChild(overlay);
         }
         if (isOpen) {
-            homeWithdrawalBox.classList.remove('locked-task');
-            overlay.style.display = 'none';
+            if (!homeWithdrawalBox.classList.contains('locked')) {
+                homeWithdrawalBox.classList.remove('locked-task');
+                overlay.style.display = 'none';
+            }
         } else {
             homeWithdrawalBox.classList.add('locked-task');
             overlay.innerHTML = `<i class="fas fa-lock"></i> ${lockMessage}`;
@@ -257,20 +428,21 @@ function updateWithdrawalLockStatus() {
     }
     
     timeLockedItems.forEach(item => {
-        if (isOpen) {
-            item.classList.remove('locked-item');
-            item.style.pointerEvents = 'auto';
-            item.style.opacity = '1';
-            item.style.setProperty('--lock-display', 'none'); 
-        } else {
-            item.classList.add('locked-item');
-            item.style.pointerEvents = 'none';
-            item.style.opacity = '0.5';
+        if (!item.closest('.admin-locked-container.locked') && !item.classList.contains('locked')) {
+            if (isOpen) {
+                item.classList.remove('locked-item');
+                item.style.pointerEvents = 'auto';
+                item.style.opacity = '1';
+            } else {
+                item.classList.add('locked-item');
+                item.style.pointerEvents = 'none';
+                item.style.opacity = '0.5';
+            }
         }
     });
-    // Set timeout to check again after 1 minute
     setTimeout(updateWithdrawalLockStatus, 60000); 
 }
+
 
 function updateProfileCardDisplay(name, balance) {
     document.getElementById('profile-name').textContent = name;
@@ -317,8 +489,9 @@ function initializeWalletDisplay() {
             updateRewardTimeline(totalInvites);
             updateProfileCardDisplay(currentUserName, formattedBalance);
         } else {
+            const userEmailPrefix = auth.currentUser ? auth.currentUser.email.split('@')[0] : "User";
             walletRef.set({
-                name: auth.currentUser.email.split('@')[0], email: auth.currentUser.email,
+                name: userEmailPrefix, email: auth.currentUser.email,
                 coins: 0, tiktokCoins: 0, amazonCoins: 0, pubgUC: 0,
                 referralCode: currentUserId.substring(0, 8).toUpperCase(), totalInvites: 0, activeInvites: 0,
                 createdAt: firebase.firestore.FieldValue.serverTimestamp()
@@ -445,7 +618,7 @@ auth.onAuthStateChanged(async user => {
 });
 
 function handleRealLogout(shouldRedirect = true) {
-     if (walletListener) { walletListener(); walletListener = null; }
+     if (walletListener) { walletListener = null; }
      isLoggedIn = false; currentUserId = null; currentUserName = "Guest User";
      document.getElementById('wallet-coin-balance').textContent = '---';
      document.getElementById('tiktok-coin-balance').textContent = '---';
@@ -458,7 +631,6 @@ function handleRealLogout(shouldRedirect = true) {
      updateAuthStateUI();
      if (shouldRedirect) {
         auth.signOut();
-        // Logout ke baad home page par switch karein aur history ko replace karein
         history.replaceState({ page: 'home-content', title: 'Daily Tasks' }, 'Daily Tasks', '#home-content');
         _internalUISwitch('home-content', 'Daily Tasks');
      }
@@ -558,18 +730,11 @@ document.addEventListener('DOMContentLoaded', () => {
       copyButton.addEventListener('click', copyReferralLink);
   }
 
-  // --- 1. Set initial history state ---
-  // Ensure home page is the initial state for popstate management
   history.replaceState({ page: 'home-content', title: 'Daily Tasks' }, 'Daily Tasks', '#home-content');
 
-
-  // --- 2. Event listeners for navigation (This part is crucial) ---
   navLinks.forEach(link => {
     link.addEventListener('click', (e) => {
-      // *** YEH LINE REDIRECT HONAY SE ROKTI HAI ***
       e.preventDefault(); 
-      // ******************************************
-      
       const targetPageId = link.getAttribute('data-page');
       
       let title = '';
@@ -595,8 +760,12 @@ document.addEventListener('DOMContentLoaded', () => {
   
   backButton.addEventListener('click', handleBack);
 
-  // Initial setup
+  // Initial setup for dynamic content
+  loadCarouselSlides();
+  loadAppDownloadLinks();
+  
   renderRewardTimeline(0);
   _internalUISwitch('home-content', 'Daily Tasks');
   updateWithdrawalLockStatus();
+  checkFeatureLocks(); // Start listening for admin locks
 });
