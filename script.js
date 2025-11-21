@@ -30,17 +30,18 @@ let currentPageId = 'home-content';
 const USERS_COLLECTION = "users";
 const CAROUSEL_SLIDE_COUNT = 6;
 
+// REWARD MILESTONES (Key is the number of invites required)
 const REWARD_MILESTONES = [
-    { invites: 5000, coins: 10000, item: 'Bonus Coins' },
-    { invites: 10000, coins: 15000, item: 'Premium Coins' },
-    { invites: 15000, coins: 20000, item: 'Voucher Code' },
-    { invites: 20000, coins: 25000, item: 'Gift Card' },
-    { invites: 25000, coins: 30000, item: 'Mystery Box' },
-    { invites: 30000, coins: 35000, item: 'Gold Membership' },
-    { invites: 35000, coins: 40000, item: 'Cash Bonus' },
-    { invites: 40000, coins: 45000, item: 'Exclusive Offer' },
-    { invites: 45000, coins: 50000, item: 'Diamond Reward' },
-    { invites: 50000, coins: 55000, item: 'Luxury Item' }
+    { invites: 1, coins: 100, item: 'Bonus Coins' },
+    { invites: 10, coins: 1000, item: 'Premium Coins' },
+    { invites: 20, coins: 2000, item: 'Voucher Code' },
+    { invites: 30, coins: 3000, item: 'Gift Card' },
+    { invites: 250, coins: 300000, item: 'Mystery Box' },
+    { invites: 30000, coins: 350000, item: 'Gold Membership' },
+    { invites: 35000, coins: 400000, item: 'Cash Bonus' },
+    { invites: 40000, coins: 450000, item: 'Exclusive Offer' },
+    { invites: 45000, coins: 500000, item: 'Diamond Reward' },
+    { invites: 50000, coins: 550000, item: 'Luxury Item' }
 ];
 
 const OPEN_HOUR_START = 10; 
@@ -49,7 +50,7 @@ const OPEN_HOUR_END = 21;
 const OPEN_MINUTE_END = 0; 
 
 // ====================================================================
-// SECTION B: UI NAVIGATION HANDLERS
+// SECTION B: UI NAVIGATION HANDLERS (Unchanged)
 // ====================================================================
 
 function _internalUISwitch(targetPageId, title) {
@@ -125,7 +126,7 @@ function handleBack() {
 
 
 // ====================================================================
-// SECTION C: FEATURES (Link Handling & Exit Prompt)
+// SECTION C: FEATURES (Link Handling & Exit Prompt) (Unchanged)
 // ====================================================================
 
 document.addEventListener('click', function(e) {
@@ -309,7 +310,7 @@ function checkFeatureLocks() {
 
 
 // ====================================================================
-// SECTION D: DYNAMIC CONTENT LOADING
+// SECTION D: DYNAMIC CONTENT LOADING (Carousel & App Links)
 // ====================================================================
 
 /**
@@ -449,11 +450,41 @@ function updateProfileCardDisplay(name, balance) {
     document.getElementById('profile-balance').innerHTML = `<i class="fas fa-coins" style="color:#ffc107;"></i> Balance: ${balance} Coins`;
 }
 
+// **MAIN WALLET AND REWARDS CLAIM LOGIC**
+async function attemptRewardClaim(userId, activeInvites, claimedRewards) {
+    const userRef = db.collection(USERS_COLLECTION).doc(userId);
+    let rewardClaimed = false;
+
+    for (const reward of REWARD_MILESTONES) {
+        const milestoneKey = `invites_${reward.invites}`;
+        
+        // Check if milestone is reached AND not already claimed
+        if (activeInvites >= reward.invites && claimedRewards && claimedRewards[milestoneKey] !== true) {
+            try {
+                await userRef.update({
+                    coins: firebase.firestore.FieldValue.increment(reward.coins),
+                    [`claimedRewards.${milestoneKey}`]: true // Mark as claimed
+                });
+                console.log(`Successfully claimed reward for ${reward.invites} invites: ${reward.coins} coins.`);
+                rewardClaimed = true;
+                
+                // Show a brief alert to the user (optional, but helpful)
+                alert(`🎉 Congratulations! You claimed ${reward.coins.toLocaleString()} Coins for reaching ${reward.invites.toLocaleString()} active invites!`);
+
+                // Stop after claiming one reward to prevent hitting rate limits, let the listener handle the next refresh
+                return true; 
+            } catch (error) {
+                console.error(`Failed to claim reward ${milestoneKey}:`, error);
+                // Continue to the next reward if transaction fails, but log the error
+            }
+        }
+    }
+    return rewardClaimed;
+}
+
+
 function initializeWalletDisplay() {
     const mainBalanceDisplay = document.getElementById('wallet-coin-balance');
-    const tiktokBalanceDisplay = document.getElementById('tiktok-coin-balance');
-    const amazonBalanceDisplay = document.getElementById('amazon-coin-balance');
-    const pubgUCBalanceDisplay = document.getElementById('pubg-uc-balance');
     const totalInviteCountDisplay = document.getElementById('total-invites-count');
     const activeInviteCountDisplay = document.getElementById('active-invites-count');
     
@@ -468,32 +499,47 @@ function initializeWalletDisplay() {
     const walletRef = db.collection(USERS_COLLECTION).doc(currentUserId);
     mainBalanceDisplay.textContent = 'Loading...';
 
-    walletListener = walletRef.onSnapshot(doc => {
+    walletListener = walletRef.onSnapshot(async doc => {
         if (doc.exists) {
             const data = doc.data();
             const rawCoins = data.coins !== undefined ? data.coins : 0; 
-            const tiktokCoins = data.tiktokCoins !== undefined ? data.tiktokCoins : 0;
-            const amazonCoins = data.amazonCoins !== undefined ? data.amazonCoins : 0;
-            const pubgUC = data.pubgUC !== undefined ? data.pubgUC : 0;
-            const totalInvites = data.totalInvites || 0; 
             const activeInvites = data.activeInvites || 0;
+            const claimedRewards = data.claimedRewards || {};
+            
             currentUserName = data.name || (auth.currentUser ? auth.currentUser.email.split('@')[0] : "User");
             const formattedBalance = parseFloat(rawCoins).toFixed(2);
             
+            // 1. Attempt to claim any unclaimed rewards
+            if (activeInvites > 0) {
+                 const claimed = await attemptRewardClaim(currentUserId, activeInvites, claimedRewards);
+                 if (claimed) {
+                     // If a claim happened, the snapshot will fire again with the new data.
+                     // We stop here to prevent UI updates based on potentially stale data.
+                     return;
+                 }
+            }
+            
+            // 2. Update UI (only if no claim was processed in this snapshot cycle)
+            document.getElementById('tiktok-coin-balance').textContent = parseFloat(data.tiktokCoins || 0).toFixed(2);
+            document.getElementById('amazon-coin-balance').textContent = parseFloat(data.amazonCoins || 0).toFixed(2);
+            document.getElementById('pubg-uc-balance').textContent = parseInt(data.pubgUC || 0).toLocaleString();
+            
             mainBalanceDisplay.textContent = formattedBalance;
-            tiktokBalanceDisplay.textContent = parseFloat(tiktokCoins).toFixed(2);
-            amazonBalanceDisplay.textContent = parseFloat(amazonCoins).toFixed(2);
-            pubgUCBalanceDisplay.textContent = parseInt(pubgUC).toLocaleString();
-            totalInviteCountDisplay.textContent = totalInvites;
+            totalInviteCountDisplay.textContent = data.totalInvites || 0;
             activeInviteCountDisplay.textContent = activeInvites;
-            updateRewardTimeline(totalInvites);
+            
+            // Pass claimed rewards to updateRewardTimeline for visual lock/unlock status
+            updateRewardTimeline(activeInvites, claimedRewards);
             updateProfileCardDisplay(currentUserName, formattedBalance);
+
         } else {
+            // User creation logic remains here for new users
             const userEmailPrefix = auth.currentUser ? auth.currentUser.email.split('@')[0] : "User";
             walletRef.set({
                 name: userEmailPrefix, email: auth.currentUser.email,
                 coins: 0, tiktokCoins: 0, amazonCoins: 0, pubgUC: 0,
                 referralCode: currentUserId.substring(0, 8).toUpperCase(), totalInvites: 0, activeInvites: 0,
+                claimedRewards: {}, // Initialize claimed rewards map
                 createdAt: firebase.firestore.FieldValue.serverTimestamp()
             }, { merge: true }); 
             updateProfileCardDisplay(currentUserName, "0.00");
@@ -503,7 +549,7 @@ function initializeWalletDisplay() {
     });
 }
 
-// --- AUTH HANDLERS ---
+// --- AUTH HANDLERS (Unchanged) ---
 function showAuthModal(mode) {
     document.getElementById('auth-modal').style.display = 'flex';
     setAuthMode(mode);
@@ -576,6 +622,7 @@ async function handleAuthSubmit() {
             await db.collection(USERS_COLLECTION).doc(uid).set({
                 name: name, email: email, coins: signupBonus, tiktokCoins: 0, amazonCoins: 0, pubgUC: 0,
                 referralCode: userReferralCode, referredBy: referralCodeUsed || null, totalInvites: 0, activeInvites: 0,
+                claimedRewards: {}, // Initialize claimed rewards map
                 createdAt: firebase.firestore.FieldValue.serverTimestamp()
             });
             
@@ -626,7 +673,7 @@ function handleRealLogout(shouldRedirect = true) {
      document.getElementById('pubg-uc-balance').textContent = '---';
      document.getElementById('total-invites-count').textContent = 0;
      document.getElementById('active-invites-count').textContent = 0;
-     updateRewardTimeline(0); 
+     updateRewardTimeline(0, {}); 
      updateProfileCardDisplay("Guest User", "---");
      updateAuthStateUI();
      if (shouldRedirect) {
@@ -650,23 +697,38 @@ function updateAuthStateUI() {
     initializeReferralSystem(); 
 }
 
-function renderRewardTimeline(currentInvites) {
+// **UPDATED REWARDS RENDER FUNCTION**
+function renderRewardTimeline(currentInvites, claimedRewards) {
     const container = document.getElementById('dynamic-reward-timeline');
     container.innerHTML = '';
+    
     REWARD_MILESTONES.forEach(reward => {
+        const milestoneKey = `invites_${reward.invites}`;
+        const isClaimed = claimedRewards && claimedRewards[milestoneKey] === true;
         const isUnlocked = currentInvites >= reward.invites;
-        const statusClass = isUnlocked ? 'unlocked' : 'locked';
-        const iconContent = isUnlocked ? '<i class="fas fa-check"></i>' : '<i class="fas fa-lock"></i>';
+
+        const statusClass = isClaimed ? 'unlocked' : (isUnlocked ? 'unlocked' : 'locked'); // Use 'unlocked' class once milestone is met (visually unlocked)
+        const iconContent = isClaimed ? '<i class="fas fa-check-circle"></i>' : (isUnlocked ? '<i class="fas fa-check"></i>' : '<i class="fas fa-lock"></i>');
         const cardClass = reward.item.includes('Coins') ? 'card-coins' : 'card-bluetooth';
-        const rewardTitle = `Unlock on ${reward.invites.toLocaleString()} Invites`;
+        const rewardTitle = isClaimed ? 'CLAIMED' : `Unlock on ${reward.invites.toLocaleString()} Invites`;
         const rewardText = `Win ${reward.coins.toLocaleString()} Coins Bonus`;
-        const html = `<div class="timeline-item ${statusClass}" id="reward-${reward.invites}"><div class="timeline-item-icon">${iconContent}</div><div class="timeline-title">${rewardTitle}</div><div class="timeline-card ${cardClass}"><i class="fas fa-trophy reward-icon"></i><div class="card-text"><strong>${rewardText}</strong></div></div></div>`;
+        
+        const html = `
+            <div class="timeline-item ${statusClass}" data-milestone="${reward.invites}">
+                <div class="timeline-item-icon">${iconContent}</div>
+                <div class="timeline-title">${rewardTitle}</div>
+                <div class="timeline-card ${cardClass}">
+                    <i class="fas fa-trophy reward-icon"></i>
+                    <div class="card-text"><strong>${rewardText}</strong></div>
+                </div>
+            </div>
+        `;
         container.innerHTML += html;
     });
 }
 
-function updateRewardTimeline(inviteCount) {
-    renderRewardTimeline(inviteCount);
+function updateRewardTimeline(inviteCount, claimedRewards) {
+    renderRewardTimeline(inviteCount, claimedRewards);
 }
 
 function initializeReferralSystem() {
@@ -718,7 +780,112 @@ function copyReferralLink() {
 
 
 // ====================================================================
-// SECTION F: DOM INITIALIZATION AND EVENTS
+// SECTION G: VOICE NOTE SUBMISSION LOGIC (Auto Submit)
+// ====================================================================
+
+const recognitionStatus = document.getElementById('recognition-status');
+const startRecognitionBtn = document.getElementById('start-recognition-btn');
+const submitVoiceNoteBtn = document.getElementById('submit-voice-note-btn'); 
+const voiceNoteOutput = document.getElementById('voice-note-output');
+
+let recognition;
+
+// Function to handle the actual submission to Firebase
+async function autoSubmitVoiceNote(noteText) {
+    if (!noteText || !isLoggedIn) return;
+
+    recognitionStatus.textContent = "Submitting Note...";
+    voiceNoteOutput.value = noteText;
+    
+    try {
+        await db.collection('voice_notes').add({
+            userId: currentUserId,
+            email: auth.currentUser.email,
+            note: noteText,
+            timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+            status: 'New'
+        });
+        
+        recognitionStatus.textContent = "Voice Note submitted successfully! Admin will review it.";
+        voiceNoteOutput.value = noteText + "\n\n(Submitted successfully)";
+
+    } catch (error) {
+        console.error("Submission failed:", error);
+        recognitionStatus.textContent = `Submission failed: ${error.message}`;
+        voiceNoteOutput.value = noteText + "\n\n(Submission failed)";
+    }
+}
+
+// Check for Web Speech API compatibility
+if ('webkitSpeechRecognition' in window) {
+    recognition = new webkitSpeechRecognition();
+    recognition.continuous = false; 
+    recognition.interimResults = false;
+    recognition.lang = 'ur-PK'; 
+
+    recognition.onstart = function() {
+        recognitionStatus.textContent = "Listening... Speak now!";
+        startRecognitionBtn.classList.add('recording');
+        voiceNoteOutput.style.display = 'block';
+        voiceNoteOutput.value = '';
+        submitVoiceNoteBtn.style.display = 'none'; 
+    };
+
+    recognition.onresult = function(event) {
+        const transcript = event.results[0][0].transcript;
+        voiceNoteOutput.value = transcript;
+        recognitionStatus.textContent = "Finished. Processing submission...";
+        
+        // --- AUTO SUBMIT LOGIC ---
+        if (transcript.length > 0) {
+            setTimeout(() => {
+                autoSubmitVoiceNote(transcript);
+            }, 500); 
+        } else {
+             recognitionStatus.textContent = "No text captured. Tap again to retry.";
+        }
+    };
+
+    recognition.onerror = function(event) {
+        recognitionStatus.textContent = `Error: ${event.error}. Try reloading the page or check microphone permissions.`;
+        startRecognitionBtn.classList.remove('recording');
+    };
+
+    recognition.onend = function() {
+        startRecognitionBtn.classList.remove('recording');
+        if (!voiceNoteOutput.value.includes("submitted successfully")) {
+            if (voiceNoteOutput.value.length === 0) {
+                recognitionStatus.textContent = "No voice detected. Tap again to try.";
+            } else {
+                recognitionStatus.textContent = "Finished processing. (Auto-submission attempted)";
+            }
+        }
+    };
+} else {
+    recognitionStatus.textContent = "Speech Recognition not supported by this browser. Please use Chrome (HTTPS required).";
+    startRecognitionBtn.disabled = true;
+}
+
+startRecognitionBtn.addEventListener('click', () => {
+    if (!isLoggedIn) {
+        alert("Please log in to submit a voice note.");
+        return;
+    }
+    if (recognition) {
+        try {
+            voiceNoteOutput.value = "";
+            recognitionStatus.textContent = "Starting...";
+            recognition.start();
+        } catch (e) {
+            recognitionStatus.textContent = "Error starting recognition. Please check permissions.";
+            console.error(e);
+        }
+    }
+});
+
+
+// ====================================================================
+// SECTION H: DOM INITIALIZATION AND EVENTS
 // ====================================================================
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -764,7 +931,8 @@ document.addEventListener('DOMContentLoaded', () => {
   loadCarouselSlides();
   loadAppDownloadLinks();
   
-  renderRewardTimeline(0);
+  // Note: updateRewardTimeline is called inside initializeWalletDisplay (onAuthStateChanged)
+  renderRewardTimeline(0, {}); // Initial static render
   _internalUISwitch('home-content', 'Daily Tasks');
   updateWithdrawalLockStatus();
   checkFeatureLocks(); // Start listening for admin locks
