@@ -75,6 +75,20 @@
     75%, 95% { transform: translateX(-75%); } /* Show Slide 4 (15s - 19s) */
     100% { transform: translateX(0%); } /* Reset to Slide 1 */
 }
+
+/* Microphone button animation */
+@keyframes pulse-red {
+    0% { box-shadow: 0 0 0 0 rgba(244, 67, 54, 0.7); }
+    70% { box-shadow: 0 0 0 10px rgba(244, 67, 54, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(244, 67, 54, 0); }
+}
+#start-recognition-btn.recording {
+    background-color: #f44336;
+    animation: pulse-red 1.5s infinite;
+}
+#start-recognition-btn .fa-microphone {
+    margin-right: 8px;
+}
 /* -------------------------------------- */
 
 
@@ -769,3 +783,4 @@ a { text-decoration: none; color: inherit; }
     background-color: #1a237e; /* Dark Blue */
     color: white;
 }
+/* -------------------------------------- */
