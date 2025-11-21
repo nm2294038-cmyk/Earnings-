@@ -38,6 +38,7 @@
 
     
 @keyframes slide-show {
+  /* Animation for 10 slides, based on 6 admin controlled slides + 4 repeats */
   0% { transform: translateX(0%); } 9% { transform: translateX(0%); }
   10% { transform: translateX(-10%); } 19% { transform: translateX(-10%); }
   20% { transform: translateX(-20%); } 29% { transform: translateX(-20%); }
@@ -155,17 +156,9 @@ a { text-decoration: none; color: inherit; }
 .carousel-track { display: flex; width: 1000%; height: 100%; animation: slide-show 50s infinite; }
 .carousel-slide {
   width: 10%; height: 100%; flex-shrink: 0; display: block; 
-  background-image: url('https://i.ibb.co/4RzTfVh4/IMG-20251110-WA0008.jpg'); 
   background-size: cover; background-position: center; background-repeat: no-repeat;
   position: relative;
 }
-/* Specific Banner Images */
-.carousel-slide.slide-1 { background-image: url('https://i.ibb.co/qM4wYtKy/IMG-20251119-WA0032.jpg'); }
-.carousel-slide.slide-2 { background-image: url('https://i.ibb.co/hFdpRnXR/FB-IMG-1763006052781.jpg'); }
-.carousel-slide.slide-3 { background-image: url('https://i.ibb.co/bj9cnS2m/FB-IMG-1763006049127.jpg'); }
-.carousel-slide.slide-4 { background-image: url('https://i.ibb.co/jvgxx2gF/FB-IMG-1763006046346.jpg'); }
-.carousel-slide.slide-5 { background-image: url('https://i.ibb.co/Fkqz9FXT/FB-IMG-1763006044569.jpg'); }
-.carousel-slide.slide-6 { background-image: url('https://i.ibb.co/SwGJrVTV/FB-IMG-1763006042540.jpg'); }
 
 .task-heading { font-size: 1.5em; font-weight: bold; margin: 20px 20px 15px; color: #333; }
 .task-grid { display: grid; gap: 15px; padding: 0 20px; grid-template-columns: repeat(2, 1fr); margin: 0 auto; }
@@ -173,16 +166,30 @@ a { text-decoration: none; color: inherit; }
 .task-icon-area { position: absolute; top: 0; left: 0; right: 0; height: 80px; display: flex; justify-content: center; align-items: flex-start; }
 .task-name { font-size: 1.1em; line-height: 1.2; padding-left: 5px; padding-bottom: 5px; font-weight: 700; }
 
-.task-daily-check { background: linear-gradient(to bottom, #d2eafb, #f0f8ff); } .task-daily-check .task-icon-area::before { content: '⭐'; font-size: 30px; position: absolute; top: 25px; }
-.task-scratch-card { background: linear-gradient(to bottom, #ffe8b5, #fff8e1); } .task-scratch-card .task-icon-area::before { content: '💳'; font-size: 30px; position: absolute; top: 25px; }
-.task-captcha { background: linear-gradient(to bottom, #e4d7ff, #f3e5f5); } .task-captcha .task-icon-area::before { content: '🔄'; font-size: 30px; position: absolute; top: 25px; }
-.task-spin-wheel { background: linear-gradient(to bottom, #ffdae9, #ffebee); } .task-spin-wheel .task-icon-area::before { content: '🎡'; font-size: 30px; position: absolute; top: 25px; }
-.task-magic-box { background: linear-gradient(to bottom, #ffd9c0, #fff8e1); } .task-magic-box .task-icon-area::before { content: '🎁'; font-size: 30px; position: absolute; top: 25px; }
-.task-silver-box { background: linear-gradient(to bottom, #c9ffcf, #e8f5e9); } .task-silver-box .task-icon-area::before { content: '🥈'; font-size: 30px; position: absolute; top: 25px; }
-.task-gold-box { background: linear-gradient(to bottom, #e6e0d0, #f5f5f5); } .task-gold-box .task-icon-area::before { content: '🥇'; font-size: 30px; position: absolute; top: 25px; }
-.task-bronze-box { background: linear-gradient(to bottom, #d1c4e9, #f3e5f5); } .task-bronze-box .task-icon-area::before { content: '🥉'; font-size: 30px; position: absolute; top: 25px; }
-.task-bonus { background: linear-gradient(to bottom, #ffe9b5, #fffde7); } .task-bonus .task-icon-area::before { content: '💰'; font-size: 30px; position: absolute; top: 25px; }
-.task-survey { background: linear-gradient(to bottom, #b3e5fc, #e1f5fe); } .task-survey .task-icon-area::before { content: '📺'; font-size: 30px; position: absolute; top: 25px; }
+/* Base icon styling for task types */
+.task-daily-check { background: linear-gradient(to bottom, #d2eafb, #f0f8ff); } .task-daily-check .task-icon-area::before { content: '\f005'; font-family: 'Font Awesome 5 Free'; font-weight: 900; font-size: 30px; position: absolute; top: 25px; color: #ffc107; }
+.task-scratch-card { background: linear-gradient(to bottom, #ffe8b5, #fff8e1); } .task-scratch-card .task-icon-area::before { content: '\f2c2'; font-family: 'Font Awesome 5 Free'; font-weight: 900; font-size: 30px; position: absolute; top: 25px; color: #f39c12; }
+.task-captcha { background: linear-gradient(to bottom, #e4d7ff, #f3e5f5); } .task-captcha .task-icon-area::before { content: '\f021'; font-family: 'Font Awesome 5 Free'; font-weight: 900; font-size: 30px; position: absolute; top: 25px; color: #8e44ad; }
+.task-spin-wheel { background: linear-gradient(to bottom, #ffdae9, #ffebee); } .task-spin-wheel .task-icon-area::before { content: '\f110'; font-family: 'Font Awesome 5 Free'; font-weight: 900; font-size: 30px; position: absolute; top: 25px; color: #e91e63; }
+.task-magic-box { background: linear-gradient(to bottom, #ffd9c0, #fff8e1); } .task-magic-box .task-icon-area::before { content: '\f06b'; font-family: 'Font Awesome 5 Free'; font-weight: 900; font-size: 30px; position: absolute; top: 25px; color: #ff9800; }
+.task-silver-box { background: linear-gradient(to bottom, #c9ffcf, #e8f5e9); } .task-silver-box .task-icon-area::before { content: '\f5e3'; font-family: 'Font Awesome 5 Free'; font-weight: 900; font-size: 30px; position: absolute; top: 25px; color: #9e9e9e; }
+.task-gold-box { background: linear-gradient(to bottom, #e6e0d0, #f5f5f5); } .task-gold-box .task-icon-area::before { content: '\f5e3'; font-family: 'Font Awesome 5 Free'; font-weight: 900; font-size: 30px; position: absolute; top: 25px; color: #ffc107; }
+.task-bronze-box { background: linear-gradient(to bottom, #d1c4e9, #f3e5f5); } .task-bronze-box .task-icon-area::before { content: '\f5e3'; font-family: 'Font Awesome 5 Free'; font-weight: 900; font-size: 30px; position: absolute; top: 25px; color: #cd7f32; }
+.task-bonus { background: linear-gradient(to bottom, #ffe9b5, #fffde7); } .task-bonus .task-icon-area::before { content: '\f51e'; font-family: 'Font Awesome 5 Free'; font-weight: 900; font-size: 30px; position: absolute; top: 25px; color: #ffc107; }
+.task-survey { background: linear-gradient(to bottom, #b3e5fc, #e1f5fe); } .task-survey .task-icon-area::before { content: '\f03d'; font-family: 'Font Awesome 5 Free'; font-weight: 900; font-size: 30px; position: absolute; top: 25px; color: #03a9f4; }
+
+/* --- CUSTOM ICONS FOR SPECIFIC LOCKED TASKS --- */
+.task-bronze-box .task-icon-area::before { content: '\f023'; color: #cd7f32; } 
+.task-bonus.locked-task[data-feature="lockedTask2"] .task-icon-area::before { content: '\f1b9'; color: #ffc107; } 
+.task-daily-check.locked-task[data-feature="lockedTask3"] .task-icon-area::before { content: '\f7d9'; color: #1e88e5; } 
+.task-scratch-card.locked-task[data-feature="lockedTask4"] .task-icon-area::before { content: '\f518'; color: #00bcd4; } 
+.task-captcha.locked-task[data-feature="lockedTask5"] .task-icon-area::before { content: '\f291'; color: #e91e63; } 
+.task-spin-wheel.locked-task[data-feature="lockedTask6"] .task-icon-area::before { content: '\f06b'; color: #ff5722; } 
+.task-magic-box.locked-task[data-feature="lockedTask7"] .task-icon-area::before { content: '\f09d'; color: #4caf50; } 
+.task-silver-box.locked-task[data-feature="lockedTask8"] .task-icon-area::before { content: '\f5d9'; color: #607d8b; } 
+.task-gold-box.locked-task[data-feature="lockedTask9"] .task-icon-area::before { content: '\f51e'; color: #ffc107; } 
+.task-bonus.locked-task[data-feature="lockedTask10"] .task-icon-area::before { content: '\f0ad'; color: #9c27b0; } 
+
 
 /* --- STYLES FOR LOCKED & BOUNCING TASK --- */
 .task-item.locked-task {
@@ -232,6 +239,37 @@ a { text-decoration: none; color: inherit; }
     margin-bottom: 5px;
     color: #ffc107;
 }
+
+/* --- ADMIN CONTROLLED LOCK OVERLAY --- */
+.admin-locked-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(100, 0, 0, 0.85); /* Reddish dark overlay for admin lock */
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    z-index: 50; /* Higher z-index to cover all content */
+    text-align: center;
+    cursor: not-allowed;
+    transition: opacity 0.3s;
+    padding: 10px;
+    box-sizing: border-box;
+    border-radius: 40px 40px 10px 10px; /* Match task-item border radius */
+}
+.admin-locked-overlay i {
+    font-size: 2em;
+    margin-bottom: 5px;
+    color: #ffc107;
+}
+.admin-locked-container.locked {
+    pointer-events: none; /* Disable clicks on the container if locked */
+}
 /* ---------------------------------------------------- */
 
 /* Ad Placeholder Style */
@@ -249,6 +287,7 @@ a { text-decoration: none; color: inherit; }
 .referral-link-box { border: 2px dashed rgba(255, 255, 255, 0.5); border-radius: 10px; padding: 15px 10px; margin-bottom: 25px; font-size: 0.9em; word-break: break-all; position: relative; }
 .referral-link-box .social-icons { position: absolute; top: 10px; right: 10px; width: 30px; height: 30px; background-color: rgba(255, 255, 255, 0.2); border-radius: 5px; }
 .invite-button { display: block; width: 80%; margin: 0 auto; padding: 12px; background-color: white; color: #1e2a38; font-weight: bold; border-radius: 8px; cursor: pointer; }
+.invite-button:hover { background-color: #eee; }
 .how-to-get { padding: 20px 0; }
 .how-to-get h2 { font-size: 1.4em; margin-bottom: 20px; }
 .rule-item { display: flex; align-items: flex-start; margin-bottom: 25px; }
@@ -698,12 +737,6 @@ a { text-decoration: none; color: inherit; }
     margin-bottom: 15px;
 }
 
-#exit-modal-content h3 {
-    font-size: 1.5em;
-    font-weight: 700;
-    margin-bottom: 20px;
-}
-
 #exit-modal-content .rating-stars {
     color: #ccc;
     font-size: 2em;
@@ -736,4 +769,3 @@ a { text-decoration: none; color: inherit; }
     background-color: #1a237e; /* Dark Blue */
     color: white;
 }
-/* -------------------------------------- */
