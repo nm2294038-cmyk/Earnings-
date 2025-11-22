@@ -1,228 +1,148 @@
+
 <!DOCTYPE html>
 <html lang="ur">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Withdrawal Section & Guide</title>
+    <title>Withdrawal Center</title>
     
-    <!-- Firebase SDKs (Version 8.10.0) -->
+    <!-- CSS Link -->
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
-
-   <!-- External Style Sheet Link -->
-    <link rel="stylesheet" href="style.css">
-
-    <!-- ================== AD CODES START ================== -->
-    <!-- In ads ko <head> mein rakhna behtar hota hai taake yeh page load hote hi kaam shuru kar saken -->
-
-    <!-- =================== AD CODES END =================== -->
-
 </head>
 <body>
 
-    <!-- TOP BANNER AD PLACEMENT -->
-    <div class="ad-container-top">
-        <script type="text/javascript">
-            atOptions = {
-                'key' : '42296cdf3e86265a8ec0c7f04f5f58b1',
-                'format' : 'iframe',
-                'height' : 50,
-                'width' : 320,
-                'params' : {}
-            };
-        </script>
-        <script type="text/javascript" src="//www.highperformanceformat.com/42296cdf3e86265a8ec0c7f04f5f58b1/invoke.js"></script>
-    </div>
-
     <header>
-        <h1>Coins Withdrawal Center</h1>
-        <button id="profileIconButton" title="Login or View Profile">👤</button>
+        <h3 style="margin:0;">Withdrawal Center</h3>
+        <button id="profileBtn">👤</button>
     </header>
 
     <div class="container">
         
-        <!-- Article/Guide Section (Visible by default) -->
-        <div class="article">
-            <h2 style="text-align: center; color: var(--danger-color);">Aasan Tareeqon Se Online Paise Kamaen: Mukammal Guide</h2>
-            
-            <p>Coins Withdrawal Center mein aapka khushamdeed! Yahan aap apni kamai hui coins ko haqeeqi raqam mein tabdeel kar sakte hain. **Naya Rate:** Ab **4 Coins** ke badle aapko **1 PKR** milega. Minimum withdrawal limit **1200 Coins** hai.</p>
-
-            <div id="loginPrompt">
-                Withdrawal Section dekhne aur istemal karne ke liye, barah-e-meherbani Profile Icon (👤) par click karke Login/Signup karen.
+        <!-- Not Logged In View -->
+        <div id="loginAlert">
+            <div style="text-align: center; padding: 40px 0;">
+                <h2 style="color: #333;">Welcome Back!</h2>
+                <p style="color: #666;">Please login to access your wallet and withdrawal options.</p>
+                <div style="font-size: 40px; margin-top: 20px; animation: bounce 2s infinite;">☝️</div>
             </div>
-
-            <h2>1. Shuruat Kaise Karen: Sign Up Aur Login</h2>
-            
-            <p>Platform par shamil hona nihayat aasan hai:</p>
-            
-            <ul>
-                <li><strong>Sign Up:</strong> Header mein maujood **Profile Icon (👤)** par click karen. Modal khulne par 'Signup Karen' par click karke naya account banaen.</li>
-                <li><strong>Login:</strong> Account banane ke baad, ya agar aapka account pehle se hai, to **Profile Icon (👤)** par click karke apni credentials daal kar login karen.</li>
-                <li><strong>Access:</strong> Login karte hi, yeh guide article chhip jayega aur aapko fori taur par Withdrawal Form aur History nazar aana shuru ho jayegi.</li>
-            </ul>
-
-            <h2>2. Coins Kamane Ke Aasan Tareeqe</h2>
-            
-            <p>Humari platform par coins kamana bahut mazedar aur seedha hai:</p>
-            
-            <ul>
-                <li><strong>Video Watch Kar Ke:</strong> Mukhtalif brands aur creators ki videos dekhen. Har mukammal video dekhne par aapke account mein fori coins jama ho jayenge.</li>
-                <li><strong>Like, Comment, Aur Share Kar Ke:</strong> Content ko like karen, achhe comments karen, aur social media par share karen. Har engagement ke badle aapko bonus coins milenge.</li>
-            </ul>
-
-            <h2>3. Bari Earning Ke Liye Bonus Tareeqe</h2>
-            
-            <p>Agar aap apni aamdani tez karna chahte hain, to yeh do tareeqe aapke liye sabse behtar hain:</p>
-            
-            <ul>
-                <li><strong>App Download Aur Istemal:</strong> Humare partners ki taraf se di gayi apps ko download karen aur unhein kuch waqt ke liye istemal karen.</li>
-                <li><strong>Products Kharid Kar:</strong> Humare platform ke zariye products kharidne par aapko bara cashback (coins ki shakal mein) milta hai.</li>
-            </ul>
-
-            <h2>4. Real-Time Withdrawal Ka Mukammal Guide</h2>
-            
-            <p>Coins kamane ke baad, unhein nikalwana (withdrawal) sabse aasan amal hai. Hum real-time withdrawal request processing faraham karte hain:</p>
-            
-            <ol>
-                <li><strong>Minimum Limit:</strong> Withdrawal ke liye kam az kam <strong>1208 Coins</strong> zaroori hain (jo ke 15 PKR ke barabar hain).</li>
-                <li><strong>Payment Methods:</strong> Aap EasyPaisa, JazzCash, ya Pakistani Banks ke zariye raqam nikalwa sakte hain.</li>
-                <li><strong>Request Process:</strong> Login karne ke baad, Withdrawal Form mein miqdar chunein ya darj karen. Request submit karte hi, coins aapke balance se kaat liye jayenge.</li>
-                <li><strong>PKR Calculation:</strong> Aapke coins ko 80 se divide karke PKR amount aapke account mein transfer kiya jayega.</li>
-                <li><strong>Status Tracking:</strong> Aapki request 'Pending' status mein chali jayegi. Aap History section mein apni request ka status track kar sakte hain.</li>
-            </ol>
-            
-            <p style="font-weight: bold; color: var(--secondary-color); margin-top: 20px;">Withdrawal shuru karne ke liye, Profile Icon (👤) par click karke Login karen!</p>
         </div>
-        
-        <!-- Withdrawal Form and History (Hidden until login) -->
-        <div id="withdrawalSection">
+
+        <!-- Logged In View -->
+        <div id="mainContent" style="display:none;">
             
-            <h2 style="color: var(--dark-bg); text-align: center;">Withdrawal Center (Authorized Access)</h2>
-            
-            <!-- Current Balance -->
-            <div class="balance-info">
-                <p>Aapka Maujooda Balance:</p>
-                <h2 id="currentWithdrawalBalance">Loading...</h2>
-                <p style="color: var(--danger-color); font-weight: bold;">Minimum Withdrawal: 1208 Coins (15 PKR)</p>
-                <p style="font-weight: bold;">Exchange Rate: 80 Coins = 1 PKR</p>
+            <div class="info-box">
+                <span style="opacity: 0.8;">Available Balance</span>
+                <h1 id="balanceDisplay" style="margin: 5px 0; font-size: 2.5em;">0</h1>
+                <span style="font-size: 1.1em;">Coins</span>
+                <div style="margin-top: 10px; background: rgba(255,255,255,0.2); padding: 5px 15px; border-radius: 20px; display: inline-block;">
+                    My Invites: <b id="inviteDisplay">0</b>
+                </div>
             </div>
 
-            <!-- Withdrawal Packages -->
-            <h4 style="margin-top: 30px;">Withdrawal Amount Chunein (Coins)</h4>
-            <div class="withdrawal-packages" id="withdrawalPackages">
-                <!-- Buttons will be generated by JavaScript -->
+            <!-- Packages -->
+            <label style="display:block; margin-bottom:10px; color:#444;"><strong>Select Package :</strong></label>
+            <div class="pkg-grid" id="pkgContainer">
+                <!-- JS Generated -->
             </div>
 
-            <!-- Withdrawal Form -->
-            <form id="withdrawalForm">
+            <!-- Form -->
+            <form id="wdForm">
                 <div class="form-group">
-                    <label for="withdrawalAmount">Coins Ki Miqdar (Amount in Coins)</label>
-                    <input type="number" id="withdrawalAmount" placeholder="Minimum 2000 Coins" required min="2000">
-                    <p id="pkrEquivalent" style="font-size: 0.9em; color: var(--primary-color); margin-top: 5px;">Yeh lagbhag 0 PKR banenge.</p>
+                    <label>Amount (PKR)</label>
+                    <input type="text" id="amountInput" placeholder="Select a package above" readonly>
+                    <small id="pkrText" style="color:var(--secondary-color); font-weight:bold;"></small>
                 </div>
 
                 <div class="form-group">
-                    <label for="paymentMethod">Payment Method Chunein</label>
-                    <select id="paymentMethod" required>
-                        <option value="">--- Chunein ---</option>
+                    <label>Select Bank / Wallet</label>
+                    <select id="bankSelect" required>
+                        <option value="">-- Choose Bank --</option>
                         <optgroup label="Mobile Wallets">
                             <option value="EasyPaisa">EasyPaisa</option>
                             <option value="JazzCash">JazzCash</option>
+                            <option value="SadaPay">SadaPay</option>
+                            <option value="Nayapay">NayaPay</option>
                         </optgroup>
-                        <optgroup label="Pakistani Banks">
-                            <option value="HBL">Habib Bank Limited (HBL)</option>
-                            <option value="UBL">United Bank Limited (UBL)</option>
-                            <option value="MCB">MCB Bank Limited</option>
-                            <option value="ABL">Allied Bank Limited (ABL)</option>
+                        <optgroup label="Major Banks">
+                            <option value="HBL">HBL (Habib Bank)</option>
+                            <option value="UBL">UBL (United Bank)</option>
                             <option value="Meezan">Meezan Bank</option>
+                            <option value="MCB">MCB Bank</option>
+                            <option value="Allied">Allied Bank</option>
                             <option value="BankAlfalah">Bank Alfalah</option>
                             <option value="Askari">Askari Bank</option>
                             <option value="Faysal">Faysal Bank</option>
-                            <option value="StandardChartered">Standard Chartered</option>
+                            <option value="BOP">Bank of Punjab</option>
                         </optgroup>
-                        <option value="Other">Doosra Bank</option>
                     </select>
                 </div>
 
                 <div class="form-group">
-                    <label for="accountNumber">Account Number / Phone Number</label>
-                    <input type="text" id="accountNumber" placeholder="Account Number ya Phone Number" required>
+                    <label>Account Number / IBAN</label>
+                    <input type="text" id="accNum" placeholder="e.g. 03105784772" required>
                 </div>
-                
+
                 <div class="form-group">
-                    <label for="accountHolderName">Account Holder Ka Naam</label>
-                    <input type="text" id="accountHolderName" placeholder="Aapka Pura Naam" required>
+                    <label>Account Holder Name</label>
+                    <input type="text" id="accName" placeholder="e.g. Nazim Mustafa " required>
                 </div>
 
-                <button type="submit" id="withdrawalButton">Withdrawal Request Bhejein</button>
+                <button type="submit" class="submit-btn" id="submitBtn">Submit Withdrawal</button>
             </form>
-            
-            <!-- Withdrawal History Section -->
-            <div class="history-section">
-                <h3>Withdrawal History</h3>
-                <div id="historyList">
-                    <p>Aapki requests load ho rahi hain...</p>
+
+            <!-- Attractive History Section -->
+            <div style="margin-top:40px;">
+                <h3 style="border-left: 4px solid var(--primary-color); padding-left: 10px;">Recent Activity</h3>
+                <div id="historyBox" class="history-grid">
+                    <p style="text-align:center; color:#999;">Loading history...</p>
                 </div>
             </div>
-            
-            <a href="index.html" id="backButton">← Wapas Home Page Par Jaen</a>
+
         </div>
     </div>
-    
-    <!-- 1. Auth Modal (Login/Signup) -->
+
+    <!-- AUTH MODAL -->
     <div id="authModal" class="modal">
-        <div class="modal-content">
-            <span class="close-btn" onclick="document.getElementById('authModal').style.display='none'">&times;</span>
-            <h3 id="authTitle">Login Karen</h3>
-            
-            <form class="auth-form" id="authForm">
-                <input type="email" id="authEmail" placeholder="Email Address" required>
-                <input type="password" id="authPassword" placeholder="Password" required>
-                <button type="submit" id="authButton">Login</button>
+        <div class="modal-box">
+            <span class="close" id="closeAuthModal">&times;</span>
+            <h3 id="authHeader" style="margin-top:0;">Login</h3>
+            <form id="authForm">
+                <input type="email" id="email" placeholder="Email Address" style="width:100%; padding:12px; margin-bottom:10px; border:1px solid #ddd; border-radius:5px;" required>
+                <input type="password" id="pass" placeholder="Password" style="width:100%; padding:12px; margin-bottom:15px; border:1px solid #ddd; border-radius:5px;" required>
+                <button type="submit" style="width:100%; padding:12px; background:var(--primary-color); color:white; border:none; border-radius:5px; font-weight:bold; cursor:pointer;">Continue</button>
             </form>
-            
-            <div class="auth-toggle">
-                <p id="toggleText">Account nahi hai? <a onclick="toggleAuthMode()">Signup Karen</a></p>
-                <button id="logoutButton" style="display: none; background-color: #dc3545; margin-top: 15px;">Logout</button>
-            </div>
+            <p id="toggleAuthBtn" style="color:var(--primary-color); cursor:pointer; margin-top:15px; font-size:0.9em;">New User? Create Account</p>
+            <button id="logoutBtn" style="background:#eee; color:#333; border:none; padding:8px 15px; border-radius:4px; margin-top:10px; display:none; cursor:pointer;">Logout</button>
         </div>
     </div>
 
-    <!-- BOTTOM BANNER AD PLACEMENT -->
-    <div class="ad-container-bottom">
-        <script type="text/javascript">
-            atOptions = {
-                'key' : '42296cdf3e86265a8ec0c7f04f5f58b1',
-                'format' : 'iframe',
-                'height' : 50,
-                'width' : 320,
-                'params' : {}
-            };
-        </script>
-        <script type="text/javascript" src="//www.highperformanceformat.com/42296cdf3e86265a8ec0c7f04f5f58b1/invoke.js"></script>
+    <!-- INVITE MODAL -->
+    <div id="inviteModal" class="modal">
+        <div class="modal-box">
+            <span class="close" id="closeInviteModal">&times;</span>
+            <div style="font-size:50px; margin-bottom:10px;">👥</div>
+            <h3>More Invites Needed!</h3>
+            <p style="color:#666;">This package is locked.</p>
+            
+            <div style="background:#fff8e1; border: 1px solid #ffe082; padding:15px; border-radius:8px; margin:15px 0;">
+                <p style="margin:0; font-size:0.9em;">Required Invites</p>
+                <h2 style="margin:5px 0; color:#ff8f00;">1000</h2>
+                <p style="margin:0; font-size:0.8em; color:#666;">You Have: <b id="myCurrentInvites">0</b></p>
+            </div>
+
+            <button class="whatsapp-btn" onclick="shareLink()">
+                <span>Share on WhatsApp</span> 🚀
+            </button>
+        </div>
     </div>
-    
-    <!-- External Script Link -->
+
+    <!-- JavaScript Link -->
     <script src="script.js"></script>
-    <script type='text/javascript' src='//pl28080449.effectivegatecpm.com/cb/76/cd/cb76cddf7b12b7eea68f68d30e184962.js'></script>
 
-<script type='text/javascript' src='//pl28080440.effectivegatecpm.com/fe/ae/f6/feaef628b08cf4e13dc40d6a53f5d97c.js'></script>
-
-<script type='text/javascript' src='//pl28072139.effectivegatecpm.com/86/fd/e7/86fde7258b817d6ad0bac2d9813c6c7c.js'></script>
-
-<script type='text/javascript' src='//pl28080376.effectivegatecpm.com/25/33/fc/2533fc93822eb172e7dd7094a16db52d.js'></script>
-
-<script type='text/javascript' src='//pl28080392.effectivegatecpm.com/de/34/e5/de34e5a14993455f09e3f04047fc35c3.js'></script>
-
-<script type='text/javascript' src='//pl28080398.effectivegatecpm.com/09/93/f8/0993f856d5dce742b24466ac560eab5e.js'></script>
-
-<script type='text/javascript' src='//pl28080383.effectivegatecpm.com/30/a4/d3/30a4d38eb813fc775fb7d26c25c4e778.js'></script>
-
-<script type='text/javascript' src='//pl28080431.effectivegatecpm.com/b9/a0/89/b9a0892aeb1790408fb805b07884d16d.js'></script>
-
-<script type='text/javascript' src='//pl28080435.effectivegatecpm.com/b2/ab/01/b2ab01b97a1090873ddee2d6334260ed.js'></script>
-
-<script type='text/javascript' src='//pl28080427.effectivegatecpm.com/13/c0/02/13c00266081ee437d368466256e913d8.js'></script>
 </body>
 </html>
