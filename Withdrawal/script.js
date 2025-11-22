@@ -1,315 +1,225 @@
-        // --- FIREBASE CONFIGURATION AND INITIALIZATION ---
-        const firebaseConfig = {
-            apiKey: "AIzaSyDNYv9SNUjMAHlaPzfovyYefoBNDgx4Gd4",
-            authDomain: "traffic-exchange-62a58.firebaseapp.com",
-            projectId: "traffic-exchange-62a58",
-            storageBucket: "traffic-exchange-62a58.appspot.com",
-            messagingSenderId: "474999317287",
-            appId: "1:474999317287:web:8e28a2f5f1a959d8ce3f02",
-            measurementId: "G-HJQ46RQNZS"
-        };
+// --- FIREBASE CONFIG ---
+const firebaseConfig = {
+    apiKey: "AIzaSyDNYv9SNUjMAHlaPzfovyYefoBNDgx4Gd4",
+    authDomain: "traffic-exchange-62a58.firebaseapp.com",
+    projectId: "traffic-exchange-62a58",
+    storageBucket: "traffic-exchange-62a58.appspot.com",
+    messagingSenderId: "474999317287",
+    appId: "1:474999317287:web:8e28a2f5f1a959d8ce3f02",
+    measurementId: "G-HJQ46RQNZS"
+};
 
-        firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-        const db = firebase.firestore();
+if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
 
-        // --- GLOBAL STATE AND CONSTANTS ---
-        let currentUser = null;
-        let currentCoinBalance = 0;
-        const COIN_RATE_PKR = 80; // 80 Coins = 1 PKR
-        const MIN_WITHDRAWAL_COINS = 1208;
-        const WITHDRAWAL_PACKAGES = [2000, 2400, 2800, 3000, 3400, 3800];
-        let isSignupMode = false;
-
-        // --- DOM ELEMENTS ---
-        const currentWithdrawalBalance = document.getElementById('currentWithdrawalBalance');
-        const withdrawalForm = document.getElementById('withdrawalForm');
-        const withdrawalSection = document.getElementById('withdrawalSection');
-        const authModal = document.getElementById('authModal');
-        const historyList = document.getElementById('historyList');
-        const authTitle = document.getElementById('authTitle');
-        const authButton = document.getElementById('authButton');
-        const toggleText = document.getElementById('toggleText');
-        const logoutButton = document.getElementById('logoutButton');
-        const profileIconButton = document.getElementById('profileIconButton');
-        const articleSection = document.querySelector('.article');
-        const withdrawalAmountInput = document.getElementById('withdrawalAmount');
-        const pkrEquivalentDisplay = document.getElementById('pkrEquivalent');
-        const withdrawalPackagesContainer = document.getElementById('withdrawalPackages');
-
-
-        // --- INITIAL SETUP: RENDER WITHDRAWAL PACKAGES ---
-        function renderWithdrawalPackages() {
-            withdrawalPackagesContainer.innerHTML = '';
-            WITHDRAWAL_PACKAGES.forEach(coins => {
-                const pkr = coins / COIN_RATE_PKR;
-                const button = document.createElement('button');
-                button.className = 'withdrawal-btn';
-                button.setAttribute('type', 'button');
-                button.setAttribute('data-coins', coins);
-                button.textContent = `${coins} Coins (${pkr} PKR)`;
-                withdrawalPackagesContainer.appendChild(button);
-            });
-        }
-        renderWithdrawalPackages();
-
-        // --- WITHDRAWAL PACKAGE SELECTION LOGIC ---
-        withdrawalPackagesContainer.addEventListener('click', (e) => {
-            if (e.target.classList.contains('withdrawal-btn')) {
-                const selectedCoins = Number(e.target.getAttribute('data-coins'));
-                
-                // 1. Update Input Field
-                withdrawalAmountInput.value = selectedCoins;
-                
-                // 2. Update Visual Selection
-                document.querySelectorAll('.withdrawal-btn').forEach(btn => {
-                    btn.classList.remove('selected');
-                });
-                e.target.classList.add('selected');
-                
-                // 3. Update PKR Equivalent Display
-                updatePkrEquivalent(selectedCoins);
-            }
-        });
+// --- CONFIG ---
+const COIN_RATE = 80;
+const PACKAGES = [
+    { id: 'p1', coins: 2000 },
+    { id: 'p2', coins: 5000 },
+    { id: 'p3', coins: 8000 },
+    { id: 'p4', coins: 15000 },
+    { id: 'p5', coins: 25000 },
+    { id: 'p6', coins: 48000 },
         
-        // --- PKR EQUIVALENT CALCULATION ---
-        function updatePkrEquivalent(coins) {
-            const pkr = coins / COIN_RATE_PKR;
-            pkrEquivalentDisplay.textContent = `Yeh lagbhag ${pkr.toFixed(2)} PKR banenge.`;
-        }
+{ id: 'p7', coins: 60000 },
+    { id: 'p8', coins: 75000 },
+    { id: 'p9', coins: 98000 }
+];
+let user = null;
+let userData = { coins: 0, inviteCount: 0, claimed: [] };
+let selectedPkg = null;
+let isSignup = false;
 
-        withdrawalAmountInput.addEventListener('input', (e) => {
-            const coins = Number(e.target.value);
-            updatePkrEquivalent(coins);
-            
-            // Remove selection from buttons if user types manually
-            document.querySelectorAll('.withdrawal-btn').forEach(btn => {
-                btn.classList.remove('selected');
-            });
-        });
-
-
-        // --- EVENT LISTENER TO OPEN MODAL VIA ICON ---
-        profileIconButton.addEventListener('click', () => {
-            authModal.style.display = 'flex';
-            if (!auth.currentUser) {
-                isSignupMode = false;
-                toggleAuthMode();
-            }
-        });
-
-
-        // --- AUTH MODAL LOGIC ---
-        function toggleAuthMode() {
-            isSignupMode = !isSignupMode;
-            if (isSignupMode) {
-                authTitle.textContent = "Signup Karen";
-                authButton.textContent = "Signup";
-                toggleText.innerHTML = 'Account hai? <a onclick="toggleAuthMode()">Login Karen</a>';
+// --- AUTH ---
+auth.onAuthStateChanged(u => {
+    user = u;
+    if (user) {
+        document.getElementById('loginAlert').style.display = 'none';
+        document.getElementById('mainContent').style.display = 'block';
+        document.getElementById('authModal').style.display = 'none';
+        document.getElementById('logoutBtn').style.display = 'block';
+        
+        db.collection('users').doc(user.uid).onSnapshot(doc => {
+            if (doc.exists) {
+                const d = doc.data();
+                userData.coins = d.coins || 0;
+                userData.inviteCount = d.inviteCount || 0;
+                userData.claimed = d.claimedPackages || [];
             } else {
-                authTitle.textContent = "Login Karen";
-                authButton.textContent = "Login";
-                toggleText.innerHTML = 'Account nahi hai? <a onclick="toggleAuthMode()">Signup Karen</a>';
+                db.collection('users').doc(user.uid).set({ coins: 0, inviteCount: 0, claimedPackages: [] });
+            }
+            updateUI(); // Packages Logic Here
+        });
+        loadHistory();
+    } else {
+        document.getElementById('loginAlert').style.display = 'block';
+        document.getElementById('mainContent').style.display = 'none';
+    }
+});
+
+// --- RENDER PACKAGES (LOGIC UPDATED) ---
+function updateUI() {
+    document.getElementById('balanceDisplay').innerText = userData.coins;
+    document.getElementById('inviteDisplay').innerText = userData.inviteCount;
+    
+    const container = document.getElementById('pkgContainer');
+    container.innerHTML = '';
+
+    PACKAGES.forEach((pkg, idx) => {
+        const btn = document.createElement('button');
+        const pkr = (pkg.coins / COIN_RATE).toFixed(0);
+        
+        const isClaimed = userData.claimed.includes(pkg.id);
+        let isLocked = false;
+
+        // Logic: Agar ye first package nahi hai, to check karo ke pichla claim hua ya nahi?
+        if (idx > 0) {
+            const prevPkgId = PACKAGES[idx - 1].id;
+            // Agar pichla claim nahi hua, to ye wala LOCK rahega
+            if (!userData.claimed.includes(prevPkgId)) {
+                isLocked = true;
             }
         }
 
-        document.getElementById('authForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const email = document.getElementById('authEmail').value;
-            const password = document.getElementById('authPassword').value;
+        if (isClaimed) {
+            // Case 1: Already Claimed
+            btn.className = 'pkg-btn sold-out';
+            btn.disabled = true;
+            btn.innerHTML = `<h3 style="margin:0;">${pkg.coins}</h3><small>COMPLETED ✅</small>`;
+        } 
+        else if (isLocked) {
+            // Case 2: Locked (Previous not finished)
+            btn.className = 'pkg-btn locked';
+            btn.disabled = true;
+            btn.innerHTML = `<h3 style="margin:0;">🔒 Locked</h3><small>Complete Prev First</small>`;
+        } 
+        else {
+            // Case 3: Available (Unlocked)
+            btn.className = 'pkg-btn';
+            btn.innerHTML = `<h3 style="margin:0;">${pkg.coins}</h3><small style="color:var(--primary-color); font-weight:bold;">${pkr} PKR</small>`;
+            btn.onclick = (e) => {
+                e.preventDefault();
+                selectPackage(pkg, idx, btn);
+            };
+        }
+        
+        container.appendChild(btn);
+    });
+}
 
-            try {
-                if (isSignupMode) {
-                    const userCredential = await auth.createUserWithEmailAndPassword(email, password);
-                    await db.collection('users').doc(userCredential.user.uid).set({ coins: 0 });
-                    alert("Signup Successful! Welcome.");
-                } else {
-                    await auth.signInWithEmailAndPassword(email, password);
-                    alert("Login Successful!");
-                }
-                authModal.style.display = 'none';
-            } catch (error) {
-                alert(`Authentication Failed: ${error.message}`);
-            }
+function selectPackage(pkg, idx, btnElement) {
+    document.querySelectorAll('.pkg-btn').forEach(b => b.classList.remove('active'));
+    btnElement.classList.add('active');
+    
+    // Invite Logic: 1st (index 0) = Free, Rest = 1000 Invites
+    const reqInvites = idx === 0 ? 0 : 100;
+    
+    selectedPkg = { ...pkg, reqInvites: reqInvites };
+    document.getElementById('amountInput').value = `${pkg.coins} Coins`;
+    document.getElementById('pkrText').innerText = `You get: ${(pkg.coins / COIN_RATE).toFixed(0)} PKR`;
+}
+
+// --- WITHDRAWAL SUBMIT ---
+document.getElementById('wdForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!user) return;
+    if (!selectedPkg) { alert("Please select a package."); return; }
+    
+    if (userData.coins < selectedPkg.coins) { alert("Not enough coins!"); return; }
+    
+    // Invite Check
+    if (userData.inviteCount < selectedPkg.reqInvites) {
+        document.getElementById('myCurrentInvites').innerText = userData.inviteCount;
+        document.getElementById('inviteModal').style.display = 'flex';
+        return;
+    }
+
+    const btn = document.getElementById('submitBtn');
+    btn.disabled = true; btn.innerText = "Processing...";
+
+    try {
+        const batch = db.batch();
+        const ref = db.collection('withdrawal_requests').doc();
+        batch.set(ref, {
+            userId: user.uid,
+            email: user.email,
+            amount: selectedPkg.coins,
+            pkr: selectedPkg.coins / COIN_RATE,
+            pkgId: selectedPkg.id,
+            bank: document.getElementById('bankSelect').value,
+            accNum: document.getElementById('accNum').value,
+            accName: document.getElementById('accName').value,
+            status: 'Pending',
+            date: firebase.firestore.FieldValue.serverTimestamp()
         });
 
-        logoutButton.addEventListener('click', async () => {
-            await auth.signOut();
-            alert("Logout Successful.");
+        const uRef = db.collection('users').doc(user.uid);
+        batch.update(uRef, {
+            coins: firebase.firestore.FieldValue.increment(-selectedPkg.coins),
+            claimedPackages: firebase.firestore.FieldValue.arrayUnion(selectedPkg.id)
         });
 
+        await batch.commit();
+        alert("Success! Package Completed.");
+        
+        // Reset
+        document.getElementById('wdForm').reset();
+        document.getElementById('amountInput').value = "";
+        selectedPkg = null;
+        
+    } catch (err) { alert(err.message); }
+    btn.disabled = false; btn.innerText = "Submit Withdrawal";
+});
 
-        // --- AUTH CHECK AND WALLET LISTENER ---
-        auth.onAuthStateChanged(user => {
-            currentUser = user;
-            if (user) {
-                // Logged In: Show Withdrawal Section, Hide Article Guide
-                articleSection.style.display = 'none';
-                withdrawalSection.style.display = 'block';
-                authModal.style.display = 'none';
-                logoutButton.style.display = 'block';
-                toggleText.style.display = 'none';
-                
-                listenToWallet(user.uid);
-                listenToWithdrawalHistory(user.uid);
-                updatePkrEquivalent(Number(withdrawalAmountInput.value) || MIN_WITHDRAWAL_COINS); // Initial PKR calculation
-
-            } else {
-                // Logged Out: Show Article Guide, Hide Withdrawal Section
-                articleSection.style.display = 'block';
-                withdrawalSection.style.display = 'none';
-                logoutButton.style.display = 'none';
-                toggleText.style.display = 'block';
-                currentCoinBalance = 0;
-            }
+// --- HISTORY ---
+function loadHistory() {
+    db.collection('withdrawal_requests')
+    .where('userId', '==', user.uid)
+    .limit(10)
+    .onSnapshot(snap => {
+        let reqs = [];
+        snap.forEach(d => reqs.push(d.data()));
+        reqs.sort((a,b) => (b.date?.seconds || 0) - (a.date?.seconds || 0));
+        
+        let html = '';
+        reqs.forEach(r => {
+            const cls = r.status === 'Pending' ? 'card-pending' : 'card-approved';
+            html += `<div class="history-card ${cls}">
+                <b>${r.amount} Coins</b> - <span>${r.status}</span><br>
+                <small>${r.bank} | Rs. ${parseInt(r.pkr)}</small>
+            </div>`;
         });
+        document.getElementById('historyBox').innerHTML = html || 'No history.';
+    });
+}
 
-        function listenToWallet(uid) {
-            db.collection('users').doc(uid).onSnapshot(doc => {
-                if (doc.exists) {
-                    const data = doc.data();
-                    const coins = data.coins ? Number(data.coins) : 0; 
-                    currentCoinBalance = coins;
-                    currentWithdrawalBalance.textContent = `${coins} Coins`;
-                } else {
-                    currentWithdrawalBalance.textContent = `0 Coins`;
-                }
-            }, error => {
-                console.error("Error listening to wallet:", error);
-            });
-        }
+// --- HELPERS ---
+function shareLink() {
+    window.open(`https://wa.me/?text=Join%20Now:%20https://www.yoursmed.xyz/?ref=${user.uid}`, '_blank');
+}
 
-        async function addCoinsToWallet(uid, amount) {
-            const userRef = db.collection('users').doc(uid);
-            try {
-                await userRef.update({
-                    coins: firebase.firestore.FieldValue.increment(amount) 
-                });
-            } catch (error) {
-                console.error("Error updating wallet:", error);
-            }
-        }
+// Modal Controls
+const authModal = document.getElementById('authModal');
+document.getElementById('profileBtn').onclick = () => authModal.style.display = 'flex';
+document.getElementById('closeAuthModal').onclick = () => authModal.style.display = 'none';
+document.getElementById('closeInviteModal').onclick = () => document.getElementById('inviteModal').style.display = 'none';
 
-        // --- HISTORY LOGIC ---
+document.getElementById('toggleAuthBtn').onclick = () => {
+    isSignup = !isSignup;
+    document.getElementById('authHeader').innerText = isSignup ? "Create Account" : "Login";
+}
 
-        function formatTimestamp(timestamp) {
-            if (timestamp && timestamp.toDate) {
-                return timestamp.toDate().toLocaleDateString('en-PK', {
-                    year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'
-                });
-            }
-            return 'N/A';
-        }
+document.getElementById('authForm').onsubmit = async (e) => {
+    e.preventDefault();
+    const em = document.getElementById('email').value;
+    const ps = document.getElementById('pass').value;
+    try {
+        if(isSignup) await auth.createUserWithEmailAndPassword(em, ps);
+        else await auth.signInWithEmailAndPassword(em, ps);
+        authModal.style.display = 'none';
+    } catch(e) { alert(e.message); }
+}
 
-        function renderHistory(requests) {
-            if (requests.length === 0) {
-                historyList.innerHTML = '<p>Aapne abhi tak koi withdrawal request nahi bheji hai.</p>';
-                return;
-            }
-
-            let html = `
-                <table class="history-table">
-                    <thead>
-                        <tr>
-                            <th>Coins</th>
-                            <th>PKR</th>
-                            <th>Method</th>
-                            <th>Date</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-            `;
-
-            requests.forEach(req => {
-                const statusClass = req.status.toLowerCase();
-                // Display PKR amount in history
-                const pkrAmount = req.pkrEquivalent ? req.pkrEquivalent.toFixed(2) : (req.coinsRequested / COIN_RATE_PKR).toFixed(2);
-                
-                html += `
-                    <tr>
-                        <td>${req.coinsRequested}</td>
-                        <td>${pkrAmount} PKR</td>
-                        <td>${req.paymentMethod}</td>
-                        <td>${formatTimestamp(req.timestamp)}</td>
-                        <td><span class="status-${statusClass}">${req.status}</span></td>
-                    </tr>
-                `;
-            });
-
-            html += `</tbody></table>`;
-            historyList.innerHTML = html;
-        }
-
-        function listenToWithdrawalHistory(uid) {
-            db.collection('withdrawal_requests')
-              .where('userId', '==', uid)
-              .orderBy('timestamp', 'desc')
-              .onSnapshot(snapshot => {
-                  const requests = [];
-                  snapshot.forEach(doc => {
-                      requests.push(doc.data());
-                  });
-                  renderHistory(requests);
-              }, error => {
-                  console.error("Error fetching history:", error);
-                  historyList.innerHTML = '<p style="color: var(--danger-color);">History load karne mein masla hua.</p>';
-              });
-        }
-
-
-        // --- WITHDRAWAL LOGIC ---
-        withdrawalForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            if (!currentUser) return;
-
-            const coinsRequested = Number(withdrawalAmountInput.value);
-            const method = document.getElementById('paymentMethod').value;
-            const accountNum = document.getElementById('accountNumber').value;
-            const holderName = document.getElementById('accountHolderName').value;
-            
-            // Calculate PKR equivalent
-            const pkrEquivalent = coinsRequested / COIN_RATE_PKR;
-
-            if (coinsRequested < MIN_WITHDRAWAL_COINS) {
-                alert(`Withdrawal ke liye kam az kam ${MIN_WITHDRAWAL_COINS} Coins chahiye.`);
-                return;
-            }
-            
-            // Check if coins are divisible by 4 to ensure whole PKR amount
-            if (coinsRequested % COIN_RATE_PKR !== 0) {
-                alert(`Coins ki miqdar ${COIN_RATE_PKR} se taqseem (divide) honi chahiye taake sahi PKR amount ban sake. Maslan: 1200, 1204, 1208, etc.`);
-                return;
-            }
-
-            if (coinsRequested > currentCoinBalance) {
-                alert("Aapke paas itne coins nahi hain.");
-                return;
-            }
-
-            try {
-                await db.collection('withdrawal_requests').add({
-                    userId: currentUser.uid,
-                    email: currentUser.email,
-                    coinsRequested: coinsRequested,
-                    pkrEquivalent: pkrEquivalent, // Store PKR amount
-                    paymentMethod: method,
-                    accountNumber: accountNum,
-                    accountHolderName: holderName,
-                    status: 'Pending',
-                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                });
-
-                // Deduct coins
-                await addCoinsToWallet(currentUser.uid, -coinsRequested);
-
-                alert(`Withdrawal Request Bhej Di Gayi Hai! ${coinsRequested} Coins (${pkrEquivalent} PKR) aapke balance se kaat liye gaye hain.`);
-                withdrawalForm.reset();
-                updatePkrEquivalent(0); // Reset PKR display
-
-            } catch (error) {
-                console.error("Withdrawal failed:", error);
-                alert("Withdrawal Request bhejte waqt koi masla hua. Dobara koshish karen.");
-            }
-        });
+document.getElementById('logoutBtn').onclick = () => { auth.signOut(); location.reload(); }
