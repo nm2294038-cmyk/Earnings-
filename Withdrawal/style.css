@@ -1,296 +1,61 @@
-/* -------------------------------------- */
-    /* 0. NEW BISMILLAH HEADER & KEYFRAMES    */
-    /* -------------------------------------- */
-    .bismillah-header {
-      text-align: center;
-      padding: 10px;
-      font-size: 1.5em; 
-      font-weight: 700;
-      color: #1e88e5; 
-      background-color: #ffffff;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-      font-family: 'Times New Roman', serif; 
-      position: sticky;
-      top: 0;
-      z-index: 200; 
-    }
 :root {
-            --primary-color: #007bff;
-            --secondary-color: #28a745;
-            --dark-bg: #2c3e50;
-            --light-bg: #ffffff;
-            --danger-color: #dc3545;
-            --pending-color: #ffc107;
-            --completed-color: #28a745;
-            --shadow-deep: 0 10px 25px rgba(0, 0, 0, 0.2);
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f0f2f5;
-            color: #333;
-            line-height: 1.6;
-        }
-
-        /* --- HEADER STYLES --- */
-        header {
-            background-color: var(--dark-bg);
-            color: white;
-            padding: 10px 20px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        header h1 {
-            font-size: 1.5em;
-            margin: 0;
-            text-align: left;
-        }
-
-        #profileIconButton {
-            background: none;
-            border: 2px solid white;
-            color: white;
-            font-size: 24px;
-            cursor: pointer;
-            width: 40px;
-            height: 40px;
-            padding: 0;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            line-height: 1;
-            transition: background-color 0.3s;
-        }
-        #profileIconButton:hover {
-            background-color: rgba(255, 255, 255, 0.15);
-        }
-
-        /* --- MAIN CONTAINER & ARTICLE STYLES --- */
-        .container {
-            width: 90%;
-            max-width: 800px;
-            margin: 40px auto;
-            background-color: var(--light-bg);
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
-        
-        /* Article Styling */
-        .article h2 {
-            color: var(--primary-color);
-            border-bottom: 2px solid #eee;
-            padding-bottom: 5px;
-            margin-top: 25px;
-        }
-        
-        .article p {
-            margin-bottom: 15px;
-            text-align: justify;
-        }
-
-        .article ul, .article ol {
-            margin-left: 20px;
-            padding-left: 0;
-        }
-
-        /* --- WITHDRAWAL SECTION STYLES (Hidden by default) --- */
-        #withdrawalSection {
-            display: none; /* Hidden until logged in */
-            margin-top: 30px;
-            padding-top: 30px;
-            border-top: 2px dashed #ccc;
-        }
-
-        .balance-info {
-            text-align: center;
-            margin-bottom: 20px;
-            padding: 15px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-
-        /* Withdrawal Buttons */
-        .withdrawal-packages {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-        .withdrawal-btn {
-            background-color: #f0f0f0;
-            color: #333;
-            border: 1px solid #ccc;
-            padding: 10px 5px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: all 0.3s;
-            text-align: center;
-            font-size: 0.9em;
-        }
-        .withdrawal-btn:hover {
-            background-color: #e0e0e0;
-        }
-        .withdrawal-btn.selected {
-            background-color: var(--secondary-color);
-            color: white;
-            border-color: var(--secondary-color);
-        }
-
-        /* Form and History styles remain the same */
-        .form-group label {
-            display: block;
-            margin-top: 15px;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-
-        .form-group input, .form-group select {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
-        }
-
-        #withdrawalButton {
-            background-color: var(--danger-color);
-            color: white;
-            padding: 12px 20px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            width: 100%;
-            font-size: 1.1em;
-            margin-top: 20px;
-            transition: background-color 0.3s;
-        }
-        
-        .history-section {
-            margin-top: 40px;
-            padding-top: 20px;
-            border-top: 1px solid #eee;
-        }
-
-        .history-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 15px;
-        }
-
-        .history-table th, .history-table td {
-            border: 1px solid #ddd;
-            padding: 10px;
-            text-align: left;
-            font-size: 0.9em;
-        }
-
-        .status-pending { color: var(--pending-color); font-weight: bold; }
-        .status-completed { color: var(--completed-color); font-weight: bold; }
-        .status-rejected { color: var(--danger-color); font-weight: bold; }
-        
-        /* --- AUTH MODAL STYLES --- */
-        .modal {
-            display: none; 
-            position: fixed;
-            z-index: 100; 
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(5px);
-            justify-content: center;
-            align-items: center;
-        }
-
-        .modal-content {
-            background-color: var(--light-bg);
-            padding: 40px;
-            border-radius: 12px;
-            width: 90%; 
-            max-width: 400px;
-            box-shadow: var(--shadow-deep);
-            position: relative;
-            animation: modalopen 0.5s;
-        }
-        
-        @keyframes modalopen {
-            from {opacity: 0; transform: translateY(-50px);}
-            to {opacity: 1; transform: translateY(0);}
-        }
-
-        .close-btn {
-            color: #aaa;
-            position: absolute;
-            top: 15px;
-            right: 25px;
-            font-size: 30px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        #authTitle {
-            color: var(--primary-color);
-            text-align: center;
-            margin-bottom: 25px;
-            font-size: 1.8em;
-        }
-
-        .auth-form input {
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            margin-bottom: 15px;
-            padding: 10px;
-            width: 100%;
-            box-sizing: border-box;
-        }
-
-        .auth-form button {
-            background-color: var(--primary-color);
-            color: white;
-            padding: 10px;
-            border: none;
-            border-radius: 4px;
-            width: 100%;
-            cursor: pointer;
-        }
-
-        .auth-toggle {
-            margin-top: 20px;
-            text-align: center;
-        }
-        
-        .auth-toggle a {
-            font-weight: bold;
-            color: var(--primary-color);
-            cursor: pointer;
-        }
-        
-        #loginPrompt {
-            text-align: center;
-            padding: 20px;
-            background-color: #fff3cd;
-            border: 1px solid #ffeeba;
-            color: #856404;
-            border-radius: 5px;
-            margin-bottom: 20px;
-            font-weight: bold;
-        }
-
-/* --- AD CONTAINER STYLING --- */
-/* Yeh code banner ads ko center mein rakhta hai */
-.ad-container-top, .ad-container-bottom {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 15px 0;
-    width: 100%;
+    --primary-color: #0056b3;
+    --secondary-color: #28a745;
+    --bg-color: #f4f6f9;
+    --danger: #dc3545;
+    --locked-bg: #e9ecef;
+    --locked-text: #adb5bd;
 }
+
+body { font-family: sans-serif; margin: 0; background: var(--bg-color); color: #333; }
+
+header {
+    background: #2c3e50; color: white; padding: 15px; display: flex; justify-content: space-between; align-items: center;
+}
+#profileBtn { background: none; border: 2px solid white; color: white; border-radius: 50%; width: 40px; height: 40px; cursor: pointer; }
+
+.container { max-width: 600px; margin: 20px auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+
+/* PACKAGES GRID */
+.pkg-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 20px; }
+
+.pkg-btn {
+    padding: 15px; border: 2px solid #eee; background: #fff; border-radius: 8px;
+    cursor: pointer; text-align: center; transition: 0.2s; position: relative;
+}
+.pkg-btn:hover:not(:disabled) { border-color: var(--primary-color); background: #f8f9fa; }
+.pkg-btn.active { border-color: var(--secondary-color); background: var(--secondary-color); color: white; }
+
+/* LOCKED STATE STYLE */
+.pkg-btn.locked {
+    background: var(--locked-bg); color: var(--locked-text); border-color: var(--locked-bg);
+    cursor: not-allowed; opacity: 0.7;
+}
+.pkg-btn.sold-out {
+    background: #333; color: #fff; opacity: 0.5; cursor: default;
+}
+
+/* FORM */
+input, select { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
+.submit-btn { width: 100%; padding: 12px; background: var(--danger); color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; }
+
+.info-box {
+    background: linear-gradient(135deg, #007bff, #0056b3); color: white;
+    padding: 20px; border-radius: 10px; text-align: center; margin-bottom: 20px;
+}
+.invite-badge { background: rgba(255,255,255,0.2); padding: 5px 10px; border-radius: 15px; display: inline-block; margin-top: 10px; }
+
+/* HISTORY */
+.history-card {
+    background: #fff; border: 1px solid #eee; padding: 10px; margin-bottom: 10px; border-radius: 5px;
+    border-left: 5px solid #ccc;
+}
+.card-pending { border-left-color: #ffc107; }
+.card-approved { border-left-color: #28a745; }
+
+/* MODALS */
+.modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); align-items: center; justify-content: center; z-index: 100; }
+.modal-box { background: white; padding: 25px; border-radius: 10px; width: 90%; max-width: 350px; text-align: center; position: relative; }
+.close { position: absolute; right: 15px; top: 10px; cursor: pointer; font-size: 20px; }
+.auth-btn { width: 100%; padding: 10px; background: var(--primary-color); color: white; border: none; border-radius: 4px; }
+.whatsapp-btn { width: 100%; padding: 10px; background: #25D366; color: white; border: none; border-radius: 20px; cursor: pointer; }
