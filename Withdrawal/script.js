@@ -16,7 +16,7 @@
         // --- GLOBAL STATE AND CONSTANTS ---
         let currentUser = null;
         let currentCoinBalance = 0;
-        const COIN_RATE_PKR = 67; // 67 Coins = 1 PKR
+        const COIN_RATE_PKR = 80; // 80 Coins = 1 PKR
         const MIN_WITHDRAWAL_COINS = 2000;
         const WITHDRAWAL_PACKAGES = [2000, 2400, 2800, 3000, 3400, 3800];
         let isSignupMode = false;
