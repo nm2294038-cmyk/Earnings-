@@ -26,7 +26,7 @@ let history = [1.20, 2.55, 1.10, 5.40, 1.80];
 
 // --- FAKE USERS ---
 let fakeUsers = [];
-const NUM_FAKE_USERS = 3000;
+const NUM_FAKE_USERS = 300;
 const BET_AMOUNTS = [20,50, 100,200, 500, 1200, 2000, 3000, 5000, 10000];
 
 // --- AUTH ---
