@@ -24,6 +24,11 @@ let isSignup = false;
 let animId;
 let history = [1.20, 2.55, 1.10, 5.40, 1.80];
 
+// --- FAKE USERS ---
+let fakeUsers = [];
+const NUM_FAKE_USERS = 3000;
+const BET_AMOUNTS = [20,50, 100,200, 500, 1200, 2000, 3000, 5000, 10000];
+
 // --- AUTH ---
 auth.onAuthStateChanged(u => {
     user = u;
@@ -59,36 +64,43 @@ async function handleAuth() {
     } catch(err) { alert(err.message); }
 }
 
-// --- GAME LOGIC (STRICT QUEUE PRIORITY) ---
+// --- GAME LOGIC (FIXED QUEUE LOADING) ---
 async function startGame() {
     gameState = 'betting';
     multiplier = 1.00;
     
-    try {
-        // 1. Check Queue First
-        const queueDoc = await db.collection('game_state').doc('crash_queue').get();
-        let queueList = queueDoc.exists ? (queueDoc.data().list || []) : [];
+    // Generate Fake Bets
+    prepareFakeUsers();
+    updateUI('betting');
+    renderList();
 
-        if (queueList.length > 0) {
-            // List mein number hai, pehla wala uthao
-            crashPoint = queueList[0];
-            
-            // List update karo (Pehla wala remove kar do)
-            let newList = queueList.slice(1);
-            await db.collection('game_state').doc('crash_queue').set({ list: newList });
-            
-            console.log("Using Queue Value:", crashPoint);
-            
-        } else {
-            // List khali hai -> Random Generate karo (Fallback)
-            // Agar aap chahte hain ke game ruk jaye jab list khali ho, to yahan return kar dein.
-            // Filhal main random fallback rakh raha hoon taake game stuck na ho.
-            let rawCrash = 1 / (1 - Math.random()) * 0.95;
-            crashPoint = Math.min(Math.max(1.00, rawCrash), 10.00);
-            console.log("Queue Empty. Using Random:", crashPoint);
+    try {
+        // 1. Get Queue Doc
+        const queueRef = db.collection('game_state').doc('crash_queue');
+        const doc = await queueRef.get();
+        
+        let list = [];
+        if (doc.exists) {
+            list = doc.data().list || [];
         }
 
-        // 2. Update Current Round for Admin View
+        if (list.length > 0) {
+            // Priority: Queue
+            crashPoint = parseFloat(list[0]);
+            console.log("Loaded from Queue:", crashPoint);
+            
+            // Remove used item
+            list.shift(); 
+            await queueRef.update({ list: list });
+            
+        } else {
+            // Fallback: Random (1.00x - 10.00x)
+            let raw = 1 / (1 - Math.random()) * 0.95;
+            crashPoint = Math.min(Math.max(1.00, raw), 10.00);
+            console.log("Queue Empty. Random:", crashPoint);
+        }
+
+        // Update Admin View
         await db.collection('game_state').doc('current_round').set({
             crashPoint: crashPoint,
             status: 'betting',
@@ -96,11 +108,9 @@ async function startGame() {
         });
 
     } catch (e) {
-        console.error("Sync Error:", e);
-        crashPoint = 2.00; // Fallback
+        console.error("Queue Error:", e);
+        crashPoint = 2.00; // Safety
     }
-    
-    updateUI('betting');
     
     setTimeout(() => {
         gameState = 'running';
@@ -118,6 +128,7 @@ function runGame() {
     } else {
         updateGameScreen();
         updateButtonState();
+        processFakeUsers(); // Real-time updates
         animId = requestAnimationFrame(runGame);
     }
 }
@@ -127,7 +138,6 @@ function endGame() {
     gameState = 'crashed';
     updateUI('crashed');
     
-    // Mark round as finished
     db.collection('game_state').doc('current_round').update({ status: 'finished' });
     
     history.unshift(crashPoint);
@@ -138,8 +148,52 @@ function endGame() {
         saveBetResult(myBet.amount, 0, 0);
     }
     myBet = null;
+    
+    // Final render to show losses
+    renderList();
 
     setTimeout(startGame, 3000);
+}
+
+// --- FAKE USERS (REALISTIC BEHAVIOR) ---
+function prepareFakeUsers() {
+    fakeUsers = [];
+    for(let i=0; i<NUM_FAKE_USERS; i++) {
+        const name = `User***${Math.floor(Math.random()*90)+10}`;
+        const bet = BET_AMOUNTS[Math.floor(Math.random() * BET_AMOUNTS.length)];
+        
+        // Realistic Cashout Targets
+        let target;
+        let r = Math.random();
+        if(r < 0.5) target = (Math.random() * 0.4 + 1.1).toFixed(2); // 50% exit early (1.1-1.5)
+        else if(r < 0.8) target = (Math.random() * 1.5 + 1.5).toFixed(2); // 30% exit mid (1.5-3.0)
+        else target = (Math.random() * 7 + 3.0).toFixed(2); // 20% risk takers
+        
+        fakeUsers.push({
+            name: name,
+            bet: bet,
+            target: parseFloat(target),
+            cashedOut: false,
+            win: 0
+        });
+    }
+}
+
+function processFakeUsers() {
+    let changed = false;
+    fakeUsers.forEach(u => {
+        // Check if user should cashout NOW
+        if(!u.cashedOut && multiplier >= u.target) {
+            u.cashedOut = true;
+            u.win = Math.floor(u.bet * u.target);
+            changed = true;
+        }
+    });
+    
+    // Only re-render if something changed (Optimization)
+    if(changed && activeTab === 'all') {
+        renderList();
+    }
 }
 
 // --- UI UPDATES ---
@@ -293,20 +347,50 @@ function renderList() {
         return;
     }
     
-    let html = '';
-    for(let i=0; i<15; i++) {
-        const u = 'User'+Math.floor(Math.random()*999);
-        const b = Math.floor(Math.random()*500);
-        const m = (Math.random()*5 + 1).toFixed(2);
-        const w = (b * m).toFixed(0);
-        html += `<div class="bet-row win">
-            <span>${u}</span>
-            <span>${b}</span>
-            <span>${m}x</span>
-            <span>${w}</span>
-        </div>`;
+    // Render Fake Users
+    // Sort: Cashed Out First (Green), Then Waiting (White), Then Lost (Red)
+    let displayUsers = [...fakeUsers];
+    
+    if(activeTab === 'top') {
+        displayUsers = displayUsers.filter(u => u.cashedOut).sort((a,b) => b.win - a.win);
+    } else {
+        // All Bets Sorting Logic:
+        // 1. Cashed Out (Top)
+        // 2. Still Playing (Middle)
+        // 3. Crashed/Lost (Bottom)
+        displayUsers.sort((a, b) => {
+            if (a.cashedOut && !b.cashedOut) return -1;
+            if (!a.cashedOut && b.cashedOut) return 1;
+            return b.bet - a.bet; // Secondary sort by bet amount
+        });
     }
-    list.innerHTML = html;
+
+    list.innerHTML = displayUsers.map(u => {
+        let statusClass = '';
+        let multText = '-';
+        let winText = '-';
+
+        if(u.cashedOut) {
+            statusClass = 'win'; // Green
+            multText = u.target.toFixed(2) + 'x';
+            winText = u.win;
+        } else if(gameState === 'crashed') {
+            statusClass = 'loss'; // Red (Lost)
+            multText = '-';
+            winText = '0';
+        } else {
+            // Still playing
+            multText = '-';
+            winText = '-';
+        }
+
+        return `<div class="bet-row ${statusClass}">
+            <span>${u.name}</span>
+            <span>${u.bet}</span>
+            <span>${multText}</span>
+            <span>${winText}</span>
+        </div>`;
+    }).join('');
 }
 
 function adjBet(v) {
