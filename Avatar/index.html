@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aviator Real - Play & Earn</title>
+    
+    <!-- CSS Link -->
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+</head>
+<body>
+
+<div class="app-container">
+    <!-- Header -->
+    <header class="header-bar">
+        <div class="header-left">
+            <button id="profileBtn"><i class="fa-solid fa-user"></i></button>
+            <div class="logo">Aviator</div>
+        </div>
+        <div class="balance-info">
+            <i class="fa-solid fa-wallet"></i> <span id="balance">0.00</span>
+        </div>
+    </header>
+
+    <!-- History -->
+    <div class="multiplier-history" id="history-bar"></div>
+
+    <!-- Game Screen -->
+    <main class="game-screen" id="game-screen">
+        <div class="plane" id="plane">
+            <svg viewBox="0 0 100 60"><path d="M99.2,28.1c-0.2-1.2-0.8-2.3-1.7-3.1L82.2,12.2c-0.3-0.3-0.7-0.4-1.1-0.4h-9.9c-0.4,0-0.7,0.3-0.7,0.7v3.4 H59.3L46.6,0.7c-0.2-0.2-0.5-0.4-0.8-0.4s-0.6,0.1-0.8,0.4L32.3,15.8H20.9V9.1c0-0.4-0.3-0.7-0.7-0.7h-3.4c-0.4,0-0.7,0.3-0.7,0.7 v6.8H4.8c-2.3,0-4.1,1.9-4.1,4.1v7.5c0,2.3,1.9,4.1,4.1,4.1h11.2v6.8c0,0.4,0.3,0.7,0.7,0.7h3.4c0.4,0,0.7-0.3,0.7-0.7v-6.8 h11.4l12.7,15.2c0.2,0.2,0.5,0.4,0.8,0.4s0.6-0.1,0.8-0.4l12.7-15.2h11.2v3.4c0,0.4,0.3,0.7,0.7,0.7h9.9c0.4,0,0.8-0.2,1.1-0.4 l15.3-12.8c0.9-0.8,1.5-1.9,1.7-3.1C99.4,29.7,99.4,28.6,99.2,28.1z"/></svg>
+        </div>
+        <div class="trail" id="trail"></div>
+        <div class="game-msg" id="game-msg">WAITING...</div>
+        <div class="multiplier-display" id="mult-disp" style="display:none;">1.00x</div>
+    </main>
+
+    <!-- Controls -->
+    <section class="controls-panel">
+        <div class="bet-input-row">
+            <div class="bet-input-wrapper">
+                <button class="adj-btn" onclick="adjBet(-1)">-</button>
+                <input type="number" id="bet-amount" value="10">
+                <button class="adj-btn" onclick="adjBet(1)">+</button>
+            </div>
+        </div>
+        <div class="quick-bets">
+            <button class="q-btn" onclick="setBet(20)">20</button>
+            <button class="q-btn" onclick="setBet(50)">50</button>
+            <button class="q-btn" onclick="setBet(100)">100</button>
+            <button class="q-btn" onclick="setBet(500)">500</button>
+        </div>
+        <button class="action-btn btn-bet" id="action-btn">
+            <span>BET</span>
+            <span class="sub-text" id="btn-sub">10.00</span>
+        </button>
+    </section>
+
+    <!-- Tabs & List -->
+    <div class="tabs">
+        <button class="tab active" onclick="switchTab('all')">All Bets</button>
+        <button class="tab" onclick="switchTab('my')">My Bets</button>
+        <button class="tab" onclick="switchTab('top')">Top</button>
+    </div>
+    <div class="bets-list" id="bets-list"></div>
+</div>
+
+<!-- Auth Modal -->
+<div id="authModal" class="modal">
+    <div class="modal-content">
+        <h3 id="authTitle">Login</h3>
+        <input type="email" id="email" class="inp" placeholder="Email">
+        <input type="password" id="pass" class="inp" placeholder="Password">
+        <button class="btn-auth" onclick="handleAuth()">Submit</button>
+        <p onclick="toggleAuth()" style="margin-top:10px; font-size:12px; cursor:pointer; color:var(--accent-blue);">New User? Create Account</p>
+        <button onclick="document.getElementById('authModal').style.display='none'" style="background:none; border:none; color:#666; margin-top:15px;">Close</button>
+    </div>
+</div>
+
+<!-- JS Link -->
+<script src="script.js"></script>
+
+</body>
+</html>
