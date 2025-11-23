@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mega Survey 1k to 50k</title>
+    
+    <!-- CSS Link -->
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+</head>
+<body>
+
+    <header>
+        <div class="header-left">
+            <button id="profileBtn"><i class="fas fa-user-circle"></i></button>
+            <span id="uEmail">Guest</span>
+        </div>
+        <div class="wallet-box">
+            <i class="fas fa-coins coin-icon"></i>
+            <span id="bal">0</span>
+        </div>
+    </header>
+
+    <div class="survey-container">
+        <div class="survey-header">
+            <h3 id="qCount">Question 1 of 100</h3>
+            <div class="progress-track">
+                <div class="progress-fill" id="progBar"></div>
+            </div>
+        </div>
+        
+        <div class="survey-body" id="qContainer">
+            <!-- Questions will be injected here -->
+        </div>
+        
+        <div class="survey-footer">
+            <button id="prevBtn" onclick="move(-1)" class="btn-sec" style="display:none;">Back</button>
+            <button id="nextBtn" onclick="move(1)" class="btn-pri">Next</button>
+        </div>
+    </div>
+
+    <!-- Auth Modal -->
+    <div id="authModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="document.getElementById('authModal').style.display='none'">&times;</span>
+            <h2 id="authTitle">Login</h2>
+            <form id="authForm">
+                <input type="email" id="em" class="inp" placeholder="Email Address" required>
+                <input type="password" id="pw" class="inp" placeholder="Password" required>
+                <button type="submit" class="btn-full">Submit</button>
+            </form>
+            <p onclick="toggleAuth()" class="toggle-link">New User? Create Account</p>
+            <button id="logoutBtn" class="btn-danger" style="display:none;">Logout</button>
+        </div>
+    </div>
+
+    <!-- JS Link -->
+    <script src="script.js"></script>
+
+</body>
+</html>
