@@ -1,0 +1,1082 @@
+<!DOCTYPE html >
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" dir="<$BlogLanguageDirection$">
+<head>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3071493838743593"
+     crossorigin="anonymous"></script>
+
+  <meta content='width=device-width, initial-scale=1, shrink-to-fit=no' name='viewport'/>
+  <meta charset="UTF-8">
+
+  <!-- Font Awesome for Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrZj/k7ujTnHg4C+J9yY6P+j2g2L/LhT0PzYfR4k1S3r0e1/6w+v/g5fS3A6B4XfF7x0y8u+x/S0P5b0z4w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <!-- Link to external CSS (Assuming your attractive style.css is linked here) -->
+  <link rel="stylesheet" href="style.css">
+
+  <title>E-commerce Store</title>
+</head>
+
+<body>
+
+    <!-- E-COMMERCE HTML STRUCTURE STARTS HERE -->
+    <div id="user-view-main" class="view-section">
+        <header class="header">
+            <div class="status-bar">
+                <div><!-- Empty div, content will be pushed to the right by justify-content: flex-end; --></div>
+               <div class="header-menu-container">
+                 <button id="header-menu-button">
+                        <i class="fas fa-bars"></i> Menu
+                    </button>
+                    <div class="header-dropdown-menu" id="header-dropdown-menu">
+                        <a href="#" id="dropdown-privacy-policy"><i class="fas fa-shield-alt"></i>Privacy Policy</a>
+                        <a href="#" id="dropdown-about-us"><i class="fas fa-info-circle"></i>About Us</a>
+                        <a href="#" id="dropdown-refund-policy"><i class="fas fa-undo-alt"></i>Refund Policy</a>
+                        <a href="#" id="dropdown-withdrawal-policy"><i class="fas fa-file-invoice-dollar"></i>Withdrawal Policy</a>
+                        <a href="#" id="dropdown-request-refund"><i class="fas fa-hand-holding-usd"></i>Request Refund</a>
+                        <a href="#" id="dropdown-contact-support"><i class="fas fa-headset"></i>Contact Support</a>
+                    </div>
+    </div>
+                </div>
+        
+    
+       </header>
+    
+   
+            <div class="search-bar-container">
+                <div class="search-bar">
+                    <input type="text" id="search-input" placeholder="Search products...">
+                    <i class="fas fa-camera icon"></i>
+                </div>
+                <div class="search-icon-btn" id="search-button">
+                    <i class="fas fa-search"></i>
+                </div>
+            </div>
+        <nav class="category-tabs" id="header-category-tabs"></nav>
+        <main>
+            <!-- NEW: Download App Button -->
+            <a href="https://d.apkpure.com/b/APK/com.jmscde.blogspot?version=latest" download="JMS_APP.apk" class="download-app-button">
+                <i class="fas fa-download"></i> Download Our App,withdrawal available after download app
+            </a>
+
+            <section id="embedded-cart-section">
+                <div class="cart-header">
+                    <span>Your Cart</span>
+                    <i class="fas fa-times close-cart-embedded" id="close-cart-embedded-btn"></i>
+                </div>
+                <div class="cart-items" id="cart-items-container">
+                    <p id="empty-cart-message" style="text-align: center; color: #bbb; margin-top: 20px;">Your cart is empty.</p>
+                </div>
+                <div class="cart-summary">
+                    <div class="total-info">
+                        <span>Total Items: <span id="cart-total-items">0</span></span>
+                        <span>Total: <span id="cart-total-price">PKR 0.00</span></span>
+                    </div>
+                    <button class="checkout-btn" id="proceed-to-checkout-btn" disabled>Proceed to Checkout</button>
+                </div>
+            </section>
+  
+            <!-- NEW FEATURED SLIDER SECTION (REPLACES OLD PROMO BANNER) -->
+            <section class="featured-slider-section" id="featured-slider-section">
+                <div class="section-header">
+                    <h3><i class="fas fa-star"></i> Games Featured Products</h3>
+                </div>
+                <div class="featured-slider-viewport">
+                    <div class="featured-slider-container" id="featured-slider-container">
+                        <!-- Featured product slides will be injected here by JavaScript -->
+                    </div>
+                </div>
+                <button class="slider-arrow prev" id="featured-slider-prev" disabled><i class="fas fa-chevron-left"></i></button>
+                <button class="slider-arrow next" id="featured-slider-next" disabled><i class="fas fa-chevron-right"></i></button>
+            </section>
+
+            <!-- NEW WELCOME BONUS BANNER -->
+            <section class="bonus-banner-section" id="bonus-banner-section">
+                <div class="bonus-banner-content">
+                    <i class="fas fa-gift"></i>
+                    <h2>Welcome Bonus</h2>
+                    <p class="bonus-main-text">Get a Bonus from <span class="bonus-amount">PKR 2999</span> to <span class="bonus-amount">PKR 7999</span></p>
+                    <p class="bonus-sub-text">Withdrawal Available on Deposit on 1 products Buy </p>
+                    <button id="bonus-banner-cta-btn">Claim Now</button>
+                </div>
+            </section>
+
+            <section class="winner-announcement-section">
+                <h3><i class="fas fa-trophy"></i> 🏆 Anocment 🍷 </h3>
+                <div id="winner-list-container"><p style="color:#ccc;">Loading winner announcements...</p></div>
+            </section>
+
+            <section class="deals-section">
+                <div class="section-header"><h3><i class="fas fa-bolt"></i> Brands Products</h3><a href="#" id="view-more-lightning-deals"> <i class="fas fa-chevron-right"></i></a></div>
+                <div class="product-scroll-container" id="lightning-deals-container"><p style="text-align:center; color: #bbb; width: 100%;" id="no-lightning-deals">No lightning deals.</p></div>
+            </section>
+            <section class="temu-tcs-banner">
+                <div></div><span>Any Problem Contact Whtasapp Nazim Mustafa 03435641151</span><i class="fas fa-chevron-left"></i>
+            </section>
+          
+            <nav class="main-categories-nav" id="main-categories-nav-container"></nav>
+            <section class="product-grid" id="products-container">
+                <p style="text-align: center; grid-column: 1 / -1; margin-top: 50px; color: #bbb;" id="loading-message">Loading products...</p>
+            </section>
+        </main>
+    </div>
+
+    <div id="product-detail-view" class="view-section">
+        <div class="detail-header image-style-header">
+            <i class="fas fa-arrow-left" id="back-to-home"></i>
+            <i class="fas fa-shopping-bag" id="header-cart-icon-detail" style="margin-left: auto; font-size: 1.2em; cursor:pointer;"></i>
+        </div>
+        <!-- MODIFIED SLIDER STRUCTURE -->
+        <div class="product-image-slider">
+            <div id="detail-product-image-container">
+                <!-- Images will be populated by JS -->
+            </div>
+            <button class="slider-nav prev" id="slider-prev-btn"><i class="fas fa-chevron-left"></i></button>
+            <button class="slider-nav next" id="slider-next-btn"><i class="fas fa-chevron-right"></i></button>
+            <div class="slider-dots" id="detail-product-slider-dots">
+                <!-- Dots will be populated by JS -->
+            </div>
+        </div>
+        <div class="product-content-wrapper">
+            <div class="top-info-bar">
+                <span class="free-delivery-tag" id="detail-delivery-charge-display">Delivery Charge PKR 199</span>
+                <div class="actions-right">
+                    <div class="action-icon" id="detail-wishlist-btn">
+                        <i class="far fa-heart"></i>
+                        <span id="detail-wishlist-count">1975</span>
+                    </div>
+                    <div class="action-icon" id="detail-page-share-btn-top">
+                        <i class="fas fa-share-alt"></i>
+                        <span>Share</span>
+                    </div>
+                </div>
+            </div>
+            <div class="main-price-display" id="detail-product-price-display">PKR 0.00</div>
+            <div class="discount-banner" id="detail-discount-banner">
+                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhUgAAABgAAAAYCAYAAADgdz34AAAAAXNSR0IArs4N6QAAAARnQU1BAACxjwvYmQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAABoSURBVEhL7c6xCQAgEMDAAsMu7E4GTrAGxTq1K8HMj5y8D34/MkbLkiVLGfP4L6A8oM8gP8gPMgOIX8krcpQ8pY8JQ+kL0gPqQp6QZ6Q0HZAj5Am5RimSJUuWtM0P/0tN8xWqRjQAAAAASUVORK5CYII=" alt="Discount" class="discount-icon-img">
+                <span id="detail-discount-text">Delivery Charge PKR 200 </span>
+                <i class="fas fa-chevron-right"></i>
+            </div>
+            <h1 class="product-title-main" id="detail-product-name-main">3 Pcs Women's Unstitched Printed Suit</h1>
+            <div class="meta-info">
+                <div class="star-rating" id="product-rating-display-area">
+                    <i class="fas fa-star"></i>
+                    <span id="detail-rating-value">4.7</span>
+                    <span id="detail-rating-count">(9999 View )</span>
+                </div>
+                <div id="interactive-star-rater">
+                    <i class="far fa-star interactive-star" data-value="1"></i>
+                    <i class="far fa-star interactive-star" data-value="2"></i>
+                    <i class="far fa-star interactive-star" data-value="3"></i>
+                    <i class="far fa-star interactive-star" data-value="4"></i>
+                    <span id="user-selected-rating-display"></span>
+                </div>
+                <div class="product-size">Size: <span id="detail-product-size-value">Unstitched</span></div>
+            </div>
+
+            <div class="product-sizes-container" id="detail-product-sizes-container" style="display: none;">
+                <!-- Size options will be populated here by JavaScript -->
+            </div>
+
+            <!-- NEW: Colors Container START -->
+            <div class="product-colors-container" id="detail-product-colors-container" style="display: none;">
+                <span class="color-label">Select Color:</span>
+                <div class="color-options-wrapper" id="color-options-wrapper">
+                    <!-- Color options will be populated here by JavaScript -->
+                </div>
+            </div>
+            <!-- NEW: Colors Container END -->
+
+            <div class="manual-size-input-container" id="manual-size-input-container" style="display: none;">
+                <label for="manual-size-input">Enter Size:</label>
+                <input type="text" id="manual-size-input" placeholder="e.g., XL, 42, Custom" />
+            </div>
+
+            <div class="product-accordions-section">
+                <div class="accordion-item-detail">
+                    <div class="accordion-header-detail">
+                        <span><i class="fas fa-file-alt icon-prefix"></i>Product Details</span>
+                        <i class="fas fa-chevron-down toggle-icon"></i>
+                    </div>
+                    <div class="accordion-content-detail">
+                        <p id="detail-product-description-content">Original description will go here.</p>
+                        <p><strong>Category:</strong> <span id="detail-product-category-content" class="clickable-category">-</span></p>
+                        <p><strong>Stock:</strong> <span id="detail-product-stock-content">-</span></p>
+                    </div>
+                </div>
+                <div class="accordion-item-detail">
+                    <div class="accordion-header-detail">
+                        <span><i class="fas fa-truck icon-prefix"></i>Delivery in 3-9 days Only For pakistan| Free Delivery on PostEx and TCS</span>
+                        <i class="fas fa-chevron-down toggle-icon"></i>
+                    </div>
+                    <div class="accordion-content-detail">
+                        <p>Estimated delivery within 3-9 working days. Free delivery available via PostEx for eligible orders. Additional charges may apply for remote areas or expedited shipping. Exact delivery times depend on your location and courier operations.</p>
+                    </div>
+                </div>
+                <div class="accordion-item-detail">
+                    <div class="accordion-header-detail">
+                        <span><i class="fas fa-undo-alt icon-prefix"></i>Return allowed within 7 days</span>
+                        <i class="fas fa-chevron-down toggle-icon"></i>
+                    </div>
+                    <div class="accordion-content-detail">
+                        <p>Easy returns within 7 days of delivery. Product must be in original condition, unused, and with all tags intact. Refer to our <a href="#" onclick="document.getElementById('dropdown-refund-policy').click(); return false;">Refund Policy</a> for more details. Contact customer support for return initiation.</p>
+                    </div>
+                </div>
+                <div class="accordion-item-detail link-style" id="cheaper-elsewhere-link">
+                    <div class="accordion-header-detail">
+                        <i class="fas fa-chevron-right toggle-icon"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Admin Rating Controls (NEW) -->
+            <div class="admin-rating-controls" id="admin-rating-controls" style="display: none;">
+                <h3>Admin Rating Control</h3>
+                <div class="form-group">
+                    <label for="admin-product-rating">Set Average Rating (0-5):</label>
+                    <input type="number" id="admin-product-rating" min="0" max="5" step="0.1" placeholder="e.g., 4.7">
+                </div>
+                <div class="form-group">
+                    <label for="admin-rating-count">Set Number of View :</label>
+                    <input type="number" id="admin-rating-count" min="0" step="1" placeholder="e.g., 9999">
+                </div>
+                <button class="action-button" id="update-product-rating-btn" style="background-color: #007bff; margin-top: 10px;">
+                    <i class="fas fa-magic"></i> Update Product Rating
+                </button>
+                <div id="admin-rating-message" class="message" style="margin-top: 10px;"></div>
+            </div>
+
+            <!-- NEW: Comment Section Start -->
+            <div class="product-accordions-section" style="margin-top: 20px;">
+                <div class="accordion-item-detail">
+                    <div class="accordion-header-detail">
+                        <span><i class="fas fa-comments icon-prefix"></i>Comments</span>
+                        <i class="fas fa-chevron-down toggle-icon"></i>
+                    </div>
+                    <div class="accordion-content-detail" style="max-height: none; overflow: visible; padding-top: 15px;">
+                        <form id="add-comment-form" style="margin-bottom: 20px;">
+                            <div class="form-group">
+                                <label for="comment-text-input" style="font-weight: 600; color: #444; margin-bottom: 8px;">Add your comment:</label>
+                                <textarea id="comment-text-input" rows="3" placeholder="Write your comment here..." style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; background-color: #fff; color: #333;"></textarea>
+                            </div>
+                            <button type="submit" id="submit-comment-btn" class="action-button" style="background-color: #28a745; width: auto; padding: 8px 15px; font-size: 0.9em;"><i class="fas fa-paper-plane"></i> Post Comment</button>
+                            <div id="comment-form-message" class="message" style="margin-top: 10px;"></div>
+                        </form>
+                        <h3 style="font-size: 1.1em; color: #333; margin-bottom: 10px;">Existing Comments:</h3>
+                        <div id="product-comments-list">
+                            <!-- Comments will be loaded here by JavaScript -->
+                            <p style="text-align:center; color:#555;">Loading comments...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- NEW: Comment Section End -->
+
+        </div>
+        <div class="detail-bottom-actions">
+            <div id="seller-initials-display" class="seller-initials"></div>
+            <button class="action-btn add-to-cart-btn-detail" id="add-to-cart-btn-detail"><i class="fas fa-cart-plus"></i> Add to Cart</button>
+            <button class="action-btn whatsapp-contact-btn" id="whatsapp-contact-btn"><i class="fab fa-whatsapp"></i> Chat </button>
+            <button class="action-btn place-order-btn" id="final-place-order-btn"><i class="fas fa-cube"></i> Place Order</button>
+        </div>
+    </div>
+
+    <div id="order-form-view" class="view-section">
+        <div class="detail-header"><i class="fas fa-arrow-left" id="back-from-order-form"></i><span>Complete Your Order</span></div>
+        <div class="content-padding">
+             <div class="card">
+                <h1>Order Details</h1>
+                <div class="order-summary">
+                    <h3>Order Summary</h3>
+                    <div id="order-summary-items"></div>
+                    <p class="total-price">Total Items: <span id="order-summary-total-items-count">0</span></p>
+                    <p class="total-price">Grand Total: <span id="order-summary-grand-total">PKR 0.00</span></p>
+                    <p>
+                        Your Wallet Balance: PKR <span id="order-form-wallet-balance" style="font-weight:bold; color: #e0e0e0;">0.00</span><br/>
+                        <small id="order-form-wallet-balance-details" style="display:none;">
+                            (Deposit: PKR <span id="order-form-deposit-balance" style="color: #28a745; font-weight:bold;">0.00</span>,
+                            Bonus: PKR <span id="order-form-bonus-balance" style="color: #ffc107; font-weight:bold;">0.00</span>)
+                        </small>
+                    </p>
+                    <p id="order-form-bonus-info" class="message warning" style="font-size: 0.85em; margin-top:5px; display:none; background-color: #4a4a6a; color: #e0e0e0; border: 1px solid #5f5f8a;">
+                        <!-- Message will be populated by JS -->
+                    </p>
+                </div>
+                <form id="order-form">
+                    <div class="form-group"><label for="customer-name">Full Name:</label><input type="text" id="customer-name" required></div>
+                    <div class="form-group"><label for="mobile-number">Mobile Number:</label><input type="tel" id="mobile-number" placeholder="e.g., 0343-5641151" required></div>
+                    <div class="form-group"><label for="street-address">Street Address:</label><input type="text" id="street-address" placeholder="House/Flat No., Street Name" required></div>
+                    <div class="form-group">
+                        <label for="country-select">Country:</label>
+                        <select id="country-select" required><option value="">-- Select Country --</option></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="state-select">State/Province:</label>
+                        <select id="state-select" required disabled><option value="">-- Select State/Province --</option></select>
+                    </div>
+                    <div class="form-group"><label for="city">City:</label><input type="text" id="city" required></div>
+                    <div class="form-group"><label for="postal-code">Postal Code:</label><input type="text" id="postal-code" required></div>
+                    <button type="submit" class="place-order-button" id="place-order-button">Place Order (Pay with Wallet)</button>
+                    <button type="button" class="place-order-button" id="place-order-cod-button" style="background-color: #ff9800; margin-top: 10px;">Place Order (Cash on Delivery Only For Pakistan )</button>
+                    <div id="order-message" class="message"></div>
+                    <div id="cod-unavailable-message" class="message warning" style="display:none; margin-top:5px; font-size:0.85em;">Cash on Delivery is not available for featured items.</div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="account-view" class="view-section">
+        <div class="detail-header"><i class="fas fa-arrow-left" id="back-from-account"></i><span id="account-view-title">My Account</span></div>
+        <div id="account-content">
+            <div id="user-info-section" style="display:none;">
+                <div id="account-profile-card">
+                    <div class="profile-pic-placeholder"><i class="fas fa-user"></i></div>
+                    <p id="display-user-name-profile">User Name</p>
+                    <p id="display-user-email-profile">user@example.com</p>
+                </div>
+                <div class="card" id="wallet-card">
+                    <div class="card-header"><i class="fas fa-wallet"></i>Wallet</div>
+                    <p style="text-align:center; font-size: 1.6em; font-weight: bold; color: #66fcf1; margin-bottom: 5px;">
+                        Total: PKR <span id="display-user-wallet">0.00</span>
+                    </p>
+                    <p style="text-align:center; font-size: 0.9em; margin-bottom: 15px;">
+                        (Deposited: <span id="display-user-deposit-balance">PKR 0.00</span>, Bonus: <span id="display-user-bonus-balance">PKR 0.00</span>)
+                    </p>
+                    <button id="deposit-funds-from-account-btn" class="action-button" style="background-color: #007bff;"><i class="fas fa-plus-circle"></i>Deposit Funds</button>
+                    <button id="withdraw-funds-btn" class="action-button" style="background-color: #17a2b8;"><i class="fas fa-hand-holding-usd"></i>Withdraw Funds</button>
+                </div>
+                <div class="card" id="daily-bonus-card">
+                    <div class="card-header"><i class="fas fa-gift"></i>Daily Bonus</div>
+                    <div id="daily-claim-wrapper">
+                        <button id="daily-claim-button" class="action-button"><i class="fas fa-check-circle"></i>PKR 10 deposit Daily Bonus And Withdrawal available </button>
+                    </div>
+                    <p id="daily-claim-status">Check your claim status...</p>
+                    <div id="daily-claim-message" class="message" style="margin-top:8px;"></div>
+                </div>
+
+                 <div class="card" id="account-actions-card">
+                    <div class="card-header"><i class="fas fa-cog"></i>Account Actions</div>
+                    <button id="my-products-btn" class="action-button" style="background-color: #ff9800; display:none;"><i class="fas fa-store"></i>My Products</button>
+                    <p id="seller-status-display"></p> <!-- NEW: Seller status will show here -->
+                    <button id="logout-button" class="action-button"><i class="fas fa-sign-out-alt"></i>Logout</button>
+                    <button id="admin-panel-access-btn" class="action-button" style="display:none;"><i class="fas fa-user-shield"></i>Admin Panel</button>
+                </div>
+            </div>
+    <div class="card" id="referral-program-card" style="display:none;">
+                    <div class="card-header"><i class="fas fa-users"></i>Referral Program</div>
+                    <div class="referral-details" style="font-size: 0.9em; color: #ccc; line-height: 1.6; margin-bottom: 15px;">
+                        <p style="text-align: center; font-size: 1.1em; color: #66fcf1; font-weight: bold;">Get a FREE Product !</p>
+                        <ol style="padding-left: 20px; margin-top: 5px; margin-bottom: 10px;">
+                            <li>Select any product on our app .</li>
+                            <li>Share your unique app download link below.</li>
+                            <li>Get <strong>70 to 170 people</strong> to download the app and sign up using your link.</li>
+                            <li>This task must be completed within <strong>2 to 5 days</strong>.</li>
+                        </ol>
+                        <p>If you succeed, the product you selected is yours, delivered to your doorstep, absolutely <strong>FREE!</strong></p>
+                    </div>
+                    <div class="form-group">
+                        <label for="referral-link-input">Your App Download Referral Link:</label>
+                        <div style="display: flex; gap: 8px;">
+                            <input type="text" id="referral-link-input" readonly="readonly" placeholder="Log in to get your link" style="flex-grow: 1; background-color: #404040;"/>
+                            <button id="copy-referral-link-btn" class="action-button" style="padding: 10px 15px; font-size: 0.9em; flex-shrink: 0; margin-top:0; background-color: #007bff;"><i class="fas fa-copy"></i> Copy</button>
+                        </div>
+                    </div>
+                    <div id="referral-message" class="message" style="margin-top: 8px;"></div>
+                </div>
+            <div id="auth-forms-section" class="card" style="margin: 10px;">
+                <form id="signup-form">
+                    <h3>Sign Up</h3>
+                    <div class="form-group"><label for="signup-name">Full Name:</label><input type="text" id="signup-name" required></div>
+                    <div class="form-group"><label for="signup-email">Email:</label><input type="email" id="signup-email" required></div>
+                    <div class="form-group"><label for="signup-password">Password:</label><input type="password" id="signup-password" minlength="6" required></div>
+                    <button type="submit" class="action-button" style="background-color:#007bff;">Sign Up</button>
+                    <p id="signup-message" class="message"></p>
+                </form>
+                <hr style="margin: 20px 0; border-color: #444;">
+                <form id="login-form">
+                    <h3>Login</h3>
+                    <div class="form-group"><label for="login-email">Email:</label><input type="email" id="login-email" required></div>
+                    <div class="form-group"><label for="login-password">Password:</label><input type="password" id="login-password" required></div>
+                    <button type="submit" class="action-button" style="background-color:#28a745;">Login</button>
+                    <p id="login-form-message" class="message"></p>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- SELLER APPLICATION VIEW -->
+    <div id="seller-application-view" class="view-section">
+        <div class="detail-header"><i class="fas fa-arrow-left" id="back-from-seller-application"></i><span>Become a Seller</span></div>
+        <div class="content-padding">
+            <div class="card">
+                <div class="card-header"><i class="fas fa-id-card"></i>Seller Verification</div>
+                <p style="color:#ccc; font-size:0.9em; margin-bottom:15px;">Please provide your details for verification. Once approved by the admin, you will be able to sell products on our platform.</p>
+                <form id="seller-application-form">
+                    <div class="form-group">
+                        <label for="seller-full-name">Full Name (as on CNIC):</label>
+                        <input type="text" id="seller-full-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="seller-father-name">Father's Name:</label>
+                        <input type="text" id="seller-father-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="seller-cnic">CNIC Number (without dashes):</label>
+                        <input type="text" id="seller-cnic" pattern="\d{13}" title="Enter 13-digit CNIC number without dashes" placeholder="e.g., 3740512345678" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="seller-address">Complete Real Address:</label>
+                        <textarea id="seller-address" rows="3" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="seller-whatsapp">WhatsApp Number:</label>
+                        <input type="tel" id="seller-whatsapp" pattern="03\d{9}" title="Enter a valid Pakistani mobile number starting with 03" placeholder="e.g., 03123456789" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="seller-cnic-front-url">CNIC Front Picture URL:</label>
+                        <input type="text" id="seller-cnic-front-url" placeholder="Provide a direct image link" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="seller-cnic-back-url">CNIC Back Picture URL:</label>
+                        <input type="text" id="seller-cnic-back-url" placeholder="Provide a direct image link" required>
+                    </div>
+                    <button type="submit" id="submit-seller-application-btn" class="action-button" style="background-color: #007bff;"><i class="fas fa-paper-plane"></i>Submit Application</button>
+                    <div id="seller-application-message" class="message"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- MY PRODUCTS VIEW -->
+    <div id="my-products-view" class="view-section">
+        <div class="detail-header">
+            <i class="fas fa-arrow-left" id="back-from-my-products"></i>
+            <span>My Products</span>
+            <button class="home-button-in-header" onclick="goHomeAndShowForYou();"><i class="fas fa-home"></i> Home</button>
+        </div>
+        <div class="content-padding">
+            <div class="card">
+                <div class="card-header"><i class="fas fa-plus-circle"></i>Add a New Product</div>
+                <form id="add-product-form">
+                    <div class="form-group">
+                        <label for="new-product-name">Product Name:</label>
+                        <input type="text" id="new-product-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="new-product-description">Description:</label>
+                        <textarea id="new-product-description" rows="3" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="new-product-category">Category:</label>
+                        <input type="text" id="new-product-category" required placeholder="e.g., Fashion, Electronics">
+                    </div>
+                    <div class="form-group">
+                        <label for="new-product-price">Discounted Price (PKR):</label>
+                        <input type="number" id="new-product-price" step="0.01" min="1" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="new-product-original-price">Original Price (Optional):</label>
+                        <input type="number" id="new-product-original-price" step="0.01" min="1" placeholder="e.g., 1500">
+                        <small style="color: #aaa; font-size: 0.8em; display: block; margin-top: 5px;">If you fill this, the price above will be shown as a discount.</small>
+                    </div>
+                     <div class="form-group">
+                        <label for="new-product-stock">Stock (Quantity):</label>
+                        <input type="number" id="new-product-stock" min="0" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="new-product-whatsapp">Seller's WhatsApp Number (for customer contact):</label>
+                        <input type="tel" id="new-product-whatsapp" placeholder="e.g., 03123456789" required>
+                        <small style="color: #aaa; font-size: 0.8em; display: block; margin-top: 5px;">This number will be visible to buyers on the product page. Format: 03xxxxxxxxx</small>
+                    </div>
+
+                    <!-- Removed Average Rating and Number of Reviews fields as per request -->
+
+                    <div class="form-group">
+                        <label>Product Image URLs (up to 8):</label>
+                        <div id="image-url-inputs-container">
+                            <input type="text" class="new-product-image-url-input" placeholder="URL 1 (Required Main Image)" required>
+                        </div>
+                        <button type="button" id="add-image-url-field-btn" class="action-button" style="background-color: #5a6268; font-size: 0.8em; padding: 6px 10px; margin-top: 5px;"><i class="fas fa-plus"></i> Add Another Image</button>
+                        <small style="color: #aaa; font-size: 0.8em; display: block; margin-top: 5px;">Provide direct links to images (e.g., ending in .jpg, .png).</small>
+                    </div>
+                    <button type="submit" id="add-product-submit-btn" class="action-button" style="background-color: #007bff;"><i class="fas fa-upload"></i>Add Product</button>
+                    <div id="add-product-message" class="message"></div>
+                </form>
+            </div>
+
+            <div class="card">
+                <div class="card-header"><i class="fas fa-shopping-basket"></i>Orders for Your Products</div>
+                <div id="seller-orders-list">
+                    <p style="color:#ccc;">Your product orders will appear here.</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header"><i class="fas fa-list-alt"></i>Your Uploaded Products</div>
+                <div id="user-products-list">
+                    <p style="color:#ccc;">Your uploaded products will appear here.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- EDIT PRODUCT VIEW -->
+    <div id="edit-product-view" class="view-section">
+        <div class="detail-header"><i class="fas fa-arrow-left" id="back-from-edit-product"></i><span>Edit Product</span></div>
+        <div class="content-padding">
+            <div class="card">
+                <div class="card-header"><i class="fas fa-edit"></i>Update Product Details</div>
+                <form id="edit-product-form">
+                    <input type="hidden" id="edit-product-id">
+                    <div class="form-group">
+                        <label for="edit-product-name">Product Name:</label>
+                        <input type="text" id="edit-product-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-product-description">Description:</label>
+                        <textarea id="edit-product-description" rows="3" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-product-category">Category:</label>
+                        <input type="text" id="edit-product-category" required placeholder="e.g., Fashion, Electronics">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-product-price">Discounted Price (PKR):</label>
+                        <input type="number" id="edit-product-price" step="0.01" min="1" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-product-original-price">Original Price (Optional):</label>
+                        <input type="number" id="edit-product-original-price" step="0.01" min="1" placeholder="e.g., 1500">
+                    </div>
+                     <div class="form-group">
+                        <label for="edit-product-stock">Stock (Quantity):</label>
+                        <input type="number" id="edit-product-stock" min="0" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-product-whatsapp">Seller's WhatsApp Number:</label>
+                        <input type="tel" id="edit-product-whatsapp" placeholder="e.g., 03123456789" required>
+                    </div>
+
+                    <!-- Removed Average Rating and Number of Reviews fields for edit form as per request -->
+
+                    <div class="form-group">
+                        <label>Product Image URLs (up to 8):</label>
+                        <div id="edit-image-url-inputs-container">
+                            <!-- Image fields will be populated by JS -->
+                        </div>
+                        <button type="button" id="edit-add-image-url-field-btn" class="action-button" style="background-color: #5a6268; font-size: 0.8em; padding: 6px 10px; margin-top: 5px;"><i class="fas fa-plus"></i> Add Another Image</button>
+                    </div>
+                    <button type="submit" id="update-product-submit-btn" class="action-button" style="background-color: #28a745;"><i class="fas fa-save"></i>Save Changes</button>
+                    <div id="edit-product-message" class="message"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- SELLER'S PRODUCTS VIEW -->
+    <div id="seller-products-view" class="view-section">
+        <div class="detail-header">
+            <i class="fas fa-arrow-left" id="back-from-seller-products"></i>
+            <span id="seller-view-name">Seller's Products</span>
+        </div>
+        <div class="content-padding">
+            <section class="product-grid" id="seller-products-container">
+                <!-- Products will be loaded here by JS -->
+            </section>
+        </div>
+    </div>
+
+
+    <div id="deposit-view" class="view-section">
+        <div class="detail-header"><i class="fas fa-arrow-left" id="back-from-deposit"></i><span>Deposit Information</span></div>
+        <div id="deposit-content" class="content-padding">
+            <!-- YouTube video added here -->
+            <div class="youtube-video-container">
+                <iframe
+                    src="https://www.youtube.com/embed/qMAu7_4kcSw?autoplay=0&controls=1&modestbranding=1&rel=0"
+                    title="Deposit Method Tutorial"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerpolicy="strict-origin-when-cross-origin"
+                    allowfullscreen>
+                </iframe>
+            </div>
+            <div class="card">
+                <div class="card-header"><i class="fas fa-money-check-alt"></i>Payment Methods</div>
+                <!-- Dynamic deposit methods will be rendered here -->
+                <div id="dynamic-deposit-methods-container">
+                    <p style="text-align:center; color:#ccc;"><i class="fas fa-spinner fa-spin"></i> Loading payment methods...</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header"><i class="fas fa-paper-plane"></i>Submit Deposit Request</div>
+                <form id="deposit-request-form">
+                    <div class="form-group"><label for="deposit-name">Full Name:</label><input type="text" id="deposit-name" required></div>
+                    <div class="form-group"><label for="deposit-email">Email:</label><input type="email" id="deposit-email" required></div>
+                    <div class="form-group"><label for="deposit-transaction-id">Transaction ID:</label><input type="text" id="deposit-transaction-id" placeholder="From your payment app" required></div>
+                    <div class="form-group"><label for="deposit-payment-info">Payment Method Used:</label><input type="text" id="deposit-payment-info" placeholder="e.g., Easypaisa to 0310..." required></div>
+                    <div class="form-group"><label for="deposit-amount">Amount Sent (Min PKR 10 to 50000):</label><input type="number" id="deposit-amount" min="10" step="0.01" required placeholder="e.g., PKR 10 to 50000"></div>
+                    <button type="submit" id="submit-deposit-request-btn" class="submit-request-button">Submit Request</button>
+                    <div id="deposit-request-message" class="message"></div>
+                </form>
+            </div>
+            <div class="card">
+                <div class="card-header"><i class="fas fa-history"></i>Your Deposit Requests</div>
+                <div id="user-deposit-requests-list"><p style="color:#ccc;">Please log in to see your deposit requests.</p></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="withdrawal-view" class="view-section">
+        <div class="detail-header">
+            <i class="fas fa-arrow-left" id="back-from-withdrawal"></i>
+            <span>Withdraw Funds</span>
+            <button class="home-button-in-header" onclick="goHomeAndShowForYou();"><i class="fas fa-home"></i> Home</button>
+        </div>
+        <div class="content-padding">
+            <p style="text-align: center; margin-bottom: 15px; font-size: 0.9em; color: #e0e0e0;">
+                Please review our <a href="#" id="view-withdrawal-policy-link-from-withdrawal" style="color: #66fcf1; text-decoration: underline;">Withdrawal & Bonus Funds Policy</a> before proceeding.
+            </p>
+            <div class="card">
+                <div class="card-header"><i class="fas fa-landmark"></i>Withdrawal Request</div>
+                <form id="withdrawal-request-form">
+                    <div class="form-group">
+                        <label>Current Withdrawable (Deposit) Balance:</label>
+                        <p style="font-size: 1.1em; font-weight: bold; color: #28a745;">PKR <span id="withdrawal-wallet-balance">0.00</span></p>
+                    </div>
+                    <div class="form-group"><label for="withdrawal-name">Full Name (as per ID):</label><input type="text" id="withdrawal-name" readonly></div>
+                    <div class="form-group"><label for="withdrawal-email">Email:</label><input type="email" id="withdrawal-email" readonly></div>
+                    <div class="form-group">
+                        <label for="withdrawal-account-type">Account Type:</label>
+                        <select id="withdrawal-account-type" required><option value="">-- Select Account Type --</option><option value="Easypaisa">Easypaisa</option><option value="JazzCash">JazzCash</option><option value="BankAccount">Bitget USD </option></select>
+                    </div>
+                    <div class="form-group"><label for="withdrawal-account-title">Account Title (Full Name on Account):</label><input type="text" id="withdrawal-account-title" placeholder="e.g., John Doe" required></div>
+                    <div class="form-group"><label for="withdrawal-account-number">Account Number:</label><input type="text" id="withdrawal-account-number" placeholder="Your Easypaisa/JazzCash/Bank Account No." required></div>
+                    <div class="form-group"><label for="withdrawal-id-card">ID Card Number (CNIC):</label><input type="text" id="withdrawal-id-card" placeholder="e.g., 12345-1234567-1" required></div>
+                    <div class="form-group"><label for="withdrawal-amount">Amount to Withdraw (Min PKR 310):</label><input type="number" id="withdrawal-amount" min="150" step="0.01" required placeholder="e.g., Only Pakistan PKR 310 Other countries 100 USD"></div>
+                    <button type="submit" id="submit-withdrawal-request-btn" class="submit-request-button">Submit Withdrawal Request</button>
+                    <div id="withdrawal-request-message" class="message"></div>
+                </form>
+            </div>
+            <div class="card">
+                <div class="card-header"><i class="fas fa-history"></i>Your Withdrawal Requests</div>
+                <div id="user-withdrawal-requests-list"><p style="color:#ccc;">Please log in to see your withdrawal requests.</p></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="my-orders-view" class="view-section">
+        <div class="detail-header"><i class="fas fa-arrow-left" id="back-from-my-orders"></i><span>My Orders</span></div>
+        <div id="my-orders-content" class="content-padding">
+             <div class="card">
+                <div class="card-header"><i class="fas fa-clipboard-list"></i>Your Orders</div>
+                <div id="user-orders-list-container"><p style="color:#ccc;">Loading your orders...</p></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="order-detail-user-view" class="view-section">
+        <div class="detail-header"><i class="fas fa-arrow-left" id="back-from-order-detail-user"></i><span>Order Details</span></div>
+        <div class="content-padding">
+            <div class="card">
+                <h2 id="user-order-id-display" style="font-size: 1.1em; text-align:left; border-bottom: 1px solid #444; padding-bottom:8px; margin-bottom: 10px;">Order ID: </h2>
+                <div id="user-order-items-container" style="margin-top:12px;"></div>
+                <p style="margin-top:15px;"><strong>Status:</strong> <span id="user-order-status-display" class="order-status"></span></p>
+                <p><strong>Total Amount:</strong> PKR <span id="user-order-total-display"></span></p>
+                <p><strong>Order Date:</strong> <span id="user-order-date-display"></span></p>
+            </div>
+        </div>
+    </div>
+
+    <div id="privacy-policy-view" class="view-section">
+        <div class="detail-header"><i class="fas fa-arrow-left" id="back-from-privacy"></i><span>Privacy Policy</span></div>
+        <div class="content-padding"><div class="card">
+            <h2>Privacy Policy</h2>
+            <p><em>Last updated: [2024-02-21]</em></p>
+            <p>Your privacy is important to us. It is AhopStore policy to respect your privacy regarding any information we may collect from you across our website, and other sites we own and operate.</p>
+            <h3>1. Information We Collect</h3>
+            <h4>Log data</h4>
+            <p>When you visit our website, our servers may automatically log the data provided by your web browser. It may include your computer’s Internet Protocol (IP) address, your browser type and version, the pages you visit, the time and date of your visit, the time spent on each page, and other details.</p>
+            <h4>Device data</h4>
+            <p>We may also collect data about the device you’re using to access our website. This data may include the device type, operating system, unique device identifiers, device settings, and geo-location data. What we collect can depend on the individual settings of your device and software. We recommend checking the policies of your device manufacturer or software provider to learn what information they make available to us.</p>
+            <h4>Personal information</h4>
+            <p>We may ask for personal information, such as your:</p>
+            <ul>
+                <li>Name</li>
+                <li>Email</li>
+                <li>Phone/mobile number</li>
+                <li>Home/Mailing address</li>
+                <li>Payment information (processed through a secure third-party payment processor or via direct bank/mobile wallet transfer details you provide for deposits/withdrawals)</li>
+            </ul>
+            <h3>2. Legal Bases for Processing</h3>
+            <p>We will process your personal information lawfully, fairly and in a transparent manner. We collect and process information about you only where we have legal bases for doing so.</p>
+            <p>These legal bases depend on the services you use and how you use them, meaning we collect and use your information only where:</p>
+            <ul>
+                <li>it’s necessary for the performance of a contract to which you are a party or to take steps at your request before entering into such a contract (example, when we provide a service you request from us, like processing an order or a deposit/withdrawal);</li>
+                <li>it satisfies a legitimate interest (which is not overridden by your data protection interests), such as for research and development, to market and promote our services, and to protect our legal rights and interests;</li>
+                <li>you give us consent to do so for a specific purpose (for example, you might consent to us sending you our newsletter, though this is not a current feature); or</li>
+                <li>we need to process your data to comply with a legal obligation.</li>
+            </ul>
+            <h3>3. How We Use Your Information</h3>
+             <p>We may use your information to operate, maintain, and provide to you the features and functionality of the Service, process your transactions, manage your account, and communicate directly with you, such as to send you email messages and potentially push notifications (if implemented) regarding your orders, account status, and important updates.</p>
+            <h3>4. Sharing Your Information</h3>
+            <p>We may share your personal information with third-party service providers only to the extent necessary to help us provide our services. This may include payment processors (if integrated beyond direct transfer instructions), and hosting services (Firebase). These third parties are obligated to protect your information and use it only for the purposes for which it was disclosed. We do not sell your personal information to third parties.</p>
+            <h3>5. Data Security</h3>
+            <p>We use Firebase for backend services, which provides robust security measures. We also take reasonable precautions to protect your information. However, no method of transmission over the Internet or method of electronic storage is 100% secure. While we strive to use commercially acceptable means to protect your personal information, we cannot guarantee its absolute security.</p>
+            <h3>6. Your Data Protection Rights</h3>
+            <p>Depending on your location, you may have certain rights under applicable data protection laws. These may include the right to access, correct, update, or request deletion of your personal information. You can usually manage some of this information through your account settings page or by contacting us for assistance.</p>
+            <h3>7. Children's Privacy</h3>
+            <p>Our service does not address anyone under the age of 13 (or a higher age if stipulated by local law). We do not knowingly collect personally identifiable information from children under this age. If we become aware that a child has provided us with personal information, we will take steps to delete such information.</p>
+            <h3>8. Changes to This Privacy Policy</h3>
+            <p>We may update our Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page and updating the "Last updated" date. You are advised to review this Privacy Policy periodically for any changes.</p>
+            <h3>9. Contact Us</h3>
+            <p>If you have any questions about this Privacy Policy, please contact us:</p>
+            <ul>
+                <li>By email: shoppingstor4@gmail.com</li>
+                <li>By WhatsApp: 03435641151</li>
+            </ul>
+            <button class="action-button" id="privacy-back-to-home-content-btn" style="margin-top: 20px; background-color: #5a6268;"><i class="fas fa-home"></i> Back to Home</button>
+        </div></div>
+    </div>
+
+    <div id="about-us-view" class="view-section">
+        <div class="detail-header"><i class="fas fa-arrow-left" id="back-from-about"></i><span>About Us</span></div>
+        <div class="content-padding"><div class="card">
+            <h2>About Us</h2>
+            <p>Welcome to E-commerce Store, your number one source for a variety of exciting products and deals. We're dedicated to giving you the very best, with a focus on dependability, customer service, and uniqueness.</p>
+            <p>Founded in 2024 by Ghulam Mustafa, Taleem Ki Dunya aims to provide an engaging online shopping experience. Our passion for offering interesting products and opportunities, like our Mega 1 Win Game, drives us to continuously improve and expand our offerings.</p>
+            <h3>Our Mission</h3>
+            <p>Our mission is to create an accessible and enjoyable marketplace where customers can discover unique products, participate in exciting promotions, and experience reliable service.</p>
+            <h3>What We Do</h3>
+            <ul>
+                <li><strong>Diverse Product Range:</strong> We offer a curated selection of products across various categories.</li>
+                <li><strong>Lightning Deals:</strong> Grab exciting products at special discounted prices for a limited time.</li>
+                <li><strong>Mega 1 Win Game:</strong> Participate in our special game promotions for a chance to win amazing prizes.</li>
+                <li><strong>Wallet System:</strong> Easily manage your funds for purchases and potential winnings.</li>
+                <li><strong>Secure Platform:</strong> We utilize Firebase for a secure backend infrastructure.</li>
+                <li><strong>Customer Support:</strong> Our team, led by Ghulam Mustafa, is available to assist you with any queries or concerns via WhatsApp.</li>
+            </ul>
+            <h3>Our Values</h3>
+            <ul>
+                <li><strong>Customer Engagement:</strong> We value our customers and strive to provide an interactive experience.</li>
+                <li><strong>Integrity:</strong> We conduct our business with honesty and transparency.</li>
+                <li><strong>Innovation:</strong> We continuously seek new ways to enhance our platform and offerings.</li>
+            </ul>
+            <h3>Why Choose Us?</h3>
+            <ul>
+                <li>Access to a unique selection of products and deals.</li>
+                <li>Opportunity to participate in exciting games and promotions.</li>
+                <li>Direct customer support for a personalized experience.</li>
+            </ul>
+            <p>We serve customers primarily within Pakistan and are excited to grow our community. We hope you enjoy our platform as much as we enjoy building it for you. If you have any questions or comments, please don't hesitate to contact us.</p>
+            <p>Sincerely,<br/>Nazim Mustafa, Founder</p>
+            <button class="action-button" id="about-back-to-home-content-btn" style="margin-top: 20px; background-color: #5a6268;"><i class="fas fa-home"></i> Back to Home</button>
+        </div></div>
+    </div>
+
+    <div id="refund-policy-view" class="view-section">
+        <div class="detail-header"><i class="fas fa-arrow-left" id="back-from-refund"></i><span>Refund Policy</span></div>
+        <div class="content-padding"><div class="card">
+            <h2>Refund Policy - STRICT</h2>
+            <p><em>Effective Date: [2025-02-21]</em></p>
+            <p>Thank you for shopping at E-commerce Store. We appreciate the trust you place in us. Due to the nature of our products and services, including digital goods, game entries, and wallet transactions, our refund policy is strict.</p>
+            <h3>1. General Policy: All Sales Are Final</h3>
+            <p><strong>ALL SALES ARE FINAL.</strong> We do not offer refunds or exchanges for any products or services purchased through our platform, except in the extremely limited circumstances outlined below.</p>
+            <h3>2. Non-Refundable Items & Services</h3>
+            <p>The vast majority of items and services offered are non-refundable. This includes, but is not limited to:</p>
+            <ul>
+                <li>Game entries and tickets (e.g., Mega 1 Win Game).</li>
+                <li>Wallet deposits and funds added to your account balance.</li>
+                <li>Digital products or services once accessed or if access has been provided.</li>
+                <li>Products sold as "Lightning Deals" or under special promotional offers, unless otherwise explicitly stated in the offer terms.</li>
+                <li>Items where the product description explicitly states "non-refundable."</li>
+                <li>Services that have been rendered or initiated.</li>
+            </ul>
+            <h3>3. Extremely Limited Eligibility for Refund Consideration</h3>
+            <p>A refund may be considered ONLY under the following specific and verifiable conditions, at our sole discretion:</p>
+            <ul>
+                <li><strong>Product Not Delivered (Physical Goods Only, if offered):</strong> If you purchased a physical product (and our store explicitly offers and ships physical goods, which needs to be clearly stated) and did not receive it within the specified delivery timeframe, AND our shipping carrier confirms non-delivery due to our error. This does not apply to digital goods, game entries, or services.</li>
+                <li><strong>Incorrect Item Received (Physical Goods Only, if offered):</strong> If you received a physical product that is demonstrably and significantly different from what you ordered (e.g., wrong model, completely different item, not a minor variation in color if not specified), and this is reported to us with clear, unambiguous photographic evidence within 24 hours of delivery. The item must be unused, in its original packaging, and in the same condition that you received it.</li>
+                <li><strong>Verifiable Billing Error by Us:</strong> If there was a clear, demonstrable technical error on our platform that resulted in an incorrect charge to your wallet or payment method (e.g., charged twice for a single item due to a system glitch).</li>
+            </ul>
+            <p>Minor bugs, temporary service unavailability, dissatisfaction with a product/service, change of mind, or misunderstanding of product features/game rules do not qualify for a refund.</p>
+            <h3>4. Refund Process (for cases eligible under Section 3)</h3>
+            <ol>
+                <li>Contact Nazim Mustafa immediately via WhatsApp at 03435641151 (within 24 hours for incorrect physical items).</li>
+                <li>Provide your order number/transaction ID, a detailed description of the issue, and any required supporting documentation (e.g., photos of incorrect item, screenshots of billing errors).</li>
+                <li>Our team will investigate your claim. This may take several business days. Providing incomplete or unclear information may delay or prevent your claim from being processed.</li>
+                <li>If your claim is approved under the strict conditions of Section 3, we will process the refund. Refunds for wallet transactions will typically be credited back to your in-app wallet. For other cases, the refund method will be at our discretion. Refunds may take several business days to reflect.</li>
+            </ol>
+            <h3>5. Chargebacks</h3>
+            <p>Initiating a chargeback with your bank or payment provider without first contacting us and allowing us the opportunity to address your concern according to this policy will be considered a breach of our terms of service. We reserve the right to dispute any such chargeback and may take further action to recover funds.</p>
+            <h3>6. Mega 1 Win Game Prizes & Other Promotions</h3>
+            <p>Prizes won in the Mega 1 Win Game or any other promotional games are non-transferable and non-refundable and have no cash alternative unless explicitly stated otherwise in the game's specific terms and conditions, which will be made available for each promotion. Decisions regarding prize fulfillment are final.</p>
+            <h3>7. Wallet Transactions</h3>
+            <p>All wallet deposits are final and non-refundable once successfully credited to your account. Funds in your wallet can only be used for purchases on the platform or withdrawn according to the withdrawal policy (if applicable and available).</p>
+            <h3>8. Policy Modifications</h3>
+            <p>Taleem Ki Dunya E-commerce Store reserves the right to modify this Refund Policy at any time without prior notice. Any changes will be effective immediately upon posting the updated policy on our website/app. Your continued use of our services after any such changes constitutes your acceptance of the new Refund Policy.</p>
+            <h3>9. Contact for Refund Inquiries (Strictly for Section 3 Cases)</h3>
+            <p>For inquiries related ONLY to the extremely limited refund eligibility cases outlined in Section 3, please contact Ghulam Mustafa via WhatsApp at 03435641151.</p>
+
+<p><strong>By making any purchase, deposit, or using any service on our platform, you acknowledge that you have read, understood, and agree to be bound by this STRICT Refund Policy.</strong></p>
+            <button class="action-button" id="refund-back-to-home-content-btn" style="margin-top: 20px; background-color: #5a6268;"><i class="fas fa-home"></i> Back to Home</button>
+        </div></div>
+    </div>
+
+    <!-- NEW WITHDRAWAL POLICY VIEW START -->
+    <div id="withdrawal-policy-view" class="view-section">
+        <div class="detail-header"><i class="fas fa-arrow-left" id="back-from-withdrawal-policy"></i><span>Withdrawal & Bonus Funds Policy</span></div>
+        <div class="content-padding"><div class="card">
+            <h2>Withdrawal & Bonus Funds Policy</h2>
+            <p><em>Effective Date: [Google Add Policy]</em></p>
+            <p>.<li> Google Add Watch Withdrawal rules </li>
+  <li> How to get the date of your payment
+Payment dates are 19-22 and 28-31 of each month, from 9.00 am till 6.00 pm GMT.</li>
+ <li> If these dates fall on weekends or holidays the payments will be processed on nearest business day.
+Once you reach the minimum payout amount, the money is put on a two-week hold.
+You will get the payout during the first payment period available after your hold period ends.</li>
+
+ <li> For example:</li>
+ <li> You reach the minimum payout amount on June 19. The two-week hold period ends on July 31. The next available payment period is July 19-22.</li>
+ <li> You reach the minimum payout amount on June 26. The two-week hold period ends on July 14. The next available payment period is July 28-31.</li>
+
+<li> In the Help Center, you can find a list of all the payment methods we offer. Please keep in mind that the availability of these payment methods may vary depending on your account.</li>
+
+<li>  This policy outlines the terms for withdrawing funds from your E-commerce Store wallet and the specific rules governing the use and withdrawal of bonus funds.</li>
+            <li>  Referral Earnings </li>
+       <li>  Earn 25% Commission with Our Powerful Referral Program!</li>
+
+ <li> 💰 Invite Friends. Earn Money. It’s That Simple!
+
+Hum lekar aaye hain ek zabardast referral earning system jismein aap har naye user ko invite karke 25% tak ka commission kama sakte hain — bina kisi investment ke! </li>
+
+ <li> ✅ Kaise Kaam Karta Hai?
+
+1. Apna Unique Referral Link Lejiye
+Har user ko ek khaas referral link milta hai. Is link ko aap apne doston, family, ya social media par share kar sakte hain.</li>
+
+
+  <li> 3. Har Referral pe Earning
+Har baar jab aapka refer kiya gaya user koi kaam karega ya earning karega, us earning ka 25% hissa aapke wallet mein add ho jaayega — automatic!</li>
+
+
+
+
+---
+
+ <li> 7. Click sirf in 3 waqt mein add honge — (Pakistan Standard Time ke mutabiq):</li>
+
+<li>🔹 Subha: 5:00 AM – 8:00 AM
+🔹 Din: 1:00 PM – 3:00 PM
+🔹 Raat: 9:00 PM – 11:00 PM</li>
+
+<li>  Jab Pakistan mein ye waqt hoga, to aap ke mulk ka waqt ye hoga:</li>
+
+<li>🔸 Morning Slot:
+India: 5:30 AM – 8:30 AM
+Bangladesh: 6:00 AM – 9:00 AM
+Saudi Arabia: 2:00 AM – 5:00 AM
+UAE: 4:00 AM – 7:00 AM
+UK: 1:00 AM – 4:00 AM
+USA: 8:00 PM – 11:00 PM (previous night)
+Australia: 10:00 AM – 1:00 PM</li>
+
+<li>🔸 Afternoon Slot:
+India: 1:30 PM – 3:30 PM
+Bangladesh: 2:00 PM – 4:00 PM
+Saudi Arabia: 10:00 AM – 12:00 PM
+UAE: 12:00 PM – 2:00 PM
+UK: 9:00 AM – 11:00 AM
+USA: 4:00 AM – 6:00 AM
+Australia: 6:00 PM – 8:00 PM</li>
+
+<li>🔸 Night Slot:
+India: 9:30 PM – 11:30 PM
+Bangladesh: 10:00 PM – 12:00 AM
+Saudi Arabia: 6:00 PM – 8:00 PM
+UAE: 8:00 PM – 10:00 PM
+UK: 5:00 PM – 7:00 PM
+USA: 12:00 PM – 2:00 PM
+Australia: 3:00 AM – 5:00 AM (next day)</li>
+
+ <li> 📌 In waqton ke ilawa click count nahi honge.
+
+</li>
+
+            <h3>1. General Withdrawal of Deposited Funds</h3>
+            <p>Only funds that you have personally deposited into your E-commerce Store wallet ("Deposited Funds") are eligible for withdrawal. Withdrawals are subject to:</p>
+            <ul>
+                <li>Our standard withdrawal procedures (e.g., providing valid account details).</li>
+                <li>Minimum withdrawal amount (currently PKR 320 to 350). Date withdrawal only par Month 18 to 22 and withdrawal deposit your bank 24 to 128 hour's Please And Sabar </li>
+                <li>Any applicable processing fees or verification requirements as determined by the platform.</li>
+                <li>Successful identity verification if requested.</li>
+            </ul>
+
+            <h3>2. Bonus Funds - Strictly Non-Withdrawable</h3>
+            <p>Any funds credited to your wallet as a bonus, promotion, reward, sign-up incentive, daily claim, or any other means not originating from your direct deposit ("Bonus Funds") are <strong>strictly non-withdrawable</strong>. Bonus Funds cannot be converted into cash, transferred to other users, or withdrawn from the platform under any circumstances. 10000 coin
+          Bounce Funnd Change Into Deposit withdrawal available only join 90 to 200 people amd joint people After deposit 30 Rupees and active click 700 coins par users </p>
+
+            <h3>3. Use of Bonus Funds - Restricted to Featured Products</h3>
+            <ul>
+                <li>Bonus Funds <strong>CANNOT</strong> be used to purchase regular physical products, standard digital goods, or any items not explicitly marked as purchasable with bonus funds.</li>
+                <li>Bonus Funds can <strong>ONLY</strong> be used to purchase specific "Featured Products," participate in designated "Mega Win Games," or engage in other special promotions as explicitly indicated and enabled on the platform.</li>
+                <li>"Featured Products" are typically, but not limited to, digital items, game entries, promotional vouchers, or specially designated offers. The nature of these products will be clearly indicated.</li>
+                <li>The E-commerce Store reserves the absolute right, at its sole discretion, to define which products or services are classified as "Featured" and eligible for purchase using Bonus Funds. This classification can change at any time without prior notice.</li>
+            </ul>
+
+            <h3>4. No Cash Value or Real Product Equivalence for Bonus Funds 25% Withdrawal Recharge </h3>
+            <p>Bonus Funds hold no direct cash value. They are a promotional instrument provided by E-commerce Store for use within the platform according to these terms and cannot be exchanged for real-world currency or used to acquire standard retail products unless explicitly stated as a "Featured Product" eligible for bonus fund purchase.</p>
+
+            <h3>5. Order of Fund Deduction for Purchases</h3>
+            <p>When making a purchase:</p>
+            <ul>
+                <li>For "Featured Products" eligible for bonus fund use, the system may prioritize the deduction from your Bonus Funds balance. If Bonus Funds are insufficient, the remainder may be prompted for payment from Deposited Funds or require an additional deposit.</li>
+                <li>For all other products not classified as "Featured," only your Deposited Funds can be used for purchase. Bonus Funds will not be applicable.</li>
+            </ul>
+
+            <h3>6. Forfeiture, Abuse, and System Integrity</h3>
+            <ul>
+                <li>Any attempt to abuse the bonus system, including but not limited to, creating multiple accounts to illicitly claim bonuses, attempting to manipulate transactions to convert Bonus Funds into Depositable or Withdrawable Funds, or any other fraudulent activity, will result in the immediate forfeiture of all Bonus Funds.</li>
+                <li>Such actions may also lead to the suspension or permanent termination of your account(s) and, in T ممکن cases of fraud, potential forfeiture of Deposited Funds and legal action.</li>
+                <li>E-commerce Store reserves the right to audit account activities and reclaim any Bonus Funds that were credited or used in error or in violation of these terms.</li>
+            </ul>
+
+            <h3>7. Policy Updates</h3>
+            <p>E-commerce Store reserves the right to modify this Withdrawal & Bonus Funds Policy at any time without prior notice. Any changes will be effective immediately upon posting the updated policy on our website/app. Your continued use of our services, wallet, or bonus funds after any such changes constitutes your acceptance of the new policy.</p>
+
+            <h3>8. Contact for Clarifications</h3>
+            <p>If you have any questions or require clarification regarding this Withdrawal & Bonus Funds Policy, please contact Ghulam Mustafa WhatsApp at 03435641151.</p>
+
+            <p><strong>By using the E-commerce Store platform, making deposits, accepting bonuses, or attempting withdrawals, you acknowledge that you have read, understood, and agree to be bound by this strict Withdrawal & Bonus Funds Policy.</strong></p>
+            <button class="action-button" id="withdrawal-policy-back-to-home-content-btn" style="margin-top: 20px; background-color: #5a6268;"><i class="fas fa-home"></i> Back to Home</button>
+        </div></div>
+    </div>
+
+    <nav class="bottom-nav">
+        <a class="nav-item active" onclick="goHomeAndShowForYou();"><i class="fas fa-home"></i><span>Home</span></a>
+        <a class="nav-item" id="my-orders-nav-item" onclick="navigateToMyOrdersView(); setActiveNav(this); hideEmbeddedCart();"><i class="fas fa-box-open"></i><span>My Orders</span></a>
+        <a class="nav-item" id="user-account-nav-item" onclick="navigateToAccountView(); setActiveNav(this); hideEmbeddedCart();"><i class="fas fa-user-circle"></i><span id="nav-account-text">Account</span></a>
+        <a class="nav-item" id="deposit-nav-item" onclick="navigateToDepositView(); setActiveNav(this); hideEmbeddedCart();"><i class="fas fa-wallet"></i><span>Deposit</span></a>
+        <a class="nav-item" id="cart-nav-item" onclick="toggleEmbeddedCart();"><i class="fas fa-shopping-cart"></i><span>Cart</span><span class="notification-badge" id="cart-count-badge">0</span></a>
+    </nav>
+
+  </div> <!-- End .blogger-app-container -->
+
+
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        
+    </div>
+  <!-- Link to external JavaScript -->
+  <!-- CORRECTED SCRIPT TAG FOR MODULE LOADING -->
+  <script type="module" src="script.js"></script>
+
+  <!-- NEW JAVASCRIPT FOR AUTO-SLIDING FEATURED PRODUCTS -->
+    <script>
+        // Featured Slider Auto-Move Logic (Left to Right)
+        (function() {
+            const container = document.getElementById('featured-slider-container');
+            const prevButton = document.getElementById('featured-slider-prev');
+            const nextButton = document.getElementById('featured-slider-next');
+
+            if (!container || !prevButton || !nextButton) return;
+
+            const viewport = container.parentElement;
+            let slideInterval;
+            const slideDuration = 3500; // 3.5 seconds
+            let currentScrollPosition = 0;
+            let isPaused = false;
+
+            const getSlideBlockWidth = () => {
+                const slides = container.querySelectorAll('.featured-slide');
+                if (slides.length === 0) return 0;
+                // Get the actual width of the first slide
+                const slideWidth = slides[0].offsetWidth;
+                // Get the computed gap (from CSS 'gap' property, default to 15px if not found)
+                const gap = parseFloat(window.getComputedStyle(container).gap) || 15;
+                return slideWidth + gap;
+            };
+
+            const updateButtonState = (maxScrollLeft) => {
+                // Logic to update the prev/next buttons based on currentScrollPosition
+                // (This is often handled in the main script.js for manual slides, 
+                // but we add it here for completeness if manual logic is missing/simple)
+                prevButton.disabled = currentScrollPosition <= 0;
+                nextButton.disabled = currentScrollPosition >= maxScrollLeft;
+            };
+
+            const moveToNext = () => {
+                const slides = container.querySelectorAll('.featured-slide');
+                if (slides.length === 0) return;
+                
+                const blockWidth = getSlideBlockWidth();
+                
+                // Use scrollWidth, offsetWidth, and clientWidth for accurate boundary calculation
+                // The container's effective width (all slides + gaps)
+                const containerTotalWidth = container.scrollWidth;
+                // The viewport width
+                const viewportWidth = viewport.offsetWidth; 
+
+                // Max scroll position before showing empty space on the right
+                const maxScrollLeft = containerTotalWidth - viewportWidth;
+
+                let nextPosition = currentScrollPosition + blockWidth;
+
+                if (nextPosition >= maxScrollLeft) {
+                    // Loop back to start (0)
+                    nextPosition = 0;
+                } else if (nextPosition > maxScrollLeft - blockWidth) {
+                    // If the next move would go slightly over the end, stop exactly at the end
+                    nextPosition = maxScrollLeft;
+                }
+                
+                // Ensure we don't go negative
+                currentScrollPosition = Math.max(0, nextPosition);
+                
+                container.style.transform = `translateX(-${currentScrollPosition}px)`;
+                // Optional: Force a brief re-enable for a split second to reset any disabled state
+                prevButton.disabled = false;
+                nextButton.disabled = false;
+                // Update buttons state after move
+                updateButtonState(maxScrollLeft);
+            };
+
+            const startSliding = () => {
+                if (isPaused) return;
+                clearInterval(slideInterval);
+                slideInterval = setInterval(moveToNext, slideDuration);
+            };
+
+            const pauseSliding = () => {
+                clearInterval(slideInterval);
+            };
+            
+            // --- Initialization and Event Listeners ---
+            // 1. Start the carousel immediately
+            startSliding();
+
+            // 2. Add pause/resume on hover/touch for better UX
+            viewport.addEventListener('mouseenter', pauseSliding);
+            viewport.addEventListener('mouseleave', startSliding);
+            viewport.addEventListener('touchstart', () => { pauseSliding(); isPaused = true; }, {passive: true});
+            viewport.addEventListener('touchend', () => { isPaused = false; startSliding(); });
+
+            // 3. Prevent auto-slide from interfering with manual buttons (pause on click)
+            prevButton.addEventListener('click', () => { pauseSliding(); isPaused = true; });
+            nextButton.addEventListener('click', () => { pauseSliding(); isPaused = true; });
+
+            // 4. Initial state check (for when JS loads later than content)
+            setTimeout(() => {
+                const slides = container.querySelectorAll('.featured-slide');
+                const containerTotalWidth = container.scrollWidth;
+                const viewportWidth = viewport.offsetWidth;
+                updateButtonState(containerTotalWidth - viewportWidth);
+            }, 500); // Wait for slides to load
+
+        })();
+    </script>
+
+</body>
+</html>
