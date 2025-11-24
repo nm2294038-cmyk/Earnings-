@@ -16,7 +16,7 @@ const db = firebase.firestore();
 let user = null;
 let balance = 0;
 let isSignup = false;
-let invest = 100;
+let invest = 280;
 let duration = 5; // Seconds
 let marketMode = 'NORMAL'; // Default Market Mode
 
@@ -205,7 +205,7 @@ setInterval(() => {
 
 // --- TRADING LOGIC ---
 function adjAmt(v) {
-    if (invest + v >= 100) {
+    if (invest + v >= 280) {
         invest += v;
         document.getElementById('amtVal').innerText = invest;
     }
@@ -249,7 +249,7 @@ async function trade(type) {
         if (type === 'up' && exitPrice > entryPrice) win = true;
         else if (type === 'down' && exitPrice < entryPrice) win = true;
 
-        showResult(win, win ? invest * 2 : 0);
+        showResult(win, win ? invest * 1.8 : 0);
 
         if (win) {
             await db.collection('users').doc(user.uid).update({
