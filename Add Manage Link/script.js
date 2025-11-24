@@ -1,4 +1,4 @@
-// --- FIREBASE CONFIGURATION AND INITIALIZATION ---
+// --- FIREBASE CONFIGURATION ---
 const firebaseConfig = {
     apiKey: "AIzaSyDNYv9SNUjMAHlaPzfovyYefoBNDgx4Gd4",
     authDomain: "traffic-exchange-62a58.firebaseapp.com",
@@ -9,9 +9,9 @@ const firebaseConfig = {
     measurementId: "G-HJQ46RQNZS"
 };
 
-// Assuming Firebase is loaded globally via <script> tags in index.html
+// Initialize Firebase
 if (typeof firebase === 'undefined') {
-    console.error("Firebase SDK not loaded. Check index.html.");
+    console.error("Firebase SDK not loaded.");
 } else {
     firebase.initializeApp(firebaseConfig);
 }
@@ -22,9 +22,10 @@ const db = firebase.firestore();
 // --- CONSTANTS (Task Costs Per Unit) ---
 const UNIT_RATES = {
     YouTube: {
-        'Subscriber': { rate: 280, min: 10 }, 
-        'Like': { rate: 24, min: 100 },
-        'View': { rate: 20, min: 500 }
+        'Subscriber': { rate: 100, min: 10 }, 
+        'Like': { rate: 2, min: 100 },
+        'View': { rate: 2, min: 500 },
+        'Comment': { rate: 52, min: 20 }
     },
     TikTok: {
         'Follow': { rate: 100, min: 10 },
@@ -32,7 +33,7 @@ const UNIT_RATES = {
         'View': { rate: 3, min: 1000 }
     },
     Instagram: {
-        'Follower': { rate: 380, min: 5 },
+        'Follower': { rate: 100, min: 5 },
         'Like': { rate: 24, min: 50 }
     },
     Facebook: {
@@ -50,6 +51,8 @@ let currentCoinBalance = 0;
 let requiredCoins = 0;
 let unitCost = 0;
 let isSignupMode = false;
+let walletUnsubscribe = null;
+let historyUnsubscribe = null;
 
 // --- DOM ELEMENTS ---
 const authModal = document.getElementById('authModal');
@@ -70,18 +73,17 @@ const coinsRequiredDisplay = document.getElementById('coinsRequiredDisplay');
 const submitTaskButton = document.getElementById('submitTaskButton');
 const taskHistoryList = document.getElementById('taskHistoryList');
 
-
-// --- AUTH MODAL LOGIC (Global Functions for onclick) ---
+// --- AUTH FUNCTIONS ---
 window.toggleAuthMode = function() {
     isSignupMode = !isSignupMode;
     if (isSignupMode) {
         authTitle.textContent = "Signup Karen";
         authButton.textContent = "Signup";
-        toggleText.innerHTML = 'Account hai? <a onclick="toggleAuthMode()">Login Karen</a>';
+        toggleText.innerHTML = 'Account hai? <a href="#" onclick="toggleAuthMode()">Login Karen</a>';
     } else {
         authTitle.textContent = "Login Karen";
         authButton.textContent = "Login";
-        toggleText.innerHTML = 'Account nahi hai? <a onclick="toggleAuthMode()">Signup Karen</a>';
+        toggleText.innerHTML = 'Account nahi hai? <a href="#" onclick="toggleAuthMode()">Signup Karen</a>';
     }
 }
 
@@ -93,7 +95,11 @@ document.getElementById('authForm').addEventListener('submit', async (e) => {
     try {
         if (isSignupMode) {
             const userCredential = await auth.createUserWithEmailAndPassword(email, password);
-            await db.collection('users').doc(userCredential.user.uid).set({ coins: 0 });
+            // Create user doc
+            await db.collection('users').doc(userCredential.user.uid).set({ 
+                coins: 0,
+                email: email
+            });
             alert("Signup Successful! Welcome.");
         } else {
             await auth.signInWithEmailAndPassword(email, password);
@@ -106,47 +112,48 @@ document.getElementById('authForm').addEventListener('submit', async (e) => {
 });
 
 logoutButton.addEventListener('click', async () => {
+    if (walletUnsubscribe) walletUnsubscribe();
+    if (historyUnsubscribe) historyUnsubscribe();
     await auth.signOut();
     alert("Logout Successful.");
+    window.location.reload();
 });
 
 profileIconButton.addEventListener('click', () => {
-    authModal.style.display = 'flex';
-    if (!auth.currentUser) {
+    if (!currentUser) {
+        authModal.style.display = 'flex';
         isSignupMode = false;
-        window.toggleAuthMode();
+        authTitle.textContent = "Login Karen";
+        authButton.textContent = "Login";
+        toggleText.innerHTML = 'Account nahi hai? <a href="#" onclick="toggleAuthMode()">Signup Karen</a>';
     }
 });
 
+window.onclick = function(event) {
+    if (event.target == authModal) {
+        authModal.style.display = "none";
+    }
+}
 
 // --- WALLET LISTENER ---
 function listenToWallet(uid) {
-    db.collection('users').doc(uid).onSnapshot(doc => {
+    walletUnsubscribe = db.collection('users').doc(uid).onSnapshot(doc => {
         if (doc.exists) {
             const data = doc.data();
             const coins = data.coins ? Number(data.coins) : 0; 
             currentCoinBalance = coins;
-            currentBalanceDisplay.textContent = `${coins.toLocaleString()} Coins`;
+            if(currentBalanceDisplay) currentBalanceDisplay.textContent = `${coins.toLocaleString()} Coins`;
             checkSubmissionEligibility();
         } else {
-            currentBalanceDisplay.textContent = `0 Coins`;
+            if(currentBalanceDisplay) currentBalanceDisplay.textContent = `0 Coins`;
             currentCoinBalance = 0;
         }
+    }, error => {
+        console.error("Wallet Error:", error);
     });
 }
 
-async function addCoinsToWallet(uid, amount) {
-    const userRef = db.collection('users').doc(uid);
-    try {
-        await userRef.update({
-            coins: firebase.firestore.FieldValue.increment(amount) 
-        });
-    } catch (error) {
-        console.error("Error updating wallet:", error);
-    }
-}
-
-// --- AUTH CHECK ---
+// --- AUTH STATE ---
 auth.onAuthStateChanged(user => {
     currentUser = user;
     if (user) {
@@ -155,7 +162,6 @@ auth.onAuthStateChanged(user => {
         currentBalanceDisplay.style.display = 'block';
         authModal.style.display = 'none';
         logoutButton.style.display = 'block';
-        toggleText.style.display = 'none';
         
         listenToWallet(user.uid);
         listenToTaskHistory(user.uid);
@@ -165,7 +171,6 @@ auth.onAuthStateChanged(user => {
         taskSubmissionSection.style.display = 'none';
         currentBalanceDisplay.style.display = 'none';
         logoutButton.style.display = 'none';
-        toggleText.style.display = 'block';
         currentCoinBalance = 0;
     }
 });
@@ -174,7 +179,7 @@ auth.onAuthStateChanged(user => {
 
 function calculateTotalCost() {
     const quantity = Number(taskQuantityInput.value);
-    const minQuantity = Number(taskQuantityInput.min);
+    const minQuantity = Number(taskQuantityInput.min) || 0;
 
     requiredCoins = 0;
     
@@ -186,7 +191,6 @@ function calculateTotalCost() {
     checkSubmissionEligibility();
 }
 
-
 platformSelect.addEventListener('change', () => {
     const platform = platformSelect.value;
     taskTypeSelect.innerHTML = '<option value="">--- Select Task Type ---</option>';
@@ -195,7 +199,7 @@ platformSelect.addEventListener('change', () => {
     
     unitCost = 0;
     taskQuantityInput.value = '';
-    minQuantityDisplay.value = '10';
+    if(minQuantityDisplay) minQuantityDisplay.value = '10'; // Default placeholder
     taskQuantityInput.min = 10;
     
     if (platform && UNIT_RATES[platform]) {
@@ -207,7 +211,7 @@ platformSelect.addEventListener('change', () => {
             option.value = taskType;
             option.setAttribute('data-rate', rate);
             option.setAttribute('data-min', min);
-            option.textContent = `${taskType} (${rate.toLocaleString()} Coins per unit)`;
+            option.textContent = `${taskType} (${rate.toLocaleString()} Coins)`;
             taskTypeSelect.appendChild(option);
         }
         taskTypeSelect.disabled = false;
@@ -224,10 +228,11 @@ taskTypeSelect.addEventListener('change', () => {
         
         unitCost = rate;
         taskQuantityInput.min = min;
-        minQuantityDisplay.value = min.toLocaleString();
+        if(minQuantityDisplay) minQuantityDisplay.value = min.toLocaleString();
         
         taskQuantityInput.disabled = false;
-        if (Number(taskQuantityInput.value) < min) {
+        // Auto set to min if empty or less
+        if (!taskQuantityInput.value || Number(taskQuantityInput.value) < min) {
             taskQuantityInput.value = min;
         }
     } else {
@@ -240,30 +245,31 @@ taskTypeSelect.addEventListener('change', () => {
 taskQuantityInput.addEventListener('input', calculateTotalCost);
 taskQuantityInput.addEventListener('change', calculateTotalCost);
 
-
 function checkSubmissionEligibility() {
+    if (!submitTaskButton) return;
+
     const quantity = Number(taskQuantityInput.value);
     const minQuantity = Number(taskQuantityInput.min);
-
     const isQuantityValid = quantity >= minQuantity && quantity > 0;
 
     if (requiredCoins > 0 && currentCoinBalance >= requiredCoins && isQuantityValid) {
         submitTaskButton.disabled = false;
-        submitTaskButton.textContent = `Task Submit Karen (${requiredCoins.toLocaleString()} Coins Total)`;
+        submitTaskButton.textContent = `Submit (${requiredCoins.toLocaleString()} Coins)`;
+        submitTaskButton.style.backgroundColor = "#28a745";
     } else {
         submitTaskButton.disabled = true;
         if (requiredCoins > 0 && !isQuantityValid) {
-            submitTaskButton.textContent = `Miqdar Kam Hai (Minimum ${minQuantity.toLocaleString()} Chahiye)`;
+            submitTaskButton.textContent = `Qty Kam Hai (Min: ${minQuantity})`;
         } else if (requiredCoins > 0 && currentCoinBalance < requiredCoins) {
-            submitTaskButton.textContent = `Coins Kam Hain (Chahiye: ${requiredCoins.toLocaleString()})`;
+            submitTaskButton.textContent = `Coins Kam Hain (Need: ${requiredCoins})`;
         } else {
             submitTaskButton.textContent = `Task Submit Karen`;
         }
+        submitTaskButton.style.backgroundColor = "#cccccc";
     }
 }
 
-
-// --- TASK SUBMISSION ---
+// --- SUBMIT TASK (UPDATED FOR RULES) ---
 taskForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     
@@ -271,76 +277,90 @@ taskForm.addEventListener('submit', async (e) => {
     const minQuantity = Number(taskQuantityInput.min);
 
     if (!currentUser || requiredCoins === 0 || currentCoinBalance < requiredCoins || quantity < minQuantity) {
-        alert("Coins kam hain ya task/quantity select nahi kiya gaya.");
+        alert("Validation Failed: Coins kam hain ya quantity ghalat hai.");
         return;
     }
 
     const platform = platformSelect.value;
     const type = taskTypeSelect.value;
-    const link = document.getElementById('taskLink').value;
+    const urlInput = document.getElementById('taskLink').value; // Keep ID as taskLink, save as url
     const totalCoinsDeducted = requiredCoins;
 
-    if (!confirm(`Kya aap ${quantity.toLocaleString()} ${type}s ke liye ${totalCoinsDeducted.toLocaleString()} Coins kharch karke yeh task submit karna chahte hain?`)) {
+    if (!confirm(`Confirm: ${quantity} ${type}s ke liye ${totalCoinsDeducted} Coins katenge?`)) {
         return;
     }
 
-    try {
-        // 1. Deduct Coins from Wallet
-        await addCoinsToWallet(currentUser.uid, -totalCoinsDeducted);
+    submitTaskButton.disabled = true;
+    submitTaskButton.textContent = "Processing...";
 
-        // 2. Create Task Request Record
-        await db.collection('user_tasks').add({
+    try {
+        const batch = db.batch();
+
+        // 1. Deduct Coins
+        const userRef = db.collection('users').doc(currentUser.uid);
+        batch.update(userRef, {
+            coins: firebase.firestore.FieldValue.increment(-totalCoinsDeducted)
+        });
+
+        // 2. Create Submission (Use 'linkSubmissions' collection)
+        const newDocRef = db.collection('linkSubmissions').doc();
+        batch.set(newDocRef, {
             userId: currentUser.uid,
             email: currentUser.email,
             platform: platform,
             type: type,
-            link: link,
-            coinsDeducted: totalCoinsDeducted,
-            quantityRequested: quantity,
-            unitCost: unitCost,
+            url: urlInput,      // Field changed to 'url' for rules
+            cost: totalCoinsDeducted,
+            quantity: quantity, // Save quantity
+            unitPrice: unitCost,
             status: 'Pending', 
             timestamp: firebase.firestore.FieldValue.serverTimestamp()
         });
 
-        alert(`Task Request Bhej Di Gayi! ${totalCoinsDeducted.toLocaleString()} Coins aapke wallet se kaat liye gaye hain.`);
+        await batch.commit();
+
+        alert(`Success! Task Request Submitted.`);
         taskForm.reset();
         unitCost = 0;
         requiredCoins = 0;
-        platformSelect.dispatchEvent(new Event('change')); // Reset form view
+        platformSelect.dispatchEvent(new Event('change'));
 
     } catch (error) {
         console.error("Task submission failed:", error);
-        alert("Task Request bhejte waqt koi masla hua. Dobara koshish karen.");
+        alert(`Error: ${error.message}`);
+    } finally {
+        checkSubmissionEligibility();
     }
 });
 
 
-// --- HISTORY LOGIC ---
+// --- HISTORY LOGIC (With Index Error Fix) ---
 
 function formatTimestamp(timestamp) {
     if (timestamp && timestamp.toDate) {
         return timestamp.toDate().toLocaleDateString('en-PK', {
-            year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'
+            month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'
         });
     }
-    return 'N/A';
+    return 'Just Now';
 }
 
 function renderTaskHistory(requests) {
+    if (!taskHistoryList) return;
+
     if (requests.length === 0) {
-        taskHistoryList.innerHTML = '<p>Aapne abhi tak koi task request nahi bheji hai.</p>';
+        taskHistoryList.innerHTML = '<p style="text-align:center; padding:10px;">No history found.</p>';
         return;
     }
 
     let html = `
-        <table class="history-table">
+        <table class="history-table" style="width:100%; border-collapse:collapse;">
             <thead>
-                <tr>
-                    <th>Platform</th>
-                    <th>Task / Qty</th>
-                    <th>Coins Spent</th>
-                    <th>Date</th>
-                    <th>Status</th>
+                <tr style="background:#f1f1f1; text-align:left;">
+                    <th style="padding:8px;">Task</th>
+                    <th style="padding:8px;">Cost</th>
+                    <th style="padding:8px;">Status</th>
+                    <th style="padding:8px;">Date</th>
                 </tr>
             </thead>
             <tbody>
@@ -348,15 +368,26 @@ function renderTaskHistory(requests) {
 
     requests.forEach(req => {
         const statusClass = (req.status || 'Pending').toLowerCase();
-        const taskDetails = `${req.type} (${req.quantityRequested ? req.quantityRequested.toLocaleString() : 'N/A'})`;
-        
+        let statusColor = 'orange';
+        if(statusClass === 'approved') statusColor = 'green';
+        if(statusClass === 'rejected') statusColor = 'red';
+
+        // Fallback for old data without 'url'
+        const linkUrl = req.url || req.link || '#';
+        const qty = req.quantity || req.quantityRequested || '-';
+
         html += `
-            <tr>
-                <td>${req.platform}</td>
-                <td>${taskDetails}</td>
-                <td>${req.coinsDeducted ? req.coinsDeducted.toLocaleString() : 'N/A'}</td>
-                <td>${formatTimestamp(req.timestamp)}</td>
-                <td><span class="status-${statusClass}">${req.status || 'Pending'}</span></td>
+            <tr style="border-bottom:1px solid #ddd;">
+                <td style="padding:8px;">
+                    <strong>${req.platform}</strong> <small>(${req.type})</small><br>
+                    <span style="font-size:0.85em;">Qty: ${qty}</span><br>
+                    <a href="${linkUrl}" target="_blank" style="font-size:0.8em; color:blue;">Open Link</a>
+                </td>
+                <td style="padding:8px;">${req.cost || req.coinsDeducted}</td>
+                <td style="padding:8px;">
+                    <span style="color:${statusColor}; font-weight:bold;">${req.status || 'Pending'}</span>
+                </td>
+                <td style="padding:8px; font-size:0.8em;">${formatTimestamp(req.timestamp)}</td>
             </tr>
         `;
     });
@@ -366,7 +397,11 @@ function renderTaskHistory(requests) {
 }
 
 function listenToTaskHistory(uid) {
-    db.collection('user_tasks')
+    // 1. Collection = 'linkSubmissions'
+    // 2. userId match zaroori hai (Permission denied fix)
+    // 3. orderBy timestamp (Index required)
+    
+    db.collection('linkSubmissions')
       .where('userId', '==', uid)
       .orderBy('timestamp', 'desc')
       .onSnapshot(snapshot => {
@@ -376,7 +411,17 @@ function listenToTaskHistory(uid) {
           });
           renderTaskHistory(requests);
       }, error => {
-          console.error("Error fetching task history:", error);
-          taskHistoryList.innerHTML = '<p style="color: var(--danger-color);">History load karne mein masla hua. (Index check karen)</p>';
+          console.error("History Error:", error);
+          
+          if (error.code === 'failed-precondition') {
+             // Show Link to create Index
+             taskHistoryList.innerHTML = `
+                <p style="color:red; font-size:12px; padding:10px; border:1px solid red;">
+                   <b>System Error (Missing Index):</b><br>
+                   Developer, please open browser console (F12) and click the Firebase link to fix this.
+                </p>`;
+          } else if (error.code === 'permission-denied') {
+             taskHistoryList.innerHTML = '<p style="color:red;">Permission Denied. (Rules Update Required)</p>';
+          }
       });
 }
