@@ -28,42 +28,52 @@
         </div>
     </div>
 
-    <!-- Chart -->
+    <!-- Chart Area (Ab yeh bilkul saaf hai) -->
     <div class="chart-area" id="chartArea">
         <canvas id="chart"></canvas>
         
-        <!-- Current Price Line -->
         <div class="current-price-line" id="curLine">
             <div class="current-price-tag" id="curTag">0.00</div>
         </div>
 
-        <!-- Trade Lines will be injected here -->
         <div id="tradeOverlay"></div>
-        
-        <!-- Result Popup -->
         <div id="resultPopup" class="result-popup"></div>
     </div>
 
-    <!-- Footer -->
-    <div class="footer">
+    <!-- Pehla Footer (Controls Panel) -->
+    <div class="controls-panel">
         <div class="inputs-row">
             <div class="input-box">
-                <div><div class="input-label">Time</div><div class="input-val" id="timeVal">10s</div></div>
+                <div><div class="input-label">Time</div><div class="input-val" id="timeVal">5s</div></div>
             </div>
             <div class="input-box">
                 <button class="adj-btn" onclick="adjAmt(-100)">-</button>
-                <div><div class="input-label">Invest</div><div class="input-val" id="amtVal">1000</div></div>
+                <div><div class="input-label">Invest</div><div class="input-val" id="amtVal">100</div></div>
                 <button class="adj-btn" onclick="adjAmt(100)">+</button>
             </div>
         </div>
+
         <div class="btn-row">
             <button class="trade-btn btn-down" onclick="trade('down')">
-                <span>DOWN</span> <i class="fa-solid fa-arrow-trend-down"></i>
+                <i class="fa-solid fa-arrow-down"></i>
+                <div>
+                    <span>DOWN</span>
+                    <small id="tradeAmtDown">100</small>
+                </div>
             </button>
             <button class="trade-btn btn-up" onclick="trade('up')">
-                <span>UP</span> <i class="fa-solid fa-arrow-trend-up"></i>
+                <i class="fa-solid fa-arrow-up"></i>
+                <div>
+                    <span>UP</span>
+                    <small id="tradeAmtUp">100</small>
+                </div>
             </button>
         </div>
+    </div>
+
+    <!-- Doosra Footer (Aakhri Footer) -->
+    <div class="footer">
+        <a href="#" class="contact-link">Contact Us</a>
     </div>
 </div>
 
@@ -74,7 +84,7 @@
         <input type="email" id="email" class="inp" placeholder="Email">
         <input type="password" id="pass" class="inp" placeholder="Password">
         <button class="btn-auth" onclick="handleAuth()">Submit</button>
-        <p onclick="toggleAuth()" style="margin-top:15px; font-size:12px; cursor:pointer; color:var(--primary);">New User? Create Account</p>
+        <p onclick="toggleAuth()" style="margin-top:15px; font-size:12px; cursor:pointer; color:#00b853;">New User? Create Account</p>
         <button onclick="document.getElementById('authModal').style.display='none'" style="background:none; border:none; color:#666; margin-top:10px;">Close</button>
     </div>
 </div>
