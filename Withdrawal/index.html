@@ -23,21 +23,64 @@
         </div>
     </div>
 
-    <!-- 2. WITHDRAWAL MODAL -->
+    <!-- 2. DEPOSIT MODAL -->
+    <div class="modal-overlay" id="depositModal">
+        <div class="modal-box">
+            <button class="btn-close" id="closeDepositModal">&times;</button>
+            <h2 class="modal-title" style="color:#00897b;">💰 Deposit Coins</h2>
+            
+            <div class="guide-box">
+                <h3>Coins Deposit Guide</h3>
+                <p>Send PKR to the account below. <strong>Live Rate:</strong> 2 PKR = 1 Coin.</p>
+                <div class="admin-account-box">
+                    <div>EasyPaisa / JazzCash:</div>
+                    <div class="admin-acc-num">03105784772</div>
+                    <div style="font-size:0.8em;">Title : Nazim MUSTAFA  </div>
+                               <div>SadaPay:</div>
+                    <div class="admin-acc-num">03435641151</div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Deposit Method</label>
+                <select id="depMethod">
+                    <option value="EasyPaisa">EasyPaisa</option>
+                    <option value="JazzCash">JazzCash</option>
+                    <option value="SadaPay">SadaPay</option>
+                    <option value="Bank">Bank Transfer</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Sent Amount (PKR)</label>
+                <input type="number" id="depAmount" placeholder="e.g. 600">
+            </div>
+
+            <div class="pkr-estimate" id="depCoinEst">You Get: 0 Coins</div>
+
+            <div class="form-group"><label>Sender Name</label><input type="text" id="depSenderName"></div>
+            <div class="form-group"><label>Sender Number</label><input type="text" id="depSenderNumber"></div>
+            <div class="form-group"><label>Transaction ID (TID)</label><input type="text" id="depTid"></div>
+
+            <button class="btn-submit btn-deposit" id="btnSubmitDeposit">Submit Deposit</button>
+            <div class="success-msg" id="depSuccessMsg"></div>
+            <div class="error-msg" id="depErrorMsg"></div>
+
+            <div class="history-container">
+                <div class="history-title">📜 Recent Deposits</div>
+                <div class="history-list" id="depHistoryList"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. WITHDRAWAL MODAL -->
     <div class="modal-overlay" id="withdrawModal">
         <div class="modal-box">
             <button class="btn-close" id="closeWithdrawModal">&times;</button>
             <h2 class="modal-title" style="color:#ff9800;">💸 PKR Withdrawal</h2>
-            
-            <!-- LIMIT INFO -->
             <div class="limit-info" id="wdLimitInfo">Loading Limits...</div>
-
-            <div class="form-group">
-                <label>Select Coin</label>
-                <select id="wdCoinSelect"><option>Loading...</option></select>
-                <div class="avail-bal" id="wdAvailBal">Available: 0</div>
-            </div>
-
+            <div class="form-group"><label>Select Coin</label><select id="wdCoinSelect"></select><div class="avail-bal" id="wdAvailBal">Available: 0</div></div>
+            
             <div class="form-group">
                 <label>Method</label>
                 <select id="wdMethod">
@@ -45,96 +88,97 @@
                         <option value="EasyPaisa">EasyPaisa</option>
                         <option value="JazzCash">JazzCash</option>
                         <option value="SadaPay">SadaPay</option>
+                        <option value="NayaPay">NayaPay</option>
                     </optgroup>
-                    <optgroup label="Banks">
-                        <option value="HBL">HBL</option>
+                    <optgroup label="Pakistani Banks">
+                        <option value="HBL">Habib Bank Limited (HBL)</option>
+                        <option value="UBL">United Bank Limited (UBL)</option>
                         <option value="Meezan">Meezan Bank</option>
-                        <option value="UBL">UBL</option>
-                        <option value="MCB">MCB</option>
+                        <option value="MCB">MCB Bank</option>
                         <option value="Allied">Allied Bank</option>
+                        <option value="Alfalah">Bank Alfalah</option>
+                        <option value="AlHabib">Bank Al-Habib</option>
+                        <option value="Askari">Askari Bank</option>
+                        <option value="Faysal">Faysal Bank</option>
+                        <option value="BOP">The Bank of Punjab</option>
+                        <option value="JS">JS Bank</option>
+                        <option value="Soneri">Soneri Bank</option>
+                        <option value="Silk">Silk Bank</option>
+                        <option value="Sindh">Sindh Bank</option>
+                        <option value="Summit">Summit Bank</option>
+                        <option value="DIB">Dubai Islamic Bank</option>
+                        <option value="SCB">Standard Chartered</option>
+                        <option value="NBP">National Bank of Pakistan</option>
                     </optgroup>
                 </select>
             </div>
 
-            <div class="form-group"><label>Account Title</label><input type="text" id="wdName" placeholder="e.g. Ali Khan"></div>
-            <div class="form-group"><label>Account Number</label><input type="text" id="wdAccount" placeholder="03001234567"></div>
-            <div class="form-group"><label>Amount (Coins)</label><input type="number" id="wdAmount" placeholder="Min 100"></div>
-
+            <div class="form-group"><label>Account Title</label><input type="text" id="wdName"></div>
+            <div class="form-group"><label>Account Number</label><input type="text" id="wdAccount"></div>
+            <div class="form-group"><label>Amount</label><input type="number" id="wdAmount"></div>
             <div class="pkr-estimate" id="wdPkrEst">Total Value: PKR 0.00</div>
-
             <button class="btn-submit btn-action" id="btnSubmitWithdraw">Submit Request</button>
             <div class="success-msg" id="wdSuccessMsg"></div>
             <div class="error-msg" id="wdErrorMsg"></div>
-
-            <div class="history-box">
-                <div class="history-title">📜 My Requests Status</div>
-                <div id="wdHistoryList" style="max-height: 120px; overflow-y: auto;"></div>
+            
+            <div class="history-container">
+                <div class="history-title">📜 Withdrawal History</div>
+                <div class="history-list" id="wdHistoryList"></div>
             </div>
         </div>
     </div>
 
-    <!-- 3. EXCHANGE MODAL -->
+    <!-- 4. EXCHANGE MODAL -->
     <div class="modal-overlay" id="exchangeModal">
         <div class="modal-box">
             <button class="btn-close" id="closeExchangeModal">&times;</button>
             <h2 class="modal-title" style="color:#ba68c8;">💱 Exchange Coins</h2>
-            <div class="form-group"><label>From</label><select id="exFromCoin"></select></div>
-            <div class="form-group"><label>To</label><select id="exToCoin"></select></div>
-            <div class="form-group"><label>Amount</label><input type="number" id="exAmount" placeholder="0"></div>
-            <div style="text-align:center; color:#00e676; margin-bottom:10px;" id="exCalcResult">Receive: 0</div>
+            <div class="form-group"><label>From (Sell)</label><select id="exFromCoin"></select></div>
+            <div class="form-group"><label>To (Buy)</label><select id="exToCoin"></select></div>
+            <div class="form-group"><label>Amount</label><input type="number" id="exAmount"></div>
+            
+            <div class="exchange-result-box">
+                <div id="exCalcResult">Receive: 0 Coins</div>
+                <div id="exPkrValue" style="font-size:0.8em; color:#aaa;">(Value: PKR 0.00)</div>
+            </div>
+
             <button class="btn-submit btn-exchange" id="btnSubmitExchange">Convert Now</button>
             <div class="success-msg" id="exSuccessMsg"></div>
             <div class="error-msg" id="exErrorMsg"></div>
         </div>
     </div>
 
-    <!-- 4. REFERRAL MODAL -->
+    <!-- 5. REFERRAL MODAL -->
     <div class="modal-overlay" id="referralModal">
         <div class="modal-box">
             <button class="btn-close" id="closeReferralModal">&times;</button>
             <h2 class="modal-title" style="color:#4caf50;">📢 Refer & Earn</h2>
-            <p style="text-align:center; color:#aaa; font-size:0.9em;">Invite friends to increase your withdrawal limits!</p>
-            <div class="form-group">
-                <label>Your Referral Link</label>
-                <div class="ref-link-box" id="myRefLink">Loading...</div>
-            </div>
+            <div class="form-group"><label>Your Link</label><div class="ref-link-box" id="myRefLink">Loading...</div></div>
             <button class="btn-submit btn-whatsapp" id="btnShareWhatsapp">📲 Share on WhatsApp</button>
         </div>
     </div>
 
     <!-- HEADER -->
     <header class="app-header">
-        <div class="profile-sec">
-            <div id="userDisplay"><button class="login-btn" id="openLoginBtn">🔑 Login</button></div>
-        </div>
-        <div class="wallet-sec">
-            <span class="wallet-label">TOTAL COINS HOLDING</span>
-            <span class="wallet-amount" id="headerWallet">0 <span class="coin-suffix">Coins</span></span>
-        </div>
+        <div class="profile-sec"><div id="userDisplay"><button class="login-btn" id="openLoginBtn">🔑 Login</button></div></div>
+        <div class="wallet-sec"><span class="wallet-label">TOTAL COINS</span><span class="wallet-amount" id="headerWallet">0 <span class="coin-suffix">Coins</span></span></div>
     </header>
 
     <!-- CONTENT -->
     <div class="container">
         <div class="status-bar" id="marketStatus">Connecting...</div>
-        <table id="coinTable">
-            <thead>
-                <tr><th>Coin</th><th>Rate (PKR)</th><th>My Coins</th><th>Value (PKR)</th></tr>
-            </thead>
-            <tbody id="tableBody">
-                <tr><td colspan="4" style="text-align:center; padding:20px; color:#888;">Login to see your coins</td></tr>
-            </tbody>
-        </table>
+        <table id="coinTable"><thead><tr><th>Coin</th><th>Rate (PKR)</th><th>My Coins</th><th>Value (PKR)</th></tr></thead><tbody id="tableBody"></tbody></table>
     </div>
 
     <!-- FOOTER -->
     <footer class="app-footer">
         <div class="footer-item" id="navHome"><span>🏠</span>Home</div>
+        <div class="footer-item" id="navDeposit"><span>💰</span>Deposit</div>
         <div class="footer-item" id="navExchange"><span>💱</span>Exchange</div>
         <div class="footer-item" id="navWithdraw"><span>💸</span>Withdraw</div>
         <div class="footer-item" id="navReferral"><span>📢</span>Refer</div>
     </footer>
 
-    <!-- JAVASCRIPT LINK -->
     <script type="module" src="script.js"></script>
 </body>
 </html>
