@@ -1,61 +1,88 @@
-:root {
-    --primary-color: #0056b3;
-    --secondary-color: #28a745;
-    --bg-color: #f4f6f9;
-    --danger: #dc3545;
-    --locked-bg: #e9ecef;
-    --locked-text: #adb5bd;
+body { font-family: 'Segoe UI', Roboto, sans-serif; background: #0f0f12; color: #fff; margin: 0; padding-bottom: 80px; }
+
+/* HEADER */
+.app-header {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 15px 20px; background: #1a1a1d; border-bottom: 1px solid #333;
+    position: sticky; top: 0; z-index: 100;
 }
 
-body { font-family: sans-serif; margin: 0; background: var(--bg-color); color: #333; }
+.profile-sec { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+.profile-img { width: 40px; height: 40px; border-radius: 50%; border: 2px solid #4caf50; background: #333; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.2em; color: #4caf50; }
+.login-btn { background: #2563eb; color: white; border: none; padding: 8px 15px; border-radius: 20px; font-weight: bold; cursor: pointer; }
+.logout-btn { background: #ef4444; margin-left: 5px; font-size: 0.8em; }
 
-header {
-    background: #2c3e50; color: white; padding: 15px; display: flex; justify-content: space-between; align-items: center;
+.wallet-sec { text-align: right; }
+.wallet-label { font-size: 0.7em; color: #aaa; display: block; }
+.wallet-amount { font-size: 1.2em; font-weight: bold; color: #ffca28; font-family: sans-serif; }
+.coin-suffix { font-size: 0.6em; color: #fff; margin-left: 2px; }
+.wallet-flash { animation: flashGold 1s ease-out; }
+@keyframes flashGold { 0% { color: #fff; transform: scale(1.2); } 100% { color: #ffca28; transform: scale(1); } }
+
+/* FOOTER */
+.app-footer {
+    position: fixed; bottom: 0; left: 0; width: 100%;
+    background: #1a1a1d; border-top: 1px solid #333;
+    display: flex; justify-content: space-around; align-items: center;
+    padding: 10px 0; z-index: 100;
+    box-shadow: 0 -4px 10px rgba(0,0,0,0.5);
 }
-#profileBtn { background: none; border: 2px solid white; color: white; border-radius: 50%; width: 40px; height: 40px; cursor: pointer; }
-
-.container { max-width: 600px; margin: 20px auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-
-/* PACKAGES GRID */
-.pkg-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 20px; }
-
-.pkg-btn {
-    padding: 15px; border: 2px solid #eee; background: #fff; border-radius: 8px;
-    cursor: pointer; text-align: center; transition: 0.2s; position: relative;
+.footer-item {
+    display: flex; flex-direction: column; align-items: center;
+    color: #888; font-size: 0.8em; text-decoration: none; cursor: pointer;
+    width: 25%;
 }
-.pkg-btn:hover:not(:disabled) { border-color: var(--primary-color); background: #f8f9fa; }
-.pkg-btn.active { border-color: var(--secondary-color); background: var(--secondary-color); color: white; }
+.footer-item span { font-size: 1.5em; margin-bottom: 3px; display: block; }
+.footer-item:hover, .footer-item.active { color: #4caf50; }
 
-/* LOCKED STATE STYLE */
-.pkg-btn.locked {
-    background: var(--locked-bg); color: var(--locked-text); border-color: var(--locked-bg);
-    cursor: not-allowed; opacity: 0.7;
-}
-.pkg-btn.sold-out {
-    background: #333; color: #fff; opacity: 0.5; cursor: default;
-}
+/* TABLE & CONTAINER */
+.container { max-width: 1100px; margin: 20px auto; padding: 0 15px; }
+.status-bar { text-align: center; color: #666; font-size: 0.8em; margin-bottom: 15px; }
 
-/* FORM */
-input, select { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
-.submit-btn { width: 100%; padding: 12px; background: var(--danger); color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; }
+table { width: 100%; border-collapse: collapse; background: #1e1e24; border-radius: 12px; overflow: hidden; }
+th, td { padding: 15px; text-align: left; border-bottom: 1px solid #2d2d35; }
+th { background: #25252b; color: #bbb; font-size: 0.75em; text-transform: uppercase; }
 
-.info-box {
-    background: linear-gradient(135deg, #007bff, #0056b3); color: white;
-    padding: 20px; border-radius: 10px; text-align: center; margin-bottom: 20px;
-}
-.invite-badge { background: rgba(255,255,255,0.2); padding: 5px 10px; border-radius: 15px; display: inline-block; margin-top: 10px; }
-
-/* HISTORY */
-.history-card {
-    background: #fff; border: 1px solid #eee; padding: 10px; margin-bottom: 10px; border-radius: 5px;
-    border-left: 5px solid #ccc;
-}
-.card-pending { border-left-color: #ffc107; }
-.card-approved { border-left-color: #28a745; }
+.symbol { color: #ffb74d; font-weight: bold; }
+.price-up { color: #00ff88; }
+.price-down { color: #ff4d4d; }
 
 /* MODALS */
-.modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); align-items: center; justify-content: center; z-index: 100; }
-.modal-box { background: white; padding: 25px; border-radius: 10px; width: 90%; max-width: 350px; text-align: center; position: relative; }
-.close { position: absolute; right: 15px; top: 10px; cursor: pointer; font-size: 20px; }
-.auth-btn { width: 100%; padding: 10px; background: var(--primary-color); color: white; border: none; border-radius: 4px; }
-.whatsapp-btn { width: 100%; padding: 10px; background: #25D366; color: white; border: none; border-radius: 20px; cursor: pointer; }
+.modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 200; justify-content: center; align-items: center; }
+.modal-box { background: #1e1e24; padding: 25px; border-radius: 12px; width: 90%; max-width: 400px; border: 1px solid #333; position: relative; max-height: 90vh; overflow-y: auto; }
+.modal-title { margin-top: 0; text-align: center; color: #4caf50; margin-bottom: 20px; }
+.form-group { margin-bottom: 15px; }
+.form-group label { display: block; font-size: 0.8em; color: #aaa; margin-bottom: 5px; }
+.form-group input, .form-group select { width: 100%; padding: 12px; background: #121212; border: 1px solid #333; color: white; border-radius: 6px; box-sizing: border-box; }
+
+optgroup { background: #25252b; color: #aaa; font-style: normal; }
+option { background: #121212; color: #fff; padding: 5px; }
+
+.modal-actions { display: flex; gap: 10px; margin-top: 20px; }
+.btn-submit { flex: 1; padding: 12px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; }
+.btn-login { background: #2563eb; color: white; }
+.btn-signup { background: #4caf50; color: white; }
+.btn-action { background: #e65100; color: white; width: 100%; }
+.btn-exchange { background: #7b1fa2; color: white; width: 100%; }
+.btn-whatsapp { background: #25D366; color: white; width: 100%; margin-top: 10px; }
+.btn-close { position: absolute; top: 10px; right: 10px; background: none; border: none; color: #666; font-size: 1.5em; cursor: pointer; }
+.error-msg { color: #ff4d4d; font-size: 0.8em; text-align: center; margin-top: 10px; display: none; }
+.success-msg { color: #00e676; font-size: 0.9em; text-align: center; margin-top: 10px; display: none; }
+.avail-bal { font-size: 0.8em; color: #4caf50; text-align: right; margin-top: 5px; }
+
+.pkr-estimate { text-align: center; color: #00e676; font-weight: bold; font-size: 1.1em; margin-bottom: 15px; border: 1px dashed #333; padding: 10px; border-radius: 6px; background: rgba(0,230,118,0.05); }
+
+.limit-info { background: #2a2a35; padding: 10px; border-radius: 6px; margin-bottom: 15px; font-size: 0.85em; color: #ddd; border-left: 3px solid #ff9800; }
+.limit-highlight { color: #ffca28; font-weight: bold; }
+.ref-link-box { background: #121212; padding: 10px; border: 1px solid #333; border-radius: 6px; color: #4caf50; font-family: monospace; word-break: break-all; text-align: center; margin-bottom: 10px; }
+
+.history-box { margin-top: 20px; border-top: 1px solid #333; padding-top: 10px; }
+.history-title { font-size: 0.9em; color: #bbb; margin-bottom: 10px; }
+.history-item { display: flex; justify-content: space-between; padding: 10px; background: #121212; margin-bottom: 5px; border-radius: 6px; font-size: 0.85em; border-left: 3px solid #333; }
+
+.badge { padding: 3px 8px; border-radius: 4px; font-size: 0.75em; font-weight: bold; }
+.badge-Pending { background: #ff9800; color: #000; }
+.badge-Approved { background: #00e676; color: #000; }
+.badge-Rejected { background: #f44336; color: #fff; }
+
+@media (max-width: 600px) { th, td { padding: 10px; font-size: 0.85em; } .app-title { display: none; } }
