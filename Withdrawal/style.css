@@ -1,17 +1,11 @@
 body { font-family: 'Segoe UI', Roboto, sans-serif; background: #0f0f12; color: #fff; margin: 0; padding-bottom: 80px; }
 
 /* HEADER */
-.app-header {
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 15px 20px; background: #1a1a1d; border-bottom: 1px solid #333;
-    position: sticky; top: 0; z-index: 100;
-}
-
+.app-header { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background: #1a1a1d; border-bottom: 1px solid #333; position: sticky; top: 0; z-index: 100; }
 .profile-sec { display: flex; align-items: center; gap: 10px; cursor: pointer; }
 .profile-img { width: 40px; height: 40px; border-radius: 50%; border: 2px solid #4caf50; background: #333; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.2em; color: #4caf50; }
 .login-btn { background: #2563eb; color: white; border: none; padding: 8px 15px; border-radius: 20px; font-weight: bold; cursor: pointer; }
 .logout-btn { background: #ef4444; margin-left: 5px; font-size: 0.8em; }
-
 .wallet-sec { text-align: right; }
 .wallet-label { font-size: 0.7em; color: #aaa; display: block; }
 .wallet-amount { font-size: 1.2em; font-weight: bold; color: #ffca28; font-family: sans-serif; }
@@ -20,29 +14,17 @@ body { font-family: 'Segoe UI', Roboto, sans-serif; background: #0f0f12; color: 
 @keyframes flashGold { 0% { color: #fff; transform: scale(1.2); } 100% { color: #ffca28; transform: scale(1); } }
 
 /* FOOTER */
-.app-footer {
-    position: fixed; bottom: 0; left: 0; width: 100%;
-    background: #1a1a1d; border-top: 1px solid #333;
-    display: flex; justify-content: space-around; align-items: center;
-    padding: 10px 0; z-index: 100;
-    box-shadow: 0 -4px 10px rgba(0,0,0,0.5);
-}
-.footer-item {
-    display: flex; flex-direction: column; align-items: center;
-    color: #888; font-size: 0.8em; text-decoration: none; cursor: pointer;
-    width: 25%;
-}
-.footer-item span { font-size: 1.5em; margin-bottom: 3px; display: block; }
+.app-footer { position: fixed; bottom: 0; left: 0; width: 100%; background: #1a1a1d; border-top: 1px solid #333; display: flex; justify-content: space-around; align-items: center; padding: 10px 0; z-index: 100; box-shadow: 0 -4px 10px rgba(0,0,0,0.5); }
+.footer-item { display: flex; flex-direction: column; align-items: center; color: #888; font-size: 0.75em; text-decoration: none; cursor: pointer; width: 20%; }
+.footer-item span { font-size: 1.4em; margin-bottom: 3px; display: block; }
 .footer-item:hover, .footer-item.active { color: #4caf50; }
 
-/* TABLE & CONTAINER */
+/* TABLE */
 .container { max-width: 1100px; margin: 20px auto; padding: 0 15px; }
 .status-bar { text-align: center; color: #666; font-size: 0.8em; margin-bottom: 15px; }
-
 table { width: 100%; border-collapse: collapse; background: #1e1e24; border-radius: 12px; overflow: hidden; }
 th, td { padding: 15px; text-align: left; border-bottom: 1px solid #2d2d35; }
 th { background: #25252b; color: #bbb; font-size: 0.75em; text-transform: uppercase; }
-
 .symbol { color: #ffb74d; font-weight: bold; }
 .price-up { color: #00ff88; }
 .price-down { color: #ff4d4d; }
@@ -54,35 +36,56 @@ th { background: #25252b; color: #bbb; font-size: 0.75em; text-transform: upperc
 .form-group { margin-bottom: 15px; }
 .form-group label { display: block; font-size: 0.8em; color: #aaa; margin-bottom: 5px; }
 .form-group input, .form-group select { width: 100%; padding: 12px; background: #121212; border: 1px solid #333; color: white; border-radius: 6px; box-sizing: border-box; }
-
 optgroup { background: #25252b; color: #aaa; font-style: normal; }
 option { background: #121212; color: #fff; padding: 5px; }
-
 .modal-actions { display: flex; gap: 10px; margin-top: 20px; }
 .btn-submit { flex: 1; padding: 12px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; }
 .btn-login { background: #2563eb; color: white; }
 .btn-signup { background: #4caf50; color: white; }
 .btn-action { background: #e65100; color: white; width: 100%; }
 .btn-exchange { background: #7b1fa2; color: white; width: 100%; }
+.btn-deposit { background: #00897b; color: white; width: 100%; }
 .btn-whatsapp { background: #25D366; color: white; width: 100%; margin-top: 10px; }
 .btn-close { position: absolute; top: 10px; right: 10px; background: none; border: none; color: #666; font-size: 1.5em; cursor: pointer; }
 .error-msg { color: #ff4d4d; font-size: 0.8em; text-align: center; margin-top: 10px; display: none; }
 .success-msg { color: #00e676; font-size: 0.9em; text-align: center; margin-top: 10px; display: none; }
 .avail-bal { font-size: 0.8em; color: #4caf50; text-align: right; margin-top: 5px; }
-
 .pkr-estimate { text-align: center; color: #00e676; font-weight: bold; font-size: 1.1em; margin-bottom: 15px; border: 1px dashed #333; padding: 10px; border-radius: 6px; background: rgba(0,230,118,0.05); }
-
 .limit-info { background: #2a2a35; padding: 10px; border-radius: 6px; margin-bottom: 15px; font-size: 0.85em; color: #ddd; border-left: 3px solid #ff9800; }
 .limit-highlight { color: #ffca28; font-weight: bold; }
 .ref-link-box { background: #121212; padding: 10px; border: 1px solid #333; border-radius: 6px; color: #4caf50; font-family: monospace; word-break: break-all; text-align: center; margin-bottom: 10px; }
 
-.history-box { margin-top: 20px; border-top: 1px solid #333; padding-top: 10px; }
-.history-title { font-size: 0.9em; color: #bbb; margin-bottom: 10px; }
-.history-item { display: flex; justify-content: space-between; padding: 10px; background: #121212; margin-bottom: 5px; border-radius: 6px; font-size: 0.85em; border-left: 3px solid #333; }
+/* Deposit Guide Styles */
+.guide-box { background: #263238; padding: 15px; border-radius: 8px; margin-bottom: 20px; font-size: 0.85em; color: #eceff1; line-height: 1.5; }
+.guide-box h3 { color: #4db6ac; margin-top: 0; }
+.guide-box ul { padding-left: 20px; margin: 5px 0; }
+.admin-account-box { background: #004d40; padding: 10px; border-radius: 6px; text-align: center; margin: 10px 0; border: 1px dashed #4db6ac; }
+.admin-acc-num { font-size: 1.2em; font-weight: bold; color: #fff; font-family: monospace; }
 
-.badge { padding: 3px 8px; border-radius: 4px; font-size: 0.75em; font-weight: bold; }
-.badge-Pending { background: #ff9800; color: #000; }
-.badge-Approved { background: #00e676; color: #000; }
-.badge-Rejected { background: #f44336; color: #fff; }
+/* HISTORY BOXES */
+.history-container { margin-top: 20px; border-top: 1px solid #333; padding-top: 15px; }
+.history-title { font-size: 0.9em; color: #bbb; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; }
+.history-list { max-height: 150px; overflow-y: auto; padding-right: 5px; }
+
+.history-card { 
+    background: #1a1a20; border: 1px solid #333; border-radius: 8px; padding: 12px; margin-bottom: 10px; 
+    display: flex; justify-content: space-between; align-items: center; transition: transform 0.2s;
+}
+.history-card:hover { transform: translateX(3px); border-color: #444; }
+.h-left div { margin-bottom: 3px; }
+.h-amount { font-weight: bold; color: #fff; font-size: 1em; }
+.h-sub { font-size: 0.75em; color: #888; }
+.h-reason { font-size: 0.75em; color: #f44336; margin-top: 4px; font-style: italic; }
+.h-right { text-align: right; }
+.h-date { font-size: 0.7em; color: #666; margin-top: 4px; }
+
+.badge { padding: 4px 8px; border-radius: 4px; font-size: 0.7em; font-weight: bold; text-transform: uppercase; }
+.badge-Pending { background: #ff980020; color: #ff9800; border: 1px solid #ff9800; }
+.badge-Approved { background: #00e67620; color: #00e676; border: 1px solid #00e676; }
+.badge-Rejected { background: #f4433620; color: #f44336; border: 1px solid #f44336; }
+
+/* Exchange Result */
+.exchange-result-box { text-align: center; margin-bottom: 15px; }
+#exCalcResult { color: #00e676; font-weight: bold; font-size: 1.1em; }
 
 @media (max-width: 600px) { th, td { padding: 10px; font-size: 0.85em; } .app-title { display: none; } }
