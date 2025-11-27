@@ -32,7 +32,7 @@ let currentUser = null;
 const VIDEO_COLLECTION = 'video_sections';
 const EARNINGS_COLLECTION = 'worker_earnings';
 const USER_COLLECTION = 'users';
-const WATCH_LOGS_COLLECTION = 'video_watch_logs'; // NEW COLLECTION
+const WATCH_LOGS_COLLECTION = 'video_watch_logs'; 
 
 // --- LOCKOUT CONSTANT (24 hours in milliseconds) ---
 const LOCKOUT_DURATION_MS = 24 * 60 * 60 * 1000; 
@@ -53,8 +53,8 @@ const DEFAULT_VIDEOS = [
 
 // --- NEW: Video Data State ---
 let availableVideos = []; 
-let rewardedVideos = {}; // {sectionId: boolean} to track rewards earned in current session
-let lastWatchedTimes = {}; // {sectionId: timestamp} to track 24h lockout
+let rewardedVideos = {}; 
+let lastWatchedTimes = {}; 
 
 // --- DOM ELEMENTS ---
 const authModal = document.getElementById('authModal');
@@ -137,7 +137,7 @@ auth.onAuthStateChanged(user => {
         toggleText.style.display = 'none';
         
         listenToWallet(user.uid);
-        loadWatchLogs(user.uid); // Load logs on login
+        loadWatchLogs(user.uid); 
         updateVideoOverlays(true);
 
     } else {
@@ -172,7 +172,7 @@ function listenToWallet(uid) {
     });
 }
 
-// --- NEW: Load Watch Logs for Lockout Check ---
+// --- Load Watch Logs for Lockout Check ---
 function loadWatchLogs(uid) {
     lastWatchedTimes = {};
     db.collection(WATCH_LOGS_COLLECTION)
@@ -183,7 +183,12 @@ function loadWatchLogs(uid) {
               const data = doc.data();
               // Store the last watched timestamp for each video ID
               if (data.videoId && data.lastWatched && data.lastWatched.toDate) {
-                  lastWatchedTimes[data.videoId] = data.lastWatched.toDate().getTime();
+                  // We only care about the LATEST watch time for a specific videoId
+                  const existingTime = lastWatchedTimes[data.videoId] || 0;
+                  const newTime = data.lastWatched.toDate().getTime();
+                  if (newTime > existingTime) {
+                      lastWatchedTimes[data.videoId] = newTime;
+                  }
               }
           });
           // Re-render overlays after loading logs
@@ -215,7 +220,7 @@ async function addCoinsToWallet(uid, amount, sourceDetails) {
             timestamp: firebase.firestore.FieldValue.serverTimestamp()
         });
         
-        // 3. Log Watch Time for 24-Hour Lockout (NEW LOG)
+        // 3. Log Watch Time for 24-Hour Lockout
         await db.collection(WATCH_LOGS_COLLECTION).add({
             userId: uid,
             videoId: sourceDetails.videoId,
@@ -251,23 +256,28 @@ function updateVideoOverlays(isLoggedIn) {
         
         if (!videoData) return;
 
-        const lastWatchedTime = lastWatchedTimes[videoData.id];
-        const timeSinceLastWatch = Date.now() - lastWatchedTime;
-        const isLocked = lastWatchedTime && (timeSinceLastWatch < LOCKOUT_DURATION_MS);
-
+        const lockIcon = overlay.querySelector('.lock-icon');
+        
         if (isLoggedIn) {
+            const lastWatchedTime = lastWatchedTimes[videoData.id];
+            const timeSinceLastWatch = Date.now() - lastWatchedTime;
+            const isLocked = lastWatchedTime && (timeSinceLastWatch < LOCKOUT_DURATION_MS);
+
             if (isLocked) {
                 const remainingTimeMs = LOCKOUT_DURATION_MS - timeSinceLastWatch;
                 const remainingHours = Math.ceil(remainingTimeMs / (1000 * 60 * 60));
                 overlay.classList.add('disabled');
                 overlay.querySelector('.video-overlay-text').textContent = `Locked: ${remainingHours} hours remaining`;
+                lockIcon.style.display = 'block'; // Show Lock Icon
             } else {
                 overlay.classList.remove('disabled');
                 overlay.querySelector('.video-overlay-text').textContent = 'Video Play Karen Aur Coins Kamaen';
+                lockIcon.style.display = 'none'; // Hide Lock Icon
             }
         } else {
             overlay.classList.add('disabled');
             overlay.querySelector('.video-overlay-text').textContent = 'Login Karen Coins Kamane Ke Liye';
+            lockIcon.style.display = 'none'; // Hide Lock Icon
         }
     });
 }
@@ -299,7 +309,7 @@ function startTimer(sectionId, rewardTime, rewardCoins, overlayElement, videoLin
             const sourceDetails = {
                 source: "Video Reward",
                 reference: `Section ${sectionId} (${videoLink})`,
-                videoId: sectionId // Pass video ID for logging
+                videoId: sectionId 
             };
             await addCoinsToWallet(currentUser.uid, rewardCoins, sourceDetails);
             
@@ -316,6 +326,7 @@ function startTimer(sectionId, rewardTime, rewardCoins, overlayElement, videoLin
             overlayElement.style.opacity = '1';
             overlayElement.classList.add('disabled');
             overlayElement.querySelector('.video-overlay-text').textContent = 'Locked: 24 hours remaining';
+            overlayElement.querySelector('.lock-icon').style.display = 'block'; // Show lock icon after reward
         }
     }, 1000);
 }
@@ -393,6 +404,7 @@ function generateSections(videosToDisplay) {
                 
                 <!-- Overlay for click detection -->
                 <div class="video-overlay" id="overlay-${i}">
+                    <i class="fas fa-lock lock-icon" style="font-size: 30px; color: #e74c3c; margin-bottom: 10px; display: none;"></i>
                     <span class="video-overlay-text">Video Play Karen Aur Coins Kamaen</span>
                 </div>
 
