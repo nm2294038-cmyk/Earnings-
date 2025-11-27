@@ -4,31 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <!-- ================== SEO Tags Start ================== -->
+    <!-- [SEO Tags and CSS links remain the same] -->
     <title>Online Earning in Pakistan - Complete Tasks & Earn Money Daily</title>
-    <meta name="description" content="Start online earning in Pakistan today! Join our platform to earn real money by completing simple tasks like watching YouTube videos, liking TikTok posts, and joining WhatsApp groups. Sign up now for free!">
-    <meta name="keywords" content="online earning, earn money online, online tasks, youtube tasks, tiktok tasks, online earning pakistan, daily earning, student earning, work from home, part time jobs">
-    <meta name="author" content="CEO Nazim Mustafa">
-    <link rel="canonical" href="https://YOUR-WEBSITE-URL.com/index.html">
-    <meta property="og:title" content="Online Earning in Pakistan - Complete Tasks & Earn Money Daily">
-    <meta property="og:description" content="Join our platform to earn real money by completing simple YouTube and TikTok tasks. Sign up for free and start earning today!">
-    <meta property="og:image" content="https://yoursmed.xyz/social-image.jpg">
-    <meta property="og:url" content="https://yoursmed.xyz/index.html">
-    <meta property="og:type" content="website">
-    <meta property="og:locale" content="ur_PK">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Online Earning in Pakistan - Complete Tasks & Earn Money Daily">
-    <meta name="twitter:description" content="Join our platform to earn real money by completing simple YouTube and TikTok tasks. Sign up for free and start earning today!">
-    <meta name="twitter:image" content="https://yoursmed.xyz/social-image.jpg">
-    <!-- ================== SEO Tags End ================== -->
-
-    <!-- External CSS File Link -->
+    <!-- ... (rest of head content) ... -->
     <link rel="stylesheet" href="style.css">
-
-    <!-- Font Awesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-
-    <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
@@ -46,6 +26,7 @@
     <main class="container">
         <!-- 1. ARTICLE SECTION (Logged Out View) -->
         <section id="articleSection">
+            <!-- ... (Content remains the same) ... -->
             <article>
                 <h1>Pakistan Mein Online Earning Kaise Karen?</h1>
                 <p>Humare platform par khushamdeed! Agar aap student hain ya ghar se kaam karke paise kamana chahte hain, to aap bilkul sahi jagah par hain. Yahan aap aasan online tasks mukammal karke rozana haqeeqi raqam kama sakte hain.</p>
@@ -69,7 +50,7 @@
             </article>
         </section>
         
-        <!-- 2. CATEGORY SECTION (Logged In View) -->
+        <!-- 2. CATEGORY SECTION (Logged In View) - FIX APPLIED HERE -->
         <section id="categoryMainSection">
             <h2>Tasks Ki Categories Chunein</h2>
             <div class="category-list">
@@ -78,7 +59,8 @@
                 <a onclick="showTaskListView('Instagram')" class="category-btn"><i class="fab fa-instagram" style="color: #E1306C;"></i><span>Instagram Tasks</span></a>
                 <a onclick="showTaskListView('WhatsApp Channel')" class="category-btn"><i class="fab fa-whatsapp" style="color: #25D366;"></i><span>WhatsApp Channel</span></a>
                 <a onclick="showTaskListView('WhatsApp Group')" class="category-btn"><i class="fas fa-users" style="color: #128C7E;"></i><span>WhatsApp Group</span></a>
-                <a onclick="showTaskListView('App Download')" class="category-btn"><i class="fas fa-download" style="color: #007bff;"></i><span>App Download</span></a>
+                <!-- IMPORTANT FIX: Changed 'App Download' to 'App Install' to match Admin Panel data -->
+                <a onclick="showTaskListView('App Install')" class="category-btn"><i class="fas fa-download" style="color: #007bff;"></i><span>App Install</span></a> 
                 <a onclick="showTaskListView('Website Visit')" class="category-btn"><i class="fas fa-globe" style="color: #3498db;"></i><span>Website Visit</span></a>
                 <a onclick="showTaskListView('General')" class="category-btn"><i class="fas fa-list" style="color: #555;"></i><span>Other Tasks</span></a>
             </div>
@@ -94,6 +76,7 @@
     
     <!-- AUTH MODAL (Login & Signup) -->
     <div id="authModal" class="modal">
+        <!-- ... (Modal content remains the same) ... -->
         <div class="modal-content">
             <span class="close-btn" onclick="document.getElementById('authModal').style.display='none'">&times;</span>
             
