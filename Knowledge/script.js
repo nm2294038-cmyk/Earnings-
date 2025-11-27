@@ -19,7 +19,7 @@ if (typeof firebase !== 'undefined') {
 }
 
 const USERS_COLLECTION = "users";
-const WORKER_EARNINGS_COLLECTION = "worker_earnings"; // Added for Admin Logging
+const WORKER_EARNINGS_COLLECTION = "worker_earnings"; 
 const localStorageKey = 'matchGame_unlockedLevel_v_local';
 
 // Game State Variables
@@ -27,13 +27,16 @@ let currentLevelIndex = -1, selectedItem = null, matchedCount = 0, gameLocked = 
 let pairsInCurrentLevel = [];
 let audioCtx;
 const totalLevels = 250; 
-const MIN_COIN_REWARD = 1; // Random reward min
-const MAX_COIN_REWARD = 10; // Random reward max
+
+// --- UPDATED REWARD SETTINGS ---
+const MIN_COIN_REWARD = 10; // Ab kam se kam 10 coins milenge
+const MAX_COIN_REWARD = 20; // Zayada se zayada 20 coins milenge
+const GAME_COMPLETION_BONUS = 2000; // Game khatam karne par 2000 coins
 
 // User State Variables
 let currentUser = null;
 let userUnlockedLevel = 1; 
-let levelProgressListener = null; // Firestore listener for coins and progress
+let levelProgressListener = null; 
 let authMode = 'login';
 
 
@@ -96,24 +99,27 @@ for (let i = currentLevelCount; i < totalLevels; i++) {
 
 
 // ====================================================================
-// 3. FIREBASE/FIRESTORE DATA HANDLING (Updated Real-time Logic)
+// 3. FIREBASE/FIRESTORE DATA HANDLING
 // ====================================================================
 
 function getHighestUnlockedLevel() {
     return currentUser ? userUnlockedLevel : parseInt(localStorage.getItem(localStorageKey) || '1', 10);
 }
 
-// --- Log Earning for Admin Panel ---
-async function logGameEarning(amount, levelIndex) {
+// --- Log Earning for Admin Panel (Updated to handle Bonus) ---
+async function logGameEarning(amount, levelIndex, customType = null) {
     if (!currentUser || !db || amount <= 0) return;
+
+    // Agar customType (Bonus) hai to wo use kare, warna normal level text
+    const typeText = customType || `Level Completion (L${levelIndex + 1})`;
 
     try {
         await db.collection(WORKER_EARNINGS_COLLECTION).add({
             userId: currentUser.uid,
             email: currentUser.email,
             amount: amount,
-            source: "Match Game", // Used by Admin Panel to categorize earnings
-            type: `Level Completion (L${levelIndex + 1})`, 
+            source: "Match Game", 
+            type: typeText, 
             timestamp: firebase.firestore.FieldValue.serverTimestamp()
         });
     } catch (error) {
@@ -127,7 +133,6 @@ async function addCoins(amount) {
     
     const userRef = db.collection(USERS_COLLECTION).doc(currentUser.uid);
     
-    // Using transaction for safe wallet update
     try {
         await db.runTransaction(async (transaction) => {
             const doc = await transaction.get(userRef);
@@ -155,7 +160,7 @@ async function unlockLevel(levelNumber) {
         } else {
             localStorage.setItem(localStorageKey, levelNumber.toString());
             userUnlockedLevel = levelNumber; 
-            if (!currentUser) renderLevelSelectScreen(); // Manually refresh if local
+            if (!currentUser) renderLevelSelectScreen(); 
         }
     }
 }
@@ -166,7 +171,6 @@ async function initializeUserDataDisplay() {
     const userMaxLevelDisplay = document.getElementById('user-max-level');
 
     if (!currentUser || !db) {
-        // Local mode fallback
         coinCountSpan.textContent = '0';
         userUnlockedLevel = parseInt(localStorage.getItem(localStorageKey) || '1', 10);
         userMaxLevelDisplay.textContent = userUnlockedLevel;
@@ -174,11 +178,10 @@ async function initializeUserDataDisplay() {
         return;
     }
 
-    if (levelProgressListener) levelProgressListener(); // Detach previous listener
+    if (levelProgressListener) levelProgressListener(); 
     
     const userRef = db.collection(USERS_COLLECTION).doc(currentUser.uid);
     
-    // Setup real-time listener for coins and progress
     levelProgressListener = userRef.onSnapshot(doc => {
         if (doc.exists) {
             const data = doc.data();
@@ -188,7 +191,6 @@ async function initializeUserDataDisplay() {
             
             coinCountSpan.textContent = parseFloat(data.coins || 0).toFixed(0);
         } else {
-            // Initialize new user document
             userRef.set({
                 email: currentUser.email,
                 coins: 0,
@@ -415,28 +417,40 @@ async function handleItemClick(event) {
                 // Level Complete Logic
                 playSound('win'); 
                 
-                const nextLevelNum = currentLevelIndex + 2; 
-                if (nextLevelNum <= totalLevels) {
-                    await unlockLevel(nextLevelNum); 
-                }
-                
-                // --- COIN REWARD & LOGGING ---
+                // --- UPDATED REWARD LOGIC ---
                 if (currentUser) {
-                    // 1. Generate Random Reward (1 to 10 coins)
+                    // 1. Standard Level Reward (10 to 20 coins)
                     const rewardAmount = Math.floor(Math.random() * (MAX_COIN_REWARD - MIN_COIN_REWARD + 1)) + MIN_COIN_REWARD;
-                    
-                    // 2. Update User Wallet
                     await addCoins(rewardAmount); 
-                    
-                    // 3. Log the Earning for Admin Panel
                     await logGameEarning(rewardAmount, currentLevelIndex); 
                     
-                    document.getElementById('message').textContent += ` +${rewardAmount} Coins! 🪙`;
+                    document.getElementById('message').textContent += ` +${rewardAmount} Coins!`;
+
+                    // 2. CHECK FOR GAME COMPLETION (2000 Bonus)
+                    const nextLevelNum = currentLevelIndex + 2; 
+                    
+                    if (nextLevelNum > totalLevels) {
+                        // All levels finished! Award 2000 Bonus
+                        await addCoins(GAME_COMPLETION_BONUS);
+                        await logGameEarning(GAME_COMPLETION_BONUS, currentLevelIndex, "GRAND PRIZE: All Levels Completed");
+                        
+                        alert(`CONGRATULATIONS! You have completed all ${totalLevels} levels! \n\nYou earned a BONUS of ${GAME_COMPLETION_BONUS} Coins!`);
+                        document.getElementById('message').textContent = `ALL LEVELS COMPLETE! +${GAME_COMPLETION_BONUS} BONUS! 🏆`;
+                    } else {
+                        // Unlock next level
+                        await unlockLevel(nextLevelNum);
+                    }
+                } else {
+                    // Guest mode logic
+                    const nextLevelNum = currentLevelIndex + 2; 
+                    if (nextLevelNum <= totalLevels) {
+                        await unlockLevel(nextLevelNum); 
+                    }
                 }
                 
                 triggerCelebration(); 
-                document.getElementById('message').textContent = nextLevelNum <= totalLevels ? `Level ${currentLevelIndex + 1} Complete! 🎉` : `All ${totalLevels} levels complete! 🥳`;
                 
+                // Delay before going back to menu
                 setTimeout(goToLevelSelect, 3500); 
             } else { 
                 setTimeout(() => { gameLocked = false; document.getElementById('message').textContent = 'Select first item...'; }, 700); 
@@ -475,7 +489,6 @@ function triggerCelebration() {
 function goToLevelSelect() {
     showScreen('level-select-screen');
     gameLocked = false;
-    // renderLevelSelectScreen is handled by the Firestore listener
 }
 
 function restartLevel() {
