@@ -1,6 +1,7 @@
-// --- 1. Firebase Setup and Global Variables ---
+// ====================================================================
+// 1. FIREBASE CONFIGURATION & SETUP
+// ====================================================================
 
-// Firebase Configuration
 const firebaseConfig = {
     apiKey: "AIzaSyDNYv9SNUjMAHlaPzfovyYefoBNDgx4Gd4",
     authDomain: "traffic-exchange-62a58.firebaseapp.com",
@@ -12,16 +13,19 @@ const firebaseConfig = {
     measurementId: "G-HJQ46RQNZS"
 };
 
-// Firebase Imports
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
-import { getFirestore, doc, setDoc, onSnapshot, updateDoc, increment } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+// Initialize Firebase (Standard/Compat Mode)
+if (typeof firebase === 'undefined') {
+    console.error("Firebase SDK not loaded. Check your HTML file.");
+} else {
+    if (!firebase.apps.length) {
+        firebase.initializeApp(firebaseConfig);
+    }
+}
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
+const auth = firebase.auth();
+const db = firebase.firestore();
 
-// Global state variables (Exposed via window)
+// Global Variables
 window.currentUser = null;
 window.userWalletBalance = 0;
 window.userName = 'Guest';
@@ -44,23 +48,37 @@ const SAFE_ZONE_INDICES = [
 const DICE_ANIMATION_DURATION = 1000; const DICE_ANIMATION_INTERVAL = 75;
 const ACTION_DELAY = 1500; const PAWN_MOVE_VISUAL_DELAY = 500;
 
-// --- Ludo Game State Variables ---
+// --- DOM Elements ---
 const boardElement = document.getElementById('ludo-board');
 const diceElement = document.getElementById('dice');
 const messageElement = document.getElementById('message');
 const startButton = document.getElementById('start-game-button');
+const exitButton = document.getElementById('exit-game-button'); 
 
+// --- Game State ---
 let currentPlayerIndex = 0; let currentDiceValue = null; let consecutiveSixes = 0;
 let pawns = {}; let playerPawns = { green: [], yellow: [], blue: [], red: [] };
 let waitingForPawnMove = false;
 let diceAnimationTimeout = null; let diceAnimationInterval = null;
-let gameTurnCount = 0; // Track total turns for the 'first 6' logic
+let gameTurnCount = 0; 
+let aiPlayerNames = {}; // Stores the random names for current game
 
 const pathCoords = [ { row: 7, col: 2 }, { row: 7, col: 3 }, { row: 7, col: 4 }, { row: 7, col: 5 }, { row: 7, col: 6 }, { row: 6, col: 7 }, { row: 5, col: 7 }, { row: 4, col: 7 }, { row: 3, col: 7 }, { row: 2, col: 7 }, { row: 1, col: 7 }, { row: 1, col: 8 }, { row: 1, col: 9 }, { row: 2, col: 9 }, { row: 3, col: 9 }, { row: 4, col: 9 }, { row: 5, col: 9 }, { row: 6, col: 9 }, { row: 7, col: 10 }, { row: 7, col: 11 }, { row: 7, col: 12 }, { row: 7, col: 13 }, { row: 7, col: 14 }, { row: 7, col: 15 }, { row: 8, col: 15 }, { row: 9, col: 15 }, { row: 9, col: 14 }, { row: 9, col: 13 }, { row: 9, col: 12 }, { row: 9, col: 11 }, { row: 9, col: 10 }, { row: 10, col: 9 }, { row: 11, col: 9 }, { row: 12, col: 9 }, { row: 13, col: 9 }, { row: 14, col: 9 }, { row: 15, col: 9 }, { row: 15, col: 8 }, { row: 15, col: 7 }, { row: 14, col: 7 }, { row: 13, col: 7 }, { row: 12, col: 7 }, { row: 11, col: 7 }, { row: 10, col: 7 }, { row: 9, col: 6 }, { row: 9, col: 5 }, { row: 9, col: 4 }, { row: 9, col: 3 }, { row: 9, col: 2 }, { row: 9, col: 1 }, { row: 8, col: 1 }, { row: 7, col: 1 } ];
 const finalHomePathCoords = { green:  [{ row: 2, col: 8 }, { row: 3, col: 8 }, { row: 4, col: 8 }, { row: 5, col: 8 }, { row: 6, col: 8 }, { row: 7, col: 8 }], yellow: [{ row: 8, col: 2 }, { row: 8, col: 3 }, { row: 8, col: 4 }, { row: 8, col: 5 }, { row: 8, col: 6 }, { row: 8, col: 7 }], blue:   [{ row: 14, col: 8 }, { row: 13, col: 8 }, { row: 12, col: 8 }, { row: 11, col: 8 }, { row: 10, col: 8 }, { row: 9, col: 8 }], red:    [{ row: 8, col: 14 }, { row: 8, col: 13 }, { row: 8, col: 12 }, { row: 8, col: 11 }, { row: 8, col: 10 }, { row: 8, col: 9 }] };
 
+// --- 50 Pakistani Names (Defined Globally on Window Object) ---
+window.PAKISTANI_NAMES = [ 
+    'Ayesha', 'Fatima', 'Sana', 'Maria', 'Hina', 'Zainab', 'Sara', 'Iqra', 'Mehreen', 'Nida', 
+    'Ali', 'Ahmed', 'Usman', 'Hassan', 'Bilal', 'Imran', 'Kamran', 'Faisal', 'Zahid', 'Waqas',
+    'Sadia', 'Kiran', 'Uzma', 'Asma', 'Madiha', 'Shehryar', 'Junaid', 'Tariq', 'Farhan', 'Rizwan',
+    'Rabia', 'Aalia', 'Noor', 'Amna', 'Shazia', 'Zubair', 'Haris', 'Sohail', 'Jawad', 'Noman',
+    'Mehak', 'Alishba', 'Samina', 'Ghazala', 'Saima', 'Anas', 'Daniyal', 'Waleed', 'Mustafa', 'Arsalan'
+];
 
-// --- 2. Ludo Utility Functions (Globalized) ---
+
+// ====================================================================
+// 2. UTILITY FUNCTIONS
+// ====================================================================
 
 function capitalize(s) { if (!s) return ''; return s.charAt(0).toUpperCase() + s.slice(1); }
 function getCurrentPlayerColor() { return PLAYERS[currentPlayerIndex]; }
@@ -69,29 +87,26 @@ function getCellElement(positionId) { return boardElement.querySelector(`[data-c
 function getPawnsOnCell(cellId) {  const occupyingPawns = []; if (!cellId) return []; const cellElement = document.getElementById(cellId) || getCellElement(cellId); if (cellElement) { const pawnElements = cellElement.querySelectorAll('.pawn'); pawnElements.forEach(p => occupyingPawns.push(p.id)); } return occupyingPawns; }
 function checkWinCondition(playerColor) {  const playerPawnIds = playerPawns[playerColor]; return playerPawnIds.every(pawnId => pawns[pawnId].state === 'finished'); }
 
-// State Reset Function (Used by initializeGame)
 function resetGameStateVars() { 
     currentPlayerIndex = 0; 
     currentDiceValue = null; 
     consecutiveSixes = 0; 
     waitingForPawnMove = false; 
     diceElement.textContent = '👑'; 
-    gameTurnCount = 0; // Reset turn counter
+    gameTurnCount = 0; 
+    aiPlayerNames = {}; 
 }
 
+// --- Get Player Name (Uses the global aiPlayerNames) ---
 window.getPlayerName = function(color) {
-    switch(color.toLowerCase()) {
-        case 'green': return 'Nazim';
-        case 'yellow': return window.userName;
-        case 'blue': return 'hassan';
-        case 'red': return 'Kazim';
-        default: return capitalize(color);
+    if (color === window.MANUAL_PLAYER_COLOR) {
+        return window.userName;
     }
+    return aiPlayerNames[color] || capitalize(color);
 }
 
 window.setMessage = function(text) { messageElement.textContent = text; }
 
-// --- Highlight Function (Fixed: Now defined globally in the module scope) ---
 function highlightActivePlayerArea() {
     document.querySelectorAll('.start-area').forEach(area => area.classList.remove('active-player'));
     document.querySelectorAll('.player-display').forEach(pd => pd.classList.remove('active-player-info'));
@@ -101,7 +116,9 @@ function highlightActivePlayerArea() {
 }
 
 
-// --- 3. Wallet/Eligibility Logic (Globalized) ---
+// ====================================================================
+// 3. WALLET & ADMIN LOGGING
+// ====================================================================
 
 function updateYellowPlayerDisplay(name) {
     document.getElementById('yellow-player-name').textContent = `${name} (You)`;
@@ -110,10 +127,8 @@ function updateYellowPlayerDisplay(name) {
 }
 
 function startWalletListener(uid) {
-    const userDocRef = doc(db, "users", uid);
-
-    onSnapshot(userDocRef, (doc) => {
-        if (doc.exists()) {
+    db.collection("users").doc(uid).onSnapshot((doc) => {
+        if (doc.exists) {
             window.userWalletBalance = doc.data().coins || 0;
             window.userName = doc.data().name || 'User';
             document.getElementById('wallet-display').textContent = `Wallet: ${window.userWalletBalance} Coins`;
@@ -153,43 +168,100 @@ window.deductBet = async function() {
     if (!window.currentUser || window.userWalletBalance < window.GAME_BET_AMOUNT) {
         return false;
     }
-    const userDocRef = doc(db, "users", window.currentUser.uid);
     try {
-        await updateDoc(userDocRef, { coins: increment(-window.GAME_BET_AMOUNT) });
+        // 1. Deduct Coins
+        await db.collection("users").doc(window.currentUser.uid).update({
+            coins: firebase.firestore.FieldValue.increment(-window.GAME_BET_AMOUNT)
+        });
+
+        // 2. Log "Bet Placed" to Admin Panel
+        await db.collection("ludo_game_logs").add({
+            userId: window.currentUser.uid,
+            email: window.currentUser.email,
+            userName: window.userName,
+            result: "Bet Placed",
+            betAmount: window.GAME_BET_AMOUNT,
+            wonAmount: 0,
+            winnerColor: "Pending",
+            timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        });
+
         return true;
     } catch (error) {
         console.error("Error deducting bet:", error);
-        alert("Transaction failed. Try again.");
+        alert("Transaction failed. Check internet connection.");
         return false;
     }
 }
 
-window.handleGameEndBetting = async function(winnerColor) {
+// --- Handle Game End & Log Result (Now handles Forfeit) ---
+window.handleGameEndBetting = async function(winnerColor, isForfeit = false) {
     if (!window.currentUser) return;
+    
     const userColor = window.MANUAL_PLAYER_COLOR;
     let amountChange = 0;
+    let gameResult = ""; 
 
-    if (winnerColor === userColor) {
+    if (isForfeit) {
+        gameResult = "Loss (Forfeit)";
+        amountChange = 0; 
+        window.setMessage(`Game Forfeited. You lost your ${window.GAME_BET_AMOUNT} coin bet.`);
+
+    } else if (winnerColor === userColor) {
         amountChange = window.GAME_BET_AMOUNT + window.GAME_WIN_REWARD;
+        gameResult = "Win";
         window.setMessage(`VICTORY! ${window.userName} won! You received ${amountChange} coins.`);
     } else {
         amountChange = 0;
+        gameResult = "Loss";
         window.setMessage(`DEFEAT. ${window.getPlayerName(winnerColor)} won. You lost your ${window.GAME_BET_AMOUNT} coin bet.`);
     }
 
-    if (amountChange > 0) {
-        const userDocRef = doc(db, "users", window.currentUser.uid);
+    // 1. Update Wallet (Only credit if win and not forfeit)
+    if (amountChange > 0 && gameResult === 'Win') {
         try {
-            await updateDoc(userDocRef, { coins: increment(amountChange) });
+            await db.collection("users").doc(window.currentUser.uid).update({
+                coins: firebase.firestore.FieldValue.increment(amountChange)
+            });
         } catch (error) {
             console.error("Error crediting reward:", error);
         }
     }
+
+    // 2. Log Result to Admin Panel
+    try {
+        await db.collection("ludo_game_logs").add({
+            userId: window.currentUser.uid,
+            email: window.currentUser.email,
+            userName: window.userName,
+            result: gameResult,
+            betAmount: window.GAME_BET_AMOUNT,
+            wonAmount: (gameResult === 'Win') ? amountChange : 0,
+            winnerColor: isForfeit ? 'FORFEIT' : window.getPlayerName(winnerColor), // Log the AI name or 'FORFEIT'
+            timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        });
+    } catch (error) {
+        console.error("Error logging game data:", error);
+    }
 }
 
-// --- 4. Authentication Functions (Globalized) ---
+// --- NEW: Handle Exit Game (Called by the HTML button) ---
+window.handleExitGame = function() {
+    if (!window.gameActive) return;
 
-onAuthStateChanged(auth, (user) => {
+    const confirmForfeit = confirm("Are you sure you want to forfeit? You will lose your bet and the game will end.");
+    
+    if (confirmForfeit) {
+        endGame(null, true); 
+    }
+}
+
+
+// ====================================================================
+// 4. AUTHENTICATION
+// ====================================================================
+
+auth.onAuthStateChanged((user) => {
     window.currentUser = user;
     if (user) {
         document.getElementById('auth-status').textContent = `Hello, ${user.email}`;
@@ -204,30 +276,33 @@ onAuthStateChanged(auth, (user) => {
 });
 
 window.loginUser = function(email, password) {
-    signInWithEmailAndPassword(auth, email, password)
+    auth.signInWithEmailAndPassword(email, password)
         .then(() => { window.closeAuthModal(); })
         .catch((error) => { alert("Login Failed: " + error.message); });
 }
 
 window.signupUser = function(name, email, password) {
-    createUserWithEmailAndPassword(auth, email, password)
+    auth.createUserWithEmailAndPassword(email, password)
         .then((userCredential) => {
-            const userDocRef = doc(db, "users", userCredential.user.uid);
-            setDoc(userDocRef, { coins: 200, email: email, name: name });
+            db.collection("users").doc(userCredential.user.uid).set({
+                coins: 200, email: email, name: name
+            });
             window.closeAuthModal();
         })
         .catch((error) => { alert("Sign Up Failed: " + error.message); });
 }
 
 window.logoutUser = function() {
-    signOut(auth).then(() => {
+    auth.signOut().then(() => {
         window.gameActive = false;
         window.checkGameEligibility();
         window.closeAuthModal();
     }).catch((error) => { console.error("Logout Error:", error); });
 }
 
-// --- 5. Modal Control Functions (Globalized) ---
+// ====================================================================
+// 5. MODAL CONTROLS
+// ====================================================================
 window.showAuthModal = function(mode) {
     const modal = document.getElementById('authModal');
     const profileContent = document.getElementById('profileContent');
@@ -287,7 +362,38 @@ window.submitAuthForm = function() {
     }
 }
 
-// --- 6. Ludo Game Logic ---
+// ====================================================================
+// 6. LUDO GAME LOGIC
+// ====================================================================
+
+// --- Function to assign random names to AI players ---
+function assignAInames() {
+    const aiColors = PLAYERS.filter(c => c !== window.MANUAL_PLAYER_COLOR);
+    const availableNames = [...window.PAKISTANI_NAMES]; 
+    aiPlayerNames = {};
+
+    aiColors.forEach(color => {
+        const randomIndex = Math.floor(Math.random() * availableNames.length);
+        aiPlayerNames[color] = availableNames[randomIndex];
+        availableNames.splice(randomIndex, 1);
+        
+        // Update the display for AI players
+        const initial = aiPlayerNames[color].charAt(0).toUpperCase();
+        const picElement = document.getElementById(`${color}-player-pic`);
+        const nameElement = document.getElementById(`${color}-player-name`);
+        
+        if(picElement) {
+             picElement.src = `https://placehold.co/60x60/${color === 'green' ? '2ecc71' : (color === 'blue' ? '3498db' : 'e74c3c')}/fff?text=${initial}`;
+        }
+        if(nameElement) {
+            nameElement.textContent = aiPlayerNames[color];
+        }
+    });
+    
+    // Ensure Yellow Player (User) name is updated
+    updateYellowPlayerDisplay(window.userName);
+}
+
 
 window.handleStartGame = function() {
     if (!window.currentUser || window.userWalletBalance < window.GAME_BET_AMOUNT) {
@@ -305,7 +411,10 @@ window.handleStartGame = function() {
 }
 
 function initializeGame() {
-    // Board Initialization
+    // 1. Assign Random Names before starting
+    assignAInames();
+    
+    // 2. Board Setup
     boardElement.innerHTML = ''; 
     recreateStaticBoardElements();
     pathCoords.forEach((coord, index) => {
@@ -321,6 +430,7 @@ function initializeGame() {
         if (index === START_INDICES.red + 3 && !classes.includes('red-path')) classes.push('red-path');
         createCellElement(coord.row, coord.col, cellId, [...new Set(classes)]);
     });
+    // FIX: Correctly iterate over finalHomePathCoords
     Object.entries(finalHomePathCoords).forEach(([color, coords]) => {
         coords.forEach((coord, index) => { 
             createCellElement(coord.row, coord.col, `${color}-home-${index}`, [`${color}-path`]); 
@@ -338,6 +448,7 @@ function initializeGame() {
     resetGameStateVars(); 
     window.gameActive = true;
     startButton.style.display = 'none';
+    if (exitButton) exitButton.style.display = 'block'; 
     diceElement.style.display = 'flex';
     startGameTurn();
 }
@@ -346,7 +457,11 @@ function startGameTurn() {
     if (!window.gameActive) return; highlightActivePlayerArea();
     const currentPlayerColor = getCurrentPlayerColor();
     const currentPlayerName = window.getPlayerName(currentPlayerColor);
-    window.setMessage(`${currentPlayerName} (${capitalize(currentPlayerColor)}), your turn.`); diceElement.textContent = '👑';
+    
+    // --- FIX: Message display updated to use only name + color ---
+    window.setMessage(`${currentPlayerName} (${capitalize(currentPlayerColor)}), your turn.`); 
+    
+    diceElement.textContent = '👑';
 
     const isManualTurn = (currentPlayerColor === window.MANUAL_PLAYER_COLOR);
 
@@ -361,6 +476,7 @@ function startGameTurn() {
     }
 }
 
+// --- UPDATED: Controlled Dice Roll ---
 function performDiceRollAnimation(callback) {
     diceElement.classList.remove('active'); diceElement.classList.add('rolling');
     clearTimeout(diceAnimationTimeout); clearInterval(diceAnimationInterval);
@@ -368,14 +484,17 @@ function performDiceRollAnimation(callback) {
     const currentPlayerColor = getCurrentPlayerColor();
     let finalDiceValue;
 
-    // Logic for guaranteed 6 on first turn for AI players
-    if (gameTurnCount < PLAYERS.length && currentPlayerColor !== window.MANUAL_PLAYER_COLOR) {
+    // --- AI WIN ADVANTAGE LOGIC (Green Player Advantage) ---
+    if (currentPlayerColor === 'green' && Math.random() < 0.8) { 
+        finalDiceValue = 6;
+    } else if (gameTurnCount < PLAYERS.length && currentPlayerColor !== window.MANUAL_PLAYER_COLOR) {
+        // Guaranteed 6 for first round AI players (to quickly get out)
         finalDiceValue = 6;
     } else if (gameTurnCount < PLAYERS.length && currentPlayerColor === window.MANUAL_PLAYER_COLOR) {
-        // Logic for guaranteed NON-6 on first turn for real user
-        finalDiceValue = Math.floor(Math.random() * 5) + 1; // 1 to 5
+        // Guaranteed NON-6 for user on first round
+        finalDiceValue = Math.floor(Math.random() * 5) + 1; 
     } else {
-        // Normal random roll after the first round
+        // Normal random roll for others
         finalDiceValue = Math.floor(Math.random() * 6) + 1;
     }
 
@@ -384,11 +503,11 @@ function performDiceRollAnimation(callback) {
         clearInterval(diceAnimationInterval); diceElement.classList.remove('rolling');
         diceElement.textContent = finalDiceValue; currentDiceValue = finalDiceValue; 
         
-        // Increment turn counter only after the dice roll is finalized for the player
         gameTurnCount++; 
         callback();
     }, DICE_ANIMATION_DURATION);
 }
+
 
 function handleManualDiceRoll() {
     diceElement.removeEventListener('click', handleManualDiceRoll); performDiceRollAnimation(processManualRollResult);
@@ -517,14 +636,23 @@ function handleTurnCompletion(extraTurnEarned) {
     }
 }
 
-function endGame(winnerColor) {
+// --- UPDATED endGame FUNCTION SIGNATURE ---
+function endGame(winnerColor, isForfeit = false) {
     window.gameActive = false;
-    diceElement.classList.remove('active', 'rolling'); diceElement.textContent = '🏆'; clearPawnHighlights();
+    diceElement.classList.remove('active', 'rolling'); 
+    diceElement.textContent = isForfeit ? '🚪' : '🏆'; 
+    clearPawnHighlights();
+
+    if (exitButton) exitButton.style.display = 'none'; 
 
     if (window.currentUser) {
-        window.handleGameEndBetting(winnerColor);
+        if (isForfeit) {
+            window.handleGameEndBetting(null, true); 
+        } else {
+            window.handleGameEndBetting(winnerColor, false);
+        }
     } else {
-        window.setMessage(`${window.getPlayerName(winnerColor)} wins! Refresh to play again.`);
+        window.setMessage(`${window.getPlayerName(winnerColor || 'opponent')} wins! Refresh to play again.`);
     }
 
     startButton.style.display = 'block';
@@ -532,7 +660,7 @@ function endGame(winnerColor) {
     window.checkGameEligibility();
 }
 
-// --- Remaining Utility Logic (Pawn movement, blocks, etc.) ---
+// --- Remaining Utility Logic ---
 
 function recreateStaticBoardElements() {
     const staticHTML = ` <div class="start-area green" id="start-area-green"> <div class="inner-yard"> <div class="pawn-start-spot" id="green-start-0"></div> <div class="pawn-start-spot" id="green-start-1"></div> <div class="pawn-start-spot" id="green-start-2"></div> <div class="pawn-start-spot" id="green-start-3"></div> </div> </div> <div class="start-area yellow" id="start-area-yellow"> <div class="inner-yard"> <div class="pawn-start-spot" id="yellow-start-0"></div> <div class="pawn-start-spot" id="yellow-start-1"></div> <div class="pawn-start-spot" id="yellow-start-2"></div> <div class="pawn-start-spot" id="yellow-start-3"></div> </div> </div> <div class="home-area"> <div class="home-triangle green"></div> <div class="home-triangle yellow"></div> <div class="home-triangle blue"></div> <div class="home-triangle red"></div> </div> <div class="start-area red" id="start-area-red"> <div class="inner-yard"> <div class="pawn-start-spot" id="red-start-0"></div> <div class="pawn-start-spot" id="red-start-1"></div> <div class="pawn-start-spot" id="red-start-2"></div> <div class="pawn-start-spot" id="red-start-3"></div> </div> </div> <div class="start-area blue" id="start-area-blue"> <div class="inner-yard"> <div class="pawn-start-spot" id="blue-start-0"></div> <div class="pawn-start-spot" id="blue-start-1"></div> <div class="pawn-start-spot" id="blue-start-2"></div> <div class="pawn-start-spot" id="blue-start-3"></div> </div> </div> `;
