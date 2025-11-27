@@ -68,7 +68,7 @@ const finalHomePathCoords = { green:  [{ row: 2, col: 8 }, { row: 3, col: 8 }, {
 
 // --- 50 Pakistani Names (Defined Globally on Window Object) ---
 window.PAKISTANI_NAMES = [ 
-    'Ayesha', 'Fatima', 'Sana', 'Maria', 'Hina', 'Zainab', 'Sara', 'Iqra', 'Mehreen', 'Nida', 
+    'Ayesha','Nazim' ,'Fatima', 'Sana', 'Maria', 'Hina', 'Zainab', 'Sara', 'Iqra', 'Mehreen', 'Nida', 
     'Ali', 'Ahmed', 'Usman', 'Hassan', 'Bilal', 'Imran', 'Kamran', 'Faisal', 'Zahid', 'Waqas',
     'Sadia', 'Kiran', 'Uzma', 'Asma', 'Madiha', 'Shehryar', 'Junaid', 'Tariq', 'Farhan', 'Rizwan',
     'Rabia', 'Aalia', 'Noor', 'Amna', 'Shazia', 'Zubair', 'Haris', 'Sohail', 'Jawad', 'Noman',
