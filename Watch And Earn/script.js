@@ -32,6 +32,10 @@ let currentUser = null;
 const VIDEO_COLLECTION = 'video_sections';
 const EARNINGS_COLLECTION = 'worker_earnings';
 const USER_COLLECTION = 'users';
+const WATCH_LOGS_COLLECTION = 'video_watch_logs'; // NEW COLLECTION
+
+// --- LOCKOUT CONSTANT (24 hours in milliseconds) ---
+const LOCKOUT_DURATION_MS = 24 * 60 * 60 * 1000; 
 
 // --- DEFAULT VIDEO LINKS (FALLBACK DATA) ---
 const DEFAULT_VIDEOS = [
@@ -49,7 +53,8 @@ const DEFAULT_VIDEOS = [
 
 // --- NEW: Video Data State ---
 let availableVideos = []; 
-const rewardedVideos = {}; 
+let rewardedVideos = {}; // {sectionId: boolean} to track rewards earned in current session
+let lastWatchedTimes = {}; // {sectionId: timestamp} to track 24h lockout
 
 // --- DOM ELEMENTS ---
 const authModal = document.getElementById('authModal');
@@ -117,7 +122,8 @@ document.getElementById('authForm').addEventListener('submit', async (e) => {
 
 logoutButton.addEventListener('click', async () => {
     await auth.signOut();
-    Object.keys(rewardedVideos).forEach(key => rewardedVideos[key] = false);
+    rewardedVideos = {};
+    lastWatchedTimes = {};
     alert("Logout Successful.");
 });
 
@@ -131,6 +137,7 @@ auth.onAuthStateChanged(user => {
         toggleText.style.display = 'none';
         
         listenToWallet(user.uid);
+        loadWatchLogs(user.uid); // Load logs on login
         updateVideoOverlays(true);
 
     } else {
@@ -139,6 +146,8 @@ auth.onAuthStateChanged(user => {
         logoutButton.style.display = 'none';
         toggleText.style.display = 'block';
         
+        rewardedVideos = {};
+        lastWatchedTimes = {};
         updateVideoOverlays(false);
     }
 });
@@ -163,6 +172,29 @@ function listenToWallet(uid) {
     });
 }
 
+// --- NEW: Load Watch Logs for Lockout Check ---
+function loadWatchLogs(uid) {
+    lastWatchedTimes = {};
+    db.collection(WATCH_LOGS_COLLECTION)
+      .where('userId', '==', uid)
+      .get()
+      .then(snapshot => {
+          snapshot.forEach(doc => {
+              const data = doc.data();
+              // Store the last watched timestamp for each video ID
+              if (data.videoId && data.lastWatched && data.lastWatched.toDate) {
+                  lastWatchedTimes[data.videoId] = data.lastWatched.toDate().getTime();
+              }
+          });
+          // Re-render overlays after loading logs
+          updateVideoOverlays(true);
+      })
+      .catch(error => {
+          console.error("Error loading watch logs:", error);
+      });
+}
+
+
 async function addCoinsToWallet(uid, amount, sourceDetails) {
     const userRef = db.collection(USER_COLLECTION).doc(uid);
     const userEmail = currentUser.email;
@@ -182,6 +214,17 @@ async function addCoinsToWallet(uid, amount, sourceDetails) {
             reference: sourceDetails.reference,
             timestamp: firebase.firestore.FieldValue.serverTimestamp()
         });
+        
+        // 3. Log Watch Time for 24-Hour Lockout (NEW LOG)
+        await db.collection(WATCH_LOGS_COLLECTION).add({
+            userId: uid,
+            videoId: sourceDetails.videoId,
+            lastWatched: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        
+        // Update local state immediately
+        lastWatchedTimes[sourceDetails.videoId] = Date.now();
+
 
     } catch (error) {
         console.error("Error updating wallet/logging earning:", error);
@@ -203,9 +246,25 @@ function getYouTubeId(url) {
 
 function updateVideoOverlays(isLoggedIn) {
     document.querySelectorAll('.video-overlay').forEach(overlay => {
+        const sectionId = overlay.id.split('-')[1];
+        const videoData = availableVideos.find(v => v.id == sectionId);
+        
+        if (!videoData) return;
+
+        const lastWatchedTime = lastWatchedTimes[videoData.id];
+        const timeSinceLastWatch = Date.now() - lastWatchedTime;
+        const isLocked = lastWatchedTime && (timeSinceLastWatch < LOCKOUT_DURATION_MS);
+
         if (isLoggedIn) {
-            overlay.classList.remove('disabled');
-            overlay.querySelector('.video-overlay-text').textContent = 'Video Play Karen Aur Coins Kamaen';
+            if (isLocked) {
+                const remainingTimeMs = LOCKOUT_DURATION_MS - timeSinceLastWatch;
+                const remainingHours = Math.ceil(remainingTimeMs / (1000 * 60 * 60));
+                overlay.classList.add('disabled');
+                overlay.querySelector('.video-overlay-text').textContent = `Locked: ${remainingHours} hours remaining`;
+            } else {
+                overlay.classList.remove('disabled');
+                overlay.querySelector('.video-overlay-text').textContent = 'Video Play Karen Aur Coins Kamaen';
+            }
         } else {
             overlay.classList.add('disabled');
             overlay.querySelector('.video-overlay-text').textContent = 'Login Karen Coins Kamane Ke Liye';
@@ -239,7 +298,8 @@ function startTimer(sectionId, rewardTime, rewardCoins, overlayElement, videoLin
             // --- 1. Coins add karna ---
             const sourceDetails = {
                 source: "Video Reward",
-                reference: `Section ${sectionId} (${videoLink})`
+                reference: `Section ${sectionId} (${videoLink})`,
+                videoId: sectionId // Pass video ID for logging
             };
             await addCoinsToWallet(currentUser.uid, rewardCoins, sourceDetails);
             
@@ -251,11 +311,11 @@ function startTimer(sectionId, rewardTime, rewardCoins, overlayElement, videoLin
             // --- 3. Popup dikhana ---
             showRewardPopup(rewardCoins);
             
-            // --- 4. Overlay ko wapas lana ---
+            // --- 4. Overlay ko wapas lana aur lock karna ---
             overlayElement.style.display = 'flex';
             overlayElement.style.opacity = '1';
-            overlayElement.querySelector('.video-overlay-text').textContent = 'Reward Mil Chuka Hai!';
             overlayElement.classList.add('disabled');
+            overlayElement.querySelector('.video-overlay-text').textContent = 'Locked: 24 hours remaining';
         }
     }, 1000);
 }
@@ -270,8 +330,17 @@ function handleVideoClick(event, sectionId, videoData) {
         return;
     }
     
+    // Check 24-hour lockout
+    const lastWatchedTime = lastWatchedTimes[videoData.id];
+    if (lastWatchedTime && (Date.now() - lastWatchedTime < LOCKOUT_DURATION_MS)) {
+        const remainingTimeMs = LOCKOUT_DURATION_MS - (Date.now() - lastWatchedTime);
+        const remainingHours = Math.ceil(remainingTimeMs / (1000 * 60 * 60));
+        alert(`Ye video abhi locked hai. Aap ${remainingHours} ghante baad dobara dekh sakte hain.`);
+        return;
+    }
+    
     if (rewardedVideos[sectionId]) {
-        alert("Aap is video ka reward pehle hi le chuke hain.");
+        alert("Aap is video ka reward pehle hi le chuke hain (Is session mein).");
         return;
     }
     
@@ -345,7 +414,6 @@ function generateSections(videosToDisplay) {
         rewardedVideos[i] = false; 
 
         const overlayElement = document.getElementById(`overlay-${i}`);
-        // Pass the entire video object to the handler
         overlayElement.addEventListener('click', (e) => handleVideoClick(e, i, video));
     });
     updateVideoOverlays(currentUser);
@@ -356,13 +424,11 @@ function listenToVideoSections() {
     db.collection(VIDEO_COLLECTION).orderBy('id').onSnapshot(snapshot => {
         availableVideos = [];
         snapshot.forEach(doc => {
-            // Ensure ID is a number for sorting/mapping
             const data = doc.data();
             data.id = Number(data.id); 
             availableVideos.push(data);
         });
         
-        // If Firestore is empty, use the default videos
         if (availableVideos.length === 0) {
             console.log("Firestore video list is empty. Using default hardcoded videos.");
             generateSections(DEFAULT_VIDEOS);
@@ -372,7 +438,6 @@ function listenToVideoSections() {
 
     }, error => {
         console.error("Error fetching video sections:", error);
-        // Fallback to default videos on connection error
         container.innerHTML = '<p style="text-align:center; padding:50px; color:orange;">Warning: Could not connect to Admin Videos. Using default videos.</p>';
         generateSections(DEFAULT_VIDEOS);
     });
