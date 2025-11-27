@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ludo Game - Mixed Play (User Controls Yellow)</title>
     <link rel="stylesheet" href="style.css">
+    
+    <!-- FIREBASE COMPAT SCRIPTS (Needed for script.js to work without 'import') -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
 </head>
 <body>
 
@@ -14,7 +18,6 @@
         <h1>Ludo</h1>
         <div class="profile-section">
             <span id="wallet-display">Wallet: -</span>
-            <!-- showAuthModal is called globally -->
             <div class="profile-icon" onclick="showAuthModal(currentUser ? 'profile' : 'login')">👤</div>
         </div>
     </div>
@@ -32,13 +35,15 @@
     <script type="text/javascript" src="//www.highperformanceformat.com/3d43a842c228553bbce99198dae1a603/invoke.js"></script>
 
     <div class="game-wrapper">
+        
+        <!-- GREEN Player (AI - Needs Random Name) -->
         <div class="player-display player-green" id="player-info-green">
-            <img src="https://placehold.co/60x60/00A300/FFF?text=N" alt="Nazim" class="profile-pic">
-            <span class="player-name">Nazim (User)</span>
+            <img src="https://placehold.co/60x60/00A300/FFF?text=G" alt="AI Player" class="profile-pic" id="green-player-pic">
+            <span class="player-name" id="green-player-name">Random</span>
             <div class="extra-icon popsicle-icon">🍦</div> 
         </div>
         
-        <!-- Yellow player name placeholder (Updated by JS on login) -->
+        <!-- YELLOW Player (USER - Needs Sign Up Name) -->
         <div class="player-display player-yellow" id="player-info-yellow">
             <img src="https://placehold.co/60x60/FFD700/333?text=Y" alt="Player" class="profile-pic" id="yellow-player-pic">
             <span class="player-name" id="yellow-player-name">Guest (You)</span>
@@ -49,26 +54,35 @@
             <div class="ludo-board" id="ludo-board"></div>
         </div>
 
+        <!-- RED Player (AI - Needs Random Name) -->
         <div class="player-display player-red" id="player-info-red">
             <div class="emoji-chat-bubble">
                 <div class="emoji-face">😎</div>
             </div>
-            <img src="https://placehold.co/60x60/D70000/FFF?text=K" alt="Kazim" class="profile-pic">
-            <span class="player-name">Other User</span>
+            <img src="https://placehold.co/60x60/D70000/FFF?text=R" alt="AI Player" class="profile-pic" id="red-player-pic">
+            <span class="player-name" id="red-player-name">Random </span>
         </div>
+        
+        <!-- BLUE Player (AI - Needs Random Name) -->
         <div class="player-display player-blue" id="player-info-blue">
-            <img src="https://placehold.co/60x60/0077D9/FFF?text=H" alt="hassan" class="profile-pic">
-            <span class="player-name">Other User</span>
+            <img src="https://placehold.co/60x60/0077D9/FFF?text=B" alt="AI Player" class="profile-pic" id="blue-player-pic">
+            <span class="player-name" id="blue-player-name">Random </span>
             <div class="extra-icon gift-icon">🎁</div> 
         </div>
     </div>
 
     <div class="main-controls-area">
         <div id="message">Please Login/Sign Up to start the game.</div>
-        <!-- handleStartGame is called globally -->
+        
         <button id="start-game-button" onclick="handleStartGame()">
-            Start Game (Need 320 Coins)
+            Start Game (Need 310 Coins)
         </button>
+        
+        <!-- EXIT BUTTON ADDED HERE -->
+        <button id="exit-game-button" onclick="handleExitGame()" style="display:none; background-color: #e74c3c; color: white; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin-top: 10px;">
+            Exit Game (Forfeit Bet)
+        </button>
+        
         <div class="dice-container">
             <div id="dice" title="Dice">👑</div>
         </div>
@@ -77,29 +91,25 @@
     <!-- 2. LOGIN/SIGNUP MODAL -->
     <div id="authModal" class="modal">
         <div class="modal-content">
-            <!-- closeAuthModal is called globally -->
             <span class="close-btn" onclick="closeAuthModal()">&times;</span>
             <h2 id="modalTitle">Login</h2>
             <div id="authContent" data-mode="login">
                 <input type="text" id="authName" placeholder="Name (for Sign Up only)" style="display:none;">
                 <input type="email" id="authEmail" placeholder="Email" required>
                 <input type="password" id="authPassword" placeholder="Password" required>
-                 <!-- submitAuthForm is called globally -->
                 <button id="authSubmitButton" onclick="submitAuthForm()">Login</button>
-                 <!-- toggleAuthMode is called globally -->
                 <p id="toggleAuth" style="cursor: pointer; color: #ccc;" onclick="toggleAuthMode()">Need an account? Sign Up</p>
             </div>
             <div id="profileContent" style="display:none;">
                 <p id="auth-status" style="font-size: 1.1rem;"></p>
                 <p>Current Balance: <span id="profile-wallet-balance"></span></p>
-                <!-- logoutUser is called globally -->
                 <button onclick="logoutUser()">Logout</button>
             </div>
         </div>
     </div>
 
-    <!-- 3. MAIN SCRIPT (Must be type="module" for Firebase imports) -->
-    <script type="module" src="script.js"></script>
+    <!-- 3. MAIN SCRIPT (Removed type="module") -->
+    <script src="script.js"></script>
 
 </body>
 </html>
