@@ -1,5 +1,10 @@
-// --- FIREBASE CONFIGURATION AND INITIALIZATION ---
-// IMPORTANT: Make sure the Firebase SDKs are loaded in index.html HEAD before this script runs.
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+import { getFirestore, collection, doc, onSnapshot, setDoc, addDoc, query, where, limit, orderBy } 
+from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged } 
+from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
+
+// --- Configuration ---
 const firebaseConfig = {
     apiKey: "AIzaSyDNYv9SNUjMAHlaPzfovyYefoBNDgx4Gd4",
     authDomain: "traffic-exchange-62a58.firebaseapp.com",
@@ -9,259 +14,338 @@ const firebaseConfig = {
     appId: "1:474999317287:web:8e28a2f5f1a959d8ce3f02",
     measurementId: "G-HJQ46RQNZS"
 };
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const auth = getAuth(app);
 
-firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
-const db = firebase.firestore();
-
-// --- GLOBAL STATE AND CONSTANTS ---
-let isSignupMode = false;
+// --- Global States ---
+let globalCoinsData = [];
+let userHoldings = {};
 let currentUser = null;
-const COIN_RATE_PKR = 2; // 2 PKR = 1 Coin
-const COIN_PACKAGES = [25,50 ,100, 200, 300, 500, 1000, 2000, 5000,10000,15000,20000,25000, 30000]; 
 
-// --- DOM ELEMENTS ---
-const authModal = document.getElementById('authModal');
-const depositContent = document.getElementById('depositContent');
-const depositArticle = document.getElementById('depositArticle');
-const depositForm = document.getElementById('depositForm');
-const depositHistoryList = document.getElementById('depositHistoryList');
-const currentBalanceDisplay = document.getElementById('currentBalanceDisplay');
-const depositAmountInput = document.getElementById('depositAmount');
-const coinPackagesContainer = document.getElementById('coinPackages');
-const authTitle = document.getElementById('authTitle');
-const authButton = document.getElementById('authButton');
-const toggleText = document.getElementById('toggleText');
-const logoutButton = document.getElementById('logoutButton');
-const profileIconButton = document.getElementById('profileIconButton');
-
-// New Form Fields
-const senderNameInput = document.getElementById('senderName');
-const senderAccountInput = document.getElementById('senderAccount');
-const senderCnicInput = document.getElementById('senderCnic');
-const transactionIdInput = document.getElementById('transactionId');
+// --- DOM Elements (Declared globally, initialized inside DOMContentLoaded) ---
+let headerWallet, userDisplay, loginModal, depositModal, openDepositModalHeader, walletTableBody;
+let closeDepositModal, btnSubmitDeposit, depCoinSelect, depAmountPKR, depCoinEst, depHistoryList;
+let btnLoginAction, btnSignupAction, openLoginBtn, closeLoginModal;
 
 
-// --- INITIAL SETUP: RENDER COIN PACKAGES ---
-function renderCoinPackages() {
-    coinPackagesContainer.innerHTML = '';
-    COIN_PACKAGES.forEach(coins => {
-        const pkrAmount = coins * COIN_RATE_PKR;
-        const button = document.createElement('button');
-        button.className = 'coin-package-btn';
-        button.setAttribute('data-pkr', pkrAmount); 
-        button.textContent = `${coins} Coins (${pkrAmount} PKR)`;
-        coinPackagesContainer.appendChild(button);
-    });
-}
-renderCoinPackages();
+// --- Helper Functions ---
+const getDbField = (coinId) => (coinId === 'main') ? 'coins' : coinId;
+const getCoinSymbol = (id) => {
+    const c = globalCoinsData.find(x => x.id === id);
+    return c ? c.symbol : id.toUpperCase();
+};
+const formatCompact = (num) => {
+    if (num === null || num === undefined || num === 0) return '0';
+    const absNum = Math.abs(num);
+    if (absNum >= 1000000000) return (num / 1000000000).toFixed(1).replace(/\.0$/, '') + 'B';
+    if (absNum >= 1000000) return (num / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
+    if (absNum >= 1000) return (num / 1000).toFixed(1).replace(/\.0$/, '') + 'K';
+    return num.toLocaleString(undefined, { maximumFractionDigits: 0 });
+};
 
-// --- COIN PACKAGE SELECTION LOGIC ---
-coinPackagesContainer.addEventListener('click', (e) => {
-    if (e.target.classList.contains('coin-package-btn')) {
-        const selectedPkr = Number(e.target.getAttribute('data-pkr'));
-        
-        // 1. Update Input Field with PKR amount
-        depositAmountInput.value = selectedPkr;
-        
-        // 2. Update Visual Selection
-        document.querySelectorAll('.coin-package-btn').forEach(btn => {
-            btn.classList.remove('selected');
-        });
-        e.target.classList.add('selected');
-    }
-});
-
-// --- EVENT LISTENER TO OPEN MODAL VIA ICON ---
-profileIconButton.addEventListener('click', () => {
-    authModal.style.display = 'flex';
-    if (!auth.currentUser) {
-        isSignupMode = false;
-        toggleAuthMode();
-    }
-});
+const closeAllModals = () => {
+    loginModal.style.display = 'none';
+    depositModal.style.display = 'none';
+};
+window.onclick = (e) => { 
+    if(e.target.className === 'modal-overlay') closeAllModals(); 
+};
 
 
-// --- AUTH MODAL LOGIC ---
+// --- Core Functions ---
 
-function toggleAuthMode() {
-    isSignupMode = !isSignupMode;
-    if (isSignupMode) {
-        authTitle.textContent = "Signup Karen";
-        authButton.textContent = "Signup";
-        toggleText.innerHTML = 'Account hai? <a onclick="toggleAuthMode()">Login Karen</a>';
-    } else {
-        authTitle.textContent = "Login Karen";
-        authButton.textContent = "Login";
-        toggleText.innerHTML = 'Account nahi hai? <a onclick="toggleAuthMode()">Signup Karen</a>';
-    }
-}
-
-document.getElementById('authForm').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const email = document.getElementById('authEmail').value;
-    const password = document.getElementById('authPassword').value;
-
-    try {
-        if (isSignupMode) {
-            const userCredential = await auth.createUserWithEmailAndPassword(email, password);
-            await db.collection('users').doc(userCredential.user.uid).set({ coins: 0, email: email });
-            alert("Signup Successful! Welcome.");
-        } else {
-            await auth.signInWithEmailAndPassword(email, password);
-            alert("Login Successful!");
-        }
-        authModal.style.display = 'none';
-    } catch (error) {
-        alert(`Authentication Failed: ${error.message}`);
-    }
-});
-
-logoutButton.addEventListener('click', async () => {
-    await auth.signOut();
-    alert("Logout Successful.");
-});
-
-// Real-time Auth State Listener
-auth.onAuthStateChanged(user => {
-    currentUser = user;
-    if (user) {
-        // Logged In: Show Deposit Section, Hide Article Guide
-        depositArticle.style.display = 'none';
-        depositContent.style.display = 'block';
-        currentBalanceDisplay.style.display = 'block';
-        logoutButton.style.display = 'block';
-        toggleText.style.display = 'none';
-        
-        listenToWallet(user.uid);
-        listenToDepositHistory(user.uid);
-
-    } else {
-        // Logged Out: Show Article Guide, Hide Deposit Section
-        depositArticle.style.display = 'block';
-        depositContent.style.display = 'none';
-        currentBalanceDisplay.style.display = 'none';
-        logoutButton.style.display = 'none';
-        toggleText.style.display = 'block';
-        authModal.style.display = 'none';
-    }
-});
-
-// --- WALLET LOGIC (Real-Time Listener) ---
-
-function listenToWallet(uid) {
-    db.collection('users').doc(uid).onSnapshot(doc => {
-        if (doc.exists) {
-            const data = doc.data();
-            const coins = data.coins ? Number(data.coins) : 0; 
-            currentBalanceDisplay.textContent = `${coins} Coins`;
-        } else {
-            currentBalanceDisplay.textContent = `0 Coins`;
-        }
-    });
-}
-
-// --- DEPOSIT FORM SUBMISSION ---
-
-depositForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    if (!currentUser) return;
-
-    const method = document.getElementById('depositMethod').value;
-    const amount = Number(depositAmountInput.value); // PKR Amount
-    const txId = transactionIdInput.value.trim();
-    const senderName = senderNameInput.value.trim();
-    const senderAccount = senderAccountInput.value.trim();
-    const senderCnic = senderCnicInput.value.trim(); // CNIC is optional but collected
+function initializeElements() {
+    // Header/App
+    headerWallet = document.getElementById('headerWallet');
+    userDisplay = document.getElementById('userDisplay');
+    openDepositModalHeader = document.getElementById('openDepositModalHeader');
+    walletTableBody = document.getElementById('walletTableBody');
     
-    // Calculate coins based on the new rate
-    const coinsToReceive = Math.floor(amount / COIN_RATE_PKR); 
+    // Modals
+    loginModal = document.getElementById('loginModal');
+    depositModal = document.getElementById('depositModal');
 
-    if (amount < COIN_RATE_PKR || !method || !txId || !senderName || !senderAccount) {
-        alert(`Deposit ke liye kam az kam ${COIN_RATE_PKR} PKR, Deposit Method, Transaction ID, Sender ka Naam, aur Sender ka Account Number darj karna zaroori hai.`);
+    // Login Modal buttons
+    openLoginBtn = document.getElementById('openLoginBtn');
+    closeLoginModal = document.getElementById('closeLoginModal');
+    btnLoginAction = document.getElementById('btnLoginAction');
+    btnSignupAction = document.getElementById('btnSignupAction');
+    
+    // Deposit Modal elements
+    closeDepositModal = document.getElementById('closeDepositModal');
+    btnSubmitDeposit = document.getElementById('btnSubmitDeposit');
+    depCoinSelect = document.getElementById('depCoinSelect');
+    depAmountPKR = document.getElementById('depAmountPKR');
+    depCoinEst = document.getElementById('depCoinEst');
+    depHistoryList = document.getElementById('depHistoryList');
+}
+
+function attachListeners() {
+    // Global Listeners
+    closeLoginModal.addEventListener('click', closeAllModals);
+    closeDepositModal.addEventListener('click', closeAllModals);
+    openLoginBtn.addEventListener('click', () => { closeAllModals(); loginModal.style.display = 'flex'; });
+
+    // Header Deposit Button
+    openDepositModalHeader.addEventListener('click', () => {
+        closeAllModals(); 
+        if(!currentUser) { 
+            loginModal.style.display = 'flex'; 
+            alert("Please login first."); 
+            return; 
+        }
+        populateDepDropdown();
+        depositModal.style.display = 'flex';
+        if (currentUser) {
+            listenToDeposits(currentUser.uid);
+        }
+    });
+
+    // Login/Signup Actions
+    btnLoginAction.addEventListener('click', handleLogin);
+    btnSignupAction.addEventListener('click', handleSignup);
+
+    // Deposit Form Actions
+    depAmountPKR.addEventListener('keyup', updateDepEst);
+    depCoinSelect.addEventListener('change', updateDepEst);
+    btnSubmitDeposit.addEventListener('click', submitDeposit);
+    document.getElementById('downloadImageBtn').addEventListener('click', downloadDepositImage);
+
+    // Initial Auth State Check
+    onAuthStateChanged(auth, handleAuthStateChange);
+}
+
+// --- Handlers ---
+
+async function handleLogin() {
+    const email = document.getElementById('emailInput').value;
+    const pass = document.getElementById('passInput').value;
+    try { 
+        await signInWithEmailAndPassword(auth, email, pass); 
+        closeAllModals(); 
+        depositModal.style.display = 'flex'; 
+        populateDepDropdown();
+    } 
+    catch (e) { 
+        document.getElementById('loginErrorMsg').innerText = e.message; 
+        document.getElementById('loginErrorMsg').style.display = 'block'; 
+    }
+}
+
+async function handleSignup() {
+    const email = document.getElementById('emailInput').value;
+    const pass = document.getElementById('passInput').value;
+    try {
+        const cred = await createUserWithEmailAndPassword(auth, email, pass);
+        await setDoc(doc(db, "users", cred.user.uid), { email: email, coins: 0, referralCount: 0, referredBy: null, createdAt: new Date() });
+        closeAllModals();
+        depositModal.style.display = 'flex'; 
+        populateDepDropdown();
+    } catch (e) { 
+        document.getElementById('loginErrorMsg').innerText = e.message; 
+        document.getElementById('loginErrorMsg').style.display = 'block'; 
+    }
+}
+
+function handleAuthStateChange(user) {
+    currentUser = user;
+    if(user) {
+        const initial = user.email ? user.email[0].toUpperCase() : "U";
+        userDisplay.innerHTML = `<div class="profile-img">${initial}</div><div><button class="login-btn logout-btn" onclick="logoutApp()">Logout</button></div>`;
+        listenToUserWallet(user.uid);
+    } else {
+        userHoldings = {};
+        // Re-attach login button listener if user logs out
+        userDisplay.innerHTML = `<button class="login-btn" id="openLoginBtn2">🔑 Login</button>`;
+        document.getElementById('openLoginBtn2').addEventListener('click', () => { closeAllModals(); loginModal.style.display = 'flex'; });
+        headerWallet.innerHTML = `0 <span class="coin-suffix">Coins</span>`;
+        renderWalletDashboard();
+        depHistoryList.innerHTML = "Login to view history";
+    }
+}
+
+window.logoutApp = () => signOut(auth);
+
+// --- Data Listeners & Render Functions ---
+
+onSnapshot(collection(db, "coins"), (snap) => {
+    globalCoinsData = [];
+    snap.forEach(d => globalCoinsData.push(d.data()));
+    renderWalletDashboard();
+    if (depositModal.style.display === 'flex') {
+        populateDepDropdown();
+    }
+});
+
+function listenToUserWallet(uid) {
+    onSnapshot(doc(db, "users", uid), (docSnap) => {
+        if(docSnap.exists()) userHoldings = docSnap.data();
+        headerWallet.innerHTML = `${formatCompact(userHoldings.coins || 0)} <span class="coin-suffix">Coins</span>`;
+        renderWalletDashboard();
+    });
+}
+
+function renderWalletDashboard() {
+    if (globalCoinsData.length === 0) {
+        walletTableBody.innerHTML = '<tr><td colspan="3" style="text-align:center; color:#888;">Fetching coin data...</td></tr>';
         return;
     }
 
+    if (!currentUser) {
+        walletTableBody.innerHTML = '<tr><td colspan="3" style="text-align:center; color:#555;">Please log in to see your coin balances.</td></tr>';
+        return;
+    }
+
+    let html = "";
+    globalCoinsData.sort((a, b) => {
+        const qtyA = userHoldings[getDbField(a.id)] || 0;
+        const qtyB = userHoldings[getDbField(b.id)] || 0;
+        return (b.price * qtyB) - (a.price * qtyA);
+    });
+
+    globalCoinsData.forEach(coin => {
+        const qty = userHoldings[getDbField(coin.id)] || 0;
+
+        html += `
+            <tr>
+                <td><span class="coin-symbol">${coin.symbol}</span><div style="font-size:0.8em; color:#666">${coin.name}</div></td>
+                <td class="coin-rate">PKR ${coin.price.toFixed(4)}</td>
+                <td class="coin-balance">${formatCompact(qty)}</td> 
+            </tr>
+        `;
+    });
+    walletTableBody.innerHTML = html;
+}
+
+// --- DEPOSIT FORM FUNCTIONS ---
+
+function populateDepDropdown() {
+    if(globalCoinsData.length === 0 || !depCoinSelect) return;
+
+    globalCoinsData.sort((a, b) => (a.id === 'main' ? -1 : 1));
+    
+    let opts = globalCoinsData.map(c => `<option value="${c.id}" data-price="${c.price}">${c.name} (${c.symbol})</option>`).join('');
+    depCoinSelect.innerHTML = opts;
+    updateDepEst();
+}
+
+function updateDepEst() {
+    if (!depAmountPKR || !depCoinSelect || !depCoinEst) return;
+
+    const pkr = parseFloat(depAmountPKR.value);
+    if(!pkr || pkr <= 0) { depCoinEst.innerText = "You Get: 0 Coins"; return; }
+    
+    const selectedOption = depCoinSelect.selectedOptions[0];
+    if (!selectedOption) { depCoinEst.innerText = "You Get: 0 Coins (Select Coin)"; return; }
+
+    const rate = parseFloat(selectedOption.getAttribute('data-price'));
+    const coins = pkr / rate;
+    const symbol = getCoinSymbol(depCoinSelect.value);
+    
+    depCoinEst.innerText = `You Get: ≈ ${Math.floor(coins).toLocaleString()} ${symbol}`;
+}
+
+async function submitDeposit() {
+    const depTrxId = document.getElementById('depTrxId');
+    const depSenderName = document.getElementById('depSenderName');
+    const depSenderAccount = document.getElementById('depSenderAccount');
+    const depMethod = document.getElementById('depMethod');
+    const depSuccessMsg = document.getElementById('depSuccessMsg');
+    const depErrorMsg = document.getElementById('depErrorMsg');
+
+    if (!currentUser || !depAmountPKR) { depErrorMsg.innerText = "Login error or form not loaded."; depErrorMsg.style.display = 'block'; return; }
+
+    const pkr = parseFloat(depAmountPKR.value);
+    const trx = depTrxId.value;
+    const senderName = depSenderName.value;
+    const senderAccount = depSenderAccount.value;
+    const method = depMethod.value;
+    const coinId = depCoinSelect.value;
+
+    if(!pkr || pkr < 100 || !trx || !senderName || !senderAccount) { 
+        depErrorMsg.innerText = "Please fill all fields and ensure PKR amount is valid (Min 100 PKR)."; 
+        depErrorMsg.style.display='block'; depSuccessMsg.style.display='none'; return; 
+    }
+
+    const rate = parseFloat(depCoinSelect.selectedOptions[0].getAttribute('data-price'));
+    const coins = Math.floor(pkr / rate);
+    const coinSymbol = getCoinSymbol(coinId);
+
     try {
-        await db.collection('deposits').add({
+        await addDoc(collection(db, "deposits"), {
             userId: currentUser.uid,
             email: currentUser.email,
             method: method,
-            amount: amount, // PKR amount sent
-            coinsEquivalent: coinsToReceive, // Calculated coins
-            transactionId: txId,
-            senderName: senderName, // New Field
-            senderAccount: senderAccount, // New Field
-            senderCnic: senderCnic, // New Field
-            status: 'Pending',
-            timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            amountPKR: pkr,
+            coinsRequested: coins,
+            coinId: coinId,
+            coinSymbol: coinSymbol,
+            trxId: trx,
+            senderName: senderName,
+            senderAccount: senderAccount,
+            status: "Pending",
+            timestamp: new Date()
         });
 
-        alert(`Deposit Request Submit ho gayi. Aapko ${coinsToReceive} Coins milenge. Admin verification ke baad coins add ho jayenge.`);
-        depositForm.reset();
-        document.querySelectorAll('.coin-package-btn').forEach(btn => btn.classList.remove('selected'));
-    } catch (error) {
-        console.error("Deposit submission failed:", error);
-        alert("Deposit Request bhejte waqt masla hua.");
-    }
-});
+        depSuccessMsg.innerText = "Deposit Submitted! Wait for Admin Approval."; 
+        depSuccessMsg.style.display='block';
+        depErrorMsg.style.display='none';
+        
+        depAmountPKR.value = ''; depTrxId.value = '';
+        depCoinEst.innerText = "You Get: 0 Coins"; 
 
-// --- HISTORY LOGIC ---
-
-function formatTimestamp(timestamp) {
-    if (timestamp && timestamp.toDate) {
-        return timestamp.toDate().toLocaleDateString('en-PK', {
-            year: 'numeric', month: 'short', day: 'numeric'
-        });
+    } catch(e) { 
+        depErrorMsg.innerText = "Submission Error: " + e.message; 
+        depErrorMsg.style.display='block'; depSuccessMsg.style.display='none';
     }
-    return 'N/A';
 }
 
-function listenToDepositHistory(uid) {
-    const historyQuery = db.collection('deposits')
-        .where('userId', '==', uid)
-        .orderBy('timestamp', 'desc')
-        .limit(10);
+function listenToDeposits(uid) {
+    if (!depHistoryList) return; 
+    
+    const q = query(collection(db, "deposits"), where("userId", "==", uid), orderBy("timestamp", "desc"), limit(10));
+    onSnapshot(q, (snap) => {
+        if(snap.empty) { depHistoryList.innerHTML = "<div style='text-align:center; color:#555'>No history found.</div>"; return; }
+        let html = "";
+        
+        snap.forEach(docSnap => {
+            const d = docSnap.data();
+            const date = d.timestamp ? new Date(d.timestamp.seconds * 1000).toLocaleString() : 'N/A';
+            const rejectionReason = d.status === 'Rejected' && d.reason ? `<div style="color:#f44336; font-size:0.7em; font-style:italic;'>Reason: ${d.reason}</div>` : '';
+            const coinsRequested = d.coinsRequested || 0;
+            const amountPKR = d.amountPKR || 0;
 
-    historyQuery.onSnapshot(snapshot => {
-        let html = `
-            <table class="deposit-history-table">
-                <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th>Method</th>
-                        <th>Coins</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-        `;
-
-        if (snapshot.empty) {
-            depositHistoryList.innerHTML = '<p>Aapne abhi tak koi deposit request nahi bheji hai.</p>';
-            return;
-        }
-
-        snapshot.forEach(doc => {
-            const d = doc.data();
-            const statusClass = 'status-' + (d.status || "Pending").toLowerCase();
-            const date = formatTimestamp(d.timestamp);
-            const coins = d.coinsEquivalent || 0;
-
-            html += `
-                <tr>
-                    <td>${date}</td>
-                    <td>${d.method}</td>
-                    <td>${coins}</td>
-                    <td><span class="${statusClass}">${d.status || 'Pending'}</span></td>
-                </tr>
-            `;
+            html += `<div class="history-item">
+                <div>
+                    <div style="font-weight:bold; color:#fff;">${amountPKR.toLocaleString()} PKR (${d.method || 'N/A'})</div>
+                    <div style="color:#4caf50; font-size:0.8em;">+${coinsRequested.toLocaleString()} ${d.coinSymbol || 'Coins'}</div>
+                    ${rejectionReason}
+                </div>
+                <div style="text-align:right">
+                    <span class="badge badge-${d.status}">${d.status}</span>
+                    <div style="color:#666; font-size:0.7em;">${date}</div>
+                </div>
+            </div>`;
         });
-
-        html += `</tbody></table>`;
-        depositHistoryList.innerHTML = html;
-    }, error => {
-        console.error("Error fetching deposit history:", error);
-        depositHistoryList.innerHTML = '<p style="color: var(--danger-color);">History load nahi ho saki. (Check Firestore Rules)</p>';
+        depHistoryList.innerHTML = html;
     });
 }
+
+function downloadDepositImage() {
+    const imageURL = document.getElementById('depositImage').src;
+    const a = document.createElement('a');
+    a.href = imageURL;
+    a.download = 'Deposit_Guide.jpg';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+}
+
+
+// --- Initialization ---
+
+document.addEventListener('DOMContentLoaded', () => {
+    initializeElements();
+    attachListeners();
+});
