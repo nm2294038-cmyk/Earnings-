@@ -459,3 +459,12 @@ function renderTable() {
     });
     headerWallet.innerHTML = `${(userHoldings.coins || 0).toLocaleString()} <span class="coin-suffix">Coins</span>`;
 }
+document.getElementById('downloadImageBtn').addEventListener('click', function() {
+    const imageURL = document.getElementById('depositImage').src;
+    const a = document.createElement('a');
+    a.href = imageURL;
+    a.download = 'Deposit_Guide.jpg'; // Download file name
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+});
