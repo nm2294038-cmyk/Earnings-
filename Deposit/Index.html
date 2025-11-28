@@ -1,189 +1,107 @@
 <!DOCTYPE html>
-<html lang="ur">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Coins Deposit Center YoursMed</title>
-    
-    <!-- Firebase SDKs (Version 8.10.0) - Zaroori hain ki yeh script se pehle load hon -->
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
-
-    <!-- External Style Sheet Link -->
+    <title>YoursMed King Market - Deposit & Wallet</title>
+    <!-- Link to the external CSS file -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- NEW BISMILLAH HEADER -->
-  <div class="bismillah-header">
-    بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ
-  </div>
-    <header>
-        <h1>Coins Deposit Center</h1>
-        <div class="header-right">
-            <!-- Wallet Display in Header -->
-            <div class="wallet-display" id="currentBalanceDisplay">
-                0 Coins
+    
+    <!-- 1. LOGIN MODAL -->
+    <div class="modal-overlay" id="loginModal">
+        <div class="modal-box">
+            <button class="btn-close" id="closeLoginModal">&times;</button>
+            <h2 class="modal-title">Access Account</h2>
+            <div class="form-group"><label>Email</label><input type="email" id="emailInput"></div>
+            <div class="form-group"><label>Password</label><input type="password" id="passInput"></div>
+            <div class="modal-actions">
+                <button class="btn-submit btn-login" id="btnLoginAction" style="background:#2563eb;">Login</button>
+                <button class="btn-submit btn-signup" id="btnSignupAction" style="background:#4caf50;">Sign Up</button>
             </div>
-            <button id="profileIconButton" title="Login or View Profile">👤</button>
+            <div class="error-msg" id="loginErrorMsg"></div>
+        </div>
+    </div>
+
+    <!-- 2. DEPOSIT MODAL (Content is now fully here) -->
+    <div class="modal-overlay" id="depositModal"> 
+        <div class="modal-box">
+            <button class="btn-close" id="closeDepositModal">&times;</button>
+            <h2 class="modal-title" style="color:#4caf50;">💰 Buy Coins (Deposit)</h2>
+
+            <!-- Image and Guide -->
+            <div style="width:100%; text-align:center; margin-bottom:15px;">
+                <img id="depositImage" src="https://i.ibb.co/VYd8MBz5/IMG-20251128-WA0003.jpg" 
+                    style="width:100%; border-radius:10px;" 
+                    alt="Deposit Guide">
+                <button id="downloadImageBtn" style="margin-top:10px; padding:8px 15px; background:#4caf50; color:#fff; border:none; border-radius:5px; cursor:pointer;">
+                    ⬇ Download Image
+                </button>
+            </div>
+
+            <!-- Admin Account Info -->
+            <div class="admin-account-box">
+                <div style="color:#aaa; font-size:0.8em;">Send PKR to:</div>
+                <div style="font-weight:bold; color:#fff; font-size:1.1em;">0310-5784772</div>
+                <div style="color:#4caf50;">EasyPaisa / JazzCash</div>
+                <div style="font-size:0.8em;">Title: Nazim Mustafa</div>
+            </div>
+
+            <!-- Deposit Form Fields -->
+            <div class="form-group"><label>Select Coin</label><select id="depCoinSelect"><option>Loading...</option></select></div>
+            <div class="form-group"><label>Method</label><select id="depMethod"><option>EasyPaisa</option><option>JazzCash</option><option>Bank</option></select></div>
+            <div class="form-group"><label>Sender Name</label><input type="text" id="depSenderName"></div>
+            <div class="form-group"><label>Sender Account</label><input type="text" id="depSenderAccount"></div>
+            <div class="form-group"><label>Amount (PKR)</label><input type="number" id="depAmountPKR"></div>
+            <div class="form-group"><label>TRX ID</label><input type="text" id="depTrxId"></div>
+            <div class="pkr-estimate" id="depCoinEst">You Get: 0 Coins</div>
+            <button class="btn-submit btn-whatsapp" id="btnSubmitDeposit">Submit Deposit</button>
+            <div class="success-msg" id="depSuccessMsg"></div>
+            <div class="error-msg" id="depErrorMsg"></div>
+
+            <!-- Deposit History -->
+            <div class="history-box">
+                <div class="history-title">📜 Your Deposit History</div>
+                <div id="depHistoryList" style="max-height:150px; overflow-y:auto; padding-right:5px;">Login to view history</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- HEADER -->
+    <header class="app-header">
+        <div class="profile-sec">
+            <button class="deposit-btn-header" id="openDepositModalHeader">💰 Deposit</button>
+            <div id="userDisplay">
+                <button class="login-btn" id="openLoginBtn">🔑 Login</button>
+            </div>
+        </div>
+        <div class="wallet-sec">
+            <span class="wallet-label">TOTAL COINS HOLDING</span>
+            <span class="wallet-amount" id="headerWallet">0 <span class="coin-suffix">Coins</span></span>
         </div>
     </header>
 
-    <div class="container">
-        
-        <!-- Article/Guide Section (Visible when logged out) -->
-        <div class="article" id="depositArticle">
-            <h2>Coins Deposit Karne Ka Mukammal Guide</h2>
-            
-            <p>Coins Deposit Center mein aapka khushamdeed! Yahan aap Pakistani Rupees (PKR) ke zariye fori taur par coins khareed sakte hain. **Naya Rate:** Ab **6 PKR** ke badle aapko **1 Coin** milega. Yeh rate aapki earning activities ko zyada value deta hai.</p>
-
-            <div id="loginPrompt">
-                Deposit Form aur History dekhne ke liye, barah-e-meherbani Profile Icon (👤) par click karke Login/Signup karen.
-            </div>
-
-            <h3>1. Coins Khareedne Ka Tareeqa</h3>
-            <p>Coins khareedne ka amal bahut seedha hai:</p>
-            <ul>
-                <li><strong>Package Chunein:</strong> Neeche diye gaye packages mein se apni marzi ki miqdar chunein. Yaad rakhen, agar aap 600 PKR deposit karte hain, to aapko 100 Coins milenge.</li>
-                <li><strong>Raqam Transfer Karen:</strong> Payment Methods section mein diye gaye EasyPaisa, JazzCash, ya SadaPay accounts par utni hi raqam (PKR) transfer karen jitne coins aap khareedna chahte hain (Coins ki miqdar x 6).</li>
-                <li><strong>Transaction Details:</strong> Raqam transfer karne ke baad, aapko **Transaction ID (TID)** ke saath, **jis account se raqam bheji gayi hai uski tafseelat (naam, number, CNIC)** bhi form mein darj karni hogi.</li>
-            </ul>
-
-            <h3>2. Deposit Request Submit Karna</h3>
-            <p>Login karne ke baad, aapko Deposit Form nazar aayega. Is form ko dhyan se fill karen:</p>
-            <ol>
-                <li><strong>Deposit Method:</strong> Woh method chunein jiske zariye aapne raqam bheji hai.</li>
-                <li><strong>Bheji Gayi Raqam:</strong> Woh sahi raqam darj karen jo aapne transfer ki hai.</li>
-                <li><strong>Sender Details:</strong> Raqam bhejney walay ka naam, account number, aur CNIC number darj karen.</li>
-                <li><strong>Transaction ID:</strong> Woh TID ya Hash code darj karen jo aapko transfer ke baad mila tha.</li>
-                <li><strong>Submit:</strong> Request submit karen.</li>
-            </ol>
-
-            <h3>3. Verification Aur Coins Ka Milna</h3>
-            <p>Aapki request submit hone ke baad, woh 'Pending' status mein chali jayegi. Humari team fori taur par aapki Transaction ID aur Sender Details ko verify karegi. Verification mukammal hone par:</p>
-            <ul>
-                <li>Aapki request ka status 'Approved' ho jayega.</li>
-                <li>Coins (Bheji gayi Raqam / 2) ke hisab se aapke wallet mein add kar diye jayenge.</li>
-                <li>Aap Deposit History section mein apni tamam requests ka status track kar sakte hain.</li>
-            </ul>
-            
-            <p style="font-weight: bold; color: var(--secondary-color); margin-top: 20px;">Coins khareedne aur Deposit Center tak rasai ke liye, Profile Icon (👤) par click karke Login karen!</p>
-        </div>
-
-        <!-- Main Deposit Content (Hidden until login) -->
-        <div id="depositContent">
-            
-            <h2 style="color: var(--dark-bg); text-align: center;">Coins Deposit Form (Authorized Access)</h2>
-
-            <!-- Deposit Guide (Short version for logged-in users) -->
-            <div class="deposit-guide">
-                <h4>Deposit Karne Ka Tareeqa (Summary)</h4>
-                <p style="font-weight: bold; color: var(--danger-color);">Current Rate: 2 PKR = 1 Coin</p>
-                <ol>
-                    <li>Coins Package chunein (PKR amount ke liye 2 se zarb karen).</li>
-                    <li>Payment Methods par required PKR transfer karen.</li>
-                    <li>Form mein **Transaction ID** aur **Sender ki mukammal tafseelat** darj karen.</li>
-                </ol>
-            </div>
-
-            <!-- Coin Packages -->
-            <h4 style="margin-top: 30px;">Coins Package Chunein (Coins Ki Miqdar)</h4>
-            <div class="coin-packages" id="coinPackages">
-                <!-- Buttons will be generated by JavaScript -->
-            </div>
-
-            <!-- Payment Details -->
-            <h4 style="margin-top: 30px;">Payment Methods</h4>
-            <div class="payment-methods">
-                <div class="payment-details">
-                    <h4>EasyPaisa</h4>
-                    <p>Name: Nazim Mustafa </p>
-                    <p>Number: <strong>03105784772</strong></p>
-                </div>
-                <div class="payment-details">
-                    <h4>JazzCash</h4>
-                    <p>Name: Nazim Mustafa</p>
-                    <p>Number: <strong>03105784772</strong></p>
-                </div>
-                <div class="payment-details">
-                    <h4>SadaPay</h4>
-                    <p>Name: Nazim Mustafa</p>
-                    <p>Number: <strong>03435641151</strong></p>
-                </div>
-            </div>
-
-            <!-- Deposit Form -->
-            <form id="depositForm">
-                <div class="form-group">
-                    <label for="depositMethod">Deposit Method Chunein</label>
-                    <select id="depositMethod" required>
-                        <option value="">--- Chunein ---</option>
-                        <option value="EasyPaisa">EasyPaisa</option>
-                        <option value="JazzCash">JazzCash</option>
-                        <option value="SadaPay">SadaPay</option>
-                        <option value="Bank">Pakistani Bank</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="depositAmount">Bheji Gayi Raqam (Amount Sent in PKR)</label>
-                    <input type="number" id="depositAmount" placeholder="Kitni raqam bheji? (PKR)" required min="6">
-                </div>
-                
-                <!-- NEW FIELDS ADDED HERE -->
-                <div class="form-group">
-                    <label for="senderName">Sender Account Holder Ka Naam</label>
-                    <input type="text" id="senderName" placeholder="Jis account se raqam bheji" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="senderAccount">Sender Account Number / Phone Number</label>
-                    <input type="text" id="senderAccount" placeholder="Sender ka phone number ya account number" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="senderCnic">Sender ID Card Number (CNIC)</label>
-                    <input type="text" id="senderCnic" placeholder="Sender ka CNIC number (Optional, but recommended)" >
-                </div>
-                <!-- END NEW FIELDS -->
-
-                <div class="form-group">
-                    <label for="transactionId">Transaction ID (TID / Hash)</label>
-                    <input type="text" id="transactionId" placeholder="Transaction ID yahan likhen" required>
-                </div>
-                
-                <button type="submit" class="submitBtn">Deposit Request Submit Karen</button>
-            </form>
-
-            <!-- Deposit History -->
-            <h4 style="margin-top: 30px; border-top: 1px solid #eee; padding-top: 15px;">Deposit History</h4>
-            <div id="depositHistoryList">
-                <p>History load ho rahi hai...</p>
-            </div>
-            
-            <a href="#" style="display: block; text-align: center; margin-top: 20px; color: var(--primary-color);">← Wapas Home Page Par Jaen</a>
+    <!-- CONTENT CONTAINER for Dashboard/Wallet Table -->
+    <div class="content-container">
+        <div class="wallet-dashboard">
+            <h2>📊 Market Dashboard / Your Wallet</h2>
+            <table class="wallet-table">
+                <thead>
+                    <tr>
+                        <th>Coin</th>
+                        <th>Rate (PKR)</th>
+                        <th>Your Balance</th>
+                    </tr>
+                </thead>
+                <tbody id="walletTableBody">
+                    <tr><td colspan="3" style="text-align:center; color:#888;">Please log in to see your coin balances.</td></tr>
+                </tbody>
+            </table>
         </div>
     </div>
 
-    <!-- Auth Modal (Login/Signup) -->
-    <div id="authModal" class="modal">
-        <div class="modal-content">
-            <h3 id="authTitle">Login Karen</h3>
-            
-            <form class="auth-form" id="authForm">
-                <input type="email" id="authEmail" placeholder="Email Address" required>
-                <input type="password" id="authPassword" placeholder="Password" required>
-                <button type="submit" id="authButton">Login</button>
-            </form>
-            
-            <div class="auth-toggle">
-                <p id="toggleText">Account nahi hai? <a onclick="toggleAuthMode()">Signup Karen</a></p>
-                <button id="logoutButton" style="display: none; background-color: var(--danger-color); margin-top: 15px;">Logout</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- External Script Link -->
-    <script src="script.js"></script>
+    <!-- JAVASCRIPT LOGIC -->
+    <script type="module" src="script.js"></script>
 </body>
 </html>
