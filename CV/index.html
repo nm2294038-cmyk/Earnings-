@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Advanced CV Editor - Final with Image Fix</title>
+    <title>Responsive CV Editor</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
     <style>
         /* Define CSS Variables for easy customization */
@@ -66,7 +66,7 @@
         
         .format-btn { background-color: #f0f0f0; font-weight: bold; width: 30px; height: 30px; line-height: 1; padding: 0; }
 
-        /* ------------------- CV STYLES (Adjusted for Fit) ------------------- */
+        /* ------------------- CV STYLES (PC/Desktop Base) ------------------- */
         .cv-container {
             width: 100%;
             max-width: 800px; 
@@ -86,32 +86,15 @@
             background-size: 80% 80%;
         }
 
-        /* --- Image Box Styles (Ensure Fit) --- */
-        .profile-pic-container { 
-            width: 80px; 
-            height: 100px;
-            position: absolute;
-            top: 0;
-            right: 0;
-            /* Added background to ensure space is visible */
-            background-color: #d1eaff; 
-            border: 1px solid var(--primary-color); 
-            cursor: pointer;
-            overflow: hidden; /* CRITICAL: Hides anything that overflows the box */
-        }
-
-        #profile-image { 
-            width: 100%;
-            height: 100%;
-            object-fit: cover; /* CRITICAL: Scales image to cover container, clipping if necessary */
-            display: block;
-        }
-        
-        /* [Other CV content styles remain the same] */
+        /* --- Identity/Header Layout (PC Default) --- */
         .identity { margin-bottom: 8px; position: relative; display: flex; justify-content: space-between; align-items: flex-start; }
         .contact-info { line-height: 1.2; font-size: 12px; margin-left: 120px; max-width: 60%; }
-        .contact-info strong { font-size: 17px; color: var(--primary-color); }
+        .profile-pic-container { width: 80px; height: 100px; position: absolute; top: 0; right: 0; border: 1px solid var(--primary-color); cursor: pointer; overflow: hidden; background-color: #d1eaff; }
         .logo-box { width: 100px; height: 100px; position: absolute; top: 0; left: 0; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1); display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 5px; background-color: var(--logo-bg-color); }
+        
+        /* [Other CV content styles remain the same] */
+        #profile-image { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .contact-info strong { font-size: 17px; color: var(--primary-color); }
         .logo-box .large-c { font-size: 70px; line-height: 0.7; } 
         .section { margin-top: 10px; }
         .section-title { font-size: 18px; color: var(--primary-color); padding-bottom: 2px; margin-bottom: 4px; display: inline-block; position: relative; font-weight: normal; }
@@ -127,25 +110,114 @@
         .cv-footer { width: 100%; max-width: 800px; padding: 20px 0; text-align: center; margin-top: 20px; }
         #save-pdf-btn-footer { background-color: #28a745; color: white; font-size: 20px; font-weight: bold; padding: 15px 30px; border: none; border-radius: 5px; cursor: pointer; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); }
 
+        
+        /* ================================================= */
+        /* ============= MOBILE VIEW ADJUSTMENTS ============= */
+        /* ================================================= */
+        @media (max-width: 768px) {
+            
+            /* General container padding adjustment */
+            .cv-container {
+                padding: 15px;
+                box-shadow: none;
+                min-height: auto;
+            }
+
+            /* Header Controls Adjustment (stacking) */
+            .control-group {
+                gap: 8px;
+                justify-content: space-between;
+                border-bottom: none;
+                padding: 5px 0;
+            }
+            .control-group h4 {
+                width: 100%;
+                border-bottom: 1px solid #eee;
+                padding-bottom: 5px;
+            }
+            .controls-header select, 
+            .controls-header input {
+                flex-grow: 1;
+            }
+
+
+            /* Identity Section Mobile Layout */
+            .identity {
+                flex-direction: column;
+                align-items: center;
+                margin-bottom: 20px;
+                padding-top: 110px; /* Space for the logo/pic area below */
+            }
+
+            /* Move logo and pic to the top center */
+            .logo-box {
+                position: absolute;
+                top: 0;
+                left: 10px;
+            }
+            .profile-pic-container {
+                position: absolute;
+                top: 0;
+                right: 10px;
+            }
+
+            .contact-info {
+                margin-left: 0;
+                text-align: center;
+                max-width: 100%;
+            }
+            .contact-info p {
+                margin: 3px 0;
+            }
+
+            /* Skills and Languages stack on mobile */
+            .skills-list li, .language-list li {
+                width: 100%;
+            }
+            
+            /* Remove margins on lists */
+            .profile-list li, .education-list li {
+                flex-direction: column;
+            }
+            .profile-list .label, .education-list .label {
+                width: auto;
+                font-size: 13px;
+            }
+            .profile-list .value, .education-list .value {
+                padding-left: 15px;
+                font-size: 12px;
+            }
+        }
+        
         /* =================== PRINT STYLES =================== */
         @page { size: A4; margin: 0.25in; }
         @media print {
             .controls-header, .cv-footer, .add-item-btn, .remove-btn { display: none !important; }
-            body { padding: 0; margin: 0; background: white; }
+            /* Force desktop layout for printing to maintain A4 structure */
+            .identity { 
+                padding-top: 0 !important; 
+                flex-direction: row !important;
+                align-items: flex-start !important;
+            }
+            .logo-box { left: 0 !important; }
+            .profile-pic-container { right: 0 !important; }
+            .contact-info { margin-left: 120px !important; text-align: left !important; }
+            .skills-list li, .language-list li { width: 49% !important; }
+            .profile-list li, .education-list li { flex-direction: row !important; }
+            .profile-list .value, .education-list .value { padding-left: 0 !important; }
+            .profile-list .label, .education-list .label { width: 120px !important; }
+
             .cv-container {
                 font-size: 9.5pt; 
                 padding: 10px 15px; 
-                box-shadow: none;
-                background-image: none; 
                 min-height: auto;
-                margin: 0;
             }
-            [contenteditable="true"] { border: none !important; padding: 0 !important; }
         }
     </style>
 </head>
 <body>
 
+    <!-- [Control Panel, CV Content, Footer remain the same as the previous version] -->
     <!-- ================================================= -->
     <!-- ============== HEADER CONTROL PANEL ============= -->
     <!-- ================================================= -->
@@ -293,6 +365,7 @@
     <script>
         // --- 1. Core Formatting Functions ---
         function formatText(command, value) {
+            // Note: document.execCommand is deprecated but used here for simple, client-side formatting.
             if (command === 'fontSize') {
                 document.execCommand(command, false, value + 'px');
             } else if (command === 'foreColor') {
@@ -329,16 +402,11 @@
                     <span class="value" contenteditable="true">Details (e.g., Year/Marks)</span>
                     <span class="remove-btn" onclick="removeItem(this)">[X]</span>
                 `;
-            } else if (type === 'skill') {
-                ul = document.getElementById('skills-list');
+            } else if (type === 'skill' || type === 'language') {
+                ul = (type === 'skill') ? document.getElementById('skills-list') : document.getElementById('language-list');
                 newLi = document.createElement('li');
                 newLi.setAttribute('contenteditable', 'true');
-                newLi.innerHTML = `New Skill <span class="remove-btn" onclick="removeItem(this)">[X]</span>`;
-            } else if (type === 'language') {
-                ul = document.getElementById('language-list');
-                newLi = document.createElement('li');
-                newLi.setAttribute('contenteditable', 'true');
-                newLi.innerHTML = `New Language <span class="remove-btn" onclick="removeItem(this)">[X]</span>`;
+                newLi.innerHTML = `New Item <span class="remove-btn" onclick="removeItem(this)">[X]</span>`;
             }
             
             if (newLi) {
@@ -369,7 +437,6 @@
                 }
             });
             
-            // Initial call to set default logo color if needed
             updateDesign(); 
         });
     </script>
