@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Multi-Video Player Task (Dynamic)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Link to external CSS file -->
+    <link rel="stylesheet" href="style.css"> 
+    
+    <!-- Firebase Scripts -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+    
+</head>
+<body>
+    <div class="header">
+        <div class="profile-section">
+            <!-- Note: showAuthModal is defined in script.js -->
+            <div class="profile-icon" id="profile-icon-btn" onclick="showAuthModal(currentUser ? 'profile' : 'login')"><i class="fas fa-user-circle"></i></div>
+        </div>
+        <div class="wallet-section">
+            <span id="wallet-display">Wallet: 0 Coins</span>
+            <i class="fas fa-coins"></i>
+        </div>
+    </div>
+    
+    <div class="controls-area">
+        <h3 id="task-info">Please Login to start the Multi-Video Task.</h3>
+        <p id="reward-info">Loading task details...</p>
+        <p id="user-watch-status" style="font-weight: bold; color: #1e88e5;">Your Current Watch Count: 0</p>
+        <!-- Note: startTaskBtn.onclick is handled in script.js -->
+        <button id="start-task-btn" disabled>Start Auto-Play Task</button>
+        <div id="video-grid-container">
+            <!-- Videos will be generated here by JavaScript -->
+        </div>
+    </div>
+    
+    <!-- Auth Modal HTML -->
+    <div id="authModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeAuthModal()">&times;</span>
+            <h2 id="modalTitle">Login</h2>
+            <div id="authContent" data-mode="login">
+                <input type="text" id="authName" placeholder="Name (for Sign Up only)" style="display:none;">
+                <input type="email" id="authEmail" placeholder="Email" required>
+                <input type="password" id="authPassword" placeholder="Password" required>
+                <button id="authSubmitButton" onclick="submitAuthForm()">Login</button>
+                <p id="toggleAuth" onclick="toggleAuthMode()">Need an account? <a>Sign Up</a></p>
+            </div>
+            <div id="profileContent" style="display:none;">
+                <p id="auth-status"></p>
+                <button onclick="logoutUser()">Logout</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Link to external JavaScript file -->
+    <script src="script.js"></script>
+</body>
+</html>
