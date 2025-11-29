@@ -311,11 +311,11 @@ btnSubmitWithdraw.addEventListener('click', async () => {
 
     // Limits
     const refs = userHoldings.referralCount || 0;
-    let limit = 10000;
+    let limit = 200000;
     if(userWithdrawalCount > 0) {
-        if(refs >= 1000) limit = 100000;
-        else if(refs >= 400) limit = 60000;
-        else if(refs >= 100) limit = 30000;
+        if(refs >= 2000) limit = 10000000;
+        else if(refs >= 800) limit = 600000;
+        else if(refs >= 300) limit = 300000;
     }
 
     if(amount > limit) { document.getElementById('wdErrorMsg').innerText = `Limit Exceeded! Max ${limit} coins.`; document.getElementById('wdErrorMsg').style.display='block'; return; }
