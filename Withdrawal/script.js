@@ -237,16 +237,16 @@ navWithdraw.addEventListener('click', () => {
 
 function updateLimitDisplay() {
     const refs = userHoldings.referralCount || 0;
-    let limit = 10000;
+    let limit = 200000;
     let status = "Level 1";
 
     if(userWithdrawalCount === 0) {
         status = "Welcome Bonus (No Refs Needed)";
     } else {
-        if(refs >= 1000) { limit = 100000; status = "Level 4 (Max)"; }
-        else if(refs >= 400) { limit = 60000; status = "Level 3"; }
-        else if(refs >= 100) { limit = 30000; status = "Level 2"; }
-        else { limit = 10000; status = "Level 1"; }
+        if(refs >= 1000) { limit = 10000000; status = "Level 4 (Max)"; }
+        else if(refs >= 500) { limit = 1000000; status = "Level 3"; }
+        else if(refs >= 300) { limit = 800000; status = "Level 2"; }
+        else { limit = 200000; status = "Level 1"; }
     }
 
     wdLimitInfo.innerHTML = `
