@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Advanced CV Editor - Final with Logo Color</title>
+    <title>Advanced CV Editor - Final with Image Fix</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
     <style>
         /* Define CSS Variables for easy customization */
@@ -12,7 +12,7 @@
             --secondary-color: #007bff; 
             --text-color: #333;
             --bg-color: white; 
-            --logo-bg-color: white; /* NEW: Logo background color variable */
+            --logo-bg-color: white; 
             --font-family: 'Arial', sans-serif;
         }
 
@@ -70,7 +70,7 @@
         .cv-container {
             width: 100%;
             max-width: 800px; 
-            background-color: var(--bg-color); /* Uses BG Color Variable */
+            background-color: var(--bg-color); 
             padding: 20px 30px; 
             box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
             position: relative;
@@ -86,27 +86,32 @@
             background-size: 80% 80%;
         }
 
-        /* --- Logo Box Style --- */
-        .logo-box {
-            width: 100px; 
+        /* --- Image Box Styles (Ensure Fit) --- */
+        .profile-pic-container { 
+            width: 80px; 
             height: 100px;
             position: absolute;
             top: 0;
-            left: 0;
-            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 5px;
-            background-color: var(--logo-bg-color); /* Uses NEW Logo BG Variable */
+            right: 0;
+            /* Added background to ensure space is visible */
+            background-color: #d1eaff; 
+            border: 1px solid var(--primary-color); 
+            cursor: pointer;
+            overflow: hidden; /* CRITICAL: Hides anything that overflows the box */
+        }
+
+        #profile-image { 
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* CRITICAL: Scales image to cover container, clipping if necessary */
+            display: block;
         }
         
         /* [Other CV content styles remain the same] */
         .identity { margin-bottom: 8px; position: relative; display: flex; justify-content: space-between; align-items: flex-start; }
-        .profile-pic-container { width: 80px; height: 100px; position: absolute; top: 0; right: 0; border: 1px solid var(--primary-color); cursor: pointer; }
         .contact-info { line-height: 1.2; font-size: 12px; margin-left: 120px; max-width: 60%; }
         .contact-info strong { font-size: 17px; color: var(--primary-color); }
+        .logo-box { width: 100px; height: 100px; position: absolute; top: 0; left: 0; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1); display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 5px; background-color: var(--logo-bg-color); }
         .logo-box .large-c { font-size: 70px; line-height: 0.7; } 
         .section { margin-top: 10px; }
         .section-title { font-size: 18px; color: var(--primary-color); padding-bottom: 2px; margin-bottom: 4px; display: inline-block; position: relative; font-weight: normal; }
@@ -174,7 +179,7 @@
             <input type="color" id="bg-color-picker" value="#ffffff" onchange="updateDesign()">
             
             <label>Logo BG Color:</label>
-            <input type="color" id="logo-bg-color-picker" value="#ffffff" onchange="updateDesign()"> <!-- NEW INPUT -->
+            <input type="color" id="logo-bg-color-picker" value="#ffffff" onchange="updateDesign()">
 
             <label>Font:</label>
             <select id="font-family-select" onchange="updateDesign()">
@@ -302,13 +307,13 @@
             const primaryColor = document.getElementById('primary-color-picker').value;
             const secondaryColor = document.getElementById('secondary-color-picker').value;
             const bgColor = document.getElementById('bg-color-picker').value;
-            const logoBgColor = document.getElementById('logo-bg-color-picker').value; // NEW VALUE
+            const logoBgColor = document.getElementById('logo-bg-color-picker').value;
             const fontFamily = document.getElementById('font-family-select').value;
             
             document.documentElement.style.setProperty('--primary-color', primaryColor);
             document.documentElement.style.setProperty('--secondary-color', secondaryColor);
             document.documentElement.style.setProperty('--bg-color', bgColor);
-            document.documentElement.style.setProperty('--logo-bg-color', logoBgColor); // SET NEW VARIABLE
+            document.documentElement.style.setProperty('--logo-bg-color', logoBgColor);
             document.documentElement.style.setProperty('--font-family', fontFamily);
         }
 
@@ -363,6 +368,9 @@
                     loadPicFromLink(newUrl);
                 }
             });
+            
+            // Initial call to set default logo color if needed
+            updateDesign(); 
         });
     </script>
 
