@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Curriculum Vitae Generator</title>
+    <style>
+        /* Define the main colors from the image */
+        :root {
+            --primary-blue: #0056b3; /* Darker Blue */
+            --secondary-blue: #007bff; /* Lighter Blue */
+            --text-color: #333;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 10px;
+            background-color: #f7f7f7;
+            display: flex;
+            justify-content: center;
+            color: var(--text-color);
+        }
+
+        .cv-container {
+            width: 100%;
+            max-width: 800px; 
+            background-color: white;
+            padding: 20px 30px; /* Reduced padding */
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            position: relative;
+            margin: 20px auto; 
+            font-size: 13px;
+            line-height: 1.3; /* Tight line height */
+            
+            /* Background Design */
+            background-image: 
+                linear-gradient(135deg, rgba(200, 200, 255, 0.1) 0%, rgba(255, 255, 255, 0) 50%),
+                linear-gradient(315deg, rgba(200, 200, 255, 0.1) 0%, rgba(255, 255, 255, 0) 50%);
+            background-repeat: no-repeat;
+            background-position: top right, bottom left;
+            background-size: 80% 80%;
+        }
+
+        /* --- Header/Identity Section --- */
+        .identity {
+            margin-bottom: 8px; /* Further reduced margin */
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .profile-pic-container {
+            width: 80px; /* Minimal pic size */
+            height: 100px;
+            position: absolute;
+            top: 0;
+            right: 0;
+            background-color: #d1eaff; 
+            border: 1px solid var(--primary-blue);
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        #profile-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .contact-info {
+            line-height: 1.2; 
+            font-size: 12px; 
+            margin-left: 120px; /* Space for logo */
+            max-width: 60%;
+        }
+        
+        .contact-info strong {
+            font-size: 17px; 
+            color: var(--primary-blue);
+        }
+
+        .logo-box {
+            width: 100px; /* Minimal logo size */
+            height: 100px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 5px;
+        }
+
+        .logo-box .large-c { font-size: 70px; line-height: 0.7; } 
+        .logo-box .large-v { font-size: 40px; bottom: 15px; right: 10px; position: absolute; }
+        .logo-box .text { font-size: 9px; margin-top: -10px; line-height: 1; }
+        
+        /* Section Styling */
+        .section {
+            margin-top: 10px; /* Minimal margin between sections */
+        }
+
+        .section-title {
+            font-size: 18px; /* Smaller title size */
+            color: var(--primary-blue);
+            padding-bottom: 2px; /* Minimal padding */
+            margin-bottom: 4px; /* Minimal margin below title */
+            display: inline-block;
+            position: relative;
+            font-weight: normal;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-bottom: 2px double var(--primary-blue); 
+        }
+
+        .section p {
+            font-size: 12px; 
+            line-height: 1.3;
+        }
+
+        /* List Styles */
+        .profile-list li, .education-list li {
+            margin-bottom: 0px; /* Zero margin */
+            font-size: 12px; 
+            line-height: 1.2;
+            display: flex;
+        }
+
+        .profile-list .label, .education-list .label {
+            width: 120px; 
+            font-weight: bold;
+        }
+        
+        .skills-list, .language-list {
+             display: flex;
+             flex-wrap: wrap;
+        }
+
+        .skills-list li, .language-list li {
+            font-size: 12px; 
+            margin-bottom: 1px;
+            padding-left: 15px;
+            position: relative;
+            width: 49%; 
+        }
+        .skills-list li::before, .language-list li::before {
+            content: "•";
+            color: var(--secondary-blue);
+            font-weight: bold;
+            display: inline-block;
+            width: 1em;
+            margin-left: -1em;
+        }
+        
+        .reference p::before {
+            content: "✔";
+            color: var(--secondary-blue);
+            font-weight: bold;
+            margin-right: 5px;
+        }
+        
+        /* --- Editable Content Styling (for screen only) --- */
+        [contenteditable="true"] {
+            border: 1px dashed #ccc;
+            padding: 1px; /* Minimal padding for editing */
+        }
+        [contenteditable="true"]:focus {
+            border-color: var(--secondary-blue);
+            outline: none;
+        }
+
+        /* Print Button Styling */
+        .print-button {
+            padding: 8px 15px; 
+            background-color: var(--primary-blue); 
+            color: white; 
+            border: none; 
+            cursor: pointer; 
+            font-size: 14px;
+        }
+
+        /* ================================================= */
+        /* =========== PRINT STYLES (One Page A4) ========== */
+        /* ================================================= */
+        @page {
+            size: A4;
+            margin: 0.25in; /* CRITICAL: Extremely minimal print margin */
+        }
+
+        @media print {
+            .cv-container {
+                font-size: 9.5pt; /* Absolute minimum readable font size */
+                padding: 10px 15px; /* Minimal internal padding */
+                box-shadow: none;
+                background-image: none; 
+            }
+            
+            [contenteditable="true"] {
+                border: none !important;
+                padding: 0 !important;
+            }
+            
+            .section {
+                margin-top: 6px; /* Super minimal margin */
+            }
+            .section-title {
+                font-size: 15pt;
+                margin-bottom: 3px;
+            }
+            .contact-info {
+                font-size: 9.5pt;
+                line-height: 1.1; 
+            }
+            .profile-list li, .education-list li, .skills-list li, .language-list li, .section p {
+                font-size: 9.5pt;
+                line-height: 1.2;
+            }
+            
+            .print-button {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="cv-container">
+        
+        <!-- Header Section -->
+        <div class="identity">
+            
+            <div class="logo-box">
+                <span class="large-c">C</span>
+                <span class="large-v">V</span>
+                <div class="text">urriculum<br>itae</div>
+            </div>
+
+            <div class="contact-info">
+                <p><strong><span contenteditable="true">Nazim Mustafa</span></strong></p>
+                <p contenteditable="true">Village Ganial p/o Gattar</p>
+                <p contenteditable="true">Tehsil Sohawa District Jhelum</p>
+                <p>Cell : <span contenteditable="true">0346-0508583</span></p>
+            </div>
+            
+            <div class="profile-pic-container" id="pic-upload-area" title="تصویر شامل کرنے کے لیے کلک کریں">
+                <!-- Default Image or Placeholder -->
+                <img id="profile-image" src="https://via.placeholder.com/80x100/d1eaff/0056b3?text=Click+to+Add+Pic" alt="Profile Picture">
+            </div>
+
+        </div>
+
+        <!-- Objective Section -->
+        <div class="section">
+            <h2 class="section-title">Objective</h2>
+            <p contenteditable="true">To work with dedication & honesty in a growing and challenging environment that can best utilize my expertise.</p>
+        </div>
+        
+        <!-- Personal Profile Section -->
+        <div class="section">
+            <h2 class="section-title">Personal Profile:</h2>
+            <ul class="profile-list">
+                <li><span class="label">Full Name</span> : <span class="value" contenteditable="true">Nazim Mustafa</span></li>
+                <li><span class="label">Father Name</span> : <span class="value" contenteditable="true">Ghulam Mustafa</span></li>
+                <li><span class="label">CNIC No.</span> : <span class="value" contenteditable="true">37303-8235746-1</span></li>
+                <li><span class="label">Marital Status</span> : <span class="value" contenteditable="true">Single</span></li>
+                <li><span class="label">Date of Birth</span> : <span class="value" contenteditable="true">21-02-2000</span></li>
+                <li><span class="label">Religion</span> : <span class="value" contenteditable="true">Islam</span></li>
+            </ul>
+        </div>
+
+        <!-- Education Section -->
+        <div class="section">
+            <h2 class="section-title">Education:</h2>
+            <ul class="education-list">
+                <li><span class="label">Matric (Science)</span> : <span class="value" contenteditable="true">634/1100</span></li>
+            </ul>
+        </div>
+
+        <!-- Skills Section -->
+        <div class="section">
+            <h2 class="section-title">Skills:</h2>
+            <ul class="skills-list">
+                <li contenteditable="true">Auto CAD</li>
+                <li contenteditable="true">Basic Computer</li>
+                <li contenteditable="true">Technical Drawing</li>
+                <li contenteditable="true">Problem Solving</li>
+            </ul>
+        </div>
+
+        <!-- Language Skills Section -->
+        <div class="section">
+            <h2 class="section-title">Language Skills:</h2>
+            <ul class="language-list">
+                <li contenteditable="true">Urdu</li>
+                <li contenteditable="true">English</li>
+                <li contenteditable="true">Punjabi</li>
+            </ul>
+        </div>
+        
+        <!-- Reference Section -->
+        <div class="section reference">
+            <h2 class="section-title">Reference:</h2>
+            <p contenteditable="true">Reference will be on your request.</p>
+        </div>
+
+    </div>
+
+    <!-- Print/Control Area (Will be hidden during print) -->
+    <div style="position: fixed; top: 10px; right: 10px; padding: 10px; background: white; border: 1px solid #ccc; z-index: 100;" class="print-control-box">
+        <p style="margin: 0; font-weight: bold; font-size: 14px;">ایڈیٹ کرنے کے بعد:</p>
+        
+        <button class="print-button" onclick="window.print()" style="display: block; width: 100%; margin-top: 8px;">
+            CV ڈاؤن لوڈ (PDF) / پرنٹ
+        </button>
+
+        <p style="margin-top: 15px; font-size: 12px;">(تصویر شامل کرنے کے لیے، CV میں تصویر کی جگہ پر کلک کریں)</p>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const profileImage = document.getElementById('profile-image');
+            const picUploadArea = document.getElementById('pic-upload-area');
+
+            // Function to handle image loading from a link
+            function loadPicFromLink(url) {
+                if (url) {
+                    profileImage.src = url;
+                    profileImage.style.display = 'block';
+                }
+            }
+
+            // Click listener on the picture area to prompt for image URL
+            picUploadArea.addEventListener('click', function() {
+                const newUrl = prompt("براہ کرم اپنی تصویر کا آن لائن لنک (URL) یہاں پیسٹ کریں:");
+                if (newUrl) {
+                    loadPicFromLink(newUrl);
+                }
+            });
+
+            // Hide controls on print (already handled by CSS, but good practice)
+            const style = document.createElement('style');
+            style.textContent = `@media print { .print-control-box { display: none !important; } }`;
+            document.head.appendChild(style);
+        });
+    </script>
+
+</body>
+</html>
