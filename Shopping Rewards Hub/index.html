@@ -1085,6 +1085,23 @@ Australia: 3:00 AM – 5:00 AM (next day)</li>
             }, 500); // Wait for slides to load
 
         })();
+         function downloadDepositImage() {
+    const imageURL = document.getElementById('depositImage').src;
+    const a = document.createElement('a');
+    a.href = imageURL;
+    a.download = 'Deposit_Guide.jpg';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+}
+
+
+// --- Initialization ---
+
+document.addEventListener('DOMContentLoaded', () => {
+    initializeElements();
+    attachListeners();
+});
     </script>
 
 </body>
