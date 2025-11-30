@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Social Task Platform - Seller Dashboard</title>
+  
+  <!-- CSS Styles (Will be moved to style.css in a production environment) -->
+  <style>
+    /* 
+       *** CSS content will go here (from the original provided code) ***
+       (For brevity, the large CSS block is skipped here, but it remains in your original file structure.) 
+    */
+    /* Base Styles */
+    body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;background:#0f1720;color:#cbd5e1;display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0}
+    .container{width:480px;max-width:95%;background:#0b1220;border-radius:12px;padding:22px;box-shadow:0 8px 30px rgba(2,6,23,0.6);border:1px solid rgba(255,255,255,0.03);margin:20px 0;}
+    
+    /* Header with Wallet */
+    header{
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        padding:10px 0;
+        margin-bottom:20px;
+        width:100%;
+        max-width:520px;
+        position:fixed;
+        top:0;
+        background:#0b1220;
+        z-index:10;
+        border-bottom:1px solid rgba(255,255,255,0.05);
+        padding:10px 22px;
+    }
+    .wallet-display{
+        color: #ffd86b;
+        font-weight: 600;
+        font-size: 14px;
+        background: #1a2333;
+        padding: 5px 10px;
+        border-radius: 6px;
+        border: 1px solid #334155;
+    }
+    .profile-icon{width:36px;height:36px;border-radius:50%;background:#30c7ff;color:#0b1220;display:flex;align-items:center;justify-content:center;font-weight:700;cursor:pointer;font-size:18px;}
+    h2{color:#30c7ff;margin:0 0 10px;font-size:20px}
+    p.sub{color:#94a3b8;font-size:12px;margin:0 0 18px}
+    label{display:block;font-size:13px;color:#cbd5e1;margin-bottom:6px}
+    input[type="text"], input[type="email"], input[type="password"], input[type="number"], textarea, select{width:100%;padding:10px;border-radius:8px;background:#0b1622;border:1px solid rgba(255,255,255,0.03);color:#e6eef6;font-size:14px;box-sizing:border-box;margin-bottom:10px;}
+    textarea{min-height:70px;resize:vertical}
+    .row{display:flex;gap:10px;margin-bottom:10px;}
+    .row > *{flex:1;}
+    .btn{display:block;width:100%;padding:12px;border-radius:8px;background:#07a1ff;color:#001122;border:0;font-weight:700;cursor:pointer;margin-top:12px;transition:background 0.2s;}
+    .hidden { display: none; }
+    .status{padding:10px;border-radius:8px;margin-top:10px;text-align:center;font-weight:700;}
+    .pending{background:#1f2937;color:#ffd86b;}
+    .approved{background:#052e19;color:#9ff7b1;}
+    .rejected{background:#3b070c;color:#fca5a5;}
+    .warning{background:#3b070c;color:#fca5a5;}
+    
+    .card{background:#1a2333;padding:15px;border-radius:10px;margin-bottom:15px;border-left:4px solid #30c7ff;}
+    .product-card{border-left: 4px solid #f97316;}
+    
+    .item-list > div{padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center;}
+    .item-actions button{margin-left: 8px; padding: 5px 10px; border-radius: 4px; font-size: 12px; cursor: pointer;}
+    .btn-edit{background: #2563eb; color: white;}
+    .btn-delete{background: #ef4444; color: white;}
+    .btn-link{background: none; color: #30c7ff; border: 1px solid #30c7ff;}
+
+    /* Footer Navigation */
+    #dashboardFooter{
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background: #1a2333;
+        border-top: 1px solid rgba(255,255,255,0.05);
+        display: flex;
+        justify-content: space-around;
+        padding: 10px 0;
+        z-index: 20;
+    }
+    .footer-btn{
+        background: none;
+        border: none;
+        color: #94a3b8;
+        font-size: 14px;
+        padding: 8px 15px;
+        cursor: pointer;
+        transition: color 0.2s;
+    }
+    .footer-btn.active{
+        color: #30c7ff;
+        font-weight: bold;
+        border-bottom: 2px solid #30c7ff;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div style="font-size:24px;color:#30c7ff;font-weight:bold;">SocialTask</div>
+    <div id="walletDisplay" class="wallet-display hidden">Wallet: 0 COINS</div>
+    <div id="authArea">
+      <div id="profileIcon" class="profile-icon hidden">U</div>
+      <button id="loginBtn" class="btn" style="width:auto;margin:0;padding:8px 15px;">Login/Signup</button>
+    </div>
+  </header>
+
+  <div class="container" id="mainContainer" style="margin-top:80px; margin-bottom: 80px;">
+    <!-- Stage 0: Login/Signup Form -->
+    <div id="loginForm">
+      <h2>User Login/Signup</h2>
+      <label>Email</label><input id="authEmail" type="email" placeholder="email@example.com">
+      <label>Password</label><input id="authPassword" type="password" placeholder="******">
+      <button id="signUpBtn" class="btn">Sign Up</button>
+      <button id="signInBtn" class="btn" style="margin-top:10px;background:#374151;">Sign In</button>
+    </div>
+
+    <!-- Stage 1: SELLER VERIFICATION FORM (Detailed) -->
+    <div id="sellerForm" class="hidden">
+      <h2>Seller Account Verification</h2>
+      <p class="sub">Please provide complete and accurate details for verification.</p>
+      <label>Seller Name (Full Name)</label><input id="s_fullName" type="text" placeholder="MUHAMMAD ALI">
+      <label>Father's Name</label><input id="s_fatherName" type="text" placeholder="ABDUL RAHEEM">
+      <label>Primary ID Card/CNIC Number</label><input id="s_cnic" type="text" placeholder="3740512345678 (no dashes)">
+      <label>Family Members Details</label><textarea id="s_familyDetails" placeholder="AHMED (Brother) - 37405..."></textarea>
+      <label>Full Address</label><textarea id="s_address" placeholder="House/Street No, Area/Mohallah, City"></textarea>
+      <label>Country</label><input id="s_country" type="text" value="Pakistan">
+      <label>State/Province</label><input id="s_state" type="text" placeholder="Punjab/Sindh">
+      <label>District</label><input id="s_district" type="text" placeholder="Lahore">
+      <label>Postal/ZIP Code</label><input id="s_postalCode" type="number" placeholder="54000">
+      <button id="submitSellerBtn" class="btn">Submit Verification</button>
+    </div>
+
+    <!-- Stage 2: Application Status View -->
+    <div id="statusView" class="hidden">
+      <h2>Application Status</h2>
+      <div id="statusMessage" class="status pending">Status: Pending Admin Review...</div>
+    </div>
+
+    <!-- Stage 3: Q&A Test View -->
+    <div id="qaTestView" class="hidden">
+      <h2>Security and Policy Test</h2>
+      <p class="sub warning">You must pass this test to become a fully approved seller.</p>
+      <div id="questionsList"></div>
+      <button id="submitQaBtn" class="btn">Submit Answers</button>
+      <div id="qaResult" class="hidden status"></div>
+    </div>
+
+    <!-- Stage 4: Seller Dashboard -->
+    <div id="sellerDashboard" class="hidden">
+      <h2 id="dashboardTitle">Seller Dashboard</h2>
+      <p id="dashboardSubtitle" class="sub">Welcome! Manage your tasks, products, and submit daily proofs.</p>
+
+      <!-- VIEW 1: TASK MANAGEMENT -->
+      <div id="taskManagementView">
+        <h3 id="taskFormTitle">1. Add New Social/Digital Task</h3>
+        <div class="card">
+            <input type="hidden" id="taskIdToEdit"> 
+            <label>Task Category & Type</label>
+            <select id="taskType">
+              <optgroup label="YouTube"><option value="YT_Subscribe">Subscribe</option><option value="YT_Like">Like</option><option value="YT_View">View</option><option value="YT_Comment">Comment</option></optgroup>
+              <optgroup label="Instagram"><option value="IG_Follower">Follower</option><option value="IG_Like">Like</option><option value="IG_Comment">Comment</option><option value="IG_Share">Share</option></optgroup>
+              <optgroup label="TikTok"><option value="TT_Follower">Follower</option><option value="TT_Like">Like</option><option value="TT_View">View</option><option value="TT_Comment">Comment</option><option value="TT_Saved">Saved</option><option value="TT_Share">Share</option></optgroup>
+              <optgroup label="WhatsApp"><option value="WA_ChannelFollowers">Channel Followers</option><option value="WA_GroupJoined">Group Joined</option></optgroup>
+              <optgroup label="External"><option value="WEB_Visit">Website Visit</option><option value="APP_Download">App Download</option></optgroup>
+            </select>
+            
+            <label>Link (Video, Profile, or URL)</label><input id="taskLink" type="text" placeholder="https://link-to-your-content.com">
+            
+            <div class="row">
+                <div><label>Target Quantity</label><input id="taskQty" type="number" placeholder="1000"></div>
+                <div><label>Coins per Action</label><input id="taskCoins" type="number" step="0.01" placeholder="2.00"></div>
+            </div>
+
+            <button id="addTaskBtn" class="btn" style="background:#10b981;">Add Task</button>
+        </div>
+        
+        <h4 style="color:#cbd5e1;">Your Active Tasks</h4>
+        <div id="taskList" class="item-list"></div>
+      </div>
+      
+      <!-- VIEW 2: PRODUCT MANAGEMENT -->
+      <div id="productManagementView" class="hidden">
+        <h3>2. Product Listings Management</h3>
+        <div class="card product-card">
+          <h4>Add New Product Listing</h4>
+          <label>Product Title</label><input id="p_title" type="text">
+          <label>Product Price (PKR/USD)</label><input id="p_price" type="text">
+          
+          <div class="row">
+            <div>
+              <label>Product Link</label>
+              <input id="p_link" type="text">
+            </div>
+            <div>
+              <label>Coins for Purchase/Action</label>
+              <input id="p_coins" type="number" step="0.01" placeholder="50.00">
+            </div>
+          </div>
+          
+          <label>Product Image URL</label><input id="p_imageLink" type="text">
+          <label>Product Description</label><textarea id="p_desc"></textarea>
+          <button id="addProductBtn" class="btn" style="background:#f97316;">Save Product</button>
+        </div>
+        <h4 style="color:#cbd5e1;">Your Current Products</h4>
+        <div id="productList" class="item-list"></div>
+      </div>
+
+      <!-- VIEW 3: PROOF / DAILY REPORT SUBMISSION -->
+      <div id="proofSubmissionView" class="hidden">
+        <h3>3. Daily Proof Submission</h3>
+        <div class="card">
+          <label>Work Description / Daily Report</label><textarea id="proofDescription" placeholder="e.g., Completed 500 YouTube Likes..."></textarea>
+          <label>Proof Link (Picture, Screenshot, or Video URL)</label><input id="proofLink" type="text" placeholder="https://imgur.com/your-proof-image">
+          <button id="submitProofBtn" class="btn" style="background:#30c7ff;">Submit Daily Proof</button>
+        </div>
+        <h4 style="color:#cbd5e1;">Recent Submissions</h4>
+        <div id="proofList" class="item-list"></div>
+      </div>
+      
+      <!-- VIEW 4: SOCIAL LINKS MANAGEMENT -->
+      <div id="socialLinksView" class="hidden">
+        <h3>4. Social Profile Links</h3>
+        <div class="card">
+          <label>Platform Name</label>
+          <select id="socialPlatform"><option>YouTube Channel</option><option>Instagram Profile</option><option>TikTok Profile</option><option>Facebook Page</option></select>
+          <label>Profile URL</label><input id="socialUrl" type="text" placeholder="https://link-to-your-profile">
+          <button id="addSocialLinkBtn" class="btn" style="background:#f97316;">Add/Update Link</button>
+        </div>
+        <h4 style="color:#cbd5e1;">Your Saved Links</h4>
+        <div id="socialLinkList" class="item-list"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FOOTER NAVIGATION BAR -->
+  <div id="dashboardFooter" class="hidden">
+    <button class="footer-btn active" data-view="taskManagementView">Tasks</button>
+    <button class="footer-btn" data-view="productManagementView">Products</button>
+    <button class="footer-btn" data-view="socialLinksView">Social Links</button>
+    <button class="footer-btn" data-view="proofSubmissionView">Proof</button>
+  </div>
+  
+<!-- Replace the existing <script> block with this link -->
+  <script type="module" src="script.js"></script>
+</body>
+</html>
