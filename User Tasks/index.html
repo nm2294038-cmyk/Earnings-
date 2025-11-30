@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>User Panel - Earn Coins & Complete Tasks</title>
+  
+  <!-- CSS Links -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="style.css"> 
+</head>
+<body>
+  <header>
+    <!-- Left Side: Profile Icon -->
+    <div class="left-controls">
+        <div id="profileIcon" class="profile-icon hidden">U</div>
+    </div>
+
+    <!-- Center: Social Task Title -->
+    <div class="logo-center">SocialTask</div>
+
+    <!-- Right Side: Wallet Info -->
+    <div class="right-controls">
+        <div id="userInfo" style="text-align: right;">
+            <div id="walletDisplay" class="wallet-display hidden"></div>
+        </div>
+    </div>
+  </header>
+
+  <div class="container">
+    
+    <!-- Auth Prompt (If not logged in) -->
+    <div id="authPrompt" class="card-wrapper hidden" style="text-align: center; margin-top: 100px;">
+        <h3>Log In to Start Earning Coins</h3>
+        <p>Sign up or log in using your existing account to start earning coins.</p>
+        <button id="authBtn" class="login-btn">Go to Login/Signup</button>
+    </div>
+
+    <!-- Main Content Area -->
+    <div id="mainContent" class="hidden">
+        
+        <!-- View 1: Tasks Management (Default View) -->
+        <div id="tasksView">
+            <div id="categorySelectionView" class="card-wrapper">
+                <h2>Tasks Categories</h2>
+                <div style="font-size: 18px; font-weight: 600;">Tasks Ki Categories Chunein</div>
+                <div class="categories-grid" id="categoriesGrid"></div>
+            </div>
+
+            <!-- Task Listing View -->
+            <div id="taskListingView" class="card-wrapper hidden">
+                <a href="#" class="back-link" onclick="showCategorySelection()">&#8592; Wapas Categories Par Jaen</a>
+                <h2 id="listingTitle"></h2>
+                <div class="task-listing-grid" id="taskListGrid"></div>
+            </div>
+        </div>
+        
+        <!-- View 2: Proof Submission View -->
+        <div id="proofView" class="hidden">
+            <div id="proofSubmissionForm" class="card-wrapper">
+                <h2>Proof Submit Karein</h2>
+                <label for="proofTaskCategory">Task Category</label>
+                <select id="proofTaskCategory">
+                    <option value="">-- Task Category Choose Karein --</option>
+                    <option value="YT">YouTube Task</option>
+                    <option value="IG">Instagram Task</option>
+                    <option value="PROD">Product Purchase</option>
+                    <!-- Add more categories -->
+                </select>
+
+                <label for="proofDescription">Work Description (Kon sa task kiya?)</label>
+                <textarea id="proofDescription" placeholder="Misaal: YouTube channel 'XYZ' subscribe kiya."></textarea>
+
+                <label for="proofLink">Screenshot / Picture Link (Must be a direct image URL)</label>
+                <input type="text" id="proofLink" placeholder="https://imgur.com/screenshot.jpg">
+
+                <button id="submitProofBtn" class="btn-open-earn" style="background:#07a1ff; color:white;">Submit Proof</button>
+            </div>
+
+            <!-- Proof History -->
+            <div id="proofHistory" class="card-wrapper">
+                <h2>Meri Proof History</h2>
+                <div id="historyList">
+                    <!-- History items will be loaded here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- View 3: Tools View (External Link) -->
+        <div id="toolsView" class="hidden">
+             <div class="card-wrapper">
+                 <h2>Useful Tools</h2>
+                 <p>Use our tools to generate quick links for screenshots or other needs.</p>
+                 <button onclick="openToolsLink(event)" class="btn-open-earn" style="background:#30c7ff; color:white;">
+                     Open Picture to Link Generator
+                 </button>
+             </div>
+        </div>
+    </div>
+  </div>
+
+  <!-- FOOTER NAVIGATION BAR -->
+  <div id="userFooter" class="hidden">
+    <button class="footer-btn active" data-view="tasksView">
+        <span class="material-icons">list_alt</span>Tasks
+    </button>
+    <button class="footer-btn" data-view="proofView">
+        <span class="material-icons">cloud_upload</span>Proof
+    </button>
+    <button class="footer-btn" data-view="toolsView" onclick="openToolsLink(event)">
+        <span class="material-icons">handyman</span>Tools
+    </button>
+  </div>
+
+  <!-- JavaScript Script -->
+  <script type="module" src="script.js"></script>
+</body>
+</html>
