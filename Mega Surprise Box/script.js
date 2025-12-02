@@ -34,7 +34,7 @@ function renderBoxes() {
         let bg = randomColor();
         let border = randomColor();
         let text = randomColor();
-        let link = `https://toolswebsite205.blogspot.com/?box=${i}`;
+        let link = `https://otieu.com/4/10261233}`;
 
         box.style.background = bg;
         box.style.borderColor = border;
