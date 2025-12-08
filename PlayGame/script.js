@@ -30,8 +30,8 @@ window.currentUser = null;
 window.userWalletBalance = 0;
 window.userName = 'Guest';
 window.gameActive = false;
-window.GAME_BET_AMOUNT = 310;
-window.GAME_WIN_REWARD = 280;
+window.GAME_BET_AMOUNT = 31000;
+window.GAME_WIN_REWARD = 28000;
 window.MANUAL_PLAYER_COLOR = 'yellow';
 
 // --- Ludo Constants ---
