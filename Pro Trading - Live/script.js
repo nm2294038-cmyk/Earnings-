@@ -16,7 +16,7 @@ const db = firebase.firestore();
 let user = null;
 let balance = 0;
 let isSignup = false;
-let invest = 280;
+let invest = 2800000;
 let duration = 5; // Seconds
 let marketMode = 'NORMAL'; // Default Market Mode
 
@@ -205,7 +205,7 @@ setInterval(() => {
 
 // --- TRADING LOGIC ---
 function adjAmt(v) {
-    if (invest + v >= 280) {
+    if (invest + v >= 2800000) {
         invest += v;
         document.getElementById('amtVal').innerText = invest;
     }
