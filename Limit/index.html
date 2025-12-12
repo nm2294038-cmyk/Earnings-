@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Service Portal | Final Complete Version</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="style.css"> <!-- Link to external CSS -->
+</head>
+<body>
+
+    <!-- --- HEADER (Fixed) --- -->
+    <header>
+        <div class="header-left">
+            <div id="headerWallet">0 <span class="coin-suffix">Coins</span></div>
+            <div class="profile-icon" id="profile-icon"><i class="fas fa-user"></i></div>
+            <div class="profile-details" id="profile-details">
+                 <div id="userDisplay">
+                    <!-- Dynamic content will be injected here -->
+                 </div>
+            </div>
+        </div>
+        <div class="header-right">
+            <button class="chat-btn-global" id="global-admin-chat-btn" style="margin-right: 10px;"><i class="fas fa-comments"></i> Chat</button>
+            <div class="auth-controls">
+                <button id="openLoginBtn">Sign In / Up</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Live Withdrawal Ticker (NEW POSITION - Top) -->
+    <div id="withdrawalTicker" class="ticker-top"></div>
+
+    <!-- Page Content -->
+    <h1>Service Portal <span id="marketStatus"></span></h1>
+
+    <!-- STATS CARDS -->
+    <div class="stats-container">
+        <div class="stat-card">
+            <div class="stat-icon"><i class="fas fa-users"></i></div>
+            <div class="stat-value">100K+</div>
+            <div class="stat-label">Total Active Users</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon" style="color: #28a745;"><i class="fas fa-check-circle"></i></div>
+            <div class="stat-value">10K+</div>
+            <div class="stat-label">Limit Boosts Successful</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon" style="color: #ff7878;"><i class="fas fa-money-bill-wave"></i></div>
+            <div class="stat-value">50K+</div>
+            <div class="stat-label">Withdrawals Successful</div>
+        </div>
+    </div>
+
+    <div class="card-container">
+        <!-- 1. WALLET CARD -->
+        <div class="wallet-card">
+            <h3><i class="fas fa-wallet"></i> Your Main Coin Balance</h3>
+            <div class="wallet-balance" id="user-coin-balance">0.00 COINS</div>
+            <p style="opacity: 0.8; font-size: 0.9em; color: #eee;">Real-time update from Firestore.</p>
+        </div>
+        
+        <!-- 2. FAST ORDER CARD -->
+        <div class="fast-card" id="fast-service-card">
+            <div class="card-title">📝 Fast Custom Order</div>
+            <div class="card-subtitle">Submit details for any service/product.</div>
+            <button class="btn-order" id="openFastOrderModal">Order Now</button>
+        </div>
+        
+        <!-- 3. DISCOUNT CARD (NEW) -->
+        <div class="discount-card">
+            <div class="card-title"><i class="fas fa-tag"></i> 20% Discount Card</div>
+            <div class="card-subtitle" id="discountStatusText">Loading Status...</div>
+            <button class="btn-discount" id="discountCardActionBtn">Loading...</button>
+        </div>
+
+        <!-- 4. WITHDRAWAL CARD -->
+        <div class="withdrawal-card" id="withdrawal-service-card">
+            <div class="card-title">💰 Coin Withdrawal</div>
+            <div class="card-subtitle">Withdraw coins to local methods (20% Fee).</div>
+            <button class="btn-withdrawal" id="navWithdraw">Withdraw Now</button>
+        </div>
+        
+        <!-- 5. LIMIT INCREASE CARD -->
+        <div class="limit-card" id="limit-increase-card">
+            <div class="card-title"><i class="fas fa-rocket"></i> Boost Limit</div>
+            <div class="card-subtitle">Increase limit to 120M coins for 8,000 PKR.</div>
+            <button class="btn-limit" id="openLimitIncreaseModal">Increase Limit</button>
+        </div>
+    </div>
+    
+    <!-- Discount Card Display Area -->
+    <div id="discountCardDisplay">
+        <!-- Dynamic card content will appear here -->
+    </div>
+
+    <!-- Tracking Sections (History Cards) -->
+    <div class="tracking-sections">
+
+        <!-- Custom Order Tracking Card -->
+        <div class="tracking-box">
+            <div class="tracking-header" data-target="ordersHistoryContent">
+                <h2><i class="fas fa-box-open"></i> Custom Order History</h2>
+                <i class="fas fa-chevron-down toggle-icon"></i>
+            </div>
+            <div id="ordersHistoryContent" class="tracking-content">
+                <div id="ordersHistoryList">
+                    <p>Please log in to see your orders.</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Withdrawal Tracking Card -->
+        <div class="tracking-box">
+            <div class="tracking-header" data-target="wdHistoryContent">
+                <h2><i class="fas fa-history"></i> Withdrawal History</h2>
+                <i class="fas fa-chevron-down toggle-icon"></i>
+            </div>
+            <div id="wdHistoryContent" class="tracking-content">
+                <div id="wdHistoryList">
+                    <p>Please log in to see your history.</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Deposit Tracking Card -->
+        <div class="tracking-box">
+            <div class="tracking-header" data-target="depHistoryContent">
+                <h2><i class="fas fa-exchange-alt"></i> Deposit History</h2>
+                <i class="fas fa-chevron-down toggle-icon"></i>
+            </div>
+            <div id="depHistoryContent" class="tracking-content">
+                <div id="depHistoryList">
+                    <p>Please log in to see your history.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Limit Increase Deposit Tracking Card -->
+        <div class="tracking-box">
+            <div class="tracking-header" data-target="limitHistoryContent">
+                <h2><i class="fas fa-chart-line"></i> Limit Boost Requests</h2>
+                <i class="fas fa-chevron-down toggle-icon"></i>
+            </div>
+            <div id="limitHistoryContent" class="tracking-content">
+                <div id="limitHistoryList">
+                    <p>Please log in to see your history.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- --- MODALS (Defined) --- -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" id="closeLoginModal">&times;</span>
+            <h3>Login / Signup</h3>
+            <p id="loginErrorMsg" style="color:red; display:none;"></p>
+            <input type="email" id="emailInput" placeholder="Email" required>
+            <input type="password" id="passInput" placeholder="Password" required>
+            <button id="btnLoginAction" class="btn-submit-order" style="margin-bottom: 10px;">Log In</button>
+            <button id="btnSignupAction" class="btn-submit-order" style="background:#28a745;">Sign Up (New User)</button>
+        </div>
+    </div>
+    
+    <!-- FAST ORDER MODAL -->
+    <div id="fastOrderModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" id="closeFastOrderModal">&times;</span>
+            <h3>📝 Submit Custom Order</h3>
+            <p id="orderErrorMsg" style="color:red; display:none;"></p>
+            <p id="orderSuccessMsg" style="color:green; display:none;"></p>
+            
+            <div class="form-group"><input type="text" id="orderName" placeholder="Your Name" required></div>
+            <div class="form-group"><input type="text" id="orderFatherName" placeholder="Father's Name" required></div>
+            <div class="form-group"><input type="text" id="orderIDCard" placeholder="ID Card No. (Optional)"></div>
+            <div class="form-group"><input type="text" id="orderWhatsapp" placeholder="WhatsApp Number" required></div>
+            <div class="form-group"><input type="email" id="orderEmail" placeholder="Email (For Order Updates)" required></div>
+            <div class="form-group"><input type="url" id="orderProductLink" placeholder="Product Link (Optional)"></div>
+            <div class="form-group"><input type="text" id="orderDiscountCode" placeholder="Discount Code (Optional, 20%)"></div>
+            <div class="form-group"><textarea id="orderAddress" placeholder="Complete Address (Optional)" rows="2"></textarea></div>
+            
+            <div class="form-group">
+                <select id="orderCategory" required>
+                    <option value="">-- Select Category --</option>
+                    <option value="Electronics">Electronics</option>
+                    <option value="Clothing">Clothing</option>
+                    <option value="Custom">Custom Request</option>
+                </select>
+            </div>
+            
+            <div class="form-group"><textarea id="orderProductName" placeholder="Product Name / Detailed Request" rows="3" required></textarea></div>
+
+            <button id="btnSubmitFastOrder" class="btn-submit-order">Submit Order Details</button>
+        </div>
+    </div>
+
+    <!-- DISCOUNT CARD PURCHASE MODAL -->
+    <div id="discountCardModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" id="closeDiscountCardModal">&times;</span>
+            <h3>🏷️ Buy Discount Card (100 PKR)</h3>
+            <p id="discountErrorMsg" style="color:red; display:none;"></p>
+            <p id="discountSuccessMsg" style="color:green; display:none;"></p>
+            
+            <p style="text-align:center; font-weight: 600; background: #cce5ff; padding: 10px; border-radius: 6px;">
+                Price: 100 PKR (1 Year 20% Discount)
+            </p>
+            
+            <p style="text-align:center; margin-bottom: 15px; font-size: 0.9em; border: 1px dashed #6f42c1; padding: 10px; border-radius: 8px;">
+                Send 100 PKR to: (Example: 0300 1234567 - Ali)
+            </p>
+
+            <div class="form-group"><label for="discountMethod">Payment Method</label><select id="discountMethod" required><option value="Easypaisa">Easypaisa</option><option value="JazzCash">JazzCash</option></select></div>
+            <div class="form-group"><label for="discountTrxId">Transaction ID (Required)</label><input type="text" id="discountTrxId" required placeholder="Transaction ID"></div>
+            <div class="form-group"><label for="discountSenderName">Your Sender Name</label><input type="text" id="discountSenderName" required placeholder="e.g., Ali Ahmed"></div>
+            <div class="form-group"><label for="discountSenderAccount">Your Sender Account Number</label><input type="text" id="discountSenderAccount" required placeholder="e.g., 03XX XXXXXXX"></div>
+
+            <button id="btnSubmitDiscountCard" class="btn-submit-order" style="background: #6f42c1;">Confirm Purchase (100 PKR)</button>
+        </div>
+    </div>
+    
+    <!-- GENERATE DISCOUNT CARD MODAL (NEW) -->
+    <div id="generateDiscountCardModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" id="closeGenerateDiscountCardModal">&times;</span>
+            <h3>💳 Generate Discount Card</h3>
+            <p id="generateCardErrorMsg" style="color:red; display:none;"></p>
+            
+            <p>Please enter details for your official discount card:</p>
+
+            <div class="form-group"><input type="text" id="cardHolderName" placeholder="Your Name" required></div>
+            <div class="form-group"><input type="text" id="cardFatherName" placeholder="Father's Name" required></div>
+            <div class="form-group"><input type="text" id="cardIDCard" placeholder="ID Card Number" required></div>
+            
+            <button id="btnGenerateDiscountCard" class="btn-submit-order" style="background: var(--secondary-color);">Generate Card</button>
+            <p style="margin-top: 15px; font-size: 0.9em;">(Once generated, these details cannot be changed)</p>
+        </div>
+    </div>
+
+    <!-- WITHDRAWAL MODAL -->
+    <div id="withdrawModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" id="closeWithdrawalModal">&times;</span>
+            <h3>Withdrawal Request (Main Coin)</h3>
+            <p id="wdErrorMsg" style="color:red; display:none;"></p>
+            <p id="wdSuccessMsg" style="color:green; display:none;"></p>
+            <div class="form-group"><label>Coin to Withdraw (Only Main)</label><select id="wdCoinSelect"><option value="main">Main Coin (MC)</option></select><small id="wdAvailBal">Available: 0 Coins</small></div>
+            <div class="form-group"><label for="wdAmount">Amount (Coins)</label><input type="number" id="wdAmount" min="100" required><small id="wdTaxDisplay"></small><small id="wdPkrEst" style="font-weight:bold;"></small></div>
+            <div class="form-group"><label>Method</label><select id="wdMethod" required><option value="Easypaisa">Easypaisa</option><option value="JazzCash">JazzCash</option><option value="Bitget">Bitget (USDT TRC20)</option></select></div>
+            <div class="form-group"><label for="wdName">Account Holder Name</label><input type="text" id="wdName" required></div>
+            <div class="form-group"><label for="wdAccount">Account Number/Wallet Address</label><input type="text" id="wdAccount" required></div>
+            <small id="wdLimitInfo" style="display:block; margin-bottom:10px; font-weight: 500;"></small>
+            <button id="btnSubmitWithdraw" class="btn-submit-withdrawal">Submit Withdrawal</button>
+        </div>
+    </div>
+    
+    <!-- DEPOSIT MODAL -->
+    <div id="depositModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" id="closeDepositModal">&times;</span>
+            <h3>Standard Deposit (PKR to Main Coin)</h3>
+             <p id="depErrorMsg" style="color:red; display:none;"></p>
+            <p id="depSuccessMsg" style="color:green; display:none;"></p>
+            
+            <p style="text-align:center; margin-bottom: 20px; font-size: 0.9em; border: 1px dashed #007bff; padding: 10px; border-radius: 8px;">
+                Send PKR to: (Example: 0300 1234567 - Ali)
+            </p>
+
+            <div class="form-group"><label for="depMethod">Deposit Method</label><select id="depMethod" required><option value="Easypaisa">Easypaisa</option><option value="JazzCash">JazzCash</option></select></div>
+            <div class="form-group"><label for="depAmountPKR">Amount (PKR)</label><input type="number" id="depAmountPKR" min="100" required></div>
+            <div class="form-group"><label>Coin to Receive (Main Coin)</label><select id="depCoinSelect"><option value="main">Main Coin (MC)</option></select><small id="depCoinEst" style="font-weight:bold;"></small></div>
+            <div class="form-group"><label for="depTrxId">Transaction ID (Required)</label><input type="text" id="depTrxId" required></div>
+            <div class="form-group"><label for="depSenderName">Your Sender Name</label><input type="text" id="depSenderName" required></div>
+            <div class="form-group"><label for="depSenderAccount">Your Sender Account Number</label><input type="text" id="depSenderAccount" required></div>
+
+            <button id="btnSubmitDeposit" class="btn-submit-order">Submit Deposit Proof</button>
+        </div>
+    </div>
+
+    <div id="limitIncreaseModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" id="closeLimitIncreaseModal">&times;</span>
+            <h3>🚀 Limit Boost Deposit (8,000 PKR)</h3>
+            <p id="limitErrorMsg" style="color:red; display:none;"></p>
+            <p id="limitSuccessMsg" style="color:green; display:none;"></p>
+            
+            <p style="text-align:center; font-weight: 600; background: #fff3cd; padding: 10px; border-radius: 6px;">
+                Price: 8,000 PKR (One Time) <br>
+                New Daily Limit: 120,000,000 Coins
+            </p>
+            
+            <p style="text-align:center; margin-bottom: 20px; font-size: 0.9em; border: 1px dashed #007bff; padding: 10px; border-radius: 8px;">
+                Send 8,000 PKR to: (Example: 0300 1234567 - Ali)
+            </p>
+
+            <div class="form-group"><label for="limitMethod">Deposit Method</label><select id="limitMethod" required><option value="Easypaisa">Easypaisa</option><option value="JazzCash">JazzCash</option></select></div>
+            
+            <div class="form-group"><label for="limitTrxId">Transaction ID (Required)</label><input type="text" id="limitTrxId" required placeholder="Transaction/Receipt ID"></div>
+            <div class="form-group"><label for="limitSenderName">Your Sender Name</label><input type="text" id="limitSenderName" required placeholder="e.g., Ali Ahmed"></div>
+            <div class="form-group"><label for="limitSenderAccount">Your Sender Account Number</label><input type="text" id="limitSenderAccount" required placeholder="e.g., 03XX XXXXXXX"></div>
+
+            <button id="btnSubmitLimitIncrease" class="btn-submit-order" style="background: #4caf50;">Submit 8,000 PKR Proof</button>
+        </div>
+    </div>
+    
+    <script type="module" src="script.js"></script>
+</body>
+</html>
