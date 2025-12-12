@@ -32,16 +32,16 @@ const CAROUSEL_SLIDE_COUNT = 6;
 
 // REWARD MILESTONES (Key is the number of invites required)
 const REWARD_MILESTONES = [
-    { invites: 1, coins: 100, item: 'Bonus Coins' },
-    { invites: 10, coins: 1000, item: 'Premium Coins' },
-    { invites: 20, coins: 2000, item: 'Voucher Code' },
-    { invites: 30, coins: 3000, item: 'Gift Card' },
-    { invites: 250, coins: 300000, item: 'Mystery Box' },
-    { invites: 30000, coins: 350000, item: 'Gold Membership' },
-    { invites: 35000, coins: 400000, item: 'Cash Bonus' },
-    { invites: 40000, coins: 450000, item: 'Exclusive Offer' },
-    { invites: 45000, coins: 500000, item: 'Diamond Reward' },
-    { invites: 50000, coins: 550000, item: 'Luxury Item' }
+    { invites: 1, coins: 1000000, item: 'Bonus Coins' },
+    { invites: 10, coins: 1000000, item: 'Premium Coins' },
+    { invites: 20, coins: 2000000, item: 'Voucher Code' },
+    { invites: 30, coins: 3000000, item: 'Gift Card' },
+    { invites: 250, coins: 300000000, item: 'Mystery Box' },
+    { invites: 30000, coins: 3500000000, item: 'Gold Membership' },
+    { invites: 35000, coins: 40000000000, item: 'Cash Bonus' },
+    { invites: 40000, coins: 450000000000, item: 'Exclusive Offer' },
+    { invites: 45000, coins: 500000000000000, item: 'Diamond Reward' },
+    { invites: 50000, coins: 55000000000000000000, item: 'Luxury Item' }
 ];
 
 const OPEN_HOUR_START = 10; 
