@@ -22,7 +22,8 @@
             </div>
         </div>
         <div class="header-right">
-            <button class="chat-btn-global" id="global-admin-chat-btn" style="margin-right: 10px;"><i class="fas fa-comments"></i> Chat</button>
+            <!-- CHAT BUTTON MODIFIED TO CALL JS FUNCTION -->
+            <button class="chat-btn-global" id="global-admin-chat-btn"><i class="fab fa-whatsapp"></i> Chat</button>
             <div class="auth-controls">
                 <button id="openLoginBtn">Sign In / Up</button>
             </div>
@@ -39,17 +40,17 @@
     <div class="stats-container">
         <div class="stat-card">
             <div class="stat-icon"><i class="fas fa-users"></i></div>
-            <div class="stat-value">100K+</div>
+            <div class="stat-value">500K+</div>
             <div class="stat-label">Total Active Users</div>
         </div>
         <div class="stat-card">
             <div class="stat-icon" style="color: #28a745;"><i class="fas fa-check-circle"></i></div>
-            <div class="stat-value">10K+</div>
+            <div class="stat-value">100K+</div>
             <div class="stat-label">Limit Boosts Successful</div>
         </div>
         <div class="stat-card">
             <div class="stat-icon" style="color: #ff7878;"><i class="fas fa-money-bill-wave"></i></div>
-            <div class="stat-value">50K+</div>
+            <div class="stat-value">300K+</div>
             <div class="stat-label">Withdrawals Successful</div>
         </div>
     </div>
@@ -59,7 +60,7 @@
         <div class="wallet-card">
             <h3><i class="fas fa-wallet"></i> Your Main Coin Balance</h3>
             <div class="wallet-balance" id="user-coin-balance">0.00 COINS</div>
-            <p style="opacity: 0.8; font-size: 0.9em; color: #eee;">Real-time update from Firestore.</p>
+            <p style="opacity: 0.8; font-size: 0.9em; color: #eee;">Real-time update .</p>
         </div>
         
         <!-- 2. FAST ORDER CARD -->
@@ -86,7 +87,7 @@
         <!-- 5. LIMIT INCREASE CARD -->
         <div class="limit-card" id="limit-increase-card">
             <div class="card-title"><i class="fas fa-rocket"></i> Boost Limit</div>
-            <div class="card-subtitle">Increase limit to 120M coins for 8,000 PKR.</div>
+            <div class="card-subtitle">Increase limit to 120M coins for 16,000 PKR.</div>
             <button class="btn-limit" id="openLimitIncreaseModal">Increase Limit</button>
         </div>
     </div>
@@ -210,7 +211,7 @@
             </p>
             
             <p style="text-align:center; margin-bottom: 15px; font-size: 0.9em; border: 1px dashed #6f42c1; padding: 10px; border-radius: 8px;">
-                Send 1700 PKR to: (Account No.: 0300 5784772 - Nazim Mustafa)
+                Send 1700 PKR to: (Account No.:- 0310 5784772 - Nazim Mustafa)
             </p>
 
             <div class="form-group"><label for="discountMethod">Payment Method</label><select id="discountMethod" required><option value="Easypaisa">Easypaisa</option><option value="JazzCash">JazzCash</option></select></div>
@@ -266,7 +267,7 @@
             <p id="depSuccessMsg" style="color:green; display:none;"></p>
             
             <p style="text-align:center; margin-bottom: 20px; font-size: 0.9em; border: 1px dashed #007bff; padding: 10px; border-radius: 8px;">
-                Send PKR to: (Account No.: 0310 5784772 - Nazim Mustafa)
+                Send PKR to: (Account No.:- 0310 5784772 - Nazim Mustafa)
             </p>
 
             <div class="form-group"><label for="depMethod">Deposit Method</label><select id="depMethod" required><option value="Easypaisa">Easypaisa</option><option value="JazzCash">JazzCash</option></select></div>
@@ -288,12 +289,12 @@
             <p id="limitSuccessMsg" style="color:green; display:none;"></p>
             
             <p style="text-align:center; font-weight: 600; background: #fff3cd; padding: 10px; border-radius: 6px;">
-                Price: 8,000 PKR (One Time) <br>
+                Price: 16,000 PKR (One Time) <br>
                 New Daily Limit: 120,000,000 Coins
             </p>
             
             <p style="text-align:center; margin-bottom: 20px; font-size: 0.9em; border: 1px dashed #007bff; padding: 10px; border-radius: 8px;">
-                Send 16,000 PKR to: (Account No.: 0310 5784772 - Nazim Mustafa)
+                Send 16,000 PKR to: (Example: 0310 5784772 - Nazim Mustafa)
             </p>
 
             <div class="form-group"><label for="limitMethod">Deposit Method</label><select id="limitMethod" required><option value="Easypaisa">Easypaisa</option><option value="JazzCash">JazzCash</option></select></div>
