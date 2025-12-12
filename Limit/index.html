@@ -39,17 +39,17 @@
     <div class="stats-container">
         <div class="stat-card">
             <div class="stat-icon"><i class="fas fa-users"></i></div>
-            <div class="stat-value">500K+</div>
+            <div class="stat-value">100K+</div>
             <div class="stat-label">Total Active Users</div>
         </div>
         <div class="stat-card">
             <div class="stat-icon" style="color: #28a745;"><i class="fas fa-check-circle"></i></div>
-            <div class="stat-value">50K+</div>
+            <div class="stat-value">10K+</div>
             <div class="stat-label">Limit Boosts Successful</div>
         </div>
         <div class="stat-card">
             <div class="stat-icon" style="color: #ff7878;"><i class="fas fa-money-bill-wave"></i></div>
-            <div class="stat-value">100K+</div>
+            <div class="stat-value">50K+</div>
             <div class="stat-label">Withdrawals Successful</div>
         </div>
     </div>
@@ -59,7 +59,7 @@
         <div class="wallet-card">
             <h3><i class="fas fa-wallet"></i> Your Main Coin Balance</h3>
             <div class="wallet-balance" id="user-coin-balance">0.00 COINS</div>
-            <p style="opacity: 0.8; font-size: 0.9em; color: #eee;">Real-time update.</p>
+            <p style="opacity: 0.8; font-size: 0.9em; color: #eee;">Real-time update from Firestore.</p>
         </div>
         
         <!-- 2. FAST ORDER CARD -->
@@ -86,7 +86,7 @@
         <!-- 5. LIMIT INCREASE CARD -->
         <div class="limit-card" id="limit-increase-card">
             <div class="card-title"><i class="fas fa-rocket"></i> Boost Limit</div>
-            <div class="card-subtitle">Increase limit to 120M coins for 16,000 PKR.</div>
+            <div class="card-subtitle">Increase limit to 120M coins for 8,000 PKR.</div>
             <button class="btn-limit" id="openLimitIncreaseModal">Increase Limit</button>
         </div>
     </div>
@@ -201,16 +201,16 @@
     <div id="discountCardModal" class="modal">
         <div class="modal-content">
             <span class="close-btn" id="closeDiscountCardModal">&times;</span>
-            <h3>🏷️ Buy Discount Card (100 PKR)</h3>
+            <h3>🏷️ Buy Discount Card (1700 PKR)</h3>
             <p id="discountErrorMsg" style="color:red; display:none;"></p>
             <p id="discountSuccessMsg" style="color:green; display:none;"></p>
             
             <p style="text-align:center; font-weight: 600; background: #cce5ff; padding: 10px; border-radius: 6px;">
-                Price: 100 PKR (1 Year 20% Discount)
+                Price: 1700 PKR (1 Year 20% Discount)
             </p>
             
             <p style="text-align:center; margin-bottom: 15px; font-size: 0.9em; border: 1px dashed #6f42c1; padding: 10px; border-radius: 8px;">
-                Send 1700 PKR to: (Account No.: 0310 5784772 -Nazim Mustaf)
+                Send 1700 PKR to: (Account No.: 0300 5784772 - Nazim Mustafa)
             </p>
 
             <div class="form-group"><label for="discountMethod">Payment Method</label><select id="discountMethod" required><option value="Easypaisa">Easypaisa</option><option value="JazzCash">JazzCash</option></select></div>
@@ -218,7 +218,7 @@
             <div class="form-group"><label for="discountSenderName">Your Sender Name</label><input type="text" id="discountSenderName" required placeholder="e.g., Ali Ahmed"></div>
             <div class="form-group"><label for="discountSenderAccount">Your Sender Account Number</label><input type="text" id="discountSenderAccount" required placeholder="e.g., 03XX XXXXXXX"></div>
 
-            <button id="btnSubmitDiscountCard" class="btn-submit-order" style="background: #6f42c1;">Confirm Purchase (100 PKR)</button>
+            <button id="btnSubmitDiscountCard" class="btn-submit-order" style="background: #6f42c1;">Confirm Purchase (1700 PKR)</button>
         </div>
     </div>
     
@@ -283,7 +283,7 @@
     <div id="limitIncreaseModal" class="modal">
         <div class="modal-content">
             <span class="close-btn" id="closeLimitIncreaseModal">&times;</span>
-            <h3>🚀 Limit Boost Deposit (8,000 PKR)</h3>
+            <h3>🚀 Limit Boost Deposit (16,000 PKR)</h3>
             <p id="limitErrorMsg" style="color:red; display:none;"></p>
             <p id="limitSuccessMsg" style="color:green; display:none;"></p>
             
@@ -293,7 +293,7 @@
             </p>
             
             <p style="text-align:center; margin-bottom: 20px; font-size: 0.9em; border: 1px dashed #007bff; padding: 10px; border-radius: 8px;">
-                Send 8,000 PKR to: (Example: 0300 1234567 - Ali)
+                Send 16,000 PKR to: (Account No.: 0310 5784772 - Nazim Mustafa)
             </p>
 
             <div class="form-group"><label for="limitMethod">Deposit Method</label><select id="limitMethod" required><option value="Easypaisa">Easypaisa</option><option value="JazzCash">JazzCash</option></select></div>
@@ -302,7 +302,7 @@
             <div class="form-group"><label for="limitSenderName">Your Sender Name</label><input type="text" id="limitSenderName" required placeholder="e.g., Ali Ahmed"></div>
             <div class="form-group"><label for="limitSenderAccount">Your Sender Account Number</label><input type="text" id="limitSenderAccount" required placeholder="e.g., 03XX XXXXXXX"></div>
 
-            <button id="btnSubmitLimitIncrease" class="btn-submit-order" style="background: #4caf50;">Submit 8,000 PKR Proof</button>
+            <button id="btnSubmitLimitIncrease" class="btn-submit-order" style="background: #4caf50;">Submit 16,000 PKR Proof</button>
         </div>
     </div>
     
