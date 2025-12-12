@@ -38,7 +38,7 @@ let currentAdIndex = 0;
 
 // REWARD MILESTONES (Partial list for brevity)
 const REWARD_MILESTONES = [
-    { invites: 1, coins: 1000000, item: 'Bonus Coins' },
+    { invites: 1, coins: 100000, item: 'Bonus Coins' },
     { invites: 10, coins: 1000000, item: 'Premium Coins' },
     { invites: 20, coins: 2000000, item: 'Voucher Code' },
     { invites: 30, coins: 3000000, item: 'Gift Card' },
@@ -46,8 +46,8 @@ const REWARD_MILESTONES = [
     { invites: 30000, coins: 3500000000, item: 'Gold Membership' },
     { invites: 35000, coins: 40000000000, item: 'Cash Bonus' },
     { invites: 40000, coins: 450000000000, item: 'Exclusive Offer' },
-    { invites: 45000, coins: 500000000000000, item: 'Diamond Reward' },
-    { invites: 50000, coins: 5500000000000M, item: 'Luxury Item' }
+    { invites: 45000, coins: 50000000000000, item: 'Diamond Reward' },
+    { invites: 50000, coins: 550000000000000, item: 'Luxury Item' }
 ];
 
 const OPEN_HOUR_START = 10; 
