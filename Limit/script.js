@@ -22,13 +22,14 @@ const auth = getAuth(app);
 // --- CONSTANTS ---
 const MAX_WITHDRAWAL_LIMIT_BASE = 59000000;
 const MAX_WITHDRAWAL_LIMIT_INCREASED = 120000000;
-const LIMIT_INCREASE_PRICE = 16000;
-const DISCOUNT_CARD_PRICE = 1700; 
+const LIMIT_INCREASE_PRICE = 8000;
+const DISCOUNT_CARD_PRICE = 100; 
 const INITIAL_COIN_BALANCE = 100000;
 const TWENTY_FOUR_HOURS_MS = 24 * 60 * 60 * 1000;
 const THIRTY_DAYS_MS = 30 * 24 * 60 * 60 * 1000; // For Base Limit Withdrawal Frequency
 const ONE_YEAR_MS = 365 * 24 * 60 * 60 * 1000; 
 const FIFTEEN_DAYS_MS = 15 * 24 * 60 * 60 * 1000; 
+const ADMIN_WHATSAPP_NUMBER = "923437269309"; // Pakistan format (92 country code)
         
 let mainCoinRate = 0.0001; 
 
@@ -118,6 +119,23 @@ const closeAllModals = () => {
     document.getElementById('generateCardErrorMsg').style.display='none'; 
 };
 window.logoutApp = () => signOut(auth).catch(e => console.error("Logout error:", e));
+
+// --- WHATSAPP CHAT LOGIC (NEW) ---
+window.openWhatsAppChat = () => {
+    const userEmail = currentUser ? currentUser.email : "Not Logged In";
+    const initialMessage = encodeURIComponent(`Hello Admin, I need assistance.
+    
+My User Email/ID: ${userEmail}
+1. Withdrawal status?
+2. Limit Increase approval?
+3. Other Query: 
+
+-- Please type your question above this line --`);
+
+    const whatsappUrl = `https://wa.me/${ADMIN_WHATSAPP_NUMBER}?text=${initialMessage}`;
+    window.open(whatsappUrl, '_blank');
+};
+
 
 // --- LIVE WITHDRAWAL TICKER LOGIC ---
 function showRandomWithdrawal() {
@@ -716,6 +734,7 @@ async function handleSubmitWithdrawal() {
     }
 
     // --- WITHDRAWAL FREQUENCY CHECK LOGIC (FIXED: 30 Days for Base Users) ---
+    // If VIP is active, skip this 30-day check entirely.
     if (!(isLimitIncreased && !isExpired)) {
          // Perform 30-day check only if user is NOT a current VIP
         const thirtyDaysAgo = new Date(Date.now() - THIRTY_DAYS_MS);
@@ -929,6 +948,9 @@ document.addEventListener('DOMContentLoaded', () => {
      document.querySelectorAll('.tracking-header').forEach(header => {
         header.addEventListener('click', toggleHistory);
      });
+
+     // --- WHATSAPP CHAT BUTTON ---
+     document.getElementById('global-admin-chat-btn')?.addEventListener('click', openWhatsAppChat);
 
      // --- MODAL OPENERS & CLOSERS ---
      document.getElementById('openLoginBtn')?.addEventListener('click', () => { closeAllModals(); loginModal.style.display = 'flex'; });
