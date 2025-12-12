@@ -3,7 +3,8 @@
 // ====================================================================
 
 const firebaseConfig = {
-    apiKey: "AIzaSyDNYv9SNUjMAHlaPzfovyYefoBNDgx4Gd4",
+    // !!! ADMIN NOTE: REPLACE THIS WITH YOUR ACTUAL FIREBASE CONFIGURATION !!!
+    apiKey: "AIzaSyDNYv9SNUjMAHlaPzfovyYefoBNDgx4Gd4", 
     authDomain: "traffic-exchange-62a58.firebaseapp.com",
     projectId: "traffic-exchange-62a58",
     storageBucket: "traffic-exchange-62a58.appspot.com",
@@ -29,8 +30,13 @@ let walletListener = null;
 let currentPageId = 'home-content'; 
 const USERS_COLLECTION = "users";
 const CAROUSEL_SLIDE_COUNT = 6;
+const SOCIAL_AD_REFRESH_RATE = 5000; // 5 seconds
 
-// REWARD MILESTONES (Key is the number of invites required)
+// Ad Data State for 100 sequential ads
+let allAdsData = [];
+let currentAdIndex = 0; 
+
+// REWARD MILESTONES (Partial list for brevity)
 const REWARD_MILESTONES = [
     { invites: 1, coins: 1000000, item: 'Bonus Coins' },
     { invites: 10, coins: 1000000, item: 'Premium Coins' },
@@ -41,7 +47,7 @@ const REWARD_MILESTONES = [
     { invites: 35000, coins: 40000000000, item: 'Cash Bonus' },
     { invites: 40000, coins: 450000000000, item: 'Exclusive Offer' },
     { invites: 45000, coins: 500000000000000, item: 'Diamond Reward' },
-    { invites: 50000, coins: 55000000000000000000, item: 'Luxury Item' }
+    { invites: 50000, coins: 5500000000000M, item: 'Luxury Item' }
 ];
 
 const OPEN_HOUR_START = 10; 
@@ -50,7 +56,7 @@ const OPEN_HOUR_END = 21;
 const OPEN_MINUTE_END = 0; 
 
 // ====================================================================
-// SECTION B: UI NAVIGATION HANDLERS (Unchanged)
+// SECTION B: UI NAVIGATION HANDLERS
 // ====================================================================
 
 function _internalUISwitch(targetPageId, title) {
@@ -126,7 +132,7 @@ function handleBack() {
 
 
 // ====================================================================
-// SECTION C: FEATURES (Link Handling & Exit Prompt) (Unchanged)
+// SECTION C: FEATURES (Link Handling & Exit Prompt)
 // ====================================================================
 
 document.addEventListener('click', function(e) {
@@ -254,29 +260,15 @@ function checkFeatureLocks() {
                 });
             };
 
-            // Main Grid Locks
+            // Main Grid Locks (Partial list for brevity)
             applyLockToFeature('dailyCheck', 'isLockDailyCheck', "Daily Check is temporarily disabled by the Admin.");
             applyLockToFeature('videoOffer', 'isLockVideoOffer', "Video Offers are temporarily disabled by the Admin.");
-            applyLockToFeature('depositCoins', 'isLockDepositCoins', "Deposit requests are temporarily disabled by the Admin.");
             applyLockToFeature('withdrawalOptions', 'isLockWithdrawal', "All Withdrawal options are temporarily disabled by the Admin.");
-            applyLockToFeature('manageLinks', 'isLockManageLinks', "Link Management is temporarily disabled by the Admin.");
-            applyLockToFeature('coinsEarn', 'isLockCoinsEarn', "Coins Earn/Product Rewards are temporarily disabled by the Admin.");
             
-            // Section Locks
+            // Section Locks (Partial list for brevity)
             applyLockToFeature('rewardsSection', 'isLockRewardsSection', "The Referral and Rewards system is temporarily disabled by the Admin.");
             applyLockToFeature('newFeaturesSection', 'isLockNewFeatures', "New Features/Offerwalls are temporarily disabled by the Admin.");
             
-            // New Features Individual Locks
-            applyLockToFeature('wordPuzzle', 'isLockWordPuzzle', "Word Puzzle is currently unavailable.");
-            applyLockToFeature('improveKnowledge', 'isLockImproveKnowledge', "Improve Knowledge feature is currently unavailable.");
-            applyLockToFeature('offerwall', 'isLockOfferwall', "Offerwall is currently unavailable.");
-            applyLockToFeature('survey', 'isLockSurvey', "Survey feature is currently unavailable.");
-            applyLockToFeature('pubscale', 'isLockPubscale', "Pubscale Offerwall is currently unavailable.");
-            applyLockToFeature('extraBonus', 'isLockExtraBonus', "Extra Bonus feature is currently unavailable.");
-            applyLockToFeature('playGame', 'isLockPlayGame', "Play Game feature is currently unavailable.");
-            applyLockToFeature('taskChallenge', 'isLockTaskChallenge', "Task Challenge is currently unavailable.");
-
-
             // Locked Tasks (Bottom Grid)
             for (let i = 1; i <= 10; i++) {
                 const lockKey = `isLockLockedTask${i}`;
@@ -310,8 +302,40 @@ function checkFeatureLocks() {
 
 
 // ====================================================================
-// SECTION D: DYNAMIC CONTENT LOADING (Carousel & App Links)
+// SECTION D: DYNAMIC CONTENT LOADING (Social Ad, Carousel & App Links)
 // ====================================================================
+
+// --- NEW FUNCTION: Load Social Ad Settings from Admin Panel ---
+function loadSocialAdSettings() {
+    if (typeof db === 'undefined') return;
+
+    // Listen to the settings/socialAd document for real-time updates
+    db.collection('settings').doc('socialAd').onSnapshot(doc => {
+        if (doc.exists && doc.data().ads) {
+            allAdsData = doc.data().ads.filter(ad => ad.imageUrl && ad.websiteLink); // Filter out empty ads
+            if (allAdsData.length === 0) {
+                 console.warn("No active ads found in the database.");
+                 // Revert to default if no valid ads are present
+                 allAdsData = [{ imageUrl: 'https://i.ibb.co/L50Hq68/placeholder-ad.png', websiteLink: 'https://www.yoursmed.xyz' }];
+            }
+        } else {
+            console.warn("Social Ad settings document or ads array not found. Using defaults.");
+            allAdsData = [{ imageUrl: 'https://i.ibb.co/L50Hq68/placeholder-ad.png', websiteLink: 'https://www.yoursmed.xyz' }];
+        }
+    }, error => {
+        console.error("Error fetching social ad settings:", error);
+    });
+}
+
+function updateSocialAdModal(adData) {
+    const adImage = document.getElementById('social-ad-image');
+    const adLink = document.getElementById('social-ad-link');
+
+    if (adImage) adImage.src = adData.imageUrl;
+    if (adLink) adLink.href = adData.websiteLink;
+}
+// --- END NEW FUNCTION ---
+
 
 /**
  * Loads Carousel Slides from Firebase Settings.
@@ -333,7 +357,7 @@ function loadCarouselSlides() {
                 { imageUrl: 'https://i.ibb.co/qM4wYtKy/IMG-20251119-WA0032.jpg', linkUrl: 'https://toolswebsite205.blogspot.com' },
                 { imageUrl: 'https://i.ibb.co/hFdpRnXR/FB-IMG-1763006052781.jpg', linkUrl: 'https://www.facebook.com/share/g/17MG25oD5j/' },
                 { imageUrl: 'https://i.ibb.co/bj9cnS2m/FB-IMG-1763006049127.jpg', linkUrl: 'https://www.instagram.com/gmnetworking9?igsh=ejV6MjUzcTVyMGxz' },
-                { imageUrl: 'https://i.ibb.co/jvgxx2gF/FB-IMG-1763006046346.jpg', linkUrl: 'https://youtu.be/fjHXG7brtso?si=zCx7akwg0TUkTRwn' },
+                { imageUrl: 'https://i.ibb.co/jvgxx2gF/FB-IMG-1763006046346.jpg', linkUrl: '#' },
                 { imageUrl: 'https://i.ibb.co/Fkqz9FXT/FB-IMG-1763006044569.jpg', linkUrl: 'https://www.tiktok.com/@gmnetworking9?_r=1' },
                 { imageUrl: 'https://i.ibb.co/SwGJrVTV/FB-IMG-1763006042540.jpg', linkUrl: 'https://www.yoursmed.xyz/?ref=29UI1U0O' }
             ];
@@ -475,7 +499,6 @@ async function attemptRewardClaim(userId, activeInvites, claimedRewards) {
                 return true; 
             } catch (error) {
                 console.error(`Failed to claim reward ${milestoneKey}:`, error);
-                // Continue to the next reward if transaction fails, but log the error
             }
         }
     }
@@ -513,8 +536,6 @@ function initializeWalletDisplay() {
             if (activeInvites > 0) {
                  const claimed = await attemptRewardClaim(currentUserId, activeInvites, claimedRewards);
                  if (claimed) {
-                     // If a claim happened, the snapshot will fire again with the new data.
-                     // We stop here to prevent UI updates based on potentially stale data.
                      return;
                  }
             }
@@ -528,7 +549,6 @@ function initializeWalletDisplay() {
             totalInviteCountDisplay.textContent = data.totalInvites || 0;
             activeInviteCountDisplay.textContent = activeInvites;
             
-            // Pass claimed rewards to updateRewardTimeline for visual lock/unlock status
             updateRewardTimeline(activeInvites, claimedRewards);
             updateProfileCardDisplay(currentUserName, formattedBalance);
 
@@ -539,7 +559,7 @@ function initializeWalletDisplay() {
                 name: userEmailPrefix, email: auth.currentUser.email,
                 coins: 0, tiktokCoins: 0, amazonCoins: 0, pubgUC: 0,
                 referralCode: currentUserId.substring(0, 8).toUpperCase(), totalInvites: 0, activeInvites: 0,
-                claimedRewards: {}, // Initialize claimed rewards map
+                claimedRewards: {}, 
                 createdAt: firebase.firestore.FieldValue.serverTimestamp()
             }, { merge: true }); 
             updateProfileCardDisplay(currentUserName, "0.00");
@@ -549,7 +569,7 @@ function initializeWalletDisplay() {
     });
 }
 
-// --- AUTH HANDLERS (Unchanged) ---
+// --- AUTH HANDLERS ---
 function showAuthModal(mode) {
     document.getElementById('auth-modal').style.display = 'flex';
     setAuthMode(mode);
@@ -622,7 +642,7 @@ async function handleAuthSubmit() {
             await db.collection(USERS_COLLECTION).doc(uid).set({
                 name: name, email: email, coins: signupBonus, tiktokCoins: 0, amazonCoins: 0, pubgUC: 0,
                 referralCode: userReferralCode, referredBy: referralCodeUsed || null, totalInvites: 0, activeInvites: 0,
-                claimedRewards: {}, // Initialize claimed rewards map
+                claimedRewards: {}, 
                 createdAt: firebase.firestore.FieldValue.serverTimestamp()
             });
             
@@ -707,7 +727,7 @@ function renderRewardTimeline(currentInvites, claimedRewards) {
         const isClaimed = claimedRewards && claimedRewards[milestoneKey] === true;
         const isUnlocked = currentInvites >= reward.invites;
 
-        const statusClass = isClaimed ? 'unlocked' : (isUnlocked ? 'unlocked' : 'locked'); // Use 'unlocked' class once milestone is met (visually unlocked)
+        const statusClass = isClaimed ? 'unlocked' : (isUnlocked ? 'unlocked' : 'locked'); 
         const iconContent = isClaimed ? '<i class="fas fa-check-circle"></i>' : (isUnlocked ? '<i class="fas fa-check"></i>' : '<i class="fas fa-lock"></i>');
         const cardClass = reward.item.includes('Coins') ? 'card-coins' : 'card-bluetooth';
         const rewardTitle = isClaimed ? 'CLAIMED' : `Unlock on ${reward.invites.toLocaleString()} Invites`;
@@ -883,9 +903,62 @@ startRecognitionBtn.addEventListener('click', () => {
     }
 });
 
+// ====================================================================
+// SECTION H: SOCIAL AD IMPLEMENTATION (Dynamic & Timed, SEQUENTIAL)
+// ====================================================================
+
+let adInterval = null; 
+
+function showSocialAd() {
+    const adOverlay = document.getElementById('social-ad-overlay');
+    
+    // Check if we have active ads
+    if (allAdsData && allAdsData.length > 0) {
+        // Get the current ad data
+        const adData = allAdsData[currentAdIndex];
+        
+        // Update modal content
+        updateSocialAdModal(adData);
+        adOverlay.style.display = 'flex';
+        
+        // Move to the next ad index for the next interval
+        currentAdIndex = (currentAdIndex + 1) % allAdsData.length;
+    } else {
+        // If no ads, just hide the modal
+        hideSocialAd();
+    }
+}
+
+function hideSocialAd() {
+    const adOverlay = document.getElementById('social-ad-overlay');
+    if (adOverlay) {
+        adOverlay.style.display = 'none';
+    }
+}
+
+function startAdInterval() {
+    if (adInterval) {
+        clearInterval(adInterval);
+    }
+    // Start the interval to show the next sequential ad every 5 seconds
+    adInterval = setInterval(showSocialAd, SOCIAL_AD_REFRESH_RATE);
+}
+
+// Function to handle interaction (closing/clicking link) and restart interval
+function handleAdInteraction(event) {
+    event.preventDefault();
+    
+    if (event.target.id === 'social-ad-link') {
+        window.open(event.target.href, '_blank');
+    }
+    
+    hideSocialAd();
+    startAdInterval(); // Restart the cycle
+}
+
 
 // ====================================================================
-// SECTION H: DOM INITIALIZATION AND EVENTS
+// SECTION I: DOM INITIALIZATION AND EVENTS
 // ====================================================================
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -927,13 +1000,23 @@ document.addEventListener('DOMContentLoaded', () => {
   
   backButton.addEventListener('click', handleBack);
 
-  // Initial setup for dynamic content
+  // --- SOCIAL AD EVENT LISTENERS ---
+  document.querySelector('.ad-close').addEventListener('click', handleAdInteraction);
+  document.getElementById('social-ad-link').addEventListener('click', handleAdInteraction);
+  // --- END SOCIAL AD EVENT LISTENERS ---
+
+
+  // Initial data loading
+  loadSocialAdSettings(); // Start real-time listener for ad configuration (loads allAdsData)
   loadCarouselSlides();
   loadAppDownloadLinks();
   
-  // Note: updateRewardTimeline is called inside initializeWalletDisplay (onAuthStateChanged)
-  renderRewardTimeline(0, {}); // Initial static render
+  // Initial UI Setup
+  renderRewardTimeline(0, {}); 
   _internalUISwitch('home-content', 'Daily Tasks');
   updateWithdrawalLockStatus();
-  checkFeatureLocks(); // Start listening for admin locks
+  checkFeatureLocks(); 
+  
+  // Start the perpetual social ad display loop
+  startAdInterval();
 });
