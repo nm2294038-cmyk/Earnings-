@@ -840,3 +840,49 @@ a { text-decoration: none; color: inherit; }
     color: white;
 }
 /* -------------------------------------- */
+
+.stats-card-container {
+  display: flex;
+  flex-direction: column; /* stacked vertically */
+  gap: 20px;
+  max-width: 400px;
+  margin: auto;
+  padding: 20px;
+}
+
+.stats-card {
+  background: #f0f4ff; /* light pastel blue */
+  border-radius: 16px;
+  padding: 25px 20px;
+  text-align: center;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.stats-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 20px rgba(0,0,0,0.15);
+}
+
+.stats-card h3 {
+  font-size: 28px;
+  color: #2a6cf7; /* vibrant blue */
+  margin-bottom: 10px;
+}
+
+.stats-card p {
+  font-size: 14px;
+  color: #555;
+  margin: 5px 0;
+  line-height: 1.5;
+}
+
+@media (min-width: 768px) {
+  .stats-card-container {
+    flex-direction: row;  /* horizontal layout on larger screens */
+    justify-content: space-between;
+  }
+  .stats-card {
+    flex: 1 1 180px;
+  }
+}
