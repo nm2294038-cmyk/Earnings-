@@ -1,250 +1,95 @@
-<!DOCTYPE html>
-<html lang="ur">
+
+<!DOCTYPE html><html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Dashboard & Wallet</title>
-    
-    <!-- Firebase SDKs -->
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
-    <!-- Font Awesome for Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-
-    <!-- Custom CSS Link (Assuming style.css exists) -->
-    <link rel="stylesheet" href="style.css"> 
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>YoursMed App - Free Earnings</title>
 </head>
-<body>
-
-<header id="appHeader" style="display: none;">
-    <h2 id="headerTitle">Dashboard</h2>
-    <button id="logoutButton">Logout</button>
-</header>
-
-<div class="main-content">
-    
-    <!-- 1. AUTH SECTION -->
-    <div id="authContainer">
-        <h2 id="authTitle">Login Karen</h2>
-        
-        <form class="auth-form" id="authForm">
-            <input type="text" id="authName" placeholder="Aapka Pura Naam" style="display: none;">
-            <input type="email" id="authEmail" placeholder="Email Address" required>
-            <input type="password" id="authPassword" placeholder="Password" required>
-            <button type="submit" id="authButton">Login</button>
-        </form>
-        
-        <div class="auth-toggle">
-            <p id="toggleText">Account nahi hai? <a onclick="toggleAuthMode()">Signup Karen</a></p>
-        </div>
-    </div>
-
-    <!-- 2. DASHBOARD SECTION -->
-    <div id="dashboardContainer" class="container">
-        
-        <!-- Profile Card -->
-        <div class="profile-card">
-            <div class="profile-pic-container">
-                <span id="profileInitials">U</span>
-            </div>
-            <div class="profile-details">
-                <h2 id="profileName">Loading...</h2>
-                <p id="profileEmail">Loading...</p>
-                <p><small>User ID: <span id="profileUid">Loading...</span></small></p>
-            </div>
-        </div>
-
-        <!-- Wallet Display (ROTATING CARD) -->
-        <div class="wallet-balance-card">
-            <div class="rotating-balance-container">
-                <div class="balance-track" id="balance-track">
-                    
-                    <!-- Slide 1: Main Coins -->
-                    <div class="balance-slide coins-box">
-                        <h3>Coins Wallet (Main)</h3>
-                        <div class="balance-amount">
-                            <i class="fas fa-coins" style="color: var(--profile-color);"></i>
-                            <span id="coinsBalance">0</span>
-                        </div>
-                    </div>
-                    
-                    <!-- Slide 2: PKR Balance -->
-                    <div class="balance-slide pkr-box">
-                        <h3>PKR Balance (Withdrawal)</h3>
-                        <div class="balance-amount">
-                            <i class="fas fa-money-bill-wave" style="color: var(--secondary-color);"></i>
-                            <span id="pkrBalance">0.00 PKR</span>
-                        </div>
-                    </div>
-                    
-                    <!-- Slide 3: TikTok Coins -->
-                    <div class="balance-slide tiktok-box">
-                        <h3>TikTok Coins</h3>
-                        <div class="balance-amount">
-                            <i class="fab fa-tiktok" style="color: var(--tiktok-color);"></i>
-                            <span id="tiktokCoinsBalance">0</span>
-                        </div>
-                    </div>
-                    
-                    <!-- Slide 4: Amazon Coins -->
-                    <div class="balance-slide amazon-box">
-                        <h3>Amazon Gift Card Value</h3>
-                        <div class="balance-amount">
-                            <i class="fab fa-amazon" style="color: var(--amazon-color);"></i>
-                            <span id="amazonCoinsBalance">0.00 USD</span>
-                        </div>
-                    </div>
-                    
-                    <!-- Slide 5: PUBG UC -->
-                    <div class="balance-slide pubg-box">
-                        <h3>PUBG UC</h3>
-                        <div class="balance-amount">
-                            <i class="fas fa-gamepad" style="color: var(--pubg-color);"></i>
-                            <span id="pubgUCBalance">0</span>
-                        </div>
-                    </div>
-                    
-                    <!-- Slide 6: Free Fire Diamonds -->
-                    <div class="balance-slide freefire-box">
-                        <h3>Free Fire Diamonds</h3>
-                        <div class="balance-amount">
-                            <i class="fas fa-gem" style="color: var(--freefire-color);"></i>
-                            <span id="freeFireDiamondsBalance">0</span>
-                        </div>
-                    </div>
-                    
-                    <!-- Slide 7: Bitget USDT -->
-                    <div class="balance-slide usdt-box">
-                        <h3>Bitget USDT</h3>
-                        <div class="balance-amount">
-                            <i class="fas fa-dollar-sign" style="color: var(--usdt-color);"></i>
-                            <span id="bitgetUSDTBalance">0.00 USDT</span>
-                        </div>
-                    </div>
-                    
-                </div>
-            </div>
-            <!-- Navigation Arrows -->
-            <button class="nav-arrow left" id="prevSlide"><i class="fas fa-chevron-left"></i></button>
-            <button class="nav-arrow right" id="nextSlide"><i class="fas fa-chevron-right"></i></button>
-        </div>
-        
-        <!-- Exchange Section Container (Simplified) -->
-        <h2 style="margin-top: 40px; color: var(--primary-color);">Currency Exchange Center</h2>
-        <div class="exchange-master-container">
-            
-            <!-- A. Coins to PKR Exchange (UNLOCKED) -->
-            <div class="exchange-section" id="coinsToPkrSection">
-                <h3>Coins → PKR (Withdrawal Prep)</h3>
-                <p class="rate">Rate: 100 Coins = 1 PKR</p>
-                
-                <form id="coinsToPkrForm" class="exchange-form">
-                    <label for="exchangeCoins">Coins Ki Miqdar</label>
-                    <input type="number" id="exchangeCoins" placeholder="Minimum 100 Coins" required min="100">
-                    
-                    <p id="exchangeResultCoinsToPkr" style="color: var(--primary-color); font-weight: bold;">0 Coins = 0.00 PKR</p>
-                    
-                    <button type="submit" id="exchangeButton">Convert to PKR</button>
-                </form>
-            </div>
-            
-            <!-- B. PKR to Main Coins Exchange (UNLOCKED) -->
-            <div class="exchange-section" id="pkrToCoinSection">
-                <h3>PKR → Main Coins</h3>
-                <p class="rate">Rate: 100 PKR = 1 Coin</p>
-                
-                <form id="pkrToCoinForm" class="exchange-form">
-                    <label for="pkrAmount">PKR Ki Miqdar</label>
-                    <input type="number" id="pkrAmount" placeholder="Minimum 100 PKR" required min="100">
-                    
-                    <p id="exchangeResultPkrToCoins" style="color: var(--secondary-color); font-weight: bold;">0 PKR = 0 Coins</p>
-                    
-                    <button type="submit" id="pkrToCoinButton">Convert to Coins</button>
-                </form>
-            </div>
-            
-            <!-- C. PKR to TikTok Coins Exchange -->
-            <div class="exchange-section" id="pkrToTiktokSection">
-                <h3 style="color: var(--tiktok-color);">PKR → TikTok Coins</h3>
-                <p class="rate">Rate: 100 PKR = 1 TikTok Coin</p>
-                
-                <form id="pkrToTiktokForm" class="exchange-form">
-                    <label for="pkrAmountTiktok">PKR Ki Miqdar</label>
-                    <input type="number" id="pkrAmountTiktok" placeholder="Minimum 100 PKR" required min="1">
-                    
-                    <p id="exchangeResultPkrToTiktok" style="color: var(--tiktok-color); font-weight: bold;">0 PKR = 0 TikTok Coins</p>
-                    
-                    <button type="submit" id="pkrToTiktokButton">Convert to TikTok Coins</button>
-                </form>
-            </div>
-            
-            <!-- D. PKR to Amazon Coins Exchange -->
-            <div class="exchange-section" id="pkrToAmazonSection">
-                <h3 style="color: var(--amazon-color);">PKR → Amazon USD Value</h3>
-                <p class="rate">Rate: 2000 PKR = 1 USD (Amazon)</p>
-                
-                <form id="pkrToAmazonForm" class="exchange-form">
-                    <label for="pkrAmountAmazon">PKR Ki Miqdar</label>
-                    <input type="number" id="pkrAmountAmazon" placeholder="Minimum 2000 PKR" required min="500">
-                    
-                    <p id="exchangeResultPkrToAmazon" style="color: var(--amazon-color); font-weight: bold;">0 PKR = 0.00 USD</p>
-                    
-                    <button type="submit" id="pkrToAmazonButton">Convert to Amazon USD</button>
-                </form>
-            </div>
-            
-            <!-- E. PKR to PUBG UC Exchange -->
-            <div class="exchange-section" id="pkrToPubgSection">
-                <h3 style="color: var(--pubg-color);">PKR → PUBG UC</h3>
-                <p class="rate">Rate: 150 PKR = 1 UC</p>
-                
-                <form id="pkrToPubgForm" class="exchange-form">
-                    <label for="pkrAmountPubg">PKR Ki Miqdar</label>
-                    <input type="number" id="pkrAmountPubg" placeholder="Minimum 150 PKR" required min="150">
-                    
-                    <p id="exchangeResultPkrToPubg" style="color: var(--pubg-color); font-weight: bold;">0 PKR = 0 UC</p>
-                    
-                    <button type="submit" id="pkrToPubgButton">Convert to PUBG UC</button>
-                </form>
-            </div>
-            
-            <!-- F. PKR to Free Fire Diamonds Exchange -->
-            <div class="exchange-section" id="pkrToFreeFireSection">
-                <h3 style="color: var(--freefire-color);">PKR → Free Fire Diamonds</h3>
-                <p class="rate">Rate: 150 PKR = 1 Diamond</p>
-                
-                <form id="pkrToFreeFireForm" class="exchange-form">
-                    <label for="pkrAmountFreeFire">PKR Ki Miqdar</label>
-                    <input type="number" id="pkrAmountFreeFire" placeholder="Minimum 150 PKR" required min="150">
-                    
-                    <p id="exchangeResultPkrToFreeFire" style="color: var(--freefire-color); font-weight: bold;">0 PKR = 0 Diamonds</p>
-                    
-                    <button type="submit" id="pkrToFreeFireButton">Convert to Diamonds</button>
-                </form>
-            </div>
-            
-            <!-- G. PKR to Bitget USDT Exchange -->
-            <div class="exchange-section" id="pkrToUsdtSection">
-                <h3 style="color: var(--usdt-color);">PKR → Bitget USDT</h3>
-                <p class="rate">Rate: 600 PKR = 1 USDT</p>
-                
-                <form id="pkrToUsdtForm" class="exchange-form">
-                    <label for="pkrAmountUsdt">PKR Ki Miqdar</label>
-                    <input type="number" id="pkrAmountUsdt" placeholder="Minimum 600 PKR" required min="600">
-                    
-                    <p id="exchangeResultPkrToUsdt" style="color: var(--usdt-color); font-weight: bold;">0 PKR = 0.00 USDT</p>
-                    
-                    <button type="submit" id="pkrToUsdtButton">Convert to USDT</button>
-                </form>
-            </div>
-            
-        </div>
-
-     
-</div>
-
-<!-- JavaScript Section -->
-<script src="script.js"></script>
-</body>
+<body><!-- ===== SHORT INTRO (CLEAN & TRUSTY) ===== --><p style="font-size:14px;line-height:1.6;color:#333;background:#f9f9f9;padding:10px 12px;border-left:4px solid #2c7be5;border-radius:6px;margin:15px 0;font-family:Arial,Helvetica,sans-serif;">
+<strong>YoursMed</strong> ek digital rewards platform hai jahan users:
+<br>• Tasks complete kar ke <strong>points earn</strong> karte hain
+<br>• Points ko <strong>JazzCash / EasyPaisa</strong> par withdraw kar sakte hain
+<br>• <strong>Secure system</strong> & transparent rules follow kiye jate hain
+</p><!-- ===== TRUST BOOST SECTION ===== --><div style="background:#ffffff;border:1px solid #e0e0e0;border-radius:8px;padding:14px;margin:15px 0;font-family:Arial,Helvetica,sans-serif;">
+  <h3 style="margin-top:0;color:#2c7be5;font-size:16px;">Why Users Trust YoursMed</h3>
+  <ul style="padding-left:18px;font-size:14px;color:#444;line-height:1.6;">
+    <li>✔ Real users, real activity (fake bots not allowed)</li>
+    <li>✔ Secure login & data protection</li>
+    <li>✔ Clear earning & withdrawal rules</li>
+    <li>✔ Manual + auto payout verification</li>
+    <li>✔ Active support & complaint system</li>
+  </ul>
+</div><!-- ===== PROOF / PAYOUT SECTION ===== --><div style="background:#f8fff8;border:1px solid #c8e6c9;border-radius:8px;padding:14px;margin:15px 0;font-family:Arial,Helvetica,sans-serif;">
+  <h3 style="margin-top:0;color:#2e7d32;font-size:16px;">Payment Proof</h3>
+  <p style="font-size:14px;color:#444;line-height:1.6;">
+    Below are real payout proofs from active users. Screenshots & transaction IDs are shared for transparency.
+  </p>
+  <ul style="padding-left:18px;font-size:14px;color:#333;line-height:1.6;">
+    <li>💸 JazzCash payout – <strong>Rs 500</strong> (Processed)</li>
+    <li>💸 EasyPaisa payout – <strong>Rs 300</strong> (Completed)</li>
+    <li>💸 Bank transfer – <strong>Verified</strong></li>
+  </ul>
+  <p style="font-size:12px;color:#777;margin-top:8px;">
+    Note: Amount & time may vary based on task availability and verification.
+  </p>
+</div><!-- ===== DISCLAIMER (SAFETY) ===== --><p style="font-size:12px;line-height:1.6;color:#555;background:#fff3cd;padding:10px 12px;border-left:4px solid #ff9800;border-radius:6px;margin:15px 0;font-family:Arial,Helvetica,sans-serif;">
+<strong>Disclaimer:</strong> Earnings depend on task availability, user activity, and system verification. YoursMed does not guarantee fixed income.
+</p><!-- ===== EARNING TASKS & COIN SYSTEM ===== --><div style="background:#ffffff;border:1px solid #e0e0e0;border-radius:10px;padding:16px;margin:18px 0;font-family:Arial,Helvetica,sans-serif;">
+<h3 style="margin-top:0;color:#2c7be5;font-size:18px;">Earn Coins by Daily Tasks</h3>
+<p style="font-size:14px;color:#444;line-height:1.8;">
+• YouTube video watch complete → <strong>5 Million Coins</strong><br>
+• Task complete / Subscribe (1) → <strong>1 Million Coins</strong><br>
+• TikTok follower (1) → <strong>1 Million Coins</strong><br>
+• Instagram follow (1) → <strong>1 Million Coins</strong><br>
+• Facebook page follow (1) → <strong>1 Million Coins</strong><br>
+• WhatsApp channel follow (1) → <strong>1 Million Coins</strong><br>
+• Video <strong>views, likes, shares & saves</strong> tasks bhi available hain
+</p>
+<p style="font-size:12px;color:#777;">⚠ Coin rate live market ke mutabiq time-to-time increase ya decrease hota rehta hai.</p>
+</div><!-- ===== PLATFORM STATS CARDS ===== --><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin:18px 0;font-family:Arial,Helvetica,sans-serif;">
+  <div style="background:linear-gradient(135deg,#e3f2fd,#f8fbff);border-radius:12px;padding:16px;text-align:center;">
+    <h3 style="margin:0;color:#2c7be5;font-size:22px;">500K+</h3>
+    <p style="margin:6px 0 0;font-size:13px;color:#333;">Total Signups</p>
+  </div>
+  <div style="background:linear-gradient(135deg,#e8f5e9,#f9fffa);border-radius:12px;padding:16px;text-align:center;">
+    <h3 style="margin:0;color:#2e7d32;font-size:22px;">300K+</h3>
+    <p style="margin:6px 0 0;font-size:13px;color:#333;">Successful Withdrawals</p>
+  </div>
+  <div style="background:linear-gradient(135deg,#fff3e0,#fffaf4);border-radius:12px;padding:16px;text-align:center;">
+    <h3 style="margin:0;color:#ff9800;font-size:22px;">50B+</h3>
+    <p style="margin:6px 0 0;font-size:13px;color:#333;">Coins Paid to Users</p>
+  </div>
+</div><!-- ===== WITHDRAWAL DETAILS ===== --><div style="background:#ffffff;border:1px solid #e0e0e0;border-radius:10px;padding:16px;margin:18px 0;font-family:Arial,Helvetica,sans-serif;">
+<h3 style="margin-top:0;color:#2c7be5;font-size:18px;">Withdrawal System</h3>
+<p style="font-size:14px;color:#444;line-height:1.8;">
+• Minimum withdrawal: <strong>50 Million Coins</strong><br>
+• Supported methods: <strong>JazzCash, EasyPaisa, Bank Transfer</strong><br>
+• Popular withdrawals: <strong>50M, 100M, 500M, 1B Coins</strong><br>
+• Highest withdrawal processed: <strong>50 Billion Coins</strong>
+</p>
+<ul style="font-size:13px;color:#555;line-height:1.7;">
+<li>Account verification mandatory hai</li>
+<li>Fake, spam ya bot activity allow nahi</li>
+<li>Each withdrawal manual + auto verification se pass hoti hai</li>
+<li>Processing time task verification par depend karta hai</li>
+</ul>
+</div><!-- ===== EXTRA INCOME OPTIONS ===== --><div style="background:#f9f9f9;border-radius:10px;padding:16px;margin:18px 0;font-family:Arial,Helvetica,sans-serif;">
+<h3 style="margin-top:0;color:#2c7be5;font-size:18px;">Extra Income Opportunities</h3>
+<p style="font-size:14px;color:#444;line-height:1.8;">
+• Trending tasks complete kar ke bonus coins earn karein<br>
+• Paid surveys fill kar ke extra income hasil karein<br>
+• Ludo & mini games khel kar coins jeetein<br>
+• Avatar system unlock kar ke special rewards lein<br>
+• Rozana <strong>100 free boxes</strong> open karein<br>
+• Free boxes se <strong>1 Million se 100 Million Coins</strong> tak jeetne ka chance
+</p>
+</div><!-- ===== PROMOTION & SELLER FEATURES ===== --><div style="background:#ffffff;border:1px solid #e0e0e0;border-radius:10px;padding:16px;margin:18px 0;font-family:Arial,Helvetica,sans-serif;">
+<h3 style="margin-top:0;color:#2c7be5;font-size:18px;">Promotion & Seller Accounts</h3>
+<p style="font-size:14px;color:#444;line-height:1.8;">
+• Apne YouTube, TikTok, Instagram aur Facebook pages promote karein<br>
+• Seller account create kar ke <strong>real followers & subscribers</strong> hasil karein<br>
+• Apne products sell karein ya products buy kar ke coins earn karein<br>
+• Ye system bilkul YouTube-style promotion & earning model par based hai
+</p>
+</div></body>
 </html>
