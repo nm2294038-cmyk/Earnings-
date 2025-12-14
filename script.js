@@ -1167,25 +1167,55 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 /* ===== NEW LIVE FEED SCRIPT (ADD-ON ONLY) ===== */
 
+/* ===== FINAL LIVE FEED SCRIPT (100% Unique Generated User IDs) ===== */
+
 (function(){
 
   const feedBox = document.getElementById("live-feed");
   if(!feedBox) return; // safety
 
-  const methods = ["EasyPaisa","JazzCash","Bank"];
-  const users = ["****34","****48","****44","****08","****94","****98","****31","****79"];
+  const methods = ["EasyPaisa","JazzCash","Bank","Wallet"];
+  
+  // --- EXISTING USERS (Aapke pehle wale users) ---
+  const initialUsers = ["****34","****48","****44","****08","****94","****98","****31","****79"];
+  
+  // --- 800 NEW RANDOM USERS GENERATION START (GUARANTEED UNIQUE) ---
+  const USERS_TO_GENERATE = 800;
+  const newUsers = [];
+  const generatedSuffixes = new Set(); // To track unique 4-digit suffixes
+
+  function generateUniqueUserSuffix() {
+      let suffix;
+      do {
+          // Generate a random 4-digit number
+          suffix = String(Math.floor(1000 + Math.random() * 9000));
+      } while (generatedSuffixes.has(suffix)); // Agar yeh number pehle use ho chuka hai to dobara generate karo
+
+      generatedSuffixes.add(suffix);
+      return suffix;
+  }
+  
+  // Generate 800 guaranteed unique random users
+  for (let i = 0; i < USERS_TO_GENERATE; i++) {
+      newUsers.push("****" + generateUniqueUserSuffix());
+  }
+
+  // --- COMBINE ALL USERS ---
+  // Total 808 UNIQUE users
+  const users = initialUsers.concat(newUsers); 
+  // --- USERS LIST END ---
+
 
   function rand(min, max){
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
   function randomAmount(){
-    // MINIMUM 200 enforced
-    return rand(200, 50000);
+    return rand(200, 75000); 
   }
 
   function timeAgo(){
-    const t = ["Just now","1 min ago","2 min ago","5 min ago"];
+    const t = ["Just now","1 min ago","2 min ago","3 min ago","5 min ago","7 min ago"];
     return t[rand(0, t.length-1)];
   }
 
@@ -1203,10 +1233,13 @@ document.addEventListener('DOMContentLoaded', () => {
       margin-bottom:8px;
       color:#fff;
       font-family:Arial,Helvetica,sans-serif;
+      opacity:0; 
+      transition: opacity 0.5s;
     `;
-
+    
+    // RANDOMLY select ANY user ID from the 808 unique options
     const method = methods[rand(0, methods.length-1)];
-    const user = users[rand(0, users.length-1)];
+    const user = users[rand(0, users.length-1)]; 
     const amount = randomAmount();
 
     div.innerHTML = `
@@ -1216,9 +1249,13 @@ document.addEventListener('DOMContentLoaded', () => {
     `;
 
     feedBox.prepend(div);
+    
+    setTimeout(() => {
+        div.style.opacity = 1;
+    }, 10);
   }
 
-  // initial load
+  // initial load 
   for(let i=0;i<4;i++) createCard();
 
   // update every 3 seconds
