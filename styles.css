@@ -886,3 +886,46 @@ a { text-decoration: none; color: inherit; }
     flex: 1 1 180px;
   }
 }
+.live-withdrawal-box{
+  background:#0b1220;
+  color:#fff;
+  padding:14px;
+  border-radius:10px;
+  margin:15px 0;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.live-withdrawal-box h3{
+  margin:0 0 6px;
+  font-size:16px;
+}
+
+.live-note{
+  font-size:11px;
+  color:#facc15;
+  margin-bottom:10px;
+}
+
+.live-card{
+  background:#020617;
+  border-left:4px solid #22c55e;
+  border-radius:8px;
+  padding:10px;
+  margin-bottom:8px;
+}
+
+.live-method{
+  font-weight:bold;
+  font-size:13px;
+}
+
+.live-amount{
+  color:#22c55e;
+  font-size:16px;
+  margin:3px 0;
+}
+
+.live-time{
+  font-size:11px;
+  color:#94a3b8;
+}
