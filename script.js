@@ -1165,3 +1165,63 @@ document.addEventListener('DOMContentLoaded', () => {
   // Start the perpetual social ad display loop
   startAdInterval();
 });
+/* ===== NEW LIVE FEED SCRIPT (ADD-ON ONLY) ===== */
+
+(function(){
+
+  const feedBox = document.getElementById("live-feed");
+  if(!feedBox) return; // safety
+
+  const methods = ["EasyPaisa","JazzCash","Bank"];
+  const users = ["****34","****48","****44","****08","****94","****98","****31","****79"];
+
+  function rand(min, max){
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
+  function randomAmount(){
+    // MINIMUM 200 enforced
+    return rand(200, 50000);
+  }
+
+  function timeAgo(){
+    const t = ["Just now","1 min ago","2 min ago","5 min ago"];
+    return t[rand(0, t.length-1)];
+  }
+
+  function createCard(){
+    if(feedBox.children.length >= 6){
+      feedBox.removeChild(feedBox.lastChild);
+    }
+
+    const div = document.createElement("div");
+    div.style.cssText = `
+      background:#020617;
+      border-left:4px solid #22c55e;
+      border-radius:8px;
+      padding:10px;
+      margin-bottom:8px;
+      color:#fff;
+      font-family:Arial,Helvetica,sans-serif;
+    `;
+
+    const method = methods[rand(0, methods.length-1)];
+    const user = users[rand(0, users.length-1)];
+    const amount = randomAmount();
+
+    div.innerHTML = `
+      <div style="font-weight:bold;">💳 ${method} (User ${user})</div>
+      <div style="color:#22c55e;font-size:16px;">Rs ${amount.toLocaleString()}</div>
+      <div style="font-size:11px;color:#94a3b8;">Completed • ${timeAgo()}</div>
+    `;
+
+    feedBox.prepend(div);
+  }
+
+  // initial load
+  for(let i=0;i<4;i++) createCard();
+
+  // update every 3 seconds
+  setInterval(createCard, 3000);
+
+})();
