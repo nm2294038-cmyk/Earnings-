@@ -30,7 +30,7 @@ let walletListener = null;
 let currentPageId = 'home-content'; 
 const USERS_COLLECTION = "users";
 const CAROUSEL_SLIDE_COUNT = 6;
-const SOCIAL_AD_REFRESH_RATE = 5000; // 5 seconds
+const SOCIAL_AD_REFRESH_RATE = 9000; // 5 seconds
 
 // To store the reward of the currently visible ad
 let allAdsData = [];
