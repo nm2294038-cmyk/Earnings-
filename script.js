@@ -32,9 +32,13 @@ const USERS_COLLECTION = "users";
 const CAROUSEL_SLIDE_COUNT = 6;
 const SOCIAL_AD_REFRESH_RATE = 5000; // 5 seconds
 
-// Ad Data State for 100 sequential ads
+// To store the reward of the currently visible ad
 let allAdsData = [];
 let currentAdIndex = 0; 
+let currentAdReward = 0; 
+
+// *** NEW CONSTANT: Referral Bonus for the referrer (the person who invited) ***
+const REFERRAL_BONUS_COINS = 5000; // Example coin amount for successful referral
 
 // REWARD MILESTONES (Partial list for brevity)
 const REWARD_MILESTONES = [
@@ -169,7 +173,10 @@ document.addEventListener('click', function(e) {
 
         if (url.startsWith('http') || url.startsWith('https') || url.startsWith('//')) {
             e.preventDefault(); 
-            window.open(url, '_blank');
+            // NOTE: Social Ad link handling is moved to handleAdInteraction
+            if (target.id !== 'social-ad-link') {
+                window.open(url, '_blank');
+            }
         }
     }
 });
@@ -312,15 +319,17 @@ function loadSocialAdSettings() {
     // Listen to the settings/socialAd document for real-time updates
     db.collection('settings').doc('socialAd').onSnapshot(doc => {
         if (doc.exists && doc.data().ads) {
-            allAdsData = doc.data().ads.filter(ad => ad.imageUrl && ad.websiteLink); // Filter out empty ads
+            // Filter out ads that don't have basic required fields
+            allAdsData = doc.data().ads.filter(ad => ad.imageUrl && ad.websiteLink); 
+            
             if (allAdsData.length === 0) {
-                 console.warn("No active ads found in the database.");
-                 // Revert to default if no valid ads are present
-                 allAdsData = [{ imageUrl: 'https://i.ibb.co/L50Hq68/placeholder-ad.png', websiteLink: 'https://www.yoursmed.xyz' }];
+                 console.warn("No active ads found in the database. Using defaults.");
+                 // Use a default ad with a default reward (e.g., 10 coins)
+                 allAdsData = [{ imageUrl: 'https://i.ibb.co/L50Hq68/placeholder-ad.png', websiteLink: 'https://www.yoursmed.xyz', coinsReward: 10 }];
             }
         } else {
             console.warn("Social Ad settings document or ads array not found. Using defaults.");
-            allAdsData = [{ imageUrl: 'https://i.ibb.co/L50Hq68/placeholder-ad.png', websiteLink: 'https://www.yoursmed.xyz' }];
+            allAdsData = [{ imageUrl: 'https://i.ibb.co/L50Hq68/placeholder-ad.png', websiteLink: 'https://www.yoursmed.xyz', coinsReward: 10 }];
         }
     }, error => {
         console.error("Error fetching social ad settings:", error);
@@ -330,9 +339,22 @@ function loadSocialAdSettings() {
 function updateSocialAdModal(adData) {
     const adImage = document.getElementById('social-ad-image');
     const adLink = document.getElementById('social-ad-link');
+    const rewardDisplay = document.getElementById('social-ad-reward-display'); // This targets the span inside the button
+    
+    // Ensure adData.coinsReward is treated as a number, defaulting to 10
+    const reward = adData.coinsReward !== undefined ? parseInt(adData.coinsReward) : 10;
 
     if (adImage) adImage.src = adData.imageUrl;
     if (adLink) adLink.href = adData.websiteLink;
+    
+    // Store the reward amount for the current ad
+    currentAdReward = reward;
+    
+    // Show the reward amount to the user (Replaced "Visit Website")
+    if (rewardDisplay) {
+        // Display coins with localization for thousands separator
+        rewardDisplay.textContent = `${currentAdReward.toLocaleString()} Coins`; 
+    }
 }
 // --- END NEW FUNCTION ---
 
@@ -416,6 +438,28 @@ function loadAppDownloadLinks() {
 // SECTION E: CORE FIREBASE & USER LOGIC
 // ====================================================================
 
+/**
+ * Formats large numbers into K, M, B format.
+ * @param {number} num 
+ * @returns {string} Formatted string (e.g., 1234567 -> 1.23M)
+ */
+function formatCoinBalance(num) {
+    if (num === null || num === undefined) return '0';
+    num = parseFloat(num);
+    
+    if (num >= 1000000000) {
+        return (num / 1000000000).toFixed(2).replace(/\.00$/, '') + 'B';
+    }
+    if (num >= 1000000) {
+        return (num / 1000000).toFixed(2).replace(/\.00$/, '') + 'M';
+    }
+    if (num >= 1000) {
+        return (num / 1000).toFixed(2).replace(/\.00$/, '') + 'K';
+    }
+    return num.toFixed(2);
+}
+
+
 function isWithdrawalWindowOpen() {
     const now = new Date();
     const currentHour = now.getHours();
@@ -471,11 +515,12 @@ function updateWithdrawalLockStatus() {
 
 function updateProfileCardDisplay(name, balance) {
     document.getElementById('profile-name').textContent = name;
-    document.getElementById('profile-balance').innerHTML = `<i class="fas fa-coins" style="color:#ffc107;"></i> Balance: ${balance} Coins`;
+    // Use formatCoinBalance for the profile card display
+    document.getElementById('profile-balance').innerHTML = `<i class="fas fa-coins" style="color:#ffc107;"></i> Balance: ${formatCoinBalance(balance)}`;
 }
 
 // **MAIN WALLET AND REWARDS CLAIM LOGIC**
-async function attemptRewardClaim(userId, activeInvites, claimedRewards) {
+async function attemptRewardClaim(userId, totalInvites, claimedRewards) {
     const userRef = db.collection(USERS_COLLECTION).doc(userId);
     let rewardClaimed = false;
 
@@ -483,7 +528,7 @@ async function attemptRewardClaim(userId, activeInvites, claimedRewards) {
         const milestoneKey = `invites_${reward.invites}`;
         
         // Check if milestone is reached AND not already claimed
-        if (activeInvites >= reward.invites && claimedRewards && claimedRewards[milestoneKey] !== true) {
+        if (totalInvites >= reward.invites && claimedRewards && claimedRewards[milestoneKey] !== true) {
             try {
                 await userRef.update({
                     coins: firebase.firestore.FieldValue.increment(reward.coins),
@@ -493,7 +538,7 @@ async function attemptRewardClaim(userId, activeInvites, claimedRewards) {
                 rewardClaimed = true;
                 
                 // Show a brief alert to the user (optional, but helpful)
-                alert(`🎉 Congratulations! You claimed ${reward.coins.toLocaleString()} Coins for reaching ${reward.invites.toLocaleString()} active invites!`);
+                alert(`🎉 Congratulations! You claimed ${reward.coins.toLocaleString()} Coins for reaching ${reward.invites.toLocaleString()} total invites!`);
 
                 // Stop after claiming one reward to prevent hitting rate limits, let the listener handle the next refresh
                 return true; 
@@ -526,31 +571,32 @@ function initializeWalletDisplay() {
         if (doc.exists) {
             const data = doc.data();
             const rawCoins = data.coins !== undefined ? data.coins : 0; 
+            const totalInvites = data.totalInvites || 0;
             const activeInvites = data.activeInvites || 0;
             const claimedRewards = data.claimedRewards || {};
             
             currentUserName = data.name || (auth.currentUser ? auth.currentUser.email.split('@')[0] : "User");
-            const formattedBalance = parseFloat(rawCoins).toFixed(2);
             
-            // 1. Attempt to claim any unclaimed rewards
-            if (activeInvites > 0) {
-                 const claimed = await attemptRewardClaim(currentUserId, activeInvites, claimedRewards);
+            // 1. Attempt to claim any unclaimed rewards based on TOTAL INVITES
+            if (totalInvites > 0) {
+                 const claimed = await attemptRewardClaim(currentUserId, totalInvites, claimedRewards);
                  if (claimed) {
                      return;
                  }
             }
             
             // 2. Update UI (only if no claim was processed in this snapshot cycle)
-            document.getElementById('tiktok-coin-balance').textContent = parseFloat(data.tiktokCoins || 0).toFixed(2);
-            document.getElementById('amazon-coin-balance').textContent = parseFloat(data.amazonCoins || 0).toFixed(2);
-            document.getElementById('pubg-uc-balance').textContent = parseInt(data.pubgUC || 0).toLocaleString();
+            // Apply formatting to all coin displays
+            mainBalanceDisplay.textContent = formatCoinBalance(rawCoins);
+            document.getElementById('tiktok-coin-balance').textContent = formatCoinBalance(data.tiktokCoins || 0);
+            document.getElementById('amazon-coin-balance').textContent = formatCoinBalance(data.amazonCoins || 0);
+            document.getElementById('pubg-uc-balance').textContent = (data.pubgUC || 0).toLocaleString(); // UC usually not formatted to K/M
             
-            mainBalanceDisplay.textContent = formattedBalance;
-            totalInviteCountDisplay.textContent = data.totalInvites || 0;
+            totalInviteCountDisplay.textContent = totalInvites;
             activeInviteCountDisplay.textContent = activeInvites;
             
-            updateRewardTimeline(activeInvites, claimedRewards);
-            updateProfileCardDisplay(currentUserName, formattedBalance);
+            updateRewardTimeline(totalInvites, claimedRewards); 
+            updateProfileCardDisplay(currentUserName, rawCoins); // Pass raw coins to profile card display for formatting
 
         } else {
             // User creation logic remains here for new users
@@ -558,7 +604,7 @@ function initializeWalletDisplay() {
             walletRef.set({
                 name: userEmailPrefix, email: auth.currentUser.email,
                 coins: 0, tiktokCoins: 0, amazonCoins: 0, pubgUC: 0,
-                referralCode: currentUserId.substring(0, 8).toUpperCase(), totalInvites: 0, activeInvites: 0,
+                referralCode: currentUserId.substring(0, 8).toUpperCase(), referredBy: null, totalInvites: 0, activeInvites: 0,
                 claimedRewards: {}, 
                 createdAt: firebase.firestore.FieldValue.serverTimestamp()
             }, { merge: true }); 
@@ -591,12 +637,12 @@ function setAuthMode(mode) {
 
     if (mode === 'signup') {
         title.textContent = "Create Account"; submitBtn.textContent = "Sign Up";
-        switchText.textContent = "Already have an account?"; switchLink.textContent = "Login";
+        switchText.textContent = "Already have an account? "; switchLink.textContent = "Login";
         nameInput.style.display = 'block'; nameInput.required = true;
         referralInput.style.display = 'block'; 
     } else {
         title.textContent = "Log In"; submitBtn.textContent = "Login";
-        switchText.textContent = "Don't have an account?"; switchLink.textContent = "Sign Up";
+        switchText.textContent = "Don't have an account? "; switchLink.textContent = "Sign Up";
         nameInput.style.display = 'none'; nameInput.required = false;
         referralInput.style.display = 'none'; 
     }
@@ -612,11 +658,23 @@ function handleAuthClick(mode) {
 
 function generateRandomBonus() { return Math.floor(Math.random() * (200 - 100 + 1)) + 100; }
 
-async function findReferralDocIdByCode(code) {
+/**
+ * Finds the user ID (document ID) by their unique referral code.
+ * @param {string} code 
+ * @returns {Promise<string|null>} The referrer's UID or null.
+ */
+async function findReferrerIdByCode(code) {
     try {
-        const snapshot = await db.collection(USERS_COLLECTION).where('referralCode', '==', code).limit(1).get();
-        if (!snapshot.empty) { return snapshot.docs[0].id; }
-    } catch(e) { console.error("Error finding referrer by code:", e); }
+        const snapshot = await db.collection(USERS_COLLECTION)
+                                 .where('referralCode', '==', code)
+                                 .limit(1)
+                                 .get();
+        if (!snapshot.empty) { 
+            return snapshot.docs[0].id; 
+        }
+    } catch(e) { 
+        console.error("Error finding referrer by code:", e); 
+    }
     return null;
 }
 
@@ -635,31 +693,47 @@ async function handleAuthSubmit() {
     try {
         if (authMode === 'signup') {
             const userCredential = await auth.createUserWithEmailAndPassword(email, password);
-            const uid = userCredential.user.uid;
-            const userReferralCode = uid.substring(0, 8).toUpperCase(); 
+            const newUid = userCredential.user.uid;
+            const userReferralCode = newUid.substring(0, 8).toUpperCase(); 
             const signupBonus = generateRandomBonus();
             
-            await db.collection(USERS_COLLECTION).doc(uid).set({
+            let referrerUid = null;
+
+            // 1. Check if a valid referrer code was used
+            if (referralCodeUsed) {
+                referrerUid = await findReferrerIdByCode(referralCodeUsed);
+            }
+            
+            // 2. Create the new user document
+            await db.collection(USERS_COLLECTION).doc(newUid).set({
                 name: name, email: email, coins: signupBonus, tiktokCoins: 0, amazonCoins: 0, pubgUC: 0,
-                referralCode: userReferralCode, referredBy: referralCodeUsed || null, totalInvites: 0, activeInvites: 0,
-                claimedRewards: {}, 
+                referralCode: userReferralCode, referredBy: referrerUid, // Store referrer UID, not just code
+                totalInvites: 0, activeInvites: 0, claimedRewards: {}, 
                 createdAt: firebase.firestore.FieldValue.serverTimestamp()
             });
             
-            if (referralCodeUsed) {
-                const referrerDocId = await findReferralDocIdByCode(referralCodeUsed);
-                if (referrerDocId) {
-                    const referrerRef = db.collection(USERS_COLLECTION).doc(referrerDocId);
-                    await db.runTransaction(async (transaction) => {
-                        const referrerDoc = await transaction.get(referrerRef);
-                        if (referrerDoc.exists) {
-                            const newInvites = (referrerDoc.data().totalInvites || 0) + 1;
-                            transaction.update(referrerRef, { totalInvites: newInvites });
-                        }
-                    });
-                }
+            // 3. Update the referrer's invite count and give bonus coins
+            if (referrerUid) {
+                const referrerRef = db.collection(USERS_COLLECTION).doc(referrerUid);
+                
+                // Use transaction to ensure atomic update
+                await db.runTransaction(async (transaction) => {
+                    const referrerDoc = await transaction.get(referrerRef);
+                    if (referrerDoc.exists) {
+                        const currentTotalInvites = referrerDoc.data().totalInvites || 0;
+                        
+                        transaction.update(referrerRef, {
+                            totalInvites: currentTotalInvites + 1,
+                            coins: firebase.firestore.FieldValue.increment(REFERRAL_BONUS_COINS)
+                        });
+                    }
+                });
+                
+                // Show pop up to the NEW USER confirming referrer received coins
+                alert(`Account created! You received ${signupBonus} coins. Your referrer (Code: ${referralCodeUsed}) has been awarded ${REFERRAL_BONUS_COINS.toLocaleString()} coins!`);
+            } else {
+                 alert(`Account created! You received ${signupBonus} coins. Welcome!`);
             }
-            alert(`Account created! You received ${signupBonus} coins. Welcome!`);
         } else {
             await auth.signInWithEmailAndPassword(email, password);
         }
@@ -711,8 +785,8 @@ function updateAuthStateUI() {
         loggedInElements.forEach(el => el.style.display = 'flex');
         loggedOutElements.forEach(el => el.style.display = 'none');
     } else {
-        loggedInElements.forEach(el => el.style.display = 'none');
         loggedOutElements.forEach(el => el.style.display = 'flex');
+        loggedInElements.forEach(el => el.style.display = 'none');
     }
     initializeReferralSystem(); 
 }
@@ -758,7 +832,8 @@ function initializeReferralSystem() {
     const BASE_URL = "https://www.yoursmed.xyz/"; 
     
     if (isLoggedIn && currentUserId) {
-        const code = currentUserId.substring(0, 8).toUpperCase();
+        // Use the first 8 characters of UID as the public referral code
+        const code = currentUserId.substring(0, 8).toUpperCase(); 
         const shareLink = `${BASE_URL}?ref=${code}`;
         linkTextDisplay.textContent = `Your Code: ${code} | Link: ${shareLink}`;
         copyButton.style.display = 'block'; 
@@ -909,6 +984,45 @@ startRecognitionBtn.addEventListener('click', () => {
 
 let adInterval = null; 
 
+/**
+ * Helper function to show a brief notification (using alert for guaranteed pop-up).
+ */
+function showPopupNotification(message) {
+    alert(message);
+}
+
+/**
+ * Awards coins to the user's wallet using the dynamically set currentAdReward.
+ */
+async function awardSocialAdCoins(rewardAmount) {
+    if (!isLoggedIn || !currentUserId || rewardAmount <= 0) {
+        if (!isLoggedIn) {
+            showPopupNotification("Login required to earn coins!");
+        }
+        return false;
+    }
+    
+    const userRef = db.collection(USERS_COLLECTION).doc(currentUserId);
+
+    try {
+        // *** Coins are ADDED here (increment) ***
+        await userRef.update({
+            coins: firebase.firestore.FieldValue.increment(rewardAmount)
+        });
+        
+        // Show pop up on screen
+        showPopupNotification(`🎉 Coins Added Successfully! ${rewardAmount.toLocaleString()} Coins have been added to your wallet.`);
+        
+        console.log(`COIN AWARD SUCCESS: Added ${rewardAmount} coins to wallet.`);
+        return true;
+    } catch (error) {
+        console.error("COIN AWARD ERROR: Failed to award social ad coins:", error);
+        showPopupNotification("Critical Error: Failed to add coins to your wallet. Please check connection.");
+        return false;
+    }
+}
+
+
 function showSocialAd() {
     const adOverlay = document.getElementById('social-ad-overlay');
     
@@ -917,7 +1031,7 @@ function showSocialAd() {
         // Get the current ad data
         const adData = allAdsData[currentAdIndex];
         
-        // Update modal content
+        // Update modal content, which also sets currentAdReward and updates the display
         updateSocialAdModal(adData);
         adOverlay.style.display = 'flex';
         
@@ -944,12 +1058,34 @@ function startAdInterval() {
     adInterval = setInterval(showSocialAd, SOCIAL_AD_REFRESH_RATE);
 }
 
-// Function to handle interaction (closing/clicking link) and restart interval
+// Function to handle interaction (clicking link/coins button) and restart interval
 function handleAdInteraction(event) {
-    event.preventDefault();
-    
-    if (event.target.id === 'social-ad-link') {
-        window.open(event.target.href, '_blank');
+    // Check if the click originated from the clickable coins button/link
+    if (event.target.closest('#social-ad-link')) {
+        event.preventDefault();
+        
+        if (!isLoggedIn) {
+            showPopupNotification("Please log in to claim coin rewards!");
+            hideSocialAd();
+            startAdInterval();
+            return;
+        }
+
+        // 1. Award Coins ASYNC using the reward of the currently visible ad
+        awardSocialAdCoins(currentAdReward); 
+        
+        // Get the URL from the currently visible ad link element
+        const adLinkElement = document.getElementById('social-ad-link');
+        const targetUrl = adLinkElement ? adLinkElement.href : '#';
+
+        // 2. Open the link in a new tab
+        if (targetUrl && targetUrl !== '#') {
+             window.open(targetUrl, '_blank');
+        } else {
+             console.warn("Ad link not set or invalid.");
+        }
+    } else if (event.target.classList.contains('ad-close')) {
+        event.preventDefault(); // Don't allow closing button to trigger coin reward
     }
     
     hideSocialAd();
@@ -1001,13 +1137,22 @@ document.addEventListener('DOMContentLoaded', () => {
   backButton.addEventListener('click', handleBack);
 
   // --- SOCIAL AD EVENT LISTENERS ---
-  document.querySelector('.ad-close').addEventListener('click', handleAdInteraction);
-  document.getElementById('social-ad-link').addEventListener('click', handleAdInteraction);
+  const adCloseButton = document.querySelector('.ad-close');
+  // Handle closing the ad
+  if (adCloseButton) adCloseButton.addEventListener('click', (e) => {
+      e.preventDefault();
+      hideSocialAd(); 
+      startAdInterval(); // Restart interval when closed
+  }); 
+
+  const socialAdLink = document.getElementById('social-ad-link');
+  // Handle clicking the ad link/coins button
+  if (socialAdLink) socialAdLink.addEventListener('click', handleAdInteraction); 
   // --- END SOCIAL AD EVENT LISTENERS ---
 
 
   // Initial data loading
-  loadSocialAdSettings(); // Start real-time listener for ad configuration (loads allAdsData)
+  loadSocialAdSettings(); 
   loadCarouselSlides();
   loadAppDownloadLinks();
   
