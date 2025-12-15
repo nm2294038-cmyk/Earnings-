@@ -1,21 +1,5 @@
 /* ===================================================================
-   TABLE OF CONTENTS
-======================================================================
-1.  :root VARIABLES         - Poori website ke colors, fonts, spacing
-2.  GENERAL & RESET STYLES  - Body, headings, links ke default styles
-3.  LAYOUT & STRUCTURE      - Header, Container, Sections
-4.  COMPONENTS              - Buttons, Cards, Modals, Forms
-5.  UTILITY CLASSES         - Chotay helper classes
-6.  RESPONSIVE DESIGN       - Media Queries for Tablet & Desktop
-    - 6.1 TABLET VIEW       (768px aur us se barri screens)
-    - 6.2 DESKTOP VIEW      (1024px aur us se barri screens)
-=================================================================== */
-
-
-/* ===================================================================
    1. :root VARIABLES
-   Yahan hum poori website mein istemal hone wale colors aur
-   doosri values set karte hain taake unhe badalna aasan ho.
 =================================================================== */
 :root {
     /* Colors */
@@ -30,6 +14,8 @@
     --light-text: #f8f9fa;
     --subtle-text: #6c757d;
     --border-color: #dee2e6;
+    --locked-bg: #e9ecef; /* New color for locked tasks */
+    --locked-border: #adb5bd; /* New border for locked tasks */
 
     /* Fonts */
     --font-family-main: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -49,7 +35,6 @@
 
 /* ===================================================================
    2. GENERAL & RESET STYLES
-   Yeh styles poori website par apply honge.
 =================================================================== */
 *, *::before, *::after {
     box-sizing: border-box;
@@ -93,7 +78,6 @@ a:hover {
 
 /* ===================================================================
    3. LAYOUT & STRUCTURE
-   Header, Container, aur Sections ka design.
 =================================================================== */
 
 /* --- Header --- */
@@ -111,7 +95,7 @@ header {
 }
 
 header h1 {
-    font-size: 1.2em; /* Mobile par chota title */
+    font-size: 1.2em;
     color: var(--light-text);
     margin: 0;
 }
@@ -123,7 +107,7 @@ header h1 {
 }
 
 #userInfo {
-    display: none; /* Default hidden, JS se show hoga */
+    display: none;
     flex-direction: column;
     align-items: flex-end;
 }
@@ -181,7 +165,7 @@ header h1 {
 }
 
 section {
-    display: none; /* JS se manage hoga */
+    display: none;
     background-color: var(--card-bg);
     padding: var(--spacing-large);
     border-radius: var(--border-radius);
@@ -197,13 +181,12 @@ section {
 
 /* ===================================================================
    4. COMPONENTS
-   Buttons, Cards, Modals, Forms waghera.
 =================================================================== */
 
 /* --- Category List --- */
 .category-list {
     display: grid;
-    grid-template-columns: 1fr; /* Mobile par ek column */
+    grid-template-columns: 1fr;
     gap: var(--spacing-medium);
 }
 
@@ -243,7 +226,7 @@ section {
 /* --- Task List & Cards --- */
 #taskList {
     display: grid;
-    grid-template-columns: 1fr; /* Mobile par ek column */
+    grid-template-columns: 1fr;
     gap: var(--spacing-large);
 }
 
@@ -256,10 +239,11 @@ section {
     color: var(--light-text);
     display: flex;
     flex-direction: column;
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    position: relative; 
 }
 
-.task-card:hover {
+.task-card:hover:not([style*="opacity: 0.6"]) {
     transform: scale(1.02);
 }
 
@@ -283,7 +267,7 @@ section {
     margin-bottom: var(--spacing-medium);
     text-align: right;
     direction: rtl;
-    flex-grow: 1; /* Yeh button ko neeche push karega */
+    flex-grow: 1;
 }
 
 .earn-button {
@@ -298,7 +282,11 @@ section {
     box-shadow: 0 0 15px rgba(0, 188, 212, 0.5);
     width: 100%;
     transition: all 0.3s ease;
-    margin-top: auto; /* Yeh button ko card ke end mein rakhega */
+    margin-top: auto;
+    
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
 }
 
 .earn-button:hover:not(:disabled) {
@@ -307,17 +295,37 @@ section {
     transform: scale(1.05);
 }
 
-.earn-button:disabled {
-    background: #6c757d;
+/* --- TASK LOCK SPECIFIC STYLES --- */
+.lock-icon {
+    margin-left: 8px;
+    font-size: 1.2em;
+    color: #ff4d4d;
+}
+
+.task-card[style*="opacity: 0.6"] {
     cursor: not-allowed;
+    background-color: var(--locked-bg);
+    border: 1px solid var(--locked-border);
+    color: var(--subtle-text);
     box-shadow: none;
 }
 
+.task-card[style*="opacity: 0.6"] .task-title,
+.task-card[style*="opacity: 0.6"] .task-platform {
+    color: var(--subtle-text);
+}
+
+.earn-button:disabled {
+    background: var(--locked-border);
+    color: var(--dark-text);
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+}
+/* --- END TASK LOCK SPECIFIC STYLES --- */
+
+
 /* --- Auth Modal & Signup Page --- */
-.auth-container { display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: var(--spacing-medium); }
-.auth-content { background-color: white; padding: var(--spacing-large); border-radius: var(--border-radius); box-shadow: var(--box-shadow-heavy); width: 100%; max-width: 400px; text-align: center; }
-.auth-content h2 { margin-bottom: var(--spacing-small); }
-.auth-content p { margin-bottom: var(--spacing-large); color: var(--subtle-text); }
 .modal { display: none; position: fixed; z-index: 1001; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.7); backdrop-filter: blur(5px); justify-content: center; align-items: center; }
 .modal-content { background-color: var(--card-bg); padding: var(--spacing-large); border-radius: var(--border-radius); width: 90%; max-width: 400px; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2); position: relative; }
 .close-btn { color: var(--subtle-text); position: absolute; top: var(--spacing-medium); right: var(--spacing-large); font-size: 30px; font-weight: bold; cursor: pointer; }
@@ -334,39 +342,35 @@ section {
 
 /* ===================================================================
    6. RESPONSIVE DESIGN (Media Queries)
-   Yahan se hum barri screens ke liye layout ko adjust karenge.
-   Mobile/iPhone view pehle se hi default styles mein cover ho chuka hai.
 =================================================================== */
 
 /* --- 6.1 TABLET VIEW --- */
-/* Yeh styles 768px ya us se barri screens (jaise iPads) par apply honge */
 @media (min-width: 768px) {
     header h1 {
-        font-size: 1.5em; /* Tablet par title thora barra */
+        font-size: 1.5em;
     }
 
     .category-list {
-        grid-template-columns: repeat(2, 1fr); /* Tablet par 2 columns */
+        grid-template-columns: repeat(2, 1fr);
     }
 
     #taskList {
-        grid-template-columns: repeat(2, 1fr); /* Tablet par 2 columns */
+        grid-template-columns: repeat(2, 1fr);
     }
 }
 
 
 /* --- 6.2 DESKTOP VIEW --- */
-/* Yeh styles 1024px ya us se barri screens (jaise Laptops, PCs) par apply honge */
 @media (min-width: 1024px) {
     .category-list {
-        grid-template-columns: repeat(3, 1fr); /* Desktop par 3 columns */
+        grid-template-columns: repeat(3, 1fr);
     }
 
     #taskList {
-        grid-template-columns: repeat(3, 1fr); /* Desktop par 3 columns */
+        grid-template-columns: repeat(3, 1fr);
     }
 
     section {
-        padding: 40px; /* Desktop par sections mein zyada padding */
+        padding: 40px;
     }
 }
