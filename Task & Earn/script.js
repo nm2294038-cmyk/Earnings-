@@ -405,4 +405,4 @@ window.handleTaskClick = async function(button) {
         button.disabled = false;
         button.innerHTML = `Open & Earn ${coinsToEarn} Coins`;
     }
-                        }
+}
