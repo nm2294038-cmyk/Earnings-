@@ -22,26 +22,26 @@ const db = firebase.firestore();
 // --- CONSTANTS (Task Costs Per Unit) ---
 const UNIT_RATES = {
     YouTube: {
-        'Subscriber': { rate: 100, min: 10 }, 
-        'Like': { rate: 2, min: 100 },
-        'View': { rate: 2, min: 500 },
-        'Comment': { rate: 52, min: 20 }
+        'Subscriber': { rate: 120000, min: 1 }, 
+        'Like': { rate: 60000, min: 1 },
+        'View': { rate: 60000, min: 1 },
+        'Comment': { rate: 60000, min: 1 }
     },
     TikTok: {
-        'Follow': { rate: 100, min: 10 },
-        'Like': { rate: 30, min: 100 },
-        'View': { rate: 3, min: 1000 }
+        'Follow': { rate: 120000, min: 1 },
+        'Like': { rate: 60000, min: 1 },
+        'View': { rate: 60000, min: 1 }
     },
     Instagram: {
-        'Follower': { rate: 100, min: 5 },
-        'Like': { rate: 24, min: 50 }
+        'Follower': { rate: 120000, min: 1 },
+        'Like': { rate: 60000, min: 1 }
     },
     Facebook: {
-        'Follower': { rate: 160, min: 10 },
-        'Post Reaction': { rate: 12, min: 50 }
+        'Follower': { rate: 140000, min: 1 },
+        'Post Reaction': { rate: 62000, min: 1 }
     },
     Products: { 
-        'Product Click': { rate: 100, min: 10 }, 
+        'Product Click': { rate: 13060421, min: 1 }, 
     }
 };
 
@@ -424,4 +424,4 @@ function listenToTaskHistory(uid) {
              taskHistoryList.innerHTML = '<p style="color:red;">Permission Denied. (Rules Update Required)</p>';
           }
       });
-}
+            }
