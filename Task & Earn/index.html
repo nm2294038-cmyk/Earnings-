@@ -4,11 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <!-- [SEO Tags and CSS links remain the same] -->
     <title>Online Earning in Pakistan - Complete Tasks & Earn Money Daily</title>
-    <!-- ... (rest of head content) ... -->
+    
+    <!-- Link to the external CSS file -->
     <link rel="stylesheet" href="style.css">
+    
+    <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <!-- FIREBASE SDKs -->
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
@@ -26,15 +30,14 @@
     <main class="container">
         <!-- 1. ARTICLE SECTION (Logged Out View) -->
         <section id="articleSection">
-            <!-- ... (Content remains the same) ... -->
             <article>
                 <h1>Pakistan Mein Online Earning Kaise Karen?</h1>
-                <p>Humare platform par khushamdeed! Agar aap student hain ya ghar se kaam karke paise kamana chahte hain, to aap bilkul sahi jagah par hain. Yahan aap aasan online tasks mukammal karke rozana haqeeqi raqam kama sakte hain.</p>
+                <p>Humare platform par khushamdeed! Agar aap student hain ya ghar se kaam karke paise kamana chahte hain, to aap bilkul sahi jagah par hain.</p>
                 
                 <h2>Shuruat Kaise Karen?</h2>
                 <ol>
                     <li><strong>Account Banayein:</strong> Upar dayen (right) kone mein mojood profile icon (👤) par click karen.</li>
-                    <li><strong>Signup Karen:</strong> Apna naam, email, aur password darj karke fori account banayein.</li>
+                    <li><strong>Signup Karen:</strong> Apna naam, email، اور password darj karke fori account banayein.</li>
                     <li><strong>Login Karen:</strong> Account banane ke baad, usi popup se login karen.</li>
                 </ol>
 
@@ -46,11 +49,11 @@
                     <li>✅ WhatsApp groups aur channels join karna.</li>
                     <li>✅ Mobile apps download karna.</li>
                 </ul>
-                <p>Har task ko mukammal karne par aapko fori taur par coins milenge jo aapke wallet mein jama ho jayenge. Intezar mat karen, abhi <strong>profile icon par click karke</strong> apni online earning ka safar shuru karen!</p>
+                <p>Har task ko mukammal karne par aapko fori taur par coins milenge. Intezar mat karen, abhi <strong>profile icon par click karke</strong> apni online earning ka safar shuru karen!</p>
             </article>
         </section>
         
-        <!-- 2. CATEGORY SECTION (Logged In View) - FIX APPLIED HERE -->
+        <!-- 2. CATEGORY SECTION (Logged In View) -->
         <section id="categoryMainSection">
             <h2>Tasks Ki Categories Chunein</h2>
             <div class="category-list">
@@ -59,9 +62,8 @@
                 <a onclick="showTaskListView('Instagram')" class="category-btn"><i class="fab fa-instagram" style="color: #E1306C;"></i><span>Instagram Tasks</span></a>
                 <a onclick="showTaskListView('WhatsApp Channel')" class="category-btn"><i class="fab fa-whatsapp" style="color: #25D366;"></i><span>WhatsApp Channel</span></a>
                 <a onclick="showTaskListView('WhatsApp Group')" class="category-btn"><i class="fas fa-users" style="color: #128C7E;"></i><span>WhatsApp Group</span></a>
-                <!-- IMPORTANT FIX: Changed 'App Download' to 'App Install' to match Admin Panel data -->
                 <a onclick="showTaskListView('App Install')" class="category-btn"><i class="fas fa-download" style="color: #007bff;"></i><span>App Install</span></a> 
-                <a onclick="showTaskListView('Website Visit')" class="category-btn"><i class="fas fa-globe" style="color: #3498db;"></i><span>Website Visit</span></a>
+                <a onclick="showTaskListView('Website')" class="category-btn"><i class="fas fa-globe" style="color: #3498db;"></i><span>Website Visit</span></a>
                 <a onclick="showTaskListView('General')" class="category-btn"><i class="fas fa-list" style="color: #555;"></i><span>Other Tasks</span></a>
             </div>
         </section>
@@ -76,7 +78,6 @@
     
     <!-- AUTH MODAL (Login & Signup) -->
     <div id="authModal" class="modal">
-        <!-- ... (Modal content remains the same) ... -->
         <div class="modal-content">
             <span class="close-btn" onclick="document.getElementById('authModal').style.display='none'">&times;</span>
             
@@ -88,7 +89,7 @@
                     <input type="password" id="loginPassword" placeholder="Password" required>
                     <button type="submit">Login</button>
                 </form>
-                <div class="auth-toggle"><p>Naya account banana hai? <a href="#" onclick="toggleAuthView()">Yahan Signup Karen</a></p></div>
+                <div class="auth-toggle"><p>Naya account banana hai? <a href="#" id="toggleSignupLink">Yahan Signup Karen</a></p></div>
             </div>
 
             <!-- Signup Form -->
@@ -100,7 +101,7 @@
                     <input type="password" id="signupPassword" placeholder="Password (kam se kam 6 characters)" required>
                     <button type="submit" id="signupButton">Sign Up</button>
                 </form>
-                <div class="auth-toggle"><p>Pehle se account hai? <a href="#" onclick="toggleAuthView()">Yahan Login Karen</a></p></div>
+                <div class="auth-toggle"><p>Pehle se account hai? <a href="#" id="toggleLoginLink">Yahan Login Karen</a></p></div>
             </div>
             
             <p id="authMessage"></p>
@@ -113,4 +114,4 @@
     <script defer src="script.js"></script>
 
 </body>
-</html>
+    </html>
