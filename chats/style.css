@@ -1,0 +1,18 @@
+/* style.css */
+
+/* Custom styles based on the Tailwind structure */
+.chat-app-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+.chat-scroll-area {
+    flex-grow: 1;
+    overflow-y: auto;
+}
+/* Fix for iOS Safari mobile overflow issue */
+@supports (-webkit-overflow-scrolling: touch) {
+    .chat-scroll-area {
+        height: 100%;
+    }
+}
