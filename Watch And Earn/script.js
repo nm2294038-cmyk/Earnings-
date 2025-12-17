@@ -39,16 +39,16 @@ const LOCKOUT_DURATION_MS = 24 * 60 * 60 * 1000;
 
 // --- DEFAULT VIDEO LINKS (FALLBACK DATA) ---
 const DEFAULT_VIDEOS = [
-    { id: 1, link: "https://youtu.be/fjHXG7brtso?si=JCqnjpNiCagLIj42", reward: 10, time: 250 }, 
-    { id: 2, link: "https://youtu.be/fjHXG7brtso?si=JCqnjpNiCagLIj42", reward: 10, time: 250 }, 
-    { id: 3, link: "https://youtu.be/fjHXG7brtso?si=JCqnjpNiCagLIj42", reward: 10, time: 250 }, 
-    { id: 4, link: "https://youtu.be/fjHXG7brtso?si=JCqnjpNiCagLIj42", reward: 10, time: 250 }, 
-    { id: 5, link: "https://youtu.be/fjHXG7brtso?si=JCqnjpNiCagLIj42", reward: 10, time: 250 }, 
-    { id: 6, link: "https://youtu.be/fjHXG7brtso?si=JCqnjpNiCagLIj42", reward: 10, time: 250 }, 
-    { id: 7, link: "https://youtu.be/fjHXG7brtso?si=JCqnjpNiCagLIj42", reward: 10, time: 250 }, 
-    { id: 8, link: "https://youtu.be/fjHXG7brtso?si=JCqnjpNiCagLIj42", reward: 10, time: 250 }, 
-    { id: 9, link: "https://youtu.be/fjHXG7brtso?si=JCqnjpNiCagLIj42", reward: 10, time: 250 }, 
-    { id: 10, link: "https://youtu.be/fjHXG7brtso?si=JCqnjpNiCagLIj42", reward: 10, time: 250 }
+    { id: 1, link: "https://www.youtube.com/watch?v=fjHXG7brtso", reward: 10, time: 250 }, 
+    { id: 2, link: "https://www.youtube.com/watch?v=fjHXG7brtso", reward: 10, time: 250 }, 
+    { id: 3, link: "https://www.youtube.com/watch?v=fjHXG7brtso", reward: 10, time: 250 }, 
+    { id: 4, link: "https://www.youtube.com/watch?v=fjHXG7brtso", reward: 10, time: 250 }, 
+    { id: 5, link: "https://www.youtube.com/watch?v=fjHXG7brtso", reward: 10, time: 250 }, 
+    { id: 6, link: "https://www.youtube.com/watch?v=fjHXG7brtso", reward: 10, time: 250 }, 
+    { id: 7, link: "https://www.youtube.com/watch?v=fjHXG7brtso", reward: 10, time: 250 }, 
+    { id: 8, link: "https://www.youtube.com/watch?v=fjHXG7brtso", reward: 10, time: 250 }, 
+    { id: 9, link: "https://www.youtube.com/watch?v=fjHXG7brtso", reward: 10, time: 250 }, 
+    { id: 10, link: "https://www.youtube.com/watch?v=fjHXG7brtso", reward: 10, time: 250 }
 ];
 
 // --- NEW: Video Data State ---
@@ -282,9 +282,18 @@ function updateVideoOverlays(isLoggedIn) {
     });
 }
 
+// --- UPDATED: REWARD POPUP FUNCTION (AUTO-HIDE) ---
 function showRewardPopup(coins) {
-    document.getElementById('rewardModal').style.display = "flex"; 
+    const modal = document.getElementById('rewardModal');
+    
+    // Popup show karen
+    modal.style.display = "flex"; 
     rewardCoinsDisplay.textContent = coins.toLocaleString();
+
+    // 3 Seconds (3000 ms) ke baad popup apne aap hide ho jayega
+    setTimeout(() => {
+        modal.style.display = "none";
+    }, 3000); 
 }
 
 function startTimer(sectionId, rewardTime, rewardCoins, overlayElement, videoLink) {
@@ -318,7 +327,7 @@ function startTimer(sectionId, rewardTime, rewardCoins, overlayElement, videoLin
             timerDisplay.style.backgroundColor = '#d4edda';
             timerDisplay.style.color = '#155724';
             
-            // --- 3. Popup dikhana ---
+            // --- 3. Popup dikhana (Updated Auto-Hide Logic Used Here) ---
             showRewardPopup(rewardCoins);
             
             // --- 4. Overlay ko wapas lana aur lock karna ---
@@ -370,7 +379,8 @@ function handleVideoClick(event, sectionId, videoData) {
     // 2. Video ko autoplay karna
     const videoLink = videoData.link;
     const videoId = getYouTubeId(videoLink);
-    iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&enablejsapi=1&rel=0`;
+    // Note: Autoplay functionality depends on browser policies
+    iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=0&controls=1`;
 
     // 3. Timer shuru karna
     startTimer(sectionId, videoData.time, videoData.reward, overlay, videoLink);
@@ -390,7 +400,7 @@ function generateSections(videosToDisplay) {
         const i = video.id;
         const currentLink = video.link;
         const videoId = getYouTubeId(currentLink);
-        const embedUrl = `https://www.youtube.com/embed/${videoId}?enablejsapi=1&rel=0`;
+        const embedUrl = `https://www.youtube.com/embed/${videoId}?controls=1`;
         const rewardCoins = video.reward || 10;
         const rewardTime = video.time || 250;
 
