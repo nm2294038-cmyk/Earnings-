@@ -1,456 +1,196 @@
-// script.js
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js";
+import { getDatabase, ref, set, push, onValue, get, update, off, remove } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js";
+import { getFirestore, doc, setDoc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js";
 
-// --- GLOBAL STATE ---
-let currentUser = null;
-let currentRoomId = 'general';
-let usernameSubscription = null; 
-let messageListener = null; 
-const SEVEN_DAYS_MS = 7 * 24 * 60 * 60 * 1000;
-const SEVEN_DAYS_AGO = new Date(Date.now() - (7 * 24 * 60 * 60 * 1000));
-let isSignUpMode = true;
+const firebaseConfig = {
+    apiKey: "AIzaSyA_aPVxJBhy3-ldzzGoBA-qboCucu9mV98",
+    authDomain: "facebook-colon-6a549.firebaseapp.com",
+    projectId: "facebook-colon-6a549",
+    storageBucket: "facebook-colon-6a549.firebasestorage.app",
+    messagingSenderId: "258603317441",
+    appId: "1:258603317441:web:51d610f3f6ebeab928fc40",
+    measurementId: "G-TM0KMGN5RM"
+};
 
-// --- DOM ELEMENTS ---
-const chatContainer = document.getElementById('chatContainer');
-const messageInput = document.getElementById('messageInput');
-const sendBtn = document.getElementById('sendBtn');
-const messageFormContainer = document.getElementById('messageFormContainer');
-const currentRoomDisplay = document.getElementById('currentRoomDisplay'); 
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getDatabase(app);
+const fs = getFirestore(app);
 
-// Header & Navigation
-const profileBtn = document.getElementById('profileBtn');
-const menuBtn = document.getElementById('menuBtn');
-const groupMenuPanel = document.getElementById('groupMenuPanel');
-// ... (Typing indicator element can be accessed globally if needed)
+let currentUserData = null, chatMode = 'personal', targetID = null, activeChatRef = null, pressTimer = null;
 
-// Auth Modal Elements
-const authModal = document.getElementById('authModal');
-const authTitle = document.getElementById('authTitle');
-const authUsername = document.getElementById('authUsername');
-const authFirstName = document.getElementById('authFirstName');
-const authLastName = document.getElementById('authLastName');
-const authEmail = document.getElementById('authEmail');
-const authPassword = document.getElementById('authPassword');
-const authSubmitBtn = document.getElementById('authSubmitBtn');
-const toggleAuthMode = document.getElementById('toggleAuthMode');
-const authError = document.getElementById('authError');
-const usernameField = document.getElementById('usernameField');
-const firstNameField = document.getElementById('firstNameField');
-const lastNameField = document.getElementById('lastNameField');
+// --- NAVIGATION ---
+window.next = (s) => {
+    document.querySelectorAll('.screen').forEach(scr => scr.classList.remove('active'));
+    const el = document.getElementById('step-' + s);
+    if(el) el.classList.add('active');
+    const footerSteps = ['7', '10', '9'];
+    document.getElementById('main-footer').style.display = footerSteps.includes(s.toString()) ? 'flex' : 'none';
+    document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+    if(s == 7) document.querySelectorAll('.nav-item')[0].classList.add('active');
+    if(s == 10) document.querySelectorAll('.nav-item')[1].classList.add('active');
+    if(s == 9) document.querySelectorAll('.nav-item')[2].classList.add('active');
+};
 
-// Profile Modal
-const profileModal = document.getElementById('profileModal');
-const profileEmail = document.getElementById('profileEmail');
-const profileUid = document.getElementById('profileUid');
-const profileUsernameInput = document.getElementById('profileUsernameInput');
-const updateUsernameBtn = document.getElementById('updateUsernameBtn');
-const usernameStatus = document.getElementById('usernameStatus');
-const copyUidBtn = document.getElementById('copyUidBtn');
-const profileSignOutBtn = document.getElementById('profileSignOutBtn');
-const closeProfileModalBtn = document.getElementById('closeProfileModalBtn');
-const publicRoomsList = document.getElementById('publicRoomsList');
-const profileFullName = document.getElementById('profileFullName');
+window.showChats = () => next(7);
+window.showGroups = () => next(10);
+window.showProfile = () => next(9);
+window.goBackFromChat = () => { if(chatMode === 'personal') next(7); else next(10); };
 
+// --- AUTH LOGIC ---
+window.handleLogin = async () => {
+    const e = document.getElementById('l-email').value, p = document.getElementById('l-pass').value;
+    try { await signInWithEmailAndPassword(auth, e, p); } catch (e) { alert(e.message); }
+};
 
-// --- UTILITY FUNCTIONS ---
+document.getElementById('signup-btn').onclick = async () => {
+    const e = document.getElementById('f-email').value, p = document.getElementById('f-pass').value, n = document.getElementById('f-name').value, c = document.getElementById('f-cat').value, d = document.getElementById('f-desc').value;
+    try {
+        const res = await createUserWithEmailAndPassword(auth, e, p);
+        const data = { uid: res.user.uid, email: e.toLowerCase(), password: p, name: n, category: c, desc: d, lastUpdated: 0 };
+        await set(ref(db, 'users/' + res.user.uid), data);
+        await setDoc(doc(fs, "users", res.user.uid), data);
+    } catch (err) { alert(err.message); }
+};
 
-function generateColor(str) {
-    let hash = 0;
-    for (let i = 0; i < str.length; i++) {
-        hash = str.charCodeAt(i) + ((hash << 5) - hash);
+window.logout = () => signOut(auth).then(() => location.reload());
+
+// --- CHAT SYSTEM ---
+window.handleSendMessage = async () => {
+    const text = document.getElementById('msg-input').value.trim();
+    if(!text || !currentUserData) return;
+    const now = Date.now(), myUid = auth.currentUser.uid;
+    const msgData = { senderId: myUid, senderName: currentUserData.name, text, time: now };
+
+    if(chatMode === 'personal') {
+        const chatId = myUid < targetID ? myUid+"_"+targetID : targetID+"_"+myUid;
+        await push(ref(db, 'chats/'+chatId), msgData);
+        await update(ref(db, `conversations/${myUid}/${targetID}`), { uid: targetID, name: document.getElementById('chat-title').innerText, lastMsg: text, time: now });
+        await update(ref(db, `conversations/${targetID}/${myUid}`), { uid: myUid, name: currentUserData.name, lastMsg: text, time: now });
+    } else if(chatMode === 'public') {
+        await push(ref(db, 'public_group'), msgData);
+    } else if(chatMode === 'group') {
+        await push(ref(db, 'group_messages/'+targetID), msgData);
     }
-    let color = '#';
-    for (let i = 0; i < 3; i++) {
-        const value = (hash >> (i * 8)) & 0xFF;
-        color += ('00' + value.toString(16)).substr(-2);
-    }
-    return color;
+    document.getElementById('msg-input').value = "";
+};
+
+function loadMsgs(path) {
+    if(activeChatRef) off(activeChatRef);
+    activeChatRef = ref(db, path);
+    onValue(activeChatRef, (snap) => {
+        const cont = document.getElementById('msg-container');
+        cont.innerHTML = "";
+        snap.forEach(child => {
+            const m = child.val();
+            const div = document.createElement('div');
+            div.className = `msg ${m.senderId === auth.currentUser.uid ? 'sent' : 'received'}`;
+            div.innerHTML = `${(m.senderId !== auth.currentUser.uid && chatMode !== 'personal') ? `<span class="msg-sender">${m.senderName}</span>` : ''}${m.text}<span class="msg-time">${new Date(m.time).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}</span>`;
+            div.onmousedown = div.ontouchstart = () => { pressTimer = window.setTimeout(() => { if(confirm("Delete message?")) remove(ref(db, path + '/' + child.key)); }, 1000); };
+            div.onmouseup = div.onmouseleave = div.ontouchend = () => clearTimeout(pressTimer);
+            cont.appendChild(div);
+        });
+        cont.scrollTop = cont.scrollHeight;
+    });
 }
 
-function formatTimestamp(timestamp) {
-    if (!timestamp) return '...';
-    const date = timestamp.toDate();
-    return date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+// --- SEARCH & LISTS ---
+window.searchUser = async () => {
+    const q = document.getElementById('search-input').value.trim().toLowerCase();
+    const resDiv = document.getElementById('search-results');
+    if(!q) { resDiv.innerHTML = ""; resDiv.style.display="none"; return; }
+    const snap = await get(ref(db, 'users'));
+    let found = false;
+    resDiv.innerHTML = "<div class='section-title'>Search Results</div>";
+    snap.forEach(child => {
+        const u = child.val();
+        if(u.email && u.email.includes(q) && u.uid !== auth.currentUser?.uid) {
+            found = true;
+            const div = document.createElement('div');
+            div.className = 'item-row';
+            div.innerHTML = `<i class="fas fa-circle-user icon"></i><div class="item-info"><b>${u.name}</b><small>${u.email}</small></div>`;
+            div.onclick = () => { chatMode='personal'; targetID=u.uid; document.getElementById('chat-title').innerText=u.name; document.getElementById('header-add-icon').style.display='none'; next(8); loadMsgs('chats/'+(auth.currentUser.uid < u.uid ? auth.currentUser.uid+"_"+u.uid : u.uid+"_"+auth.currentUser.uid)); };
+            resDiv.appendChild(div);
+        }
+    });
+    resDiv.style.display = found ? "block" : "none";
+};
+
+function loadRecentChats() {
+    onValue(ref(db, 'conversations/'+auth.currentUser.uid), (snap) => {
+        const cont = document.getElementById('recent-chats');
+        cont.innerHTML = "";
+        if(!snap.exists()) { cont.innerHTML="<p style='padding:40px; color:gray; text-align:center;'>No conversations found.</p>"; return; }
+        snap.forEach(c => {
+            const d = c.val(), div = document.createElement('div');
+            div.className = 'item-row';
+            div.innerHTML = `<i class="fas fa-circle-user icon" style="color:var(--wa-teal)"></i><div class="item-info"><b>${d.name}</b><small>${d.lastMsg}</small></div>`;
+            div.onmousedown = div.ontouchstart = () => { pressTimer = window.setTimeout(() => { if(confirm(`Delete chat with ${d.name}?`)) remove(ref(db, `conversations/${auth.currentUser.uid}/${d.uid}`)); }, 1000); };
+            div.onmouseup = div.onmouseleave = div.ontouchend = () => clearTimeout(pressTimer);
+            div.onclick = () => { chatMode='personal'; targetID=d.uid; document.getElementById('chat-title').innerText=d.name; document.getElementById('header-add-icon').style.display='none'; next(8); loadMsgs('chats/'+(auth.currentUser.uid < d.uid ? auth.currentUser.uid+"_"+d.uid : d.uid+"_"+auth.currentUser.uid)); };
+            cont.appendChild(div);
+        });
+    });
 }
 
-// --- CHAT ROOM MANAGEMENT ---
-
-function stopListening() {
-    if (messageListener) {
-        messageListener();
-        messageListener = null;
+// --- GROUPS ---
+window.openPublicGroup = () => { chatMode='public'; document.getElementById('chat-title').innerText="Global Lounge"; document.getElementById('header-add-icon').style.display='none'; next(8); loadMsgs('public_group'); };
+window.handleCreateGroup = async () => {
+    const name = document.getElementById('g-name').value;
+    const emails = document.getElementById('g-members').value.split(',').map(e => e.trim().toLowerCase()).filter(e => e !== "");
+    if(!name) return;
+    const gId = "group_" + Date.now();
+    await set(ref(db, 'groups/'+gId), { id: gId, name, admin: auth.currentUser.uid, members: [currentUserData.email, ...emails] });
+    alert("Created!"); next(10);
+};
+window.handleAddMember = async () => {
+    const email = document.getElementById('new-member-email').value.trim().toLowerCase();
+    const snap = await get(ref(db, 'groups/'+targetID));
+    if(snap.exists()){
+        let g = snap.val();
+        if(!g.members.includes(email)){ g.members.push(email); await update(ref(db, 'groups/'+targetID), {members: g.members}); alert("Added!"); next(8); }
     }
-}
-
-function switchRoom(newRoomId, roomName = 'Room') {
-    if (!currentUser) return;
-
-    stopListening();
-    currentRoomId = newRoomId;
-    chatContainer.innerHTML = `<div class="text-center text-gray-500 pt-10">Loading chat for: ${roomName}...</div>`;
-    
-    groupMenuPanel.classList.add('hidden');
-    
-    currentRoomDisplay.textContent = roomName;
-    document.title = `${roomName} | Chat`;
-
-    // Start listening to the new room's messages
-    messageListener = db.collection('messages')
-        .where('roomId', '==', currentRoomId)
-        .where('createdAt', '>', firebase.firestore.Timestamp.fromDate(SEVEN_DAYS_AGO))
-        .orderBy('createdAt') 
-        .limit(100)
-        .onSnapshot(snapshot => {
-            if (chatContainer.querySelector('.text-center') && chatContainer.classList.contains('flex-col-reverse')) {
-                 chatContainer.innerHTML = '';
+};
+function loadPrivateGroups() {
+    onValue(ref(db, 'groups'), (snap) => {
+        const cont = document.getElementById('private-groups-list');
+        cont.innerHTML = "";
+        snap.forEach(child => {
+            const g = child.val();
+            if(g.members && g.members.includes(currentUserData.email)) {
+                const div = document.createElement('div');
+                div.className = 'item-row';
+                div.innerHTML = `<i class="fas fa-users icon" style="color:#00a884"></i><div class="item-info"><b>${g.name}</b><small>${g.members.length} Members</small></div>`;
+                div.onclick = () => { 
+                    chatMode='group'; targetID=g.id; document.getElementById('chat-title').innerText=g.name; 
+                    document.getElementById('header-add-icon').style.display=(g.admin === auth.currentUser.uid)?'block':'none'; next(8); loadMsgs('group_messages/'+g.id); 
+                };
+                cont.appendChild(div);
             }
-
-            snapshot.docChanges().forEach(change => {
-                if (change.type === 'added') {
-                    displayMessage(change.doc.data());
-                }
-            });
-            
-            // Set scroll to 0 for the bottom-up display
-            chatContainer.scrollTop = 0; 
-        }, err => {
-            console.error("Message listener error (Check Indexes/Rules):", err);
         });
+    });
 }
 
-function displayMessage(msg) {
-    const isMe = currentUser && msg.userId === currentUser.uid;
-    
-    const messageElement = document.createElement('div');
-    // Added mt-3 for spacing in the flex-col-reverse flow
-    messageElement.className = `flex ${isMe ? 'justify-end' : 'justify-start'} mt-3`; 
-    
-    const bubble = `
-        <div class="max-w-xs sm:max-w-md lg:max-w-lg p-3 rounded-xl shadow-md ${isMe ? 'bg-blue-500 text-white rounded-br-none' : 'bg-white text-gray-800 rounded-tl-none border border-gray-200'}">
-            <div class="flex justify-between items-center mb-1">
-                <span class="text-xs font-semibold" style="color: ${isMe ? 'white' : msg.color || generateColor(msg.userId)}">
-                    ${isMe ? 'You' : msg.username || 'Anonymous'}
-                </span>
-                <span class="text-xs opacity-75 ml-2">${formatTimestamp(msg.createdAt)}</span>
-            </div>
-            <p class="whitespace-pre-wrap break-words">${msg.text}</p>
-        </div>
-    `;
-    
-    messageElement.innerHTML = bubble;
-    // Appending pushes new message to the bottom (start of the reverse list)
-    chatContainer.appendChild(messageElement);
-}
+// --- PROFILE ---
+window.updateProfile = async () => {
+    const upd = { name: document.getElementById('p-name').value, category: document.getElementById('p-cat').value, desc: document.getElementById('p-desc').value };
+    await update(ref(db, 'users/'+auth.currentUser.uid), upd);
+    await updateDoc(doc(fs, "users", auth.currentUser.uid), upd);
+    alert("Saved!"); next(7);
+};
 
-// --- AUTHENTICATION (Includes Uniqueness Check) ---
-
-function toggleAuthUI(toSignUp) {
-    isSignUpMode = toSignUp;
-    authTitle.textContent = isSignUpMode ? 'Sign Up' : 'Log In';
-    authSubmitBtn.textContent = isSignUpMode ? 'Sign Up' : 'Log In';
-    
-    usernameField.classList.toggle('hidden', !isSignUpMode);
-    firstNameField.classList.toggle('hidden', !isSignUpMode);
-    lastNameField.classList.toggle('hidden', !isSignUpMode);
-    
-    toggleAuthMode.textContent = isSignUpMode 
-        ? 'Already have an account? Log In' 
-        : 'Need an account? Sign Up';
-    authError.classList.add('hidden');
-}
-
-async function handleAuthSubmit() {
-    const email = authEmail.value.trim();
-    const password = authPassword.value.trim();
-    const username = authUsername.value.trim();
-    const firstName = authFirstName.value.trim();
-    const lastName = authLastName.value.trim();
-    
-    if (!email || !password || (isSignUpMode && (!username || !firstName || !lastName))) {
-        authError.textContent = "Please fill in all required fields.";
-        authError.classList.remove('hidden');
-        return;
-    }
-
-    authSubmitBtn.disabled = true;
-    authSubmitBtn.textContent = isSignUpMode ? 'Processing...' : 'Processing...';
-    authError.classList.add('hidden');
-
-    try {
-        if (isSignUpMode) {
-            // Client-side Uniqueness Check
-            const existingUsername = await db.collection('users').where('username', '==', username).get();
-            if (!existingUsername.empty) {
-                authError.textContent = "Error: This username is already taken. Choose another.";
-                authError.classList.remove('hidden');
-                return;
-            }
-
-            const userCredential = await auth.createUserWithEmailAndPassword(email, password);
-            await setupUser(userCredential.user, {username, firstName, lastName}); 
-            
-        } else {
-            await auth.signInWithEmailAndPassword(email, password);
+onAuthStateChanged(auth, async (user) => {
+    if(user) {
+        const snap = await get(ref(db, 'users/'+user.uid));
+        currentUserData = snap.val();
+        if(currentUserData) {
+            document.getElementById('p-name').value = currentUserData.name || "";
+            document.getElementById('p-cat').value = currentUserData.category || "";
+            document.getElementById('p-desc').value = currentUserData.desc || "";
+            document.getElementById('p-email').value = currentUserData.email || "";
+            document.getElementById('p-pass').value = currentUserData.password || "******";
         }
-
-        // Clear fields and close modal
-        authEmail.value = '';
-        authPassword.value = '';
-        authUsername.value = '';
-        authFirstName.value = '';
-        authLastName.value = '';
-        authModal.classList.add('hidden');
-
-    } catch (error) {
-        console.error("Auth error:", error);
-        authError.textContent = error.message.replace('Firebase:', '').trim();
-        authError.classList.remove('hidden');
-    } finally {
-        authSubmitBtn.disabled = false;
-        authSubmitBtn.textContent = isSignUpMode ? 'Sign Up' : 'Log In';
-    }
-}
-
-async function setupUser(user, profileData = {}) {
-    const userRef = db.collection('users').doc(user.uid);
-    const userDoc = await userRef.get();
-    
-    if (!userDoc.exists) {
-        const newUserData = {
-            uid: user.uid,
-            email: user.email,
-            username: profileData.username || user.email.split('@')[0],
-            firstName: profileData.firstName || '',
-            lastName: profileData.lastName || '',
-            color: generateColor(user.uid),
-            usernameLastUpdatedAt: firebase.firestore.FieldValue.serverTimestamp()
-        };
-        await userRef.set(newUserData);
-        return newUserData;
-    }
-    return userDoc.data();
-}
-
-auth.onAuthStateChanged(async (user) => {
-    if (user) {
-        const userData = await setupUser(user);
-        currentUser = { ...user, ...userData };
-        
-        profileBtn.disabled = false;
-        menuBtn.disabled = false;
-
-        authModal.classList.add('hidden');
-        messageFormContainer.classList.remove('hidden');
-        
-        switchRoom('general', 'General Chat');
-        
-        if (usernameSubscription) usernameSubscription();
-        usernameSubscription = db.collection('users').doc(currentUser.uid)
-            .onSnapshot(doc => {
-                if (doc.exists) {
-                    currentUser = { ...currentUser, ...doc.data() };
-                    if (!profileModal.classList.contains('hidden')) {
-                        initUserProfile();
-                    }
-                }
-            });
-
-    } else {
-        currentUser = null;
-        stopListening();
-        
-        profileBtn.disabled = true;
-        menuBtn.disabled = true;
-        
-        authModal.classList.remove('hidden'); 
-        messageFormContainer.classList.add('hidden');
-        chatContainer.innerHTML = '<div class="text-center text-gray-500 pt-10">Please sign in to start chatting.</div>';
-        currentRoomDisplay.textContent = 'General Chat';
-        
-        profileModal.classList.add('hidden');
-        groupMenuPanel.classList.add('hidden');
-    }
+        next(7); loadRecentChats(); loadPrivateGroups();
+    } else next(1);
 });
-
-// --- SEND MESSAGE LOGIC ---
-async function sendMessage() {
-    const text = messageInput.value.trim();
-    if (!text || !currentUser || !currentRoomId) return;
-
-    const message = {
-        roomId: currentRoomId,
-        userId: currentUser.uid,
-        username: currentUser.username,
-        color: currentUser.color,
-        text: text,
-        createdAt: firebase.firestore.FieldValue.serverTimestamp()
-    };
-
-    try {
-        await db.collection('messages').add(message);
-        messageInput.value = '';
-    } catch (error) {
-        console.error("Error sending message (Check Rules): ", error);
-    }
-}
-
-// --- PROFILE MODAL LOGIC (7-DAY LOCK & Full Name Display) ---
-
-function openProfileModal() {
-    if (!currentUser) return;
-    initUserProfile();
-    profileModal.classList.remove('hidden');
-}
-
-function initUserProfile() {
-    profileEmail.textContent = currentUser.email;
-    profileUid.value = currentUser.uid;
-    profileUsernameInput.value = currentUser.username;
-    
-    const fullName = `${currentUser.firstName || ''} ${currentUser.lastName || ''}`.trim();
-    profileFullName.textContent = fullName || 'Not set';
-
-    const lastUpdate = currentUser.usernameLastUpdatedAt ? 
-        (currentUser.usernameLastUpdatedAt.toDate ? currentUser.usernameLastUpdatedAt.toDate() : currentUser.usernameLastUpdatedAt) : new Date(0);
-    
-    const now = new Date();
-    const timeSinceLastUpdate = now.getTime() - lastUpdate.getTime();
-    
-    if (timeSinceLastUpdate < SEVEN_DAYS_MS) {
-        const remainingTimeMs = SEVEN_DAYS_MS - timeSinceLastUpdate;
-        const remainingDays = Math.ceil(remainingTimeMs / (1000 * 60 * 60 * 24));
-        
-        profileUsernameInput.disabled = true;
-        updateUsernameBtn.disabled = true;
-        usernameStatus.textContent = `Username can only be changed every 7 days. Remaining: ${remainingDays} day(s).`;
-        usernameStatus.classList.remove('text-green-500');
-        usernameStatus.classList.add('text-red-500');
-    } else {
-        profileUsernameInput.disabled = false;
-        updateUsernameBtn.disabled = false;
-        usernameStatus.textContent = `You can update your username.`;
-        usernameStatus.classList.remove('text-red-500');
-        usernameStatus.classList.add('text-green-500');
-    }
-}
-
-async function updateUsername() {
-    const newUsername = profileUsernameInput.value.trim();
-    if (!newUsername || newUsername === currentUser.username) return;
-
-    try {
-        const existing = await db.collection('users').where('username', '==', newUsername).get();
-        if (!existing.empty && existing.docs[0].id !== currentUser.uid) {
-            usernameStatus.textContent = "Username already taken by another user.";
-            return;
-        }
-
-        updateUsernameBtn.disabled = true;
-        updateUsernameBtn.textContent = 'Updating...';
-
-        await db.collection('users').doc(currentUser.uid).update({
-            username: newUsername,
-            usernameLastUpdatedAt: firebase.firestore.FieldValue.serverTimestamp()
-        });
-
-        usernameStatus.textContent = "Username updated successfully! Refreshing...";
-        usernameStatus.classList.remove('text-red-500');
-        usernameStatus.classList.add('text-green-500');
-
-        setTimeout(initUserProfile, 2000); 
-
-    } catch (error) {
-        console.error("Error updating username:", error);
-        usernameStatus.textContent = "Error updating username. Check Rules for /users.";
-        updateUsernameBtn.disabled = false;
-        updateUsernameBtn.textContent = 'Update';
-    }
-}
-
-// --- GROUP MENU LOGIC (Private DMs Removed) ---
-
-menuBtn.addEventListener('click', () => {
-    if (!currentUser) return;
-    groupMenuPanel.classList.toggle('hidden');
-    if (!groupMenuPanel.classList.contains('hidden')) {
-        loadGroupMenu();
-    }
-});
-
-document.addEventListener('click', (e) => {
-    if (!menuBtn.contains(e.target) && !groupMenuPanel.contains(e.target)) {
-        groupMenuPanel.classList.add('hidden');
-    }
-});
-
-async function loadGroupMenu() {
-    if (!currentUser) return;
-    
-    publicRoomsList.innerHTML = '';
-    
-    try {
-        // Load Public Rooms only
-        const publicSnap = await db.collection('rooms')
-            .where('isPrivate', '==', false)
-            .orderBy('name')
-            .get();
-
-        publicSnap.forEach(doc => addGroupItem(doc.data(), publicRoomsList));
-        if (publicSnap.empty) {
-            publicRoomsList.innerHTML += '<p class="text-xs text-gray-400 p-1">No public groups found.</p>';
-        }
-    } catch (e) {
-        publicRoomsList.innerHTML = '<p class="text-xs text-red-500 p-1">Error loading rooms (Check Indexes/Rules).</p>';
-        console.error("Room load error:", e);
-    }
-}
-
-function addGroupItem(room, listElement) {
-    const item = document.createElement('div');
-    item.className = `p-2 cursor-pointer rounded-lg hover:bg-gray-100 transition duration-100 ${room.roomId === currentRoomId ? 'bg-blue-100 font-semibold' : ''}`;
-    item.textContent = room.name;
-    item.addEventListener('click', () => switchRoom(room.roomId, room.name));
-    listElement.appendChild(item);
-}
-
-// --- EVENT LISTENERS ---
-
-sendBtn.addEventListener('click', sendMessage);
-messageInput.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') {
-        e.preventDefault();
-        sendMessage();
-    }
-});
-
-// Auth Listeners
-toggleAuthUI(true);
-toggleAuthMode.addEventListener('click', () => { toggleAuthUI(!isSignUpMode); });
-authSubmitBtn.addEventListener('click', handleAuthSubmit);
-
-// Profile Listeners
-profileBtn.addEventListener('click', openProfileModal);
-closeProfileModalBtn.addEventListener('click', () => profileModal.classList.add('hidden'));
-profileSignOutBtn.addEventListener('click', () => { auth.signOut(); profileModal.classList.add('hidden'); });
-updateUsernameBtn.addEventListener('click', updateUsername);
-
-copyUidBtn.addEventListener('click', () => {
-    profileUid.select();
-    document.execCommand('copy');
-    copyUidBtn.textContent = 'Copied!';
-    setTimeout(() => copyUidBtn.textContent = 'Copy', 2000);
-});
-
-// --- INITIAL SETUP ---
-
-db.collection('rooms').doc('general').get().then(doc => {
-    if (!doc.exists) {
-        db.collection('rooms').doc('general').set({
-            roomId: 'general',
-            name: 'General Chat',
-            isPrivate: false,
-            participants: [] // Public rooms don't need participant list
-        });
-    }
-});
-
-console.warn("SERVER WARNING: Automatic message deletion (7 days) is NOT possible via client-side code alone. A Cloud Function is required to delete data on the server.");
