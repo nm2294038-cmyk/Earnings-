@@ -1,304 +1,384 @@
 // ====================================================================
-// 1. FIREBASE CONFIGURATION & CORE LOGIC
+// 1. FIREBASE CONFIGURATION & INITIALIZATION
 // ====================================================================
 const firebaseConfig = {
-    apiKey: "AIzaSyDNYv9SNUjMAHlaPzfovyYefoBNDgx4Gd4",
+    // !!! REPLACE THIS WITH YOUR ACTUAL API KEY !!!
+    apiKey: "AIzaSyDNYv9SNUjMAHlaPzfovyYefoBNDgx4Gd4", 
     authDomain: "traffic-exchange-62a58.firebaseapp.com",
     projectId: "traffic-exchange-62a58",
-    storageBucket: "traffic-exchange-62a58.appspot.com",
-    messagingSenderId: "474999317287",
-    appId: "1:474999317287:web:8e28a2f5f1a959d8ce3f02",
-    measurementId: "G-HJQ46RQNZS"
 };
-
-// <<<<< YEH LINE MISSING THI AUR ADD KI GAYI HAI >>>>>
-// Is line se Firebase shuru hota hai.
-if (typeof firebase !== 'undefined' && !firebase.apps.length) {
-    firebase.initializeApp(firebaseConfig);
+if (!firebase.apps.length) { 
+    firebase.initializeApp(firebaseConfig); 
 }
 
-// --- CONSTANTS & DEFAULTS ---
-const FALLBACK_URL = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
-const USER_COLLECTION = 'users';
-const LINKS_COLLECTION = 'video_links'; 
-const SETTINGS_DOC_ID = 'global_video_settings';
-let MAX_TASKS_PER_24H = 50; 
-
-// Ab yeh lines sahi kaam karengi
 const auth = firebase.auth();
 const db = firebase.firestore();
 
+// Firebase Collections/Document IDs
+const LINKS_COLLECTION = 'multi_video_links'; // Keeping the name for backward compatibility
+const LOCK_DOC_ID = 'task_lock_status';       
+const SETTINGS_DOC_ID = 'multi_video_task';   
+const USERS_COLLECTION = 'users';             
+const EARNINGS_HISTORY_COLLECTION = 'earnings_history';
+
 // --- GLOBAL STATE ---
-window.currentUser = null;
-let userWalletBalance = 0;
-let gameActive = false;
-let completedVideoCount = 0;
-let cooldownTimer = 0; 
-let cooldownInterval = null; 
-let currentVideoLink = FALLBACK_URL;
-let videoTimers = {}; 
+let currentUser = null;
+let allTaskLinks = []; 
+let currentTaskIndex = 0; 
+let taskTimerSeconds = 40; 
+let finalRewardAmount = 50000; 
+let timerInterval;
+let isTaskLocked = true; 
+let userCoins = 0;
+let isUserTaskCompleted = false;
+let isTransitioning = false; 
 
-let settings = {
-    totalIframes: 10,
-    timerSeconds: 40,
-    finalReward: 500,
-    cooldownSeconds: 60,
-    taskCount: 0,
-};
+// --- DOM Elements ---
+const authUI = document.getElementById('auth-ui');
+const authTitle = document.getElementById('auth-title');
+const authEmailInput = document.getElementById('authEmail');
+const authPasswordInput = document.getElementById('authPassword');
+const mainContent = document.getElementById('main-content');
+const userInfoDisplay = document.getElementById('user-info');
+const userCoinsDisplay = document.getElementById('user-coins');
+const authButton = document.getElementById('authButton');
 
-// --- DOM ELEMENTS ---
-const startButton = document.getElementById('start-button');
-const videoLoaderWrapper = document.getElementById('video-loader-wrapper');
-const videoTaskContainer = document.getElementById('iframe-container');
-const walletDisplay = document.getElementById('wallet-display');
-const infoMessage = document.getElementById('info-message');
-const authModalEl = document.getElementById('authModal');
-const profileBalanceDisplay = document.getElementById('profile-wallet-balance');
-const dynamicRewardInfo = document.getElementById('dynamic-reward-info');
-
+const taskLockedMessage = document.getElementById('task-locked-message');
+const taskCompletedMessage = document.getElementById('task-completed-message');
+const websiteTaskUI = document.getElementById('website-task-ui'); 
+const websiteViewer = document.getElementById('website-viewer'); 
+const currentWebsiteIndexSpan = document.getElementById('current-website-index'); 
+const totalWebsitesSpan = document.getElementById('total-websites'); 
+const websiteTimerProgress = document.getElementById('website-timer-progress'); 
+const timerDisplay = document.getElementById('timer-display');
+const nextWebsiteButton = document.getElementById('next-website-button'); 
+const finalRewardDisplay = document.getElementById('final-reward-display');
 
 // ====================================================================
-// 2. AUTHENTICATION & DATA LISTENERS
+// 2. USER AUTHENTICATION
 // ====================================================================
+
 auth.onAuthStateChanged(user => {
-    window.currentUser = user;
+    currentUser = user;
     if (user) {
-        document.getElementById('auth-status').textContent = `Logged in as: ${user.email}`;
-        fetchDynamicSettingsAndLinks().then(() => {
-            listenToWallet(user.uid);
-        });
+        userInfoDisplay.textContent = `Logged in as: ${user.email}`;
+        authButton.textContent = 'Logout';
+        authUI.style.display = 'none';
+        mainContent.style.display = 'block';
+        loadUserData(); 
+        loadGlobalData(); 
     } else {
-        userWalletBalance = 0;
-        updateUIState(false);
-        closeAuthModal();
+        userInfoDisplay.textContent = 'Guest';
+        userCoinsDisplay.innerHTML = `<i class="fas fa-coins me-1"></i>0`;
+        authButton.textContent = 'Login';
+        mainContent.style.display = 'none';
+        authUI.style.display = 'block';
+        
+        allTaskLinks = [];
+        currentTaskIndex = 0;
+        userCoins = 0;
+        isUserTaskCompleted = false;
+        updateUI();
+        clearInterval(timerInterval);
+        websiteViewer.src = 'about:blank'; 
     }
 });
 
-async function fetchDynamicSettingsAndLinks() {
+function toggleAuthUI() {
+    if (currentUser) {
+        logoutUser();
+    } else {
+        authUI.style.display = authUI.style.display === 'none' ? 'block' : 'none';
+        mainContent.style.display = 'none';
+        authTitle.textContent = 'Login'; 
+    }
+}
+
+async function loginUser() {
+    const email = authEmailInput.value;
+    const password = authPasswordInput.value;
+    try {
+        await auth.signInWithEmailAndPassword(email, password);
+    } catch (error) {
+        alert("Login Failed: " + error.message);
+    }
+}
+
+async function signupUser() {
+    const email = authEmailInput.value;
+    const password = authPasswordInput.value;
+    try {
+        const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+        await db.collection(USERS_COLLECTION).doc(userCredential.user.uid).set({
+            email: email,
+            coins: 0,
+            currentTaskIndex: 0, 
+            isTaskCompleted: false,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        alert("Account created and logged in!");
+    } catch (error) {
+        alert("Sign Up Failed: " + error.message);
+    }
+}
+
+function logoutUser() {
+    auth.signOut();
+}
+
+async function resetPassword() {
+    const email = authEmailInput.value;
+    if (!email) {
+        alert("Please enter your email to reset password.");
+        return;
+    }
+    try {
+        await auth.sendPasswordResetEmail(email);
+        alert("Password reset email sent to " + email);
+    } catch (error) {
+        alert("Password Reset Failed: " + error.message);
+    }
+}
+
+// ====================================================================
+// 3. DATA LOADING (User & Global)
+// ====================================================================
+
+async function loadGlobalData() {
+    await loadTaskSettings();
+    await loadTaskLinks(); 
+    listenToTaskLockStatus(); 
+}
+
+async function loadUserData() {
+    if (!currentUser) return;
+    const userDoc = await db.collection(USERS_COLLECTION).doc(currentUser.uid).get();
+    if (userDoc.exists) {
+        const data = userDoc.data();
+        userCoins = data.coins || 0;
+        currentTaskIndex = data.currentTaskIndex || 0; 
+        isUserTaskCompleted = data.isTaskCompleted || false;
+    } else {
+        await db.collection(USERS_COLLECTION).doc(currentUser.uid).set({
+            email: currentUser.email,
+            coins: 0,
+            currentTaskIndex: 0, 
+            isTaskCompleted: false,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        }, { merge: true });
+        userCoins = 0;
+        currentTaskIndex = 0;
+        isUserTaskCompleted = false;
+    }
+    updateUI();
+    if (!isUserTaskCompleted) { 
+        displayCurrentTaskLink(); 
+    }
+}
+
+async function loadTaskSettings() {
     try {
         const settingsDoc = await db.collection('global_settings').doc(SETTINGS_DOC_ID).get();
         if (settingsDoc.exists) {
-            const data = settingsDoc.data();
-            settings.totalIframes = data.totalIframes || settings.totalIframes;
-            settings.timerSeconds = data.timerSeconds || settings.timerSeconds;
-            settings.finalReward = data.finalReward || settings.finalReward;
-            settings.cooldownSeconds = data.cooldownSeconds || settings.cooldownSeconds;
-            MAX_TASKS_PER_24H = data.maxTasksPer24h || MAX_TASKS_PER_24H;
-        }
-        
-        const linksSnapshot = await db.collection(LINKS_COLLECTION).orderBy('createdAt', 'asc').limit(1).get();
-        if (!linksSnapshot.empty && linksSnapshot.docs[0].data().url) {
-            currentVideoLink = linksSnapshot.docs[0].data().url;
+            const settings = settingsDoc.data();
+            taskTimerSeconds = settings.timerSeconds || 40; 
+            finalRewardAmount = settings.finalReward || 50000;
+            finalRewardDisplay.textContent = finalRewardAmount.toLocaleString();
         }
     } catch (e) {
-        console.error("Failed to load settings from Firestore. Check Firebase Rules.", e);
-        alert("Could not load task settings. Please try again later.");
+        console.error("Error loading task settings:", e);
     }
 }
 
-function listenToWallet(uid) {
-    db.collection(USER_COLLECTION).doc(uid).onSnapshot(doc => {
-        if (doc.exists) {
-            const data = doc.data();
-            userWalletBalance = data.coins || 0;
-            const now = new Date();
-            let lastDate = data.lastTaskDate ? data.lastTaskDate.toDate() : null;
-            settings.taskCount = data.taskCount || 0;
-
-            if (lastDate && (now.getTime() - lastDate.getTime() > 24 * 60 * 60 * 1000)) {
-                settings.taskCount = 0;
-            }
-        } else {
-            db.collection(USER_COLLECTION).doc(uid).set({ coins: 0, taskCount: 0, lastTaskDate: firebase.firestore.FieldValue.serverTimestamp() }, { merge: true });
-        }
-        updateUIState(true);
-    });
-}
-
-function updateUIState(isLoggedIn) {
-    walletDisplay.textContent = `Wallet: ${userWalletBalance.toLocaleString()} Coins`;
-    profileBalanceDisplay.textContent = `${userWalletBalance.toLocaleString()} Coins`;
-    dynamicRewardInfo.textContent = `Watch ${settings.totalIframes} video(s) (${settings.timerSeconds}s each) to Earn ${settings.finalReward.toLocaleString()} Coins!`;
-    let remainingTasks = MAX_TASKS_PER_24H - settings.taskCount;
-
-    if (isLoggedIn) {
-        if (remainingTasks <= 0) {
-            startButton.disabled = true;
-            startButton.textContent = `Limit Reached`;
-            infoMessage.textContent = `Daily limit reached.`;
-        } else if (gameActive) {
-            startButton.disabled = true;
-            infoMessage.textContent = `Task Running: ${completedVideoCount}/${settings.totalIframes}`;
-        } else if (cooldownTimer > 0) {
-            startButton.disabled = true;
-            const m = Math.floor(cooldownTimer / 60), s = cooldownTimer % 60;
-            startButton.textContent = `Cooldown: ${m > 0 ? `${m}m ` : ''}${s}s`;
-            infoMessage.textContent = `Wait for next task.`;
-        } else {
-            startButton.disabled = false;
-            startButton.textContent = `Start Task (${remainingTasks} left)`;
-            infoMessage.textContent = `Tasks remaining: ${remainingTasks}.`;
-        }
-    } else {
-        startButton.disabled = true;
-        startButton.textContent = `Start Video Task`;
-        infoMessage.textContent = 'Please Login to start.';
-    }
-}
-
-function startCooldown() {
-    cooldownTimer = settings.cooldownSeconds;
-    if (cooldownInterval) clearInterval(cooldownInterval);
-    cooldownInterval = setInterval(() => {
-        cooldownTimer--;
-        updateUIState(true);
-        if (cooldownTimer <= 0) clearInterval(cooldownInterval);
-    }, 1000);
-}
-
-// ====================================================================
-// 3. VIDEO TASK LOGIC
-// ====================================================================
-
-function getYouTubeEmbedUrl(url) {
-    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-    const match = url.match(regExp);
-    return (match && match[2].length === 11) ? `https://www.youtube.com/embed/${match[2]}?autoplay=1&mute=1&controls=0&showinfo=0&rel=0&iv_load_policy=3` : null;
-}
-
-window.handleStartTask = function() {
-    if (!window.currentUser || gameActive || cooldownTimer > 0 || settings.taskCount >= MAX_TASKS_PER_24H) return;
-    gameActive = true;
-    completedVideoCount = 0;
-    updateUIState(true);
-    videoLoaderWrapper.style.display = 'block';
-    createVideoPlayers();
-};
-
-function createVideoPlayers() {
-    videoTaskContainer.innerHTML = '';
-    const embedUrl = getYouTubeEmbedUrl(currentVideoLink);
-    if (!embedUrl) {
-        alert("Invalid YouTube video link from admin.");
-        resetGame(); return;
-    }
-
-    for (let i = 0; i < settings.totalIframes; i++) {
-        const playerItem = document.createElement('div');
-        playerItem.className = 'video-player-item';
-        playerItem.innerHTML = `
-            <div class="video-container">
-                <iframe id="video-iframe-${i}" src="about:blank" allow="autoplay; encrypted-media"></iframe>
-            </div>
-            <div id="timer-msg-${i}" class="timer-message">Watch for ${settings.timerSeconds} seconds</div>
-            <div class="video-overlay" onclick="startVideoAndTimer(this, ${i}, '${embedUrl}')">
-                <i class="fas fa-play-circle"></i>
-                <span>Click to Watch</span>
-            </div>
-        `;
-        videoTaskContainer.appendChild(playerItem);
-    }
-}
-
-function startVideoAndTimer(overlay, index, url) {
-    overlay.onclick = null;
-    overlay.style.cursor = 'default';
-    document.getElementById(`video-iframe-${index}`).src = url;
-    overlay.classList.add('hidden');
-
-    let remainingTime = settings.timerSeconds;
-    const timerMsgElement = document.getElementById(`timer-msg-${index}`);
-    
-    const countdownInterval = setInterval(() => {
-        remainingTime--;
-        timerMsgElement.textContent = `Timer: ${remainingTime}s remaining...`;
-        
-        if (remainingTime <= 0) {
-            clearInterval(countdownInterval);
-            handleVideoCompletion(index);
-        }
-    }, 1000);
-}
-
-function handleVideoCompletion(index) {
-    completedVideoCount++;
-    const playerItem = document.getElementById(`video-iframe-${index}`).closest('.video-player-item');
-    const timerMsgElement = playerItem.querySelector('.timer-message');
-    timerMsgElement.textContent = '✅ Completed!';
-    timerMsgElement.classList.add('completed');
-    
-    const overlay = playerItem.querySelector('.video-overlay');
-    overlay.style.background = 'rgba(46, 204, 113, 0.8)';
-    overlay.innerHTML = '<i class="fas fa-check-circle"></i><span>Completed</span>';
-    overlay.classList.remove('hidden');
-
-    updateUIState(true);
-
-    if (completedVideoCount === settings.totalIframes) {
-        awardRewardAndReset();
-    }
-}
-
-async function awardRewardAndReset() {
-    alert(`Congratulations! You've earned ${settings.finalReward} coins!`);
-    const userRef = db.collection(USER_COLLECTION).doc(window.currentUser.uid);
-    await db.runTransaction(async t => {
-        const doc = await t.get(userRef);
-        const newCoins = (doc.data().coins || 0) + settings.finalReward;
-        const newTaskCount = (doc.data().taskCount || 0) + 1;
-        t.update(userRef, { coins: newCoins, taskCount: newTaskCount, lastTaskDate: firebase.firestore.FieldValue.serverTimestamp() });
-    });
-    resetGame();
-    startCooldown();
-}
-
-function resetGame() {
-    gameActive = false;
-    videoLoaderWrapper.style.display = 'none';
-    videoTaskContainer.innerHTML = '';
-    Object.values(videoTimers).forEach(clearTimeout);
-    videoTimers = {};
-    updateUIState(true);
-}
-
-// ====================================================================
-// 4. AUTH MODAL FUNCTIONS
-// ====================================================================
-window.showAuthModal = function(mode) {
-    authModalEl.style.display = 'flex';
-    const authContent = document.getElementById('authContent');
-    const profileContent = document.getElementById('profileContent');
-    const isProfile = mode === 'profile';
-    document.getElementById('modalTitle').textContent = isProfile ? 'User Profile' : (mode === 'login' ? 'Login' : 'Sign Up');
-    authContent.style.display = isProfile ? 'none' : 'block';
-    profileContent.style.display = isProfile ? 'block' : 'none';
-    authContent.dataset.mode = mode;
-    document.getElementById('authName').style.display = mode === 'signup' ? 'block' : 'none';
-    document.getElementById('authSubmitButton').textContent = mode === 'login' ? 'Login' : 'Sign Up';
-    document.getElementById('toggleAuth').innerHTML = mode === 'login' ? 'Need an account? <a>Sign Up</a>' : 'Already have an account? <a>Login</a>';
-};
-
-window.closeAuthModal = () => authModalEl.style.display = 'none';
-window.toggleAuthMode = () => showAuthModal(document.getElementById('authContent').dataset.mode === 'login' ? 'signup' : 'login');
-
-window.submitAuthForm = async () => {
-    const [name, email, password, mode] = [
-        document.getElementById('authName').value,
-        document.getElementById('authEmail').value,
-        document.getElementById('authPassword').value,
-        document.getElementById('authContent').dataset.mode
-    ];
+async function loadTaskLinks() { 
     try {
-        if (mode === 'signup') {
-            const cred = await auth.createUserWithEmailAndPassword(email, password);
-            await db.collection(USER_COLLECTION).doc(cred.user.uid).set({ email, name, coins: 0, taskCount: 0, lastTaskDate: firebase.firestore.FieldValue.serverTimestamp() });
-        } else {
-            await auth.signInWithEmailAndPassword(email, password);
-        }
-        closeAuthModal();
-    } catch (error) {
-        alert("Auth Failed: " + error.message);
+        const linksSnapshot = await db.collection(LINKS_COLLECTION).orderBy('index', 'asc').get();
+        allTaskLinks = linksSnapshot.docs.map(doc => doc.data());
+        allTaskLinks = allTaskLinks.filter(link => !link.url.includes('example.com/fill_me_website_slot_'));
+        totalWebsitesSpan.textContent = allTaskLinks.length; 
+        updateUI();
+    } catch (e) {
+        console.error("Error loading task links:", e);
+        alert("Failed to load task links.");
     }
-};
+}
 
-window.logoutUser = () => auth.signOut();
+function listenToTaskLockStatus() {
+    db.collection('global_settings').doc(LOCK_DOC_ID).onSnapshot(doc => {
+        isTaskLocked = doc.exists ? doc.data().isLocked : true; 
+        updateUI();
+        if (isTaskLocked && timerInterval) {
+            clearInterval(timerInterval); 
+            websiteViewer.src = 'about:blank'; 
+        }
+    }, error => {
+        console.error("Error listening to lock status:", error);
+        isTaskLocked = true; 
+        updateUI();
+    });
+}
+
+// ====================================================================
+// 4. UI & WEBSITE LOGIC
+// ====================================================================
+
+function updateUI() {
+    if (!currentUser) {
+        userCoinsDisplay.innerHTML = `<i class="fas fa-coins me-1"></i>0`;
+        return;
+    }
+
+    userCoinsDisplay.innerHTML = `<i class="fas fa-coins me-1"></i>${userCoins.toLocaleString()}`;
+
+    if (isTaskLocked) {
+        taskLockedMessage.style.display = 'block';
+        websiteTaskUI.style.display = 'none';
+        taskCompletedMessage.style.display = 'none';
+        websiteViewer.src = 'about:blank'; 
+    } else if (isUserTaskCompleted) {
+        taskCompletedMessage.style.display = 'block';
+        websiteTaskUI.style.display = 'none';
+        taskLockedMessage.style.display = 'none';
+        websiteViewer.src = 'about:blank'; 
+    } else {
+        taskLockedMessage.style.display = 'none';
+        taskCompletedMessage.style.display = 'none';
+        websiteTaskUI.style.display = 'block'; 
+        currentWebsiteIndexSpan.textContent = currentTaskIndex + 1; 
+        totalWebsitesSpan.textContent = allTaskLinks.length;
+
+        if (allTaskLinks.length > 0) {
+             displayCurrentTaskLink();
+        } else {
+             websiteViewer.src = 'about:blank';
+             timerDisplay.textContent = "No websites available yet.";
+             nextWebsiteButton.disabled = true; 
+        }
+    }
+}
+
+function displayCurrentTaskLink() { 
+    clearInterval(timerInterval); 
+
+    if (!allTaskLinks || allTaskLinks.length === 0) {
+        websiteViewer.src = 'about:blank';
+        timerDisplay.textContent = "No websites available.";
+        nextWebsiteButton.disabled = true;
+        return;
+    }
+
+    if (currentTaskIndex >= allTaskLinks.length) {
+        completeTask();
+        return;
+    }
+
+    const link = allTaskLinks[currentTaskIndex];
+    if (!link || !link.url) {
+        console.error("Link at index", currentTaskIndex, "is missing URL.");
+        currentTaskIndex++;
+        saveUserProgress(); 
+        displayCurrentTaskLink(); 
+        return;
+    }
+
+    websiteViewer.src = link.url; 
+    
+    nextWebsiteButton.disabled = true; 
+    startWebsiteTimer(taskTimerSeconds); 
+    currentWebsiteIndexSpan.textContent = currentTaskIndex + 1;
+}
+
+function startWebsiteTimer(duration) { 
+    let timeLeft = duration;
+    timerDisplay.textContent = `Viewing: ${timeLeft}s remaining`;
+    websiteTimerProgress.style.width = '100%';
+    websiteTimerProgress.setAttribute('aria-valuenow', 100);
+
+    nextWebsiteButton.disabled = true;
+
+    clearInterval(timerInterval);
+    timerInterval = setInterval(async () => {
+        if (isTaskLocked || isUserTaskCompleted || !currentUser) { 
+             clearInterval(timerInterval);
+             websiteViewer.src = 'about:blank'; 
+             timerDisplay.textContent = "Task interrupted.";
+             return;
+        }
+
+        timeLeft--;
+        const progress = (timeLeft / duration) * 100;
+        websiteTimerProgress.style.width = `${progress}%`;
+        websiteTimerProgress.setAttribute('aria-valuenow', progress);
+        timerDisplay.textContent = `Viewing: ${timeLeft}s remaining`;
+
+        if (timeLeft <= 0) {
+            clearInterval(timerInterval);
+            timerDisplay.textContent = "Time's up! Loading next website...";
+            websiteTimerProgress.style.width = '0%';
+            
+            if (!isTransitioning) {
+                isTransitioning = true; 
+                await nextWebsite();
+                isTransitioning = false; 
+            }
+        }
+    }, 1000);
+}
+
+async function nextWebsite() { 
+    if (!currentUser) { 
+        console.error("Attempted to advance task without a logged-in user.");
+        return;
+    }
+
+    currentTaskIndex++;
+    await saveUserProgress();
+
+    if (currentTaskIndex < allTaskLinks.length) {
+        displayCurrentTaskLink(); 
+    } else {
+        completeTask(); 
+    }
+}
+
+async function completeTask() {
+    if (isUserTaskCompleted) return; 
+
+    isUserTaskCompleted = true;
+    await db.collection(USERS_COLLECTION).doc(currentUser.uid).update({
+        isTaskCompleted: true,
+        coins: firebase.firestore.FieldValue.increment(finalRewardAmount),
+        completedAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+
+    await db.collection(EARNINGS_HISTORY_COLLECTION).add({
+        uid: currentUser.uid,
+        email: currentUser.email,
+        reward: finalRewardAmount,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+        task: "multi_website_task_completion" 
+    });
+
+    userCoins += finalRewardAmount; 
+    updateUI();
+    alert(`Task Completed! You earned ${finalRewardAmount.toLocaleString()} coins!`);
+}
+
+async function refreshTask() {
+    isUserTaskCompleted = false; 
+    currentTaskIndex = 0;
+    alert("Task UI refreshed. Your previous earnings are saved. To earn again, an admin needs to reset your task status.");
+    await loadUserData(); 
+    updateUI();
+}
+
+async function saveUserProgress() {
+    if (!currentUser) return;
+    try {
+        await db.collection(USERS_COLLECTION).doc(currentUser.uid).update({
+            currentTaskIndex: currentTaskIndex 
+        });
+    } catch (e) {
+        console.error("Error saving user progress:", e);
+    }
+}
