@@ -34,11 +34,70 @@ body {
     height: 10px; 
     margin-top: 15px; 
 }
+
+/* --- Login/Signup Form Styling --- */
 .auth-section {
     border: 2px solid #0d6efd;
-    padding: 20px;
-    margin-top: 30px;
+    padding: 30px; /* Increased padding */
+    margin-top: 50px; /* More margin from navbar */
     margin-bottom: 50px;
     background-color: #ffffff;
-    border-radius: 8px;
+    border-radius: 12px; /* Slightly more rounded corners */
+    box-shadow: 0 8px 16px rgba(0,0,0,0.15); /* Stronger shadow */
+    max-width: 450px; /* Max width for the form */
+    margin-left: auto; /* Center the form horizontally */
+    margin-right: auto; /* Center the form horizontally */
+}
+.auth-section h2 {
+    color: #0d6efd; /* Primary color for title */
+    font-weight: 600;
+}
+.auth-section .form-label {
+    font-weight: 500;
+    margin-bottom: 8px;
+}
+.auth-section .form-control {
+    border-radius: 6px;
+    padding: 10px 15px;
+    border: 1px solid #ced4da;
+}
+.auth-section .form-control:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+.auth-section .btn {
+    padding: 10px 15px;
+    font-size: 1.05rem;
+    font-weight: 500;
+    border-radius: 6px;
+    transition: background-color 0.2s ease;
+}
+.auth-section .btn-primary {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+}
+.auth-section .btn-primary:hover {
+    background-color: #0b5ed7;
+    border-color: #0a58ca;
+}
+.auth-section .btn-secondary {
+    background-color: #6c757d;
+    border-color: #6c757d;
+}
+.auth-section .btn-secondary:hover {
+    background-color: #5c636a;
+    border-color: #565e64;
+}
+.auth-section hr {
+    margin-top: 25px;
+    margin-bottom: 25px;
+    border-top: 1px solid rgba(0,0,0,.1);
+}
+.auth-section .btn-link {
+    color: #0d6efd;
+    text-decoration: none;
+    font-weight: 500;
+}
+.auth-section .btn-link:hover {
+    text-decoration: underline;
 }
