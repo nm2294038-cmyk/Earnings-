@@ -33,16 +33,16 @@
 
     <div class="container">
         
-        <!-- Auth UI -->
-        <div id="auth-ui" class="auth-section" style="display: none;">
-            <h2 id="auth-title">Login</h2>
+        <!-- Auth UI - Login/Signup Form -->
+        <div id="auth-ui" class="auth-section"> <!-- style="display: none;" will be controlled by JS -->
+            <h2 id="auth-title" class="text-center mb-4">Login or Sign Up</h2>
             <div class="mb-3">
                 <label for="authEmail" class="form-label">Email</label>
-                <input type="email" class="form-control" id="authEmail">
+                <input type="email" class="form-control" id="authEmail" placeholder="Enter your email">
             </div>
             <div class="mb-3">
                 <label for="authPassword" class="form-label">Password</label>
-                <input type="password" class="form-control" id="authPassword">
+                <input type="password" class="form-control" id="authPassword" placeholder="Enter your password">
             </div>
             <button class="btn btn-primary w-100 mb-2" onclick="loginUser()">Login</button>
             <button class="btn btn-secondary w-100" onclick="signupUser()">Sign Up</button>
