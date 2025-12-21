@@ -63,24 +63,25 @@ auth.onAuthStateChanged(user => {
     if (user) {
         userInfoDisplay.textContent = `Logged in as: ${user.email}`;
         authButton.textContent = 'Logout';
-        authUI.style.display = 'none';
-        mainContent.style.display = 'block';
+        authUI.style.display = 'none'; // Hide auth form
+        mainContent.style.display = 'block'; // Show main content
         loadUserData(); 
         loadGlobalData(); 
     } else {
         userInfoDisplay.textContent = 'Guest';
         userCoinsDisplay.innerHTML = `<i class="fas fa-coins me-1"></i>0`;
         authButton.textContent = 'Login';
-        mainContent.style.display = 'none';
-        authUI.style.display = 'block';
+        mainContent.style.display = 'none'; // Hide main content
+        authUI.style.display = 'block'; // Show auth form by default when logged out
         
+        // Reset state when logged out
         allTaskLinks = [];
         currentTaskIndex = 0;
         userCoins = 0;
         isUserTaskCompleted = false;
-        updateUI();
-        clearInterval(timerInterval);
-        websiteViewer.src = 'about:blank'; 
+        updateUI(); // Update UI to reflect logged out state
+        clearInterval(timerInterval); // Stop any running timer
+        websiteViewer.src = 'about:blank'; // Clear iframe content
     }
 });
 
@@ -88,9 +89,11 @@ function toggleAuthUI() {
     if (currentUser) {
         logoutUser();
     } else {
+        // If not logged in, toggle the visibility of the auth form
         authUI.style.display = authUI.style.display === 'none' ? 'block' : 'none';
+        // Hide main content if auth form is shown
         mainContent.style.display = 'none';
-        authTitle.textContent = 'Login'; 
+        authTitle.textContent = 'Login or Sign Up'; 
     }
 }
 
