@@ -1,3 +1,4 @@
+
 /* -------------------------------------- */
 /* 0. NEW BISMILLAH HEADER & KEYFRAMES    */
 /* -------------------------------------- */
@@ -268,16 +269,16 @@ a { text-decoration: none; color: inherit; }
 .task-name { font-size: 1.1em; line-height: 1.2; padding-left: 5px; padding-bottom: 5px; font-weight: 700; }
 
 /* Base icon styling for task types */
-.task-daily-check { background: linear-gradient(to bottom, #d2eafb, #f0f8ff); } .task-daily-check .task-icon-area::before { content: '\f005'; font-family: 'Font Awesome 5 Free'; font-weight: 900; font-size: 30px; position: absolute; top: 25px; color: #ffc107; }
-.task-scratch-card { background: linear-gradient(to bottom, #ffe8b5, #fff8e1); } .task-scratch-card .task-icon-area::before { content: '\f2c2'; font-family: 'Font Awesome 5 Free'; font-weight: 900; font-size: 30px; position: absolute; top: 25px; color: #f39c12; }
-.task-captcha { background: linear-gradient(to bottom, #e4d7ff, #f3e5f5); } .task-captcha .task-icon-area::before { content: '\f021'; font-family: 'Font Awesome 5 Free'; font-weight: 900; font-size: 30px; position: absolute; top: 25px; color: #8e44ad; }
-.task-spin-wheel { background: linear-gradient(to bottom, #ffdae9, #ffebee); } .task-spin-wheel .task-icon-area::before { content: '\f110'; font-family: 'Font Awesome 5 Free'; font-weight: 900; font-size: 30px; position: absolute; top: 25px; color: #e91e63; }
-.task-magic-box { background: linear-gradient(to bottom, #ffd9c0, #fff8e1); } .task-magic-box .task-icon-area::before { content: '\f06b'; font-family: 'Font Awesome 5 Free'; font-weight: 900; font-size: 30px; position: absolute; top: 25px; color: #ff9800; }
-.task-silver-box { background: linear-gradient(to bottom, #c9ffcf, #e8f5e9); } .task-silver-box .task-icon-area::before { content: '\f5e3'; font-family: 'Font Awesome 5 Free'; font-weight: 900; font-size: 30px; position: absolute; top: 25px; color: #9e9e9e; }
-.task-gold-box { background: linear-gradient(to bottom, #e6e0d0, #f5f5f5); } .task-gold-box .task-icon-area::before { content: '\f5e3'; font-family: 'Font Awesome 5 Free'; font-weight: 900; font-size: 30px; position: absolute; top: 25px; color: #ffc107; }
-.task-bronze-box { background: linear-gradient(to bottom, #d1c4e9, #f3e5f5); } .task-bronze-box .task-icon-area::before { content: '\f5e3'; font-family: 'Font Awesome 5 Free'; font-weight: 900; font-size: 30px; position: absolute; top: 25px; color: #cd7f32; }
-.task-bonus { background: linear-gradient(to bottom, #ffe9b5, #fffde7); } .task-bonus .task-icon-area::before { content: '\f51e'; font-family: 'Font Awesome 5 Free'; font-weight: 900; font-size: 30px; position: absolute; top: 25px; color: #ffc107; }
-.task-survey { background: linear-gradient(to bottom, #b3e5fc, #e1f5fe); } .task-survey .task-icon-area::before { content: '\f03d'; font-family: 'Font Awesome 5 Free'; font-weight: 900; font-size: 30px; position: absolute; top: 25px; color: #03a9f4; }
+.task-daily-check { background: linear-gradient(to bottom, #d2eafb, #f0f8ff); } .task-daily-check .task-icon-area::before { content: '\f005'; font-family: 'Font Awesome 6 Free'; font-weight: 900; font-size: 30px; position: absolute; top: 25px; color: #ffc107; }
+.task-scratch-card { background: linear-gradient(to bottom, #ffe8b5, #fff8e1); } .task-scratch-card .task-icon-area::before { content: '\f2c2'; font-family: 'Font Awesome 6 Free'; font-weight: 900; font-size: 30px; position: absolute; top: 25px; color: #f39c12; }
+.task-captcha { background: linear-gradient(to bottom, #e4d7ff, #f3e5f5); } .task-captcha .task-icon-area::before { content: '\f021'; font-family: 'Font Awesome 6 Free'; font-weight: 900; font-size: 30px; position: absolute; top: 25px; color: #8e44ad; }
+.task-spin-wheel { background: linear-gradient(to bottom, #ffdae9, #ffebee); } .task-spin-wheel .task-icon-area::before { content: '\f110'; font-family: 'Font Awesome 6 Free'; font-weight: 900; font-size: 30px; position: absolute; top: 25px; color: #e91e63; }
+.task-magic-box { background: linear-gradient(to bottom, #ffd9c0, #fff8e1); } .task-magic-box .task-icon-area::before { content: '\f06b'; font-family: 'Font Awesome 6 Free'; font-weight: 900; font-size: 30px; position: absolute; top: 25px; color: #ff9800; }
+.task-silver-box { background: linear-gradient(to bottom, #c9ffcf, #e8f5e9); } .task-silver-box .task-icon-area::before { content: '\f5e3'; font-family: 'Font Awesome 6 Free'; font-weight: 900; font-size: 30px; position: absolute; top: 25px; color: #9e9e9e; }
+.task-gold-box { background: linear-gradient(to bottom, #e6e0d0, #f5f5f5); } .task-gold-box .task-icon-area::before { content: '\f5e3'; font-family: 'Font Awesome 6 Free'; font-weight: 900; font-size: 30px; position: absolute; top: 25px; color: #ffc107; }
+.task-bronze-box { background: linear-gradient(to bottom, #d1c4e9, #f3e5f5); } .task-bronze-box .task-icon-area::before { content: '\f5e3'; font-family: 'Font Awesome 6 Free'; font-weight: 900; font-size: 30px; position: absolute; top: 25px; color: #cd7f32; }
+.task-bonus { background: linear-gradient(to bottom, #ffe9b5, #fffde7); } .task-bonus .task-icon-area::before { content: '\f51e'; font-family: 'Font Awesome 6 Free'; font-weight: 900; font-size: 30px; position: absolute; top: 25px; color: #ffc107; }
+.task-survey { background: linear-gradient(to bottom, #b3e5fc, #e1f5fe); } .task-survey .task-icon-area::before { content: '\f03d'; font-family: 'Font Awesome 6 Free'; font-weight: 900; font-size: 30px; position: absolute; top: 25px; color: #03a9f4; }
 
 /* Custom icons for specific locked tasks */
 .task-bronze-box .task-icon-area::before { content: '\f023'; color: #cd7f32; }
@@ -433,7 +434,7 @@ a { text-decoration: none; color: inherit; }
 .wallet-balance-card {
     background: linear-gradient(135deg, #1e88e5, #0d47a1); color: white; padding: 25px; margin: 0 auto 30px; border-radius: 15px; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); max-width: 500px; position: relative; overflow: hidden;
 }
-.wallet-balance-card::before { content: '\f51e'; font-family: 'Font Awesome 5 Free'; font-weight: 900; position: absolute; top: -10px; right: -10px; font-size: 80px; color: rgba(255, 255, 255, 0.1); }
+.wallet-balance-card::before { content: '\f51e'; font-family: 'Font Awesome 6 Free'; font-weight: 900; position: absolute; top: -10px; right: -10px; font-size: 80px; color: rgba(255, 255, 255, 0.1); }
 
 /* Rotating Balance Styles */
 .rotating-balance-container {
@@ -480,7 +481,7 @@ a { text-decoration: none; color: inherit; }
 /* Lock Overlay for Withdrawal Items (Dynamic) */
 .withdrawal-item.locked-item::before {
     content: '\f023';
-    font-family: 'Font Awesome 5 Free';
+    font-family: 'Font Awesome 6 Free';
     font-weight: 900;
     position: absolute;
     top: 50%; left: 50%;
@@ -509,7 +510,7 @@ a { text-decoration: none; color: inherit; }
 }
 .pubg-logo::before {
     content: '\f3fb';
-    font-family: 'Font Awesome 5 Free'; font-weight: 900;
+    font-family: 'Font Awesome 6 Free'; font-weight: 900;
 }
 
 .freefire-logo {
@@ -519,7 +520,7 @@ a { text-decoration: none; color: inherit; }
 }
 .freefire-logo::before {
     content: '\f11b';
-    font-family: 'Font Awesome 5 Free'; font-weight: 900;
+    font-family: 'Font Awesome 6 Free'; font-weight: 900;
 }
 
 .withdrawal-item .coin-band { background-color: #f0f0f0; padding: 10px 0; width: 100%; margin-top: 10px; position: absolute; bottom: 0; left: 0; }
@@ -759,7 +760,7 @@ a { text-decoration: none; color: inherit; }
 }
 .card-pubscale .logo-placeholder::before {
     content: '\f062';
-    font-family: 'Font Awesome 5 Free';
+    font-family: 'Font Awesome 6 Free';
     font-weight: 900;
     color: #000;
     position: absolute;
@@ -929,11 +930,16 @@ a { text-decoration: none; color: inherit; }
 /* 12. RESPONSIVE STYLES                  */
 /* -------------------------------------- */
 
+/* --- Default (Mobile) styles --- */
+.desktop-footer {
+    display: none; /* Hide desktop footer by default on mobile */
+}
+
 /* --- Tablet View (min-width: 768px) --- */
 @media (min-width: 768px) {
   /* General Layout */
   body {
-    padding-bottom: 0; /* No mobile footer on tablet/desktop */
+    padding-bottom: 0; /* No fixed mobile footer on tablet/desktop */
   }
 
   /* Bismillah Header */
@@ -971,7 +977,7 @@ a { text-decoration: none; color: inherit; }
 
   /* Mobile Footer hidden */
   .mobile-footer {
-    display: none;
+    display: none !important; /* Hide mobile footer on tablet/desktop */
   }
 
   /* Home Content */
@@ -1081,6 +1087,7 @@ a { text-decoration: none; color: inherit; }
   /* General Layout */
   body {
     background-color: #f0f2f5; /* Slightly different background for desktop */
+    padding-bottom: 70px; /* Space for the new fixed desktop footer */
   }
   .bismillah-header {
     padding: 10px 50px;
@@ -1113,6 +1120,7 @@ a { text-decoration: none; color: inherit; }
     background-color: #fff;
     border-bottom: 1px solid #eee;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    display: flex; /* Ensure tab navigation is visible on PC */
   }
   .tab-navigation a {
     padding: 18px 25px;
@@ -1124,24 +1132,24 @@ a { text-decoration: none; color: inherit; }
   }
 
   /* Main Content Area Styling for Desktop */
-  .content-wrapper { /* You might want to wrap your main content in a div for this */
-      max-width: 1200px;
-      margin: 20px auto;
-      display: flex;
-      gap: 30px; /* Space between potential sidebars and main content */
-      align-items: flex-start;
+  main {
+      padding-bottom: 0; /* Body padding handles space for fixed footer */
   }
-  /* For now, assuming content fills horizontally, but can be adapted for sidebars */
-
-  /* Home Content */
-  #home-content {
+  #home-content, #rewards-content, #wallet-content, #more-content {
       max-width: 1000px; /* Wider content area */
       margin: 20px auto;
-      padding: 0;
+      padding-bottom: 30px; /* Ensure content doesn't touch the fixed footer */
       background-color: #fff;
       border-radius: 10px;
       box-shadow: 0 4px 15px rgba(0,0,0,0.08);
   }
+  /* For Rewards, Wallet, More sections, ensure their own top/bottom padding works within the main container */
+  #rewards-content, #wallet-content, #more-content {
+      padding-top: 20px; /* Re-add top padding if the container has a border-radius */
+  }
+
+
+  /* Home Content */
   .carousel-wrapper {
       height: 350px; /* Taller carousel */
       border-radius: 10px 10px 0 0;
@@ -1156,7 +1164,6 @@ a { text-decoration: none; color: inherit; }
       max-width: 920px; /* Adjust max-width based on 4 columns */
       padding: 0 40px 40px;
   }
-  .task-item { height: 160px; padding-top: 70px; }
   .ad-placeholder {
       margin: 0 40px 40px;
       max-width: 920px;
@@ -1166,12 +1173,7 @@ a { text-decoration: none; color: inherit; }
 
   /* Rewards Content */
   #rewards-content {
-      max-width: 1000px;
-      margin: 20px auto;
-      background-color: #fff;
-      border-radius: 10px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-      padding: 20px 0;
+      padding: 20px 0; /* Adjusted for overall container padding */
   }
   #invite-tab-content,
   #rewards-tab-content {
@@ -1211,12 +1213,7 @@ a { text-decoration: none; color: inherit; }
 
   /* Wallet Content */
   #wallet-content {
-      max-width: 1000px;
-      margin: 20px auto;
-      background-color: #fff;
-      border-radius: 10px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-      padding: 40px;
+      padding: 40px; /* Adjusted for overall container padding */
   }
   .wallet-balance-card {
       max-width: 800px;
@@ -1239,12 +1236,7 @@ a { text-decoration: none; color: inherit; }
 
   /* More Content */
   #more-content {
-      max-width: 1000px;
-      margin: 20px auto;
-      background-color: #fff;
-      border-radius: 10px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-      padding: 40px;
+      padding: 40px; /* Adjusted for overall container padding */
   }
   .user-profile-card {
       max-width: 800px;
@@ -1323,92 +1315,51 @@ a { text-decoration: none; color: inherit; }
   .live-time { font-size: 12px; }
 
   /* -------------------------------------- */
-  /* 13. PC/DESKTOP FOOTER                  */
+  /* 13. PC/DESKTOP FOOTER (Mobile-like)    */
   /* -------------------------------------- */
   .desktop-footer {
-    display: block; /* Show on desktop */
-    background-color: #1a237e; /* Dark blue background */
-    color: #e0e0e0;
-    padding: 40px 50px;
-    font-size: 0.9em;
-    border-top: 5px solid #ffc107; /* Highlight line */
+    display: flex !important; /* Force display on desktop */
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 70px; /* Slightly taller than mobile for PC */
+    background-color: #fff;
+    box-shadow: 0 -3px 10px rgba(0, 0, 0, 0.15); /* Stronger shadow for PC */
+    justify-content: space-around;
+    align-items: center;
+    z-index: 200;
+    padding: 0 20px; /* Add some horizontal padding */
+    border-top: none; /* Remove any default border-top */
   }
 
-  .desktop-footer-content {
-    max-width: 1200px;
-    margin: 0 auto;
+  .desktop-footer .nav-link { /* Use .nav-link for consistency with mobile footer */
     display: flex;
-    flex-wrap: wrap; /* Allow wrapping on slightly smaller desktop widths */
-    justify-content: space-between;
-    gap: 30px;
-  }
-
-  .footer-section {
-    flex: 1 1 200px; /* Base width for columns */
-    margin-bottom: 20px; /* Space between sections if wrapped */
-  }
-
-  .footer-section h4 {
-    color: #ffc107; /* Gold for headings */
-    font-size: 1.1em;
-    margin-bottom: 15px;
-    position: relative;
-    padding-bottom: 5px;
-  }
-  .footer-section h4::after {
-      content: '';
-      position: absolute;
-      left: 0;
-      bottom: 0;
-      width: 40px;
-      height: 2px;
-      background-color: #4d8aff;
-  }
-
-  .footer-section ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-
-  .footer-section ul li {
-    margin-bottom: 8px;
-  }
-
-  .footer-section ul li a {
-    color: #e0e0e0;
-    text-decoration: none;
-    transition: color 0.3s ease;
-  }
-
-  .footer-section ul li a:hover {
-    color: #4d8aff; /* Light blue on hover */
-  }
-
-  .footer-social-icons {
-    display: flex;
-    gap: 15px;
-    margin-top: 15px;
-  }
-
-  .footer-social-icons a {
-    color: #e0e0e0;
-    font-size: 1.5em;
-    transition: color 0.3s ease;
-  }
-
-  .footer-social-icons a:hover {
-    color: #ffc107;
-  }
-
-  .footer-bottom {
-    margin-top: 30px;
-    padding-top: 20px;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    flex-direction: column;
+    align-items: center;
+    font-size: 0.9em; /* Slightly larger text */
+    color: #777;
+    padding: 5px;
+    flex: 1;
     text-align: center;
-    color: #999;
-    font-size: 0.85em;
+    transition: color 0.3s;
   }
+
+  .desktop-footer .nav-link.active {
+    color: #000;
+  }
+
+  .desktop-footer .nav-link i {
+    font-size: 1.8em; /* Slightly larger icons */
+    margin-bottom: 5px;
+  }
+  
+  /* Hide the old desktop-footer content (e.g., about, support, etc.) */
+  .desktop-footer .desktop-footer-content,
+  .desktop-footer .footer-bottom {
+      display: none !important;
+  }
+
   /* Ensure mobile footer is completely hidden */
   .mobile-footer { display: none !important; }
 }
