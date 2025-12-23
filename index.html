@@ -4,18 +4,18 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>YoursMed App - Free Earnings</title>
-  
+
   <!-- Firebase SDKs -->
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3071493838743593" crossorigin="anonymous"></script>
-  
+
   <!-- Font Awesome for icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  
+
   <!-- Custom CSS Link -->
-  <link rel="stylesheet" href="styles.css"> 
+  <link rel="stylesheet" href="styles.css">
   <meta name="monetag" content="cefd0e840567b16a8f246b75acf3f0a1">
 </head>
 <body>
@@ -26,19 +26,19 @@
     <span class="header-center">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</span>
     <span class="header-right">يَا اللهُ</span>
   </div>
-  
-  
+
+
   <!-- 1. Mobile App Header -->
   <header class="app-header">
     <div class="app-header-top" id="app-header-top">
       <i class="back-arrow fas fa-arrow-left" id="back-button"></i>
       <span class="title" id="header-title">Daily Tasks</span>
       <div class="header-icons">
-          <a href="https://www.yoursmed.xyz/Profile/index.html"><i class="fas fa-user"></i></a> 
-          <a href="https://toolswebsite205.blogspot.com"><i class="fas fa-bell"></i></a> 
+          <a href="https://www.yoursmed.xyz/Profile/index.html"><i class="fas fa-user"></i></a>
+          <a href="https://toolswebsite205.blogspot.com"><i class="fas fa-bell"></i></a>
       </div>
     </div>
-    
+
     <!-- Tab Navigation (Rewards section) -->
     <nav class="tab-navigation" id="rewards-tabs">
       <a class="tab-link active" data-tab="invite-tab">INVITE</a>
@@ -49,7 +49,7 @@
 
   <!-- 2. Main Content Area -->
   <main>
-    
+
     <!-- HOME CONTENT (Daily Task & Carousel) -->
     <section id="home-content" class="content-section active">
         <div class="carousel-wrapper">
@@ -61,8 +61,8 @@
           <div class="ad-placeholder" id="app-download-ad">
                 <div id="ad-message">YoursMed King <br>Download the app and win Rs.10k</div>
                 <a href="#" style="padding: 8px 15px; background-color: black; color: white; border-radius: 5px; font-weight: bold;" id="app-download-button">Update</a>
-            </div>  
-        
+            </div>
+
         <!-- START NEW MICROPHONE SECTION -->
         <h2 class="task-heading">Voice Complain Submission</h2>
         <div id="voice-note-section" style="padding: 0 20px; max-width: 500px; margin: 0 auto 20px;">
@@ -76,15 +76,15 @@
             </button>
         </div>
         <!-- END NEW MICROPHONE SECTION -->
-        
+
         <h2 class="task-heading">Daily Task</h2>
-        
+
         <!-- MAIN DAILY TASK GRID -->
-        <div class="task-grid" id="main-task-grid-container"> 
+        <div class="task-grid" id="main-task-grid-container">
            <a href="https://www.yoursmed.xyz/Task & Earn/index.html" class="task-item task-daily-check" data-feature="dailyCheck"><div class="task-icon-area"></div><span class="task-name">Daily Check</span></a>
            <a href="https://www.yoursmed.xyz/Watch And Earn/index.html" class="task-item task-survey" data-feature="videoOffer"><div class="task-icon-area"></div><span class="task-name">Video Offer</span></a>
            <a href="https://www.yoursmed.xyz/Deposit/Index.html" class="task-item task-scratch-card" data-feature="depositCoins"><div class="task-icon-area"></div><span class="task-name">Deposit Card </span></a>
-            
+
             <!-- HOME PAGE WITHDRAWAL BOX (Time-based lock) -->
             <a href="https://www.yoursmed.xyz/Limit/index.html" class="task-item task-captcha withdrawal-box" id="home-withdrawal-box" data-feature="withdrawalOptions">
                 <div class="task-icon-area"></div><span class="task-name">Withdrawal</span>
@@ -96,9 +96,9 @@
             <a href="https://www.yoursmed.xyz/blog/index.html" class="task-item task-gold-box"><div class="task-icon-area"></div><span class="task-name">YoursMed Blogs</span></a>
               <a href="https://www.yoursmed.xyz/chats/index.html" class="task-item task-silver-box"><div class="task-icon-area"></div><span class="task-name"> X Chats</span></a>
             <a href="https://www.yoursmed.xyz/cloth/index.html" class="task-item task-gold-box"><div class="task-icon-area"></div><span class="task-name">Woman Cloth</span></a>
-            
+
         </div>
-        
+
         <!-- NEW FEATURE CARDS SECTION START -->
         <div class="feature-section admin-locked-container" id="new-features-container" data-feature="newFeaturesSection">
             <h2 class="task-heading" style="margin-top: 0;">New Features</h2>
@@ -107,7 +107,7 @@
                 <div class="content"><h3>WORD PUZZLE</h3><p>Solve and Earn Coins</p><div class="new-badge">NEW</div></div>
                 <div class="icon-placeholder"><i class="fas fa-puzzle-piece"></i></div>
             </a>
-            
+
             <a href="Knowledge/index.html" class="feature-card card-knowledge" style="margin-bottom: 15px;" data-feature="improveKnowledge">
                 <div class="content"><h3>Improve Knowledge</h3><p>Stay updated with trending topics & earn coins</p></div>
                 <div class="coin-overlay"><i class="fas fa-coins"></i></div>
@@ -144,7 +144,7 @@
                 <div class="content"><h3>Extra Bonus</h3><p>Follow us on Social Media</p></div>
                 <div class="icon-placeholder"><i class="fas fa-bullhorn"></i></div>
             </a>
-            
+
             <a href="https://www.yoursmed.xyz/PlayGame/index.html" class="feature-card card-play-game" data-feature="playGame">
                 <div class="content"><h3>Play Game</h3><p>Play Game Earn Coins</p></div>
                 <div class="icon-placeholder"><i class="fas fa-gamepad"></i></div>
@@ -185,7 +185,7 @@
         <h2 class="task-heading">More Mega Win Tasks </h2>
         <div class="task-grid" id="locked-tasks-grid-container">
             <!-- Locked Tasks (10) -->
-            
+
             <a href="https://www.yoursmed.xyz/Bronze Box/index.html" class="task-item task-bronze-box locked-task" data-feature="lockedTask1">
                 <div class="task-icon-area"></div><div class="lock-overlay-icon"><i class="fas fa-lock"></i></div><span class="task-name">Buy Plan</span>
             </a>
@@ -216,11 +216,11 @@
             <a href="https://www.yoursmed.xyz/Seller/index.html" class="task-item task-bonus locked-task" data-feature="lockedTask10">
                 <div class="task-icon-area"></div><div class="lock-overlay-icon"><i class="fas fa-lock"></i></div><span class="task-name"> Seller Account</span>
             </a>
-            
-  
+
+
             </div>
-  
-      
+
+
        <p style="
   font-size: 15px;
   line-height: 1.7;
@@ -233,9 +233,9 @@
   font-family: Arial, Helvetica, sans-serif;
 ">
 <strong>YoursMed</strong> ek digital rewards platform hai jahan:
-<br>• Simple online tasks complete kar ke points earn hote hain  
-<br>• Points minimum threshold par redeem kiye ja sakte hain  
-<br>• Withdrawals JazzCash & EasyPaisa ke zariye hoti hain  
+<br>• Simple online tasks complete kar ke points earn hote hain
+<br>• Points minimum threshold par redeem kiye ja sakte hain
+<br>• Withdrawals JazzCash & EasyPaisa ke zariye hoti hain
 <br>• Transparency, user safety aur regular payouts hamari priority hain
 </p>
 </p><!-- ===== TRUST BOOST SECTION ===== --><div style="background:#ffffff;border:1px solid #e0e0e0;border-radius:8px;padding:14px;margin:15px 0;font-family:Arial,Helvetica,sans-serif;">
@@ -264,13 +264,13 @@
 <strong>Disclaimer:</strong> Earnings depend on task availability, user activity, and system verification. YoursMed does not guarantee fixed income.
 </p>
     </section>
-    
+
     <!-- DAILY TASK VIEW (UNUSED/Placeholder) -->
     <section id="daily-task-view" class="content-section">
         <div style="padding: 20px; text-align: center; max-width: 600px; margin: 0 auto;">
             <h2 class="task-heading" style="margin-top: 0;">Daily Tasks Dashboard</h2>
             <p style="color: #555; margin-bottom: 30px;">Complete your daily activities to earn coins!</p>
-            
+
             <div style="background-color: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.05); margin-bottom: 15px;">
                 <h3 style="color: #2a6bf2;">Check-in Bonus</h3>
                 <p>Login daily and collect 50 coins instantly.</p>
@@ -299,13 +299,13 @@
                 <div class="illustration-placeholder"></div>
                 <h3>Invite your friend and family and get</h3>
                 <div class="bonus">250000 Coins + 5% Extra</div>
-                
+
                 <div class="referral-link-box" id="referral-link-display">
-                    <span id="actual-referral-link-text">[Log in to see your Referral Code]</span> 
+                    <span id="actual-referral-link-text">[Log in to see your Referral Code]</span>
                     <button id="copy-referral-btn" class="invite-button" style="display:block;">Copy Link (Login Required)</button>
                     <div class="social-icons"></div>
                 </div>
-                
+
                 <a href="#" class="invite-button" id="invite-button-link">Invite Now</a>
             </div>
             <div class="how-to-get">
@@ -357,7 +357,7 @@
             <p class="active-invite-note">*Active invite means when your friend get first withdrawal</p>
 
             <h2 class="task-heading" style="margin: 0 20px 20px 20px;">Reward Timeline</h2>
-            
+
             <div class="reward-timeline" id="dynamic-reward-timeline">
                 <!-- Rewards will be dynamically generated by JavaScript -->
                 <div class="timeline-item locked"><div class="timeline-item-icon"><i class="fas fa-lock"></i></div><div class="timeline-title">Unlock on 5,000 Invites</div><div class="timeline-card card-coins"><i class="fas fa-trophy reward-icon"></i><div class="card-text"><strong>Win 10,000 Coins Bonus</strong></div></div></div>
@@ -387,13 +387,13 @@
   </div>
 </div>
         <div id="leaderboard-tab-content" class="tab-content">
-            
+
             <div class="leaderboard-banner-custom">
                 <div class="podium-text-overlay">
                     <h2>Top 50 User Rank!</h2>
                 </div>
             </div>
-            
+
             <table class="leaderboard-table-custom">
                 <thead>
                     <tr>
@@ -450,7 +450,7 @@
     <tr><td class="rank-cell">45</td><td class="user-cell">Shreya</td><td class="coins-cell">1000456.85M <i class="fas fa-coins coin-icon"></i></td></tr>
 </tbody>
             </table>
-            
+
             <div class="stats-card-container">
   <div class="stats-card">
     <h3>500K+</h3>
@@ -477,14 +477,14 @@
         </div>
 
     </section>
-    
+
     <!-- WALLET CONTENT (Includes Balance Card) -->
     <section id="wallet-content" class="content-section">
-        
+
         <div class="wallet-balance-card">
             <div class="rotating-balance-container">
                 <div class="balance-track" id="balance-track">
-                    
+
                     <div class="balance-slide main-app-coins">
                         <h3>Your Current Balance (Coins)</h3>
                         <div class="balance-amount">
@@ -492,7 +492,7 @@
                             <span id="wallet-coin-balance">---</span>
                         </div>
                     </div>
-                    
+
                     <div class="balance-slide tiktok-coins">
                         <h3>TikTok Coins Balance</h3>
                         <div class="balance-amount">
@@ -500,7 +500,7 @@
                             <span id="tiktok-coin-balance">---</span>
                         </div>
                     </div>
-                    
+
                     <div class="balance-slide amazon-coins">
                         <h3>Amazon Gift Card Value</h3>
                         <div class="balance-amount">
@@ -508,7 +508,7 @@
                             <span id="amazon-coin-balance">---</span>
                         </div>
                     </div>
-                    
+
                     <div class="balance-slide pubg-uc-coins">
                         <h3>PUBG UC Balance</h3>
                         <div class="balance-amount">
@@ -516,7 +516,7 @@
                             <span id="pubg-uc-balance">---</span>
                         </div>
                     </div>
-                    
+
                 </div>
             </div>
             <p style="opacity: 0.7; margin-top: 5px;">Coins can be redeemed for cash or rewards।</p>
@@ -528,15 +528,15 @@
   <div id="live-feed"></div>
 </div>
         <h2 class="task-heading" style="margin-top: 0; text-align: center;">Withdrawal Options</h2>
-        
+
         <div class="withdrawal-grid admin-locked-container" id="withdrawal-grid-container">
-            
+
             <a href="https://www.yoursmed.xyz/Withdrawal/index.html" class="withdrawal-item time-locked" data-withdrawal-id="easypaisa" data-feature="withdrawalOptions">
                 <div class="withdrawal-image easypaisa-logo"></div>
                 <div class="withdrawal-name">EasyPaisa</div>
                 <div class="coin-band"><span><i class="fas fa-coins"></i> 59000,000 Coins</span></div>
             </a>
-            
+
             <a href="https://www.yoursmed.xyz/Withdrawal/index.html"class="withdrawal-item time-locked" data-withdrawal-id="jazzcash" data-feature="withdrawalOptions">
                 <div class="withdrawal-image binance-logo"></div>
                 <div class="withdrawal-name">Jazz Cash</div>
@@ -548,7 +548,7 @@
                 <div class="withdrawal-name">Bank Transfer</div>
                 <div class="coin-band"><span><i class="fas fa-coins"></i> 59000,000 Coins</span></div>
             </a>
-            
+
             <!-- PERMANENTLY UNLOCKED ITEMS (removed locked-item class) -->
             <a href="#" class="withdrawal-item" data-withdrawal-id="pubg" data-feature="withdrawalOptions">
                 <div class="withdrawal-image pubg-logo"></div>
@@ -574,7 +574,7 @@
                 <div class="withdrawal-name">TikTok (Max)</div>
                 <div class="coin-band"><span><i class="fas fa-coins"></i> 490.78B</span></div>
             </a>
-            
+
             <a href="https://www.yoursmed.xyz" class="withdrawal-item" data-withdrawal-id="googleplay" data-feature="withdrawalOptions">
                 <div class="withdrawal-image googleplay-logo"></div>
                 <div class="withdrawal-name">Google Play</div>
@@ -609,10 +609,10 @@
 </div>
     </section>
 
-    
+
     <!-- MORE CONTENT (Settings, Profile, Social) -->
     <section id="more-content" class="content-section">
-        
+
         <a href="Profile/index.html" class="user-profile-card">
             <div class="profile-avatar"><i class="fas fa-user"></i></div>
             <div class="profile-info">
@@ -620,7 +620,7 @@
                 <p id="profile-balance">Balance: --- Coins</p>
             </div>
         </a>
-        
+
         <h2 class="task-heading" style="margin-top: 0;">Settings & Support</h2>
         <div class="menu-list">
          <a href="https://www.yoursmed.xyz/Profile/index.html" class="menu-item"><span style="display: flex; align-items: center;"><i class="fas fa-wallet icon-left"></i> My Profile</span><i class="fas fa-chevron-right"></i></a>
@@ -631,7 +631,7 @@
          <a href="https://www.yoursmed.xyz/Tasks/index.html" class="menu-item"><span style="display: flex; align-items: center;"><i class="fas fa-file-contract icon-left"></i> Tasks </span><i class="fas fa-chevron-right"></i></a>
          <a href="https://www.yoursmed.xyz/Terms of Service .html" class="menu-item"><span style="display: flex; align-items: center;"><i class="fas fa-question-circle icon-left"></i> Terms Of Service </span><i class="fas fa-chevron-right"></i></a>
           <a href="https://www.yoursmed.xyz/contact.html" class="menu-item"><span style="display: flex; align-items: center;"><i class="fas fa-headset icon-left"></i> Contact Us</span><i class="fas fa-chevron-right"></i></a>
-        
+
           <!-- AUTH LINKS -->
           <a href="#" class="menu-item logged-in-only" id="logout-button" onclick="handleAuthClick('logout'); return false;" style="color: #f44336; font-weight: bold;">
               <span style="display: flex; align-items: center;"><i class="fas fa-sign-out-alt icon-left" style="color: #f44336;"></i> Logout</span><i class="fas fa-chevron-right"></i>
@@ -643,7 +643,7 @@
               <span style="display: flex; align-items: center;"><i class="fas fa-user-plus icon-left"></i> Sign Up</span><i class="fas fa-chevron-right"></i>
           </a>
         </div>
-        
+
         <div class="social-proof">
             <h2 class="task-heading">Join Our Community</h2>
             <p>Stay updated and interact with other users on our official social media channels.</p>
@@ -679,7 +679,7 @@
     </section>
 
   </main>
-  
+
   <!-- NEW CUSTOM EXIT MODAL -->
   <div id="exit-modal-overlay">
       <div id="exit-modal-content">
@@ -704,7 +704,7 @@
                 <input type="text" id="auth-name" placeholder="Full Name" required style="display: block;">
                 <input type="email" id="auth-email" placeholder="Email Address" required>
                 <input type="password" id="auth-password" placeholder="Password" required>
-                <input type="text" id="auth-referral-code" placeholder="Referral Code (Optional)" style="display: block;"> 
+                <input type="text" id="auth-referral-code" placeholder="Referral Code (Optional)" style="display: block;">
                 <button type="submit" id="auth-submit-btn">Sign Up</button>
             </form>
             <div class="switch-auth-mode">
@@ -715,7 +715,7 @@
             </div>
         </div>
     </div>
-    
+
   <!-- 5. SOCIAL AD MODAL (New Element - Dynamically Controlled) -->
     <div id="social-ad-overlay">
         <div id="social-ad-content">
@@ -723,13 +723,13 @@
             <h3>Check out the latest from YoursMed!</h3>
             <!-- Image will be dynamically updated by JS -->
             <img id="social-ad-image" src="" alt="YoursMed Social Ad">
-            
+
             <!-- THIS SECTION IS UPDATED TO DISPLAY COINS INSTEAD OF "VISIT WEBSITE" -->
             <a id="social-ad-link" href="#" target="_blank" class="ad-button">
-                <i class="fas fa-coins"></i> 
+                <i class="fas fa-coins"></i>
                 <span id="social-ad-reward-display">Loading Coins...</span>
             </a>
-            
+
         </div>
     </div>
 
@@ -742,7 +742,51 @@
     <a class="nav-link" data-page="more-content"><i class="fas fa-bars"></i>More</a>
   </footer>
 
+  <!-- 7. PC/Desktop Footer (only visible on desktop, will be hidden on mobile by CSS) -->
+  <footer class="desktop-footer">
+      <div class="desktop-footer-content">
+          <div class="footer-section">
+              <h4>About YoursMed</h4>
+              <ul>
+                  <li><a href="https://www.yoursmed.xyz/about.html">Our Story</a></li>
+                  <li><a href="https://www.yoursmed.xyz/How to make.html">Mission & Vision</a></li>
+                  <li><a href="#">Team</a></li>
+              </ul>
+          </div>
+          <div class="footer-section">
+              <h4>Support</h4>
+              <ul>
+                  <li><a href="https://www.yoursmed.xyz/FAQ.html">FAQ</a></li>
+                  <li><a href="https://www.yoursmed.xyz/contact.html">Contact Us</a></li>
+                  <li><a href="https://www.yoursmed.xyz/How to make.html">Privacy Policy</a></li>
+                  <li><a href="https://www.yoursmed.xyz/Terms of Service .html">Terms of Service</a></li>
+              </ul>
+          </div>
+          <div class="footer-section">
+              <h4>Earn More</h4>
+              <ul>
+                  <li><a href="https://www.yoursmed.xyz/Task & Earn/index.html">Daily Tasks</a></li>
+                  <li><a href="https://www.yoursmed.xyz/Refer & Earn/index.html">Refer & Earn</a></li>
+                  <li><a href="https://www.yoursmed.xyz/Avatar/index.html">Offerwalls</a></li>
+                  <li><a href="https://www.yoursmed.xyz/Survey/index.html">Surveys</a></li>
+              </ul>
+          </div>
+          <div class="footer-section">
+              <h4>Community</h4>
+              <div class="footer-social-icons">
+                  <a href="https://www.instagram.com/gmnetworking9?igsh=ejV6MjUzcTVyMGxz" target="_blank"><i class="fab fa-instagram"></i></a>
+                  <a href="https://www.facebook.com/share/g/17sxdUs6R4/" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                  <a href="https://youtube.com/@gmnetworking9?si=IYcb16i1RQ_iazxJ" target="_blank"><i class="fab fa-youtube"></i></a>
+                  <a href="https://t.me/gmnetworkings" target="_blank"><i class="fab fa-telegram-plane"></i></a>
+              </div>
+          </div>
+      </div>
+      <div class="footer-bottom">
+          &copy; 2024 YoursMed. All rights reserved.
+      </div>
+  </footer>
+
   <!-- Custom JavaScript Link -->
   <script src="script.js"></script>
 </body>
-  </html>
+</html>
