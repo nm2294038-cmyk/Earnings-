@@ -1,44 +1,43 @@
 /* -------------------------------------- */
 /* 0. NEW BISMILLAH HEADER & KEYFRAMES    */
 /* -------------------------------------- */
+
+/* Bismillah Header - Mobile First */
 .bismillah-header {
-  /* Use Flexbox for side-by-side positioning */
   display: flex;
-  justify-content: space-between; 
+  justify-content: space-between;
   align-items: center;
-  padding: 10px 15px; /* Added horizontal padding */
-  
-  font-size: 1.2em; 
+  padding: 10px 15px;
+  font-size: 1.2em;
   font-weight: 700;
-  color: #1e88e5; 
+  color: #1e88e5;
   background-color: #ffffff;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-  font-family: 'Times New Roman', serif; 
+  font-family: 'Times New Roman', serif;
   position: sticky;
   top: 0;
-  z-index: 200; 
+  z-index: 200;
 }
 
 .bismillah-header .header-center {
-    font-size: 1.25em; 
+    font-size: 1.25em;
     font-weight: 700;
-    flex-grow: 1; /* Allows it to take available space */
+    flex-grow: 1;
     text-align: center;
-    color: #1e88e5; /* Bismillah color */
+    color: #1e88e5;
 }
 
 .bismillah-header .header-left,
 .bismillah-header .header-right {
-    font-size: 0.8em; /* Smaller for side text */
+    font-size: 0.8em;
     font-weight: 600;
-    color: #000; /* Darker color for visibility */
-    white-space: nowrap; /* Prevent wrapping */
+    color: #000;
+    white-space: nowrap;
     padding: 0 5px;
 }
 
-    
+/* Keyframes */
 @keyframes slide-show {
-  /* Animation for 10 slides, based on 6 admin controlled slides + 4 repeats */
   0% { transform: translateX(0%); } 9% { transform: translateX(0%); }
   10% { transform: translateX(-10%); } 19% { transform: translateX(-10%); }
   20% { transform: translateX(-20%); } 29% { transform: translateX(-20%); }
@@ -49,7 +48,7 @@
   70% { transform: translateX(-70%); } 79% { transform: translateX(-70%); }
   80% { transform: translateX(-80%); } 89% { transform: translateX(-80%); }
   90% { transform: translateX(-90%); } 99% { transform: translateX(-90%); }
-  100% { transform: translateX(0%); } 
+  100% { transform: translateX(0%); }
 }
 @keyframes fadeInScale {
     from { opacity: 0; transform: scale(0.9); }
@@ -59,24 +58,18 @@
   from {opacity: 0;}
   to {opacity: 1;}
 }
-/* --- NEW BOUNCE KEYFRAME FOR LOCKED TASK --- */
 @keyframes extra-bounce {
     0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
     40% { transform: translateY(-15px); }
     60% { transform: translateY(-7px); }
 }
-
-/* --- NEW KEYFRAME FOR ROTATING BALANCE --- */
 @keyframes balance-slide-animation {
-    /* 4 slides, 5s per slide = 20s total cycle */
-    0%, 20% { transform: translateX(0%); } /* Show Slide 1 (0s - 4s) */
-    25%, 45% { transform: translateX(-25%); } /* Show Slide 2 (5s - 9s) */
-    50%, 70% { transform: translateX(-50%); } /* Show Slide 3 (10s - 14s) */
-    75%, 95% { transform: translateX(-75%); } /* Show Slide 4 (15s - 19s) */
-    100% { transform: translateX(0%); } /* Reset to Slide 1 */
+    0%, 20% { transform: translateX(0%); }
+    25%, 45% { transform: translateX(-25%); }
+    50%, 70% { transform: translateX(-50%); }
+    75%, 95% { transform: translateX(-75%); }
+    100% { transform: translateX(0%); }
 }
-
-/* Microphone button animation */
 @keyframes pulse-red {
     0% { box-shadow: 0 0 0 0 rgba(244, 67, 54, 0.7); }
     70% { box-shadow: 0 0 0 10px rgba(244, 67, 54, 0); }
@@ -89,37 +82,32 @@
 #start-recognition-btn .fa-microphone {
     margin-right: 8px;
 }
-/* -------------------------------------- */
-
 
 /* -------------------------------------- */
 /* 1. GENERAL & BASE STYLES               */
 /* -------------------------------------- */
 body {
   font-family: Arial, sans-serif;
-  background-color: #f8f9fa; 
+  background-color: #f8f9fa;
   margin: 0;
   padding: 0;
-  padding-bottom: 60px; /* Space for fixed footer */
+  padding-bottom: 60px; /* Space for fixed mobile footer */
   color: #333;
 }
-a { text-decoration: none; color: inherit; } 
+a { text-decoration: none; color: inherit; }
 .content-section { display: none; }
 .content-section.active { display: block; }
 .tab-content { display: none; }
 .tab-content.active { display: block; }
 
-/* --- NEW SOCIAL AD MODAL STYLES --- */
+/* Social Ad Modal Styles */
 #social-ad-overlay {
-    position: fixed; 
-    top: 0; 
-    left: 0; 
-    width: 100%; 
-    height: 100%; 
-    background-color: rgba(0, 0, 0, 0.75); 
-    display: none; /* Controlled by JS */
-    justify-content: center; 
-    align-items: center; 
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0, 0, 0, 0.75);
+    display: none;
+    justify-content: center; align-items: center;
     z-index: 5000;
 }
 #social-ad-content {
@@ -135,13 +123,11 @@ a { text-decoration: none; color: inherit; }
 }
 #social-ad-content .ad-close {
     position: absolute;
-    top: 5px;
-    right: 5px;
+    top: 5px; right: 5px;
     background: #f44336;
     color: white;
     border-radius: 50%;
-    width: 25px;
-    height: 25px;
+    width: 25px; height: 25px;
     line-height: 25px;
     font-size: 0.8em;
     cursor: pointer;
@@ -151,7 +137,7 @@ a { text-decoration: none; color: inherit; }
     height: auto;
     border-radius: 5px;
     margin-bottom: 15px;
-    min-height: 100px; 
+    min-height: 100px;
     background-color: #f0f0f0;
 }
 #social-ad-content .ad-button {
@@ -164,25 +150,26 @@ a { text-decoration: none; color: inherit; }
     text-decoration: none;
     margin-top: 10px;
 }
-/* ---------------------------------- */
 
 /* -------------------------------------- */
 /* 2. HEADER & TOP NAVIGATION             */
 /* -------------------------------------- */
+
+/* App Header - Mobile First */
 .app-header {
   background-color: #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   position: sticky;
-  top: 45px; 
+  top: 45px; /* Below Bismillah header */
   z-index: 100;
 }
 .app-header-top {
-  background-color: #e0e0e0; 
+  background-color: #e0e0e0;
   padding: 15px 15px;
   display: flex;
   align-items: center;
-  justify-content: space-between; 
-  border-radius: 0 0 20px 20px; 
+  justify-content: space-between;
+  border-radius: 0 0 20px 20px;
   position: relative;
 }
 .app-header-top .back-arrow { font-size: 1.5em; margin-right: 15px; color: #555; cursor: pointer; display: none; }
@@ -191,8 +178,8 @@ a { text-decoration: none; color: inherit; }
 
 /* Flat Header Style */
 .app-header.flat-header .app-header-top {
-    background-color: #f0f2f5; 
-    border-radius: 0; 
+    background-color: #f0f2f5;
+    border-radius: 0;
     justify-content: flex-start;
 }
 .app-header.flat-header .app-header-top .title {
@@ -201,21 +188,56 @@ a { text-decoration: none; color: inherit; }
 .app-header.flat-header .app-header-top .header-icons { display: none; }
 .app-header.flat-header .app-header-top .back-arrow { display: block !important; z-index: 10; color: #000; }
 
-/* Tab Navigation */
-.tab-navigation { display: none; justify-content: space-around; padding: 0 10px; background-color: #f0f2f5; border-bottom: none; }
-.tab-navigation a { padding: 12px 15px; font-weight: bold; color: #777; position: relative; transition: color 0.3s; flex: 1; text-align: center; font-size: 0.9em; letter-spacing: 0.5px; }
+/* Tab Navigation - Mobile First */
+.tab-navigation {
+  display: none; /* Hidden on mobile by default, shown by JS on certain tabs */
+  justify-content: space-around;
+  padding: 0 10px;
+  background-color: #f0f2f5;
+  border-bottom: none;
+}
+.tab-navigation a {
+  padding: 12px 15px;
+  font-weight: bold;
+  color: #777;
+  position: relative;
+  transition: color 0.3s;
+  flex: 1;
+  text-align: center;
+  font-size: 0.9em;
+  letter-spacing: 0.5px;
+}
 .tab-navigation a.active { color: #000; }
-.tab-navigation a.active::after { content: ''; position: absolute; bottom: 0; left: 20%; width: 60%; height: 3px; background-color: #000; border-radius: 2px; }
+.tab-navigation a.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 20%;
+  width: 60%; height: 3px;
+  background-color: #000;
+  border-radius: 2px;
+}
 
 /* -------------------------------------- */
 /* 3. FIXED MOBILE FOOTER NAVIGATION      */
 /* -------------------------------------- */
+
+/* Mobile Footer - Default (Mobile First) */
 .mobile-footer {
-  position: fixed; bottom: 0; left: 0; width: 100%; height: 60px;
-  background-color: #fff; box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
-  display: flex; justify-content: space-around; align-items: center; z-index: 200;
+  position: fixed; bottom: 0; left: 0;
+  width: 100%; height: 60px;
+  background-color: #fff;
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+  display: flex; justify-content: space-around; align-items: center;
+  z-index: 200;
 }
-.mobile-footer a { display: flex; flex-direction: column; align-items: center; font-size: 0.75em; color: #777; padding: 5px; flex: 1; }
+.mobile-footer a {
+  display: flex; flex-direction: column; align-items: center;
+  font-size: 0.75em;
+  color: #777;
+  padding: 5px;
+  flex: 1;
+  text-align: center;
+}
 .mobile-footer a.active { color: #000; }
 .mobile-footer a i { font-size: 1.5em; margin-bottom: 3px; }
 
@@ -226,14 +248,22 @@ a { text-decoration: none; color: inherit; }
 .carousel-wrapper { width: 100%; height: 220px; overflow: hidden; position: relative; }
 .carousel-track { display: flex; width: 1000%; height: 100%; animation: slide-show 50s infinite; }
 .carousel-slide {
-  width: 10%; height: 100%; flex-shrink: 0; display: block; 
+  width: 10%; height: 100%; flex-shrink: 0; display: block;
   background-size: cover; background-position: center; background-repeat: no-repeat;
   position: relative;
 }
 
 .task-heading { font-size: 1.5em; font-weight: bold; margin: 20px 20px 15px; color: #333; }
-.task-grid { display: grid; gap: 15px; padding: 0 20px; grid-template-columns: repeat(2, 1fr); margin: 0 auto; }
-.task-item { display: flex; flex-direction: column; justify-content: flex-end; align-items: flex-start; height: 140px; padding: 10px; padding-top: 60px; border-radius: 40px 40px 10px 10px; font-weight: 600; font-size: 14px; position: relative; overflow: hidden; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05); cursor: pointer; }
+.task-grid { display: grid; gap: 15px; padding: 0 20px; grid-template-columns: repeat(2, 1fr); margin: 0 auto; max-width: 500px; }
+.task-item {
+  display: flex; flex-direction: column; justify-content: flex-end; align-items: flex-start;
+  height: 140px; padding: 10px; padding-top: 60px;
+  border-radius: 40px 40px 10px 10px;
+  font-weight: 600; font-size: 14px;
+  position: relative; overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  cursor: pointer;
+}
 .task-icon-area { position: absolute; top: 0; left: 0; right: 0; height: 80px; display: flex; justify-content: center; align-items: flex-start; }
 .task-name { font-size: 1.1em; line-height: 1.2; padding-left: 5px; padding-bottom: 5px; font-weight: 700; }
 
@@ -249,54 +279,47 @@ a { text-decoration: none; color: inherit; }
 .task-bonus { background: linear-gradient(to bottom, #ffe9b5, #fffde7); } .task-bonus .task-icon-area::before { content: '\f51e'; font-family: 'Font Awesome 5 Free'; font-weight: 900; font-size: 30px; position: absolute; top: 25px; color: #ffc107; }
 .task-survey { background: linear-gradient(to bottom, #b3e5fc, #e1f5fe); } .task-survey .task-icon-area::before { content: '\f03d'; font-family: 'Font Awesome 5 Free'; font-weight: 900; font-size: 30px; position: absolute; top: 25px; color: #03a9f4; }
 
-/* --- CUSTOM ICONS FOR SPECIFIC LOCKED TASKS --- */
-.task-bronze-box .task-icon-area::before { content: '\f023'; color: #cd7f32; } 
-.task-bonus.locked-task[data-feature="lockedTask2"] .task-icon-area::before { content: '\f1b9'; color: #ffc107; } 
-.task-daily-check.locked-task[data-feature="lockedTask3"] .task-icon-area::before { content: '\f7d9'; color: #1e88e5; } 
-.task-scratch-card.locked-task[data-feature="lockedTask4"] .task-icon-area::before { content: '\f518'; color: #00bcd4; } 
-.task-captcha.locked-task[data-feature="lockedTask5"] .task-icon-area::before { content: '\f291'; color: #e91e63; } 
-.task-spin-wheel.locked-task[data-feature="lockedTask6"] .task-icon-area::before { content: '\f06b'; color: #ff5722; } 
-.task-magic-box.locked-task[data-feature="lockedTask7"] .task-icon-area::before { content: '\f09d'; color: #4caf50; } 
-.task-silver-box.locked-task[data-feature="lockedTask8"] .task-icon-area::before { content: '\f5d9'; color: #607d8b; } 
-.task-gold-box.locked-task[data-feature="lockedTask9"] .task-icon-area::before { content: '\f51e'; color: #ffc107; } 
-.task-bonus.locked-task[data-feature="lockedTask10"] .task-icon-area::before { content: '\f0ad'; color: #9c27b0; } 
+/* Custom icons for specific locked tasks */
+.task-bronze-box .task-icon-area::before { content: '\f023'; color: #cd7f32; }
+.task-bonus.locked-task[data-feature="lockedTask2"] .task-icon-area::before { content: '\f1b9'; color: #ffc107; }
+.task-daily-check.locked-task[data-feature="lockedTask3"] .task-icon-area::before { content: '\f7d9'; color: #1e88e5; }
+.task-scratch-card.locked-task[data-feature="lockedTask4"] .task-icon-area::before { content: '\f518'; color: #00bcd4; }
+.task-captcha.locked-task[data-feature="lockedTask5"] .task-icon-area::before { content: '\f291'; color: #e91e63; }
+.task-spin-wheel.locked-task[data-feature="lockedTask6"] .task-icon-area::before { content: '\f06b'; color: #ff5722; }
+.task-magic-box.locked-task[data-feature="lockedTask7"] .task-icon-area::before { content: '\f09d'; color: #4caf50; }
+.task-silver-box.locked-task[data-feature="lockedTask8"] .task-icon-area::before { content: '\f5d9'; color: #607d8b; }
+.task-gold-box.locked-task[data-feature="lockedTask9"] .task-icon-area::before { content: '\f51e'; color: #ffc107; }
+.task-bonus.locked-task[data-feature="lockedTask10"] .task-icon-area::before { content: '\f0ad'; color: #9c27b0; }
 
-
-/* --- STYLES FOR LOCKED & BOUNCING TASK --- */
+/* Styles for locked & bouncing task */
 .task-item.locked-task {
     position: relative;
-    pointer-events: none; 
-    opacity: 0.7; 
-    animation: extra-bounce 2s infinite ease-in-out; 
+    pointer-events: none;
+    opacity: 0.7;
+    animation: extra-bounce 2s infinite ease-in-out;
 }
 .task-item.locked-task .lock-overlay-icon {
     position: absolute;
-    top: 50%;
-    left: 50%;
+    top: 50%; left: 50%;
     transform: translate(-50%, -50%);
     font-size: 3em;
-    color: #f44336; 
+    color: #f44336;
     text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     z-index: 10;
     opacity: 0.9;
 }
 
-/* --- NEW LOCK OVERLAY FOR HOME WITHDRAWAL --- */
+/* Lock Overlay for Home Withdrawal */
 .task-item.withdrawal-box {
     position: relative;
 }
 .lock-time-overlay {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
     background: rgba(0, 0, 0, 0.85);
     color: white;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
     text-align: center;
     padding: 10px;
     box-sizing: border-box;
@@ -311,27 +334,22 @@ a { text-decoration: none; color: inherit; }
     color: #ffc107;
 }
 
-/* --- ADMIN CONTROLLED LOCK OVERLAY --- */
+/* Admin Controlled Lock Overlay */
 .admin-locked-overlay {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(100, 0, 0, 0.85); /* Reddish dark overlay for admin lock */
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(100, 0, 0, 0.85);
     border-radius: 10px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
     color: white;
-    z-index: 50; /* Higher z-index to cover all content */
+    z-index: 50;
     text-align: center;
     cursor: not-allowed;
     transition: opacity 0.3s;
     padding: 10px;
     box-sizing: border-box;
-    border-radius: 40px 40px 10px 10px; /* Match task-item border radius */
+    border-radius: 40px 40px 10px 10px;
 }
 .admin-locked-overlay i {
     font-size: 2em;
@@ -339,9 +357,8 @@ a { text-decoration: none; color: inherit; }
     color: #ffc107;
 }
 .admin-locked-container.locked {
-    pointer-events: none; /* Disable clicks on the container if locked */
+    pointer-events: none;
 }
-/* ---------------------------------------------------- */
 
 /* Ad Placeholder Style */
 .ad-placeholder { background-color: #f44336; color: white; margin: 0 20px 20px 20px; padding: 10px; border-radius: 5px; font-size: 0.8em; display: flex; justify-content: space-between; align-items: center; max-width: 500px; margin-left: auto; margin-right: auto; }
@@ -349,8 +366,8 @@ a { text-decoration: none; color: inherit; }
 /* -------------------------------------- */
 /* 5. REWARDS CONTENT (Refer & Earn)      */
 /* -------------------------------------- */
-#rewards-content { padding: 0 0 20px 0; } 
-#invite-tab-content { padding: 20px; }
+#rewards-content { padding: 0 0 20px 0; }
+#invite-tab-content { padding: 20px; max-width: 500px; margin: 0 auto; }
 .referral-card { background-color: #1e2a38; color: white; border-radius: 20px; padding: 20px; text-align: center; box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); }
 .illustration-placeholder { height: 120px; background: url('https://i.ibb.co/4RzTfVh4/IMG-20251110-WA0008.jpg') no-repeat center center; background-size: cover; border-radius: 15px 15px 0 0; margin: -20px -20px 0; }
 .referral-card h3 { font-size: 1.1em; margin-top: 10px; margin-bottom: 5px; }
@@ -421,17 +438,17 @@ a { text-decoration: none; color: inherit; }
 /* Rotating Balance Styles */
 .rotating-balance-container {
     overflow: hidden;
-    height: 100px; /* Fixed height for the rotating content */
+    height: 100px;
 }
 .balance-track {
     display: flex;
-    width: 400%; /* 4 slides * 100% */
+    width: 400%;
     animation: balance-slide-animation 20s infinite ease-in-out;
 }
 .balance-slide {
-    width: 25%; /* Each slide takes 1/4th of the container width */
+    width: 25%;
     flex-shrink: 0;
-    padding-right: 20px; /* Space for content */
+    padding-right: 20px;
 }
 .balance-slide h3 {
     font-size: 1em;
@@ -439,16 +456,16 @@ a { text-decoration: none; color: inherit; }
     margin-bottom: 5px;
     opacity: 0.8;
 }
-.balance-slide .balance-amount { 
-    font-size: 2.5em; 
-    font-weight: 900; 
-    display: flex; 
-    align-items: center; 
+.balance-slide .balance-amount {
+    font-size: 2.5em;
+    font-weight: 900;
+    display: flex;
+    align-items: center;
 }
-.balance-slide .balance-amount i { 
-    font-size: 0.8em; 
-    margin-right: 10px; 
-    color: #ffc107; /* Default coin color */
+.balance-slide .balance-amount i {
+    font-size: 0.8em;
+    margin-right: 10px;
+    color: #ffc107;
 }
 /* Specific icon colors for better visibility */
 .balance-slide.tiktok-coins .balance-amount i { color: #000; }
@@ -462,12 +479,11 @@ a { text-decoration: none; color: inherit; }
 
 /* Lock Overlay for Withdrawal Items (Dynamic) */
 .withdrawal-item.locked-item::before {
-    content: '\f023'; /* fas fa-lock icon */
+    content: '\f023';
     font-family: 'Font Awesome 5 Free';
     font-weight: 900;
     position: absolute;
-    top: 50%;
-    left: 50%;
+    top: 50%; left: 50%;
     transform: translate(-50%, -50%);
     font-size: 3em;
     color: rgba(244, 67, 54, 0.7);
@@ -485,27 +501,26 @@ a { text-decoration: none; color: inherit; }
 .amazon-logo { background-image: url('https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg'); }
 .easypaisa-logo { background-image: url('https://i.ibb.co/tPz8VcqP/download-36.png'); }
 
-/* --- GAME REDEMPTION LOGO STYLES --- */
-.pubg-logo { 
-    background-image: none; height: 80px; margin-top: 15px; 
-    display: flex; align-items: center; justify-content: center; 
-    font-size: 40px; color: #f39c12; 
+/* Game Redemption Logo Styles */
+.pubg-logo {
+    background-image: none; height: 80px; margin-top: 15px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 40px; color: #f39c12;
 }
-.pubg-logo::before { 
-    content: '\f3fb'; /* Icon: gamepad */
-    font-family: 'Font Awesome 5 Free'; font-weight: 900; 
-} 
+.pubg-logo::before {
+    content: '\f3fb';
+    font-family: 'Font Awesome 5 Free'; font-weight: 900;
+}
 
-.freefire-logo { 
-    background-image: none; height: 80px; margin-top: 15px; 
-    display: flex; align-items: center; justify-content: center; 
-    font-size: 40px; color: #e74c3c; 
+.freefire-logo {
+    background-image: none; height: 80px; margin-top: 15px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 40px; color: #e74c3c;
 }
-.freefire-logo::before { 
-    content: '\f11b'; /* Icon: trophy */
-    font-family: 'Font Awesome 5 Free'; font-weight: 900; 
-} 
-/* --------------------------------------- */
+.freefire-logo::before {
+    content: '\f11b';
+    font-family: 'Font Awesome 5 Free'; font-weight: 900;
+}
 
 .withdrawal-item .coin-band { background-color: #f0f0f0; padding: 10px 0; width: 100%; margin-top: 10px; position: absolute; bottom: 0; left: 0; }
 .withdrawal-item .coin-band span { font-weight: bold; color: #333; display: flex; align-items: center; justify-content: center; }
@@ -554,17 +569,8 @@ a { text-decoration: none; color: inherit; }
 .switch-auth-mode a { color: #1e88e5; font-weight: bold; }
 
 /* -------------------------------------- */
-/* 9. RESPONSIVE STYLES                   */
+/* 9. NEW FEATURE CARD STYLES             */
 /* -------------------------------------- */
-@media (min-width: 768px) {
-  .app-header-top { padding: 20px 30px; }
-  .app-header-top .title { font-size: 1.4em; }
-  .task-grid { grid-template-columns: repeat(3, 1fr); gap: 20px; max-width: 900px; }
-  .mobile-footer { display: none; } 
-  body { padding-bottom: 0; }
-}
-
-/* --- NEW FEATURE CARD STYLES --- */
 .feature-section {
     padding: 0 20px;
     max-width: 500px;
@@ -617,7 +623,7 @@ a { text-decoration: none; color: inherit; }
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 2.5em; /* Icon size */
+    font-size: 2.5em;
 }
 
 /* Specific Card Styles (Full Width Cards) */
@@ -627,13 +633,11 @@ a { text-decoration: none; color: inherit; }
 }
 .card-word-puzzle p { color: rgba(255, 255, 255, 0.85); }
 .card-word-puzzle .icon-placeholder {
-    /* Using custom puzzle icon */
     color: #ffc107;
 }
 .card-word-puzzle .new-badge {
     position: absolute;
-    top: 0;
-    right: 0;
+    top: 0; right: 0;
     background-color: #ff476e;
     color: white;
     padding: 3px 8px;
@@ -648,13 +652,11 @@ a { text-decoration: none; color: inherit; }
 }
 .card-knowledge p { color: rgba(255, 255, 255, 0.85); }
 .card-knowledge .icon-placeholder {
-    /* Using search/magnifying glass icon */
     color: #4CAF50;
 }
 .card-knowledge .coin-overlay {
     position: absolute;
-    top: 5px;
-    right: 5px;
+    top: 5px; right: 5px;
     font-size: 1.5em;
     color: #ffc107;
 }
@@ -668,11 +670,9 @@ a { text-decoration: none; color: inherit; }
     margin-bottom: 15px;
 }
 .card-extra-bonus .icon-placeholder {
-    /* Using bullhorn icon for social media promotion */
     color: #1e88e5;
 }
 .card-play-game .icon-placeholder {
-    /* Using gamepad icon */
     color: #9c27b0;
 }
 
@@ -747,7 +747,6 @@ a { text-decoration: none; color: inherit; }
     height: 60px;
     margin-right: 15px;
     flex-shrink: 0;
-    /* Custom P icon representation */
     font-size: 2.5em;
     color: #f44336;
     transform: rotate(-15deg);
@@ -759,13 +758,12 @@ a { text-decoration: none; color: inherit; }
     line-height: 1;
 }
 .card-pubscale .logo-placeholder::before {
-    content: '\f062'; /* fas fa-arrow-up */
+    content: '\f062';
     font-family: 'Font Awesome 5 Free';
     font-weight: 900;
     color: #000;
     position: absolute;
-    top: 5px;
-    left: 10px;
+    top: 5px; left: 10px;
     font-size: 1.2em;
     transform: rotate(15deg);
 }
@@ -776,18 +774,19 @@ a { text-decoration: none; color: inherit; }
     background-color: #ffc107;
     color: #333;
     padding: 8px 15px;
-    border-radius: 8px; /* Changed to 8px for consistency */
+    border-radius: 8px;
     font-weight: bold;
     display: inline-block;
     margin-top: 10px;
 }
-/* --- END NEW FEATURE CARD STYLES --- */
 
-/* --- NEW EXIT MODAL STYLES --- */
+/* -------------------------------------- */
+/* 10. NEW EXIT MODAL STYLES              */
+/* -------------------------------------- */
 #exit-modal-overlay {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%;
     background-color: rgba(0, 0, 0, 0.6);
-    display: none; /* Hidden by default */
+    display: none;
     justify-content: center; align-items: center; z-index: 1001;
 }
 
@@ -831,19 +830,21 @@ a { text-decoration: none; color: inherit; }
 }
 
 #exit-modal-content .btn-no {
-    background-color: #ffc107; /* Yellow */
+    background-color: #ffc107;
     color: #333;
 }
 
 #exit-modal-content .btn-exit {
-    background-color: #1a237e; /* Dark Blue */
+    background-color: #1a237e;
     color: white;
 }
-/* -------------------------------------- */
 
+/* -------------------------------------- */
+/* 11. STATS CARD (Live Withdrawal etc.)  */
+/* -------------------------------------- */
 .stats-card-container {
   display: flex;
-  flex-direction: column; /* stacked vertically */
+  flex-direction: column;
   gap: 20px;
   max-width: 400px;
   margin: auto;
@@ -851,7 +852,7 @@ a { text-decoration: none; color: inherit; }
 }
 
 .stats-card {
-  background: #f0f4ff; /* light pastel blue */
+  background: #f0f4ff;
   border-radius: 16px;
   padding: 25px 20px;
   text-align: center;
@@ -866,7 +867,7 @@ a { text-decoration: none; color: inherit; }
 
 .stats-card h3 {
   font-size: 28px;
-  color: #2a6cf7; /* vibrant blue */
+  color: #2a6cf7;
   margin-bottom: 10px;
 }
 
@@ -877,15 +878,6 @@ a { text-decoration: none; color: inherit; }
   line-height: 1.5;
 }
 
-@media (min-width: 768px) {
-  .stats-card-container {
-    flex-direction: row;  /* horizontal layout on larger screens */
-    justify-content: space-between;
-  }
-  .stats-card {
-    flex: 1 1 180px;
-  }
-}
 .live-withdrawal-box{
   background:#0b1220;
   color:#fff;
@@ -893,6 +885,9 @@ a { text-decoration: none; color: inherit; }
   border-radius:10px;
   margin:15px 0;
   font-family: Arial, Helvetica, sans-serif;
+  max-width: 500px; /* Constrain width for mobile */
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .live-withdrawal-box h3{
@@ -928,4 +923,511 @@ a { text-decoration: none; color: inherit; }
 .live-time{
   font-size:11px;
   color:#94a3b8;
+}
+
+/* -------------------------------------- */
+/* 12. RESPONSIVE STYLES                  */
+/* -------------------------------------- */
+
+/* --- Tablet View (min-width: 768px) --- */
+@media (min-width: 768px) {
+  /* General Layout */
+  body {
+    padding-bottom: 0; /* No mobile footer on tablet/desktop */
+  }
+
+  /* Bismillah Header */
+  .bismillah-header {
+    padding: 10px 25px;
+    font-size: 1.3em;
+  }
+  .bismillah-header .header-center { font-size: 1.4em; }
+  .bismillah-header .header-left,
+  .bismillah-header .header-right { font-size: 0.9em; }
+
+  /* App Header & Top Navigation */
+  .app-header {
+    top: 50px; /* Adjust sticky position for slightly larger bismillah header */
+  }
+  .app-header-top {
+    padding: 20px 30px;
+    border-radius: 0 0 25px 25px;
+  }
+  .app-header-top .title { font-size: 1.4em; }
+  .header-icons a i { font-size: 1.4em; }
+
+  /* Tab Navigation (visible for rewards and other multi-tab sections) */
+  .tab-navigation {
+    display: flex; /* Always show tab navigation on tablet/PC */
+    padding: 0 20px;
+  }
+  .tab-navigation a {
+    padding: 15px 20px;
+    font-size: 1em;
+  }
+  .tab-navigation a.active::after {
+    height: 4px;
+  }
+
+  /* Mobile Footer hidden */
+  .mobile-footer {
+    display: none;
+  }
+
+  /* Home Content */
+  .carousel-wrapper { height: 280px; }
+  .task-heading { margin: 30px 30px 20px; font-size: 1.6em; }
+  .task-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    max-width: 760px; /* Max width for tablet grid */
+    padding: 0 30px;
+  }
+  .ad-placeholder {
+    margin: 0 30px 30px;
+    max-width: 760px;
+    padding: 15px;
+    font-size: 1em;
+  }
+
+  /* Rewards Content */
+  #invite-tab-content,
+  #rewards-tab-content {
+      max-width: 760px;
+  }
+  .referral-card {
+      padding: 30px;
+  }
+  .rewards-stats-box {
+      padding: 30px 0;
+      max-width: 600px;
+  }
+  .rewards-stats-item .count { font-size: 2.2em; }
+  .rewards-stats-item .label { font-size: 1em; }
+  .reward-timeline {
+      max-width: 600px;
+      padding: 0 30px 0 45px;
+  }
+  .reward-timeline::before { left: 5px; }
+  .timeline-item-icon { left: -15px; }
+  .leaderboard-banner-custom {
+      max-width: 760px;
+      height: 300px;
+  }
+  .leaderboard-table-custom {
+      max-width: 760px;
+      margin: 30px auto;
+  }
+
+  /* Wallet Content */
+  #wallet-content {
+      padding: 20px 30px 40px;
+  }
+  .wallet-balance-card {
+      max-width: 600px;
+      padding: 30px;
+  }
+  .balance-slide .balance-amount { font-size: 3em; }
+  .withdrawal-grid {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      max-width: 760px;
+  }
+  .withdrawal-item { min-height: 220px; } /* Adjust height for larger cards */
+
+  /* More Content */
+  #more-content {
+      padding: 20px 30px 40px;
+  }
+  .user-profile-card {
+      max-width: 600px;
+      padding: 25px;
+  }
+  .menu-list {
+      max-width: 600px;
+  }
+  .social-proof {
+      max-width: 600px;
+  }
+
+  /* Feature Cards */
+  .feature-section {
+      max-width: 760px;
+      padding: 0 30px;
+  }
+  .feature-grid-2-col {
+      grid-template-columns: repeat(3, 1fr); /* More columns for some feature grids */
+  }
+  .feature-card-grid {
+      flex-wrap: nowrap; /* Prevent wrapping if cards fit side-by-side */
+      gap: 20px;
+  }
+  .stats-card-container {
+    flex-direction: row;
+    justify-content: space-around;
+    max-width: 760px;
+  }
+  .stats-card {
+    flex: 1 1 220px;
+  }
+  .live-withdrawal-box {
+    max-width: 760px;
+    padding: 20px;
+  }
+}
+
+/* --- PC/Desktop View (min-width: 1024px) --- */
+@media (min-width: 1024px) {
+  /* General Layout */
+  body {
+    background-color: #f0f2f5; /* Slightly different background for desktop */
+  }
+  .bismillah-header {
+    padding: 10px 50px;
+    font-size: 1.4em;
+  }
+  .bismillah-header .header-center { font-size: 1.5em; }
+  .bismillah-header .header-left,
+  .bismillah-header .header-right { font-size: 1em; }
+
+  .app-header {
+    top: 55px; /* Adjust sticky position */
+    border-bottom: 1px solid #eee;
+  }
+  .app-header-top {
+    padding: 20px 50px;
+    max-width: 1200px; /* Content max width */
+    margin: 0 auto;
+    border-radius: 0; /* Flat on desktop */
+    background-color: #fff; /* Match general header background */
+    box-shadow: none; /* No extra shadow */
+  }
+  .app-header-top .title { font-size: 1.6em; text-align: center; flex-grow: 0; position: absolute; left: 50%; transform: translateX(-50%); }
+  .app-header-top .back-arrow { display: none !important; } /* Hide back arrow on main PC view */
+  .app-header-top .header-icons { display: flex; align-items: center; } /* Show icons always */
+
+  .tab-navigation {
+    padding: 0 50px;
+    max-width: 1200px;
+    margin: 0 auto;
+    background-color: #fff;
+    border-bottom: 1px solid #eee;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  }
+  .tab-navigation a {
+    padding: 18px 25px;
+    font-size: 1.1em;
+    flex: none; /* Don't force them to stretch */
+  }
+  .tab-navigation a.active::after {
+    left: 15%; width: 70%;
+  }
+
+  /* Main Content Area Styling for Desktop */
+  .content-wrapper { /* You might want to wrap your main content in a div for this */
+      max-width: 1200px;
+      margin: 20px auto;
+      display: flex;
+      gap: 30px; /* Space between potential sidebars and main content */
+      align-items: flex-start;
+  }
+  /* For now, assuming content fills horizontally, but can be adapted for sidebars */
+
+  /* Home Content */
+  #home-content {
+      max-width: 1000px; /* Wider content area */
+      margin: 20px auto;
+      padding: 0;
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+  }
+  .carousel-wrapper {
+      height: 350px; /* Taller carousel */
+      border-radius: 10px 10px 0 0;
+  }
+  .task-heading {
+      margin: 40px 40px 25px;
+      font-size: 1.8em;
+  }
+  .task-grid {
+      grid-template-columns: repeat(4, 1fr); /* 4 columns on desktop */
+      gap: 25px;
+      max-width: 920px; /* Adjust max-width based on 4 columns */
+      padding: 0 40px 40px;
+  }
+  .task-item { height: 160px; padding-top: 70px; }
+  .ad-placeholder {
+      margin: 0 40px 40px;
+      max-width: 920px;
+      padding: 20px;
+      font-size: 1.1em;
+  }
+
+  /* Rewards Content */
+  #rewards-content {
+      max-width: 1000px;
+      margin: 20px auto;
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+      padding: 20px 0;
+  }
+  #invite-tab-content,
+  #rewards-tab-content {
+      max-width: 900px; /* Wider for desktop */
+      padding: 30px;
+      margin: 0 auto;
+  }
+  .referral-card {
+      padding: 40px;
+  }
+  .how-to-get h2 { font-size: 1.6em; }
+  .rewards-stats-box {
+      max-width: 800px;
+      padding: 40px 0;
+  }
+  .rewards-stats-item .count { font-size: 2.5em; }
+  .rewards-stats-item .label { font-size: 1.1em; }
+  .reward-timeline {
+      max-width: 800px;
+      padding: 0 40px 0 60px;
+  }
+  .reward-timeline::before { left: 10px; }
+  .timeline-item-icon { left: -18px; width: 32px; height: 32px; }
+  .leaderboard-banner-custom {
+      max-width: 900px;
+      height: 350px;
+      border-radius: 10px 10px 0 0;
+  }
+  .leaderboard-banner-custom h2 { font-size: 1.8em; }
+  .leaderboard-table-custom {
+      max-width: 900px;
+      margin: 0 auto 30px;
+      border-radius: 0 0 10px 10px;
+  }
+  .leaderboard-table-custom th, .leaderboard-table-custom td { padding: 18px 20px; }
+
+
+  /* Wallet Content */
+  #wallet-content {
+      max-width: 1000px;
+      margin: 20px auto;
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+      padding: 40px;
+  }
+  .wallet-balance-card {
+      max-width: 800px;
+      padding: 40px;
+      margin-bottom: 40px;
+  }
+  .wallet-balance-card::before { font-size: 100px; }
+  .rotating-balance-container { height: 120px; }
+  .balance-slide h3 { font-size: 1.1em; }
+  .balance-slide .balance-amount { font-size: 3.5em; }
+
+  .withdrawal-grid {
+      grid-template-columns: repeat(4, 1fr); /* 4 columns on desktop */
+      gap: 25px;
+      max-width: 920px;
+      margin: 0 auto 40px;
+  }
+  .withdrawal-item { min-height: 240px; }
+  .withdrawal-image { height: 120px; margin-top: 20px; }
+
+  /* More Content */
+  #more-content {
+      max-width: 1000px;
+      margin: 20px auto;
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+      padding: 40px;
+  }
+  .user-profile-card {
+      max-width: 800px;
+      padding: 30px;
+  }
+  .profile-avatar { width: 70px; height: 70px; font-size: 2.2em; }
+  .profile-info h3 { font-size: 1.5em; }
+  .profile-info p { font-size: 1em; }
+  .menu-list {
+      max-width: 800px;
+  }
+  .menu-item { padding: 18px 25px; font-size: 1.2em; }
+  .social-proof {
+      max-width: 800px;
+  }
+  .social-proof p { font-size: 1em; }
+  .social-icons-group a { margin: 0 10px; width: 55px; height: 55px; line-height: 55px; font-size: 1.8em; }
+
+  /* Feature Cards */
+  .feature-section {
+      max-width: 1000px;
+      margin: 20px auto;
+      padding: 0 40px;
+  }
+  .feature-grid {
+      gap: 25px;
+  }
+  .feature-grid-2-col {
+      grid-template-columns: repeat(4, 1fr); /* 4 columns for these on desktop */
+  }
+  .feature-card { padding: 20px; }
+  .feature-card h3 { font-size: 1.3em; }
+  .feature-card p { font-size: 0.9em; }
+  .feature-card .icon-placeholder { width: 70px; height: 70px; font-size: 3em; }
+
+  .card-task-challenge { padding: 20px; }
+  .card-task-challenge h3 { font-size: 1.6em; }
+  .card-task-challenge .icon-time { font-size: 3em; }
+
+  .feature-card-grid {
+      gap: 25px;
+  }
+  .feature-card-grid .card-item { padding: 20px; }
+  .feature-card-grid .card-item .img-placeholder { height: 90px; font-size: 3.5em; }
+  .feature-card-grid .card-item h4 { font-size: 1.2em; }
+  .feature-card-grid .card-item .coins { font-size: 1em; }
+
+  .card-pubscale { padding: 25px; }
+  .card-pubscale .logo-placeholder { width: 70px; height: 70px; font-size: 3em; }
+  .card-pubscale h3 { font-size: 1.4em; }
+  .card-pubscale .offer-text { font-size: 0.9em; }
+  .card-pubscale .coins-highlight { font-size: 1.3em; }
+  .card-pubscale .earn-button { padding: 10px 20px; }
+
+  .stats-card-container {
+    max-width: 960px;
+    padding: 0 40px 40px;
+  }
+  .stats-card {
+    flex: 1 1 280px;
+    padding: 30px 25px;
+  }
+  .stats-card h3 { font-size: 32px; }
+  .stats-card p { font-size: 15px; }
+
+  .live-withdrawal-box {
+    max-width: 960px;
+    padding: 25px;
+    margin: 25px auto;
+  }
+  .live-withdrawal-box h3 { font-size: 18px; }
+  .live-note { font-size: 12px; }
+  .live-card { padding: 12px; }
+  .live-method { font-size: 14px; }
+  .live-amount { font-size: 18px; }
+  .live-time { font-size: 12px; }
+
+  /* -------------------------------------- */
+  /* 13. PC/DESKTOP FOOTER                  */
+  /* -------------------------------------- */
+  .desktop-footer {
+    display: block; /* Show on desktop */
+    background-color: #1a237e; /* Dark blue background */
+    color: #e0e0e0;
+    padding: 40px 50px;
+    font-size: 0.9em;
+    border-top: 5px solid #ffc107; /* Highlight line */
+  }
+
+  .desktop-footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap; /* Allow wrapping on slightly smaller desktop widths */
+    justify-content: space-between;
+    gap: 30px;
+  }
+
+  .footer-section {
+    flex: 1 1 200px; /* Base width for columns */
+    margin-bottom: 20px; /* Space between sections if wrapped */
+  }
+
+  .footer-section h4 {
+    color: #ffc107; /* Gold for headings */
+    font-size: 1.1em;
+    margin-bottom: 15px;
+    position: relative;
+    padding-bottom: 5px;
+  }
+  .footer-section h4::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 40px;
+      height: 2px;
+      background-color: #4d8aff;
+  }
+
+  .footer-section ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .footer-section ul li {
+    margin-bottom: 8px;
+  }
+
+  .footer-section ul li a {
+    color: #e0e0e0;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+
+  .footer-section ul li a:hover {
+    color: #4d8aff; /* Light blue on hover */
+  }
+
+  .footer-social-icons {
+    display: flex;
+    gap: 15px;
+    margin-top: 15px;
+  }
+
+  .footer-social-icons a {
+    color: #e0e0e0;
+    font-size: 1.5em;
+    transition: color 0.3s ease;
+  }
+
+  .footer-social-icons a:hover {
+    color: #ffc107;
+  }
+
+  .footer-bottom {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: center;
+    color: #999;
+    font-size: 0.85em;
+  }
+  /* Ensure mobile footer is completely hidden */
+  .mobile-footer { display: none !important; }
+}
+
+/* --- iPhone X/XS/XR/11/12/13/14/15 specific adjustments (notch areas, safe areas) --- */
+@media only screen and (min-device-width: 375px) and (max-device-width: 428px) and (-webkit-min-device-pixel-ratio: 2) and (orientation: portrait) {
+    body {
+        /* Env variables for safe areas (iOS) */
+        padding-top: env(safe-area-inset-top);
+        padding-bottom: calc(60px + env(safe-area-inset-bottom)); /* Adjust for mobile footer + safe area */
+    }
+    .bismillah-header {
+        padding-top: calc(10px + env(safe-area-inset-top));
+    }
+    .app-header {
+        top: calc(45px + env(safe-area-inset-top)); /* Adjust sticky header position */
+    }
+    .mobile-footer {
+        padding-bottom: env(safe-area-inset-bottom);
+        height: calc(60px + env(safe-area-inset-bottom));
+    }
 }
