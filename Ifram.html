@@ -1,0 +1,390 @@
+<p>
+    Assalam-o-Alaikum dosto! Kya aap online mukhtalif web pages ko ek sath browse karne ya specific promotional content tak foran rasai hasil karna chahte hain? Ab aap apne pasandeeda URLs ko bhi hamare tool mein load kar sakte hain! Hamara <b>No. 1 Online iFrames Loader</b> tool aapki isi zaroorat ko pura karne ke liye design kiya gaya hai.
+</p>
+<p>
+    Yeh tool aapko <b>50 mukhtalif web pages</b> ko ek hi screen par load karne ki sahoolat deta hai, aur har page aik khaas waqfay ke baad auto-refresh hota rahega. Hamari taraf se khaas hidayat hai ke jab tak tamam web pages mukammal load na ho jayen, tab tak browser se <b>back (peeche) na jayen</b> aur na hi page ko refresh karen, warna aapka mukammal experience mutasir ho sakta hai.
+</p>
+<p>
+    Neeche scroll karen aur hamare is unique tool ko istemal karen!
+</p>
+
+<!--Yahan se iFrames Loader tool ka code shuru hota hai. Yeh post ke bilkul shuru mein aayega.-->
+
+<hr style="background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(100, 100, 100, 0.75), rgba(0, 0, 0, 0)); border: 0px; height: 1px; margin: 30px 0px;" />
+
+<style>
+    /* General Reset for elements inside the Blogger wrapper */
+    .blogger-iframe-loader-wrapper * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    /* Main wrapper for the tool, full-width in Blogger post */
+    .blogger-iframe-loader-wrapper {
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+        margin: 20px auto; /* Centered in Blogger post */
+        padding: 30px 0; /* Vertical padding, full width */
+        background: #f0f2f5; /* Tool ka background color */
+        color: #333;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        max-width: 100%; /* Take full width of post area */
+        overflow-x: hidden; /* Prevent horizontal scroll */
+        min-height: 600px; /* Ensure sufficient height */
+    }
+
+    .blogger-iframe-loader-wrapper .main-tool-card {
+        background: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        width: 95%; /* Tool container ki zyada width */
+        max-width: 1200px; /* Max width for content */
+        text-align: center;
+    }
+
+    .blogger-iframe-loader-wrapper h2.tool-main-heading {
+        font-size: 1.8em;
+        color: #333;
+        margin-top: 0;
+        margin-bottom: 25px;
+        font-weight: 600;
+    }
+
+    .blogger-iframe-loader-wrapper .url-input-section {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        justify-content: center;
+        margin-bottom: 20px;
+        max-width: 800px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .blogger-iframe-loader-wrapper #userUrlInput {
+        flex-grow: 1;
+        padding: 10px 15px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 1em;
+        min-width: 200px;
+    }
+
+    .blogger-iframe-loader-wrapper .action-button {
+        padding: 10px 15px;
+        border: none;
+        border-radius: 5px;
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+        background-color: #dc3545; /* Red color for action buttons */
+        transition: background-color 0.2s ease, transform 0.1s ease;
+    }
+    .blogger-iframe-loader-wrapper .action-button:hover {
+        background-color: #c82333; /* Darker red on hover */
+        transform: translateY(-1px);
+    }
+    .blogger-iframe-loader-wrapper .action-button:active {
+        background-color: #bb2d3b; /* Even darker red on active press */
+        transform: translateY(1px);
+        box-shadow: none;
+    }
+    .blogger-iframe-loader-wrapper .action-button:disabled {
+        background-color: #adb5bd;
+        cursor: not-allowed;
+    }
+
+    .blogger-iframe-loader-wrapper #container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* Responsive grid */
+        gap: 15px; /* Gap between iframes */
+        width: 100%;
+        max-width: 1150px; /* Max width for the grid itself */
+        margin: 0 auto; /* Grid ko center karein */
+    }
+
+    .blogger-iframe-loader-wrapper .iframe-item {
+        width: 100%; /* Full width of its grid column */
+        height: 150px; /* Height thoda badhaya for better visibility */
+        border: 1px solid #ddd;
+        background: white;
+        display: flex;
+        flex-direction: column;
+        border-radius: 5px;
+        overflow: hidden; /* Content within iframe does not overflow */
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+
+    .blogger-iframe-loader-wrapper .iframe-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 5px 10px;
+        background-color: #f0f0f0;
+        border-bottom: 1px solid #ddd;
+        font-size: 0.9em;
+    }
+
+    .blogger-iframe-loader-wrapper .iframe-number-label {
+        font-weight: bold;
+        color: #007bff; /* Blue color for number label */
+    }
+
+    .blogger-iframe-loader-wrapper .iframe-timer-label {
+        color: #555;
+    }
+
+    .blogger-iframe-loader-wrapper .actual-iframe {
+        flex-grow: 1;
+        border: none;
+        width: 100%;
+        height: 100%;
+    }
+
+    /* Message for status/errors */
+    .blogger-iframe-loader-wrapper #statusMessage {
+        margin-top: 15px;
+        font-size: 0.95em;
+        color: #d9534f; /* Red for errors/warnings */
+        font-weight: bold;
+        text-align: center;
+    }
+    .blogger-iframe-loader-wrapper #statusMessage.success {
+        color: #28a745; /* Green for success */
+    }
+
+
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+        .blogger-iframe-loader-wrapper .main-tool-card {
+            padding: 15px;
+            width: 98%;
+        }
+        .blogger-iframe-loader-wrapper h2.tool-main-heading {
+            font-size: 1.5em;
+        }
+        .blogger-iframe-loader-wrapper .url-input-section {
+            flex-direction: column;
+            align-items: stretch;
+        }
+        .blogger-iframe-loader-wrapper #userUrlInput {
+            min-width: unset;
+            width: 100%;
+        }
+        .blogger-iframe-loader-wrapper .action-button {
+            width: 100%;
+        }
+        .blogger-iframe-loader-wrapper #container {
+            grid-template-columns: 1fr; /* Mobile par single column */
+            max-width: 95%;
+        }
+        .blogger-iframe-loader-wrapper .iframe-item {
+            height: 120px; /* Mobile par height adjust karein */
+        }
+    }
+</style>
+
+<div class="blogger-iframe-loader-wrapper">
+    <div class="main-tool-card">
+        <h2 class="tool-main-heading">50 IFrames Loader: Apne URLs Load Karen Ya Default Links Istemal Karen!</h2>
+        
+        <div class="url-input-section">
+            <input autocomplete="off" id="userUrlInput" placeholder="Yahan apna URL darj karen (maslan: https://example.com)" type="text" />
+            <button class="action-button" id="loadUserUrlBtn">URL Load Karen</button>
+            <button class="action-button" id="loadDefaultUrlsBtn">Default Links Load Karen</button>
+        </div>
+        <div id="statusMessage"></div>
+        <div id="container"></div>
+    </div>
+
+    <script>
+        const defaultUrls = [
+          "https://toolswebsite205.blogspot.com/2025/12/google-now-lets-users-change-their.html",
+          "https://toolswebsite205.blogspot.com/2025/12/google-now-lets-users-change-their.html",
+          "https://toolswebsite205.blogspot.com/2025/12/google-now-lets-users-change-their.html",
+          ""
+        ];
+
+        const TOTAL_IFRAMES = 50;
+        const RELOAD_INTERVAL_SECONDS = 65;
+        const container = document.getElementById("container");
+        const userUrlInput = document.getElementById("userUrlInput");
+        const loadUserUrlBtn = document.getElementById("loadUserUrlBtn");
+        const loadDefaultUrlsBtn = document.getElementById("loadDefaultUrlsBtn");
+        const statusMessageDiv = document.getElementById("statusMessage");
+
+        let currentActiveIntervals = []; // To store all setInterval IDs for cleanup
+
+        function displayStatusMessage(message, isError = true) {
+            statusMessageDiv.textContent = message;
+            statusMessageDiv.className = `status-message ${isError ? 'error' : 'success'}`;
+        }
+
+        function clearAllIframes() {
+            currentActiveIntervals.forEach(id => clearInterval(id));
+            currentActiveIntervals = [];
+            container.innerHTML = '';
+            statusMessageDiv.textContent = ''; // Clear status message on clear
+        }
+
+        function startIframe(url, index) {
+            const item = document.createElement("div");
+            item.className = "iframe-item";
+
+            const header = document.createElement("div");
+            header.className = "iframe-header";
+
+            const lbl = document.createElement("span");
+            lbl.className = "iframe-number-label";
+            lbl.textContent = `IFrame ${index+1}`;
+
+            const timerLbl = document.createElement("span");
+            timerLbl.className = "iframe-timer-label";
+            timerLbl.textContent = "اگلا ریفریش: --";
+
+            header.append(lbl, timerLbl);
+
+            const iframe = document.createElement("iframe");
+            iframe.className = "actual-iframe";
+            // Add cache-busting parameter
+            iframe.src = url + (url.includes("?") ? "&" : "?") + "rnd=" + Math.random();
+
+            item.append(header, iframe);
+            container.append(item);
+
+            let secondsLeft = RELOAD_INTERVAL_SECONDS;
+            function updateTimer() {
+                timerLbl.textContent = `اگلا ریفریش: ${secondsLeft} سیکنڈ`;
+                secondsLeft--;
+                if (secondsLeft < 0) secondsLeft = RELOAD_INTERVAL_SECONDS;
+            }
+            updateTimer();
+            
+            const timerIntervalId = setInterval(updateTimer, 1000);
+            currentActiveIntervals.push(timerIntervalId); // Store for cleanup
+
+            const reloadIntervalId = setInterval(() => {
+                iframe.src = url + (url.includes("?") ? "&" : "?") + "rnd=" + Math.random();
+                secondsLeft = RELOAD_INTERVAL_SECONDS;
+                updateTimer();
+            }, RELOAD_INTERVAL_SECONDS * 1000);
+            currentActiveIntervals.push(reloadIntervalId); // Store for cleanup
+        }
+
+        function loadIframes(urlsToUse) {
+            clearAllIframes(); // Clear any existing iframes and timers
+            if (!urlsToUse || urlsToUse.length === 0) {
+                displayStatusMessage("Ghalati: Load karne ke liye koi URL nahi mila.", true);
+                return;
+            }
+            displayStatusMessage(`Loading ${TOTAL_IFRAMES} iframes... Please wait.`, false);
+            // Use setTimeout to allow UI to update before heavy iframe loading
+            setTimeout(() => {
+                for (let i = 0; i < TOTAL_IFRAMES; i++) {
+                    const url = urlsToUse[i % urlsToUse.length]; // Round-robin if multiple URLs
+                    startIframe(url, i);
+                }
+                displayStatusMessage("Tamaam iFrames load hona shuru ho gaye hain. Browser se back na jayen.", false);
+            }, 100); // Small delay
+        }
+
+        loadUserUrlBtn.addEventListener('click', () => {
+            const userUrl = userUrlInput.value.trim();
+            if (!userUrl) {
+                displayStatusMessage("Meherbani kar ke URL darj karen.", true);
+                return;
+            }
+            try {
+                new URL(userUrl); // Basic URL validation
+                loadIframes([userUrl]); // Load all iframes with the single user-provided URL
+                userUrlInput.value = ''; // Clear input after loading
+            } catch (e) {
+                displayStatusMessage("Ghalat URL format. Meherbani kar ke aik durust URL darj karen (maslan: https://example.com).", true);
+            }
+        });
+
+        loadDefaultUrlsBtn.addEventListener('click', () => {
+            loadIframes(defaultUrls);
+            userUrlInput.value = ''; // Clear user input field
+        });
+
+        // Initial load of default iframes when the page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            loadIframes(defaultUrls);
+        });
+
+        // Clear intervals on page unload to prevent memory leaks, especially important here
+        window.addEventListener('beforeunload', () => {
+            currentActiveIntervals.forEach(id => clearInterval(id));
+        });
+    </script>
+</div>
+
+<!--Yahan se article ka content shuru hota hai, jo tool ke neeche aayega.-->
+<hr style="background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(100, 100, 100, 0.75), rgba(0, 0, 0, 0)); border: 0px; height: 1px; margin: 30px 0px;" />
+
+<h2>iFrames Loader Ka Maqsad Aur Yeh Kaise Kaam Karta Hai?</h2>
+<p>
+    Upar aapne hamara <b>Online iFrames Loader</b> tool dekha. Yeh tool khaas taur par un users ke liye design kiya gaya hai jo mukhtalif web content ko ek sath manage karna chahte hain, ya kisi specific promotional ya ad-related content ko musalsal load karte rehna chahte hain. Ab aapke paas do behtareen options hain: ya to hamare <b>default links</b> ko load karen, ya phir apna <b>pasandeeda URL</b> darj kar ke us website ko 50 iFrames mein load karen!
+</p>
+<p>
+    Har iFrame aik alag web page ko load karta hai. Aur har <b>45 seconds</b> ke baad, woh web page khud bakhud refresh ho jata hai, jis se yeh yaqeeni hota hai ke aap hamesha latest content dekh rahe hain ya related activity jaari hai.
+</p>
+
+<h3>Is Tool Ki Khususiyat:</h3>
+<ul>
+    <li><b>Massive Loading:</b> Aik waqt mein 50 mukhtalif web pages load karen.</li>
+    <li><b>Custom URL Option:</b> Apni pasand ka koi bhi URL darj kar ke load karen.</li>
+    <li><b>Auto-Refresh:</b> Har 45 seconds ke baad har iFrame khud bakhud refresh ho jata hai.</li>
+    <li><b>Simplicity:</b> Sirf URL darj karen ya default load karen, aur tool apna kaam shuru kar dega.</li>
+    <li><b>Engagement Boost:</b> Promotional content ya ads ke liye continuous engagement provide karta hai.</li>
+</ul>
+
+<h3>Istemal Karne Ki Aham Hidayat:</h3>
+<p>
+    Is tool ko istemal karte waqt in hidayat par sakhti se amal karen taake aapka experience behtar rahe:
+</p>
+<ol>
+    <li><b>Back Na Jayen:</b> Jab tak tamaam iFrames mukammal load na ho jayen, browser ke back button ka istemal bilkul na karen. Isse aapka process ruk sakta hai.</li>
+    <li><b>Page Refresh Na Karen:</b> Khud se page ko refresh na karen. iFrames khud bakhud refresh hote rahenge.</li>
+    <li><b>Intezaar Karen:</b> Sabar se kaam len. Mukhtalif websites ko load hone mein thoda waqt lag sakta hai.</li>
+    <li><b>Durust URL Darj Karen:</b> Agar aap apna URL darj kar rahe hain, to yaqeeni banayen ke woh durust aur mukammal ho (maslan: <code>https://www.example.com</code>).</li>
+</ol>
+
+<hr style="background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(100, 100, 100, 0.75), rgba(0, 0, 0, 0)); border: 0px; height: 1px; margin: 30px 0px;" />
+
+<h3>Aham Maloomat Aur Disclaimer (Zaroor Padhen):</h3>
+<p>
+    Hum umeed karte hain ke yeh <b>Online iFrames Loader</b> tool aapke liye faide mand saabit hoga. Lekin kuch bohat aham baatein hain jinhe zaroor zehen mein rakhen:
+</p>
+<ol>
+    <li><b>Third-Party Content &amp; User-Provided URLs:</b> Is tool mein load hone wale tamaam iFrames external websites se hain. Agar aap default URLs istemal karte hain, to woh <a href="https://www.revenuecpmgate.com" target="_blank">revenuecpmgate.com</a> se hain. Agar aap apna URL darj karte hain, to woh aapke diye gaye URL se load honge. <b>Hamara blog in websites (chahe woh default hon ya user-provided) ke content, unki reliability, security, ya unki policies ka zimmedar nahi hai.</b> Aap in links ko apni zimmedari par access karte hain.</li>
+    <li><b>Earning Claims / Payments:</b> "Payment milne" ya "kamai hone" ka jo zikr kiya gaya hai, woh mukammal taur par third-party websites (yaani `revenuecpmgate.com` ya aapke user-provided earning platforms) se mutaliq hai. <b>Hamara blog kisi bhi qisam ki kamai ya adaigi ki zamaanat nahi deta aur na hi iska zimmedar hai.</b> Agar aap kisi bhi financial transaction ya earning activity mein shaamil hote hain, to woh aapki apni zimmedari par hoga.</li>
+    <li><b>Privacy Aur Security:</b> Jab aap in iFrames ko load karte hain, to aapki browsing activity un third-party websites par record ho sakti hai. Woh websites cookies, trackers, aur doosre data collection methods istemal kar sakti hain. Hum aapki privacy ya un websites ki security ke zimmedar nahi hain.</li>
+    <li><b>User Experience:</b> Aik sath 50 iFrames load karne se aapke device ka processor aur internet ka istemal bohat zyada ho sakta hai, jis se aapka device slow ho sakta hai ya internet data zyada kharch ho sakta hai.</li>
+    <li><b>Responsible Use:</b> Users se darkhwast hai ke is tool ko sirf zimmedari aur ikhlaqi tareeqay se istemal karen. Kisi bhi ghalat, fraud, ya gair-qanooni maqsad ke liye iska istemal na karen. Ghair-qanooni ya offensive websites ko load karna mana hai.</li>
+    <li><b>Disclaimer Of Liability:</b> Is tool ke istemal se hone wale kisi bhi nuqsan (chahe woh software, hardware, data, ya financial ho) ki zimmedari is blog ya iske bananey walon par nahi hogi. Aap is tool ko apne mukammal risk par istemal kar rahe hain.</li>
+</ol>
+<p>
+    Is tool ko istemal karte waqt in tamam baton ko ghaur se padhen aur samajhen. Hamara maqsad sirf aapko technical sahoolat faraham karna hai, lekin aapki apni tehqeeq aur zimmedari hai ke aap kin websites ko access karte hain aur unke sath kis tarah interact karte hain.
+</p>
+
+<p>
+    Shukriya aur khushgawar tajarbay ki umeed hai!
+</p>
+<p>Online iFrames Loader ek free web tool hai jo tumhein multiple webpages ko ek hi page me embed karne ka simple aur fast tareeqa deta hai. IFrames ka matlab hai inline frame, jo tumhari website ke andar dusri websites ko display karta hai bina new tab kholne ke. Ye tool beginners, bloggers, web designers aur small business owners ke liye perfect hai jo apni site par external content easily show karna chahte hain. Tum sirf URL daal kar, width aur height set kar ke iframe code generate kar sakte ho aur apni website me paste kar sakte ho. Ye process bilkul coding-free hai aur beginners ke liye safe hai.</p>
+
+<p>Is tool ki madad se tum multiple URLs ko ek sath load kar sakte ho, jo especially useful hai jab tum videos, maps, forms ya kisi external content ko ek hi page par dikhana chahte ho. Har iframe independently load hota hai, isliye users easily scroll kar sakte hain aur content interact kar sakte hain. Ye feature websites ke liye time save karta hai aur visitor experience improve karta hai. IFrames ke sath tum apni website ko visually rich aur interactive bana sakte ho, jo user retention aur engagement barhata hai.</p>
+
+<p>IFrames Loader tool ka interface simple aur user-friendly hai. Tum URL box me apna desired webpage link daaloge, phir width aur height customize karoge, scroll aur border options set karoge aur “Generate” button dabao ge. Tool automatically iframe code generate karega jo tumhare website HTML me paste kiya ja sakta hai. Ye tool responsive design ko support karta hai, matlab mobile aur desktop dono par content properly display hota hai. Is feature se tumhare UK aur global visitors dono ko best user experience milega.</p>
+
+<p>Iframe use karne ke bohot fayde hain. Pehla, tum ek hi page par multiple resources dikha sakte ho. Dusra, external content ko embed karna easy hota hai bina original website ko alter kiye. Teesra, ye tool time-efficient hai aur beginners ke liye learning curve bilkul short hai. Tumhare users iframe content interact kar sakte hain jaise forms fill karna, maps zoom karna ya videos play karna, aur ye sab kuch directly tumhare page se hota hai. Ye feature tumhare site ki professionalism aur functionality ko enhance karta hai.</p>
+
+<p>SEO aur Google indexing ke liye, iframe ke sath unique textual content add karna zaruri hai. Ye page sirf iframe show kare to Google crawl nahi karega. Isliye humne guide section include kiya hai jo explain karta hai iframe kya hai, kaise use hota hai aur best practices. Tumhare UK target users ke liye content me examples aur tips include karna bhi recommended hai. Meta title aur description properly set karna, headings (H1, H2) aur images ke alt text add karna indexing ko improve karte hain. Ye step tumhare page ko search results me rank karwane me madad karega.</p>
+
+<p>Iframe Loader tool ke sath tum apni website ko visually interactive aur functional bana sakte ho. Ye free tool beginners aur professional web designers dono ke liye useful hai. Tum multiple external pages ek hi screen par load kar sakte ho, customize options use kar sakte ho aur responsive design ensure kar sakte ho. IFrames ka proper use tumhare site ke UX ko improve karta hai, visitors ka engagement barhata hai aur ultimately tumhari website ka SEO aur traffic boost hota hai. Agar tum apni site ke liye fast, easy aur free iframe solution chahte ho, ye tool perfect choice hai.</p>
